@@ -33,6 +33,9 @@ function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)
 %
 % $Id$
 
+if ~is_mars_estimated(marsD)
+  error('Need estimated design for plot');
+end
 if nargin < 2
   rno = [];
 end
@@ -41,7 +44,6 @@ if nargin < 3
 end
 changef = 0;
 
-% for return
 % make values ready for return 
 def_r_st = struct(...
     'Y', [],...
