@@ -1,5 +1,5 @@
 function varargout = ui_report(D, varargin)
-% mathod for SPM2 design reporting
+% method for SPM2 design reporting
 %
 % Copied with minor edits from:  
 % @(#)spm_DesRep.m	2.31 Andrew Holmes 03/03/28
