@@ -25,7 +25,7 @@ e_specs = [];
 e_names = {};
 e_ctr = 1;
 for ss = 1:nsess
-  nevs = length(Sess(ss).name);
+  nevs = length(Sess{ss}.name);
   e_specs = [e_specs [ones(1, nevs) * ss; 1:nevs]];
   e_names = [e_names Sess{ss}.name];
 end
