@@ -3,10 +3,14 @@ function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargi
 % FORMAT [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)
 %
 % uigetfile and uiputfile in matlab 5.3 does not support the use of multiple
-% filters, nor the passing of a seperate filename default as third argument.
+% filters, in the filter_spec array.
+% Matlab < 6.5 does not allow the passing of a seperate filename default
+% as a third argument. 
+% Matlab < 6.5 does not return a third argument (file index)
+%
 % mars_uifile acts as a wrapper for calls to uiputfile and uigetfile, so
-% that 6.5 format calls will be translated to something useful to 5.3 if 5.3
-% is running.
+% that 6.5 format calls will be translated to something useful to 5.3,
+% 6.1 if 5.3 or 6.1 is running.
 %
 % $Id$
   
@@ -28,10 +32,12 @@ if isnumeric(filename)
 end
   
 mlv = version; mlv = str2num(mlv(1:3));
-if mlv < 6
-  if ~isempty(filename)
+if mlv < 6.5 
+  % If we have a default filename, we cannot use it with the filterspec,
+  % so use filename instead of filterspec
+  if ~isempty(filename) 
     filter_spec = filename;
-  else
+  elseif mlv < 6 % only allowed string filterspec
     if iscell(filter_spec)
       filter_spec = filter_spec{1};
     end
@@ -41,7 +47,7 @@ if mlv < 6
     end
   end
   arglist = {filter_spec, prompt, varargin{:}};
-else
+else % (so matlab >= 6.5)
   arglist = {filter_spec, prompt, filename, varargin{:}};
 end  
 
