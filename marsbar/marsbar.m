@@ -611,7 +611,7 @@ end
 
 % Do data extraction
 marsY = get_marsy(o{:}, VY, sumfunc, 'v');
-if isempty(marsY.Y)
+if ~n_regions(marsY)
   msgbox('No data returned','Data extraction', 'warn');
   return
 end
@@ -728,7 +728,7 @@ case 'spm_graph'                                  %-run spm_graph
 % [Y,y,beta,SE,cbeta] =  marsbar('spm_graph')
 %-----------------------------------------------------------------------
 varargout = {};
-if ~sf_is_there(MARS.WORKSPACE, 'default_region')
+if ~mars_struct('isthere', MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
 marsRes = mars_armoire('get', 'est_design');

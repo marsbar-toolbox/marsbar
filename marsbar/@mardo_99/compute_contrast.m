@@ -23,10 +23,10 @@ end
     pr_stat_compute(xCon(Ic), SPM.xX.xKXs, SPM.xX.V, ...
 		      SPM.betas, SPM.ResidualMS);
 marsS.MVres = pr_stat_compute_mv(xCon(Ic), SPM.xX.xKXs, SPM.xX.V, ...
-				 SPM.betas, SPM.ResidualMS, SPM.marsY.Y);
-for i = 1:length(SPM.marsY.cols)
-  marsS.columns{i} = SPM.marsY.cols{i}.name;
-end
+				 SPM.betas, SPM.ResidualMS, ...
+				 summary_data(SPM.marsY));
+
+marsS.columns = region_names(SPM.marsY);
 for i = 1:length(Ic)
   marsS.rows{i}.name = xCon(Ic(i)).name;
   marsS.rows{i}.stat = xCon(Ic(i)).STAT;

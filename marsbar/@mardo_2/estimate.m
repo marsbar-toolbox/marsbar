@@ -2,7 +2,7 @@ function [marsD] = estimate(marsD, marsY, flags)
 % estimate method - estimates GLM for SPM2 model
 %
 % marsD           - SPM design object
-% marsY           - MarsBaR data structure
+% marsY           - MarsBaR data object or 2D data matrix
 % flags           - cell array of options
 %
 % $Id$
@@ -15,18 +15,21 @@ if nargin < 3
 end
 if ischar(flags), flags = {flags}; end
 
+% ensure we have a data object
+marsY = marsy(marsY);
+
 % check design is complete
 if is_fmri(marsD) & ~has_filter(marsD)
   error('This FMRI design needs a filter before estimation');
 end
 
-% get SPM design structure
-SPM = des_struct(marsD);
-
 % Check data and design dimensions
-if size(marsY.Y, 1) ~= size(SPM.xX.X, 1)
+if n_time_points(marsY) ~= n_time_points(marsD)
   error('The data and design must have the same number of rows');
 end
+
+% get SPM design structure
+SPM = des_struct(marsD);
 
 % process flags
 for flag = flags

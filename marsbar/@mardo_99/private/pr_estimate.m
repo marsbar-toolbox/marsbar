@@ -28,12 +28,9 @@ if ~isfield(spmD.xX,'X'),
   error('Please load an SPMcfg containing an X')
 end
 
-% allow matrix or structure to be passed as input data
-if isstruct(marsY)
-  Y = marsY.Y;
-else
-  Y = marsY;
-end
+% allow matrix or object to be passed as input data
+marsY = marsy(marsY);
+Y = summary_data(marsY);
 nROI = size(Y,2);  %- Y is a time by nROI matrix
 
 %----------------------------------------------------------------------------------

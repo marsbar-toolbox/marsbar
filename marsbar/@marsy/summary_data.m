@@ -25,7 +25,7 @@ if nargin > 1 | ...              % sumfunc passed
   if isempty(Ys)
     error('No region data to summarize');
   end
-  
+  Ws = region_weights(o);
   sz = summary_size(o);
   Y = zeros(sz);
   Yvar = zeros(sz);
@@ -34,7 +34,7 @@ if nargin > 1 | ...              % sumfunc passed
       Y(:,i) = NaN;
       Yvar(:,i) = NaN;
     else      
-      [Y(:,i) Yvar(:,i)] = pr_sum_func(Ys{i}, s_f);
+      [Y(:,i) Yvar(:,i)] = pr_sum_func(Ys{i}, s_f, Ws{i});
     end
   end
   if nargout > 2

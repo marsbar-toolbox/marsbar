@@ -35,7 +35,7 @@ Xs = SPM.xX.xKXs;
 V = SPM.xX.V;
 betas = SPM.betas;
 ResidualMS = SPM.ResidualMS;  
-Y = SPM.marsY.Y;
+Y = summary_data(SPM.marsY);
 
 % setup calculation
 [nBetas nROI]   = size(betas);

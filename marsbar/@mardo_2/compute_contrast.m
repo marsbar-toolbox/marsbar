@@ -22,9 +22,7 @@ end
     pr_stat_compute(SPM, Ic);
 marsS.MVres = pr_stat_compute_mv(SPM, Ic);
 
-for i = 1:length(SPM.marsY.cols)
-  marsS.columns{i} = SPM.marsY.cols{i}.name;
-end
+marsS.columns = region_name(SPM.marsY);
 for i = 1:length(Ic)
   marsS.rows{i}.name = xCon(Ic(i)).name;
   marsS.rows{i}.stat = xCon(Ic(i)).STAT;

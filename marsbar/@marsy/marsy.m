@@ -16,6 +16,12 @@ function [o,others] = marsy(params, region_info, summary_info)
 %                Structure can have fields;
 %                name    - string identifying region
 %                descrip - longer description of region
+%                Y       - matrix of samples (voxel data) for this
+%                          region, size N by S1 for region 1, N by S2 for
+%                          region 2 etc.
+%                weights - weighting vector, one value for each sample
+%                          1..S1 (for region 1) etc.
+%                          Can be empty, so each sample has weight 1.
 %                info    - structure containing any other fields of
 %                          interest  
 %                vXYZ    - any voxel coordinates in X Y Z dimension 
@@ -95,11 +101,15 @@ function [o,others] = marsy(params, region_info, summary_info)
 % summary_data - gets (N by R) summary matrix Y
 % summary_descrip - gets/sets description of object
 % summary_info - gets/sets information field of object
-% resummarize  - recalculates summary data
+% resummarize  - recalculates summary data if possible
+% is_summarized - returns 1 if data has been summarized already
+% can_summarize - returns 1 if data can be suumarized without error
 % sumfunc      - gets/sets summary function to summarize data
+% region       - returns region structure, filled with defaults as necessary
 % region_data  - gets region sample (voxel) data as cell array; returns
 %                all regions if no region number specificed, or one cell
 %                per region if region numbers are specified
+% region_weights - as above, but for region weighting vector (see above)
 % region_name  - gets cell array of region names as 1 by R cell array 
 %                (if no region number is specified) or single cell string
 %                if a single region is specified
@@ -112,7 +122,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 %                possible)
 % split        - splits object into array of objects, with one element
 %                for each region 
-% plot         - plot data
+% ui_plot      - plot data in SPM interface
 % save_struct  - saves y_struct to disk as structure
 % 
 % Other methods (to avoid)
@@ -151,10 +161,12 @@ function [o,others] = marsy(params, region_info, summary_info)
 %             Regions is a cell array to allow different fields to be
 %             filled for each region
 %             Each structure in the cell array has fields 
-%             Y       - matrix of samples (voxel data) for this region, size
-%                       N by S1 for region 1, N by S2 for region 2 etc.
 %             name    - string identifying region
 %             descrip - longer description of region
+%             Y       - matrix of samples (voxel data) for this region, size
+%                       N by S1 for region 1, N by S2 for region 2 etc.
+%             weights - weighting vector, one value for each sample 1..S1
+%                       can be empty, so each sample has weight 1.
 %             info    - structure containing any other fields of interest
 %             vXYZ    - any voxel coordinates in X Y Z dimension 
 %                       (3 by S1 for region 1 etc).  
@@ -208,7 +220,11 @@ switch class(params)
     if any(n - n2)
       error('All regions must have the same number of time points');
     end
-    regions{i} = struct('Y', params{i});
+    if isstruct(params{i})
+      regions{i} = params{i};
+    else
+      regions{i} = struct('Y', params{i});
+    end
   end
   params = struct('y_struct', struct('regions', {regions}));
  otherwise

@@ -6,7 +6,7 @@ function SPM = pr_estimate(SPM, marsY)
 % $Id$
 
 % hard coded (for now) flag to use voxel data for whitening filter
-use_all_data = 1;
+use_all_data_f = 1;
 
 %-Say hello
 %-----------------------------------------------------------------------
@@ -107,14 +107,13 @@ fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 % Select whether to work with all voxel data in ROIs, or summary data
 % Using all data only makes sense for intial estimation of whitening
 if ~isfield(xX, 'W') & ...
-      isfield(marsY, 'cols') & ...
-      use_all_data
-  Y = [marsY.cols{:}];
-  Y = [Y(:).y];
+      use_all_data_f
+  Y = region_data(marsY);
+  Y = [Y{:}];
 else
-  Y = marsY.Y;
+  Y = summary_data(marsY);
 end
-n_roi = size(marsY.Y, 2);
+n_roi = n_regions(marsY);
 
 %-Intialise variables used in the loop 
 %=======================================================================

@@ -12,9 +12,9 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %          - required fields are:
 %          .c  - contrast vector/matrix
 %          (see spm_FcUtil.m for details of contrast structure... )
-%        marsY  - the data itself
+%        marsY  - MarsBaR data object
 %
-% rno    - region number (index into marsD.marsY.Y)
+% rno    - region number (index for marsD.marsY)
 %
 % Y      - fitted   data for the selected voxel
 % y      - adjusted data for the selected voxel
@@ -29,6 +29,10 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %
 % $Id$
 
+if nargin < 2
+  rno = [];
+end
+
 % for return
 [Y,y,beta,Bcov,SE,cbeta] = deal([]);
 
@@ -36,15 +40,24 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 SPM = des_struct(marsD);
 xCon = SPM.xCon;
   
+% Check if we want to, and can, assume region no is 1
+if isempty(rno) 
+  if n_regions(SPM.marsY) > 1
+    error('Need to specify region number');
+  end
+  rno = 1;
+end
+
 % Get required data
-y    = SPM.marsY.Y(:,rno);
+sY    = summary_data(SPM.marsY);
+y     = sY(:,rno);
 
 % Get design matrix for convenience
 xX = SPM.xX;
 
 % Label for region
-XYZstr = SPM.marsY.cols{rno}.name;
-
+XYZstr = region_name(SPM.marsY, rno);
+XYZstr = XYZstr{1};
 
 %-Get parameter estimates, ResidualMS, (compute) fitted data & residuals
 %=======================================================================
@@ -322,9 +335,9 @@ case 'Event-related responses'
 		xBF.name    = 'Finite Impulse Response';
 		xBF.order   = round(32/BIN);
 		xBF.length  = xBF.order*BIN;
-		xBF         = spm_get_bf(xBF);
+		xBF         = pr_spm_get_bf(xBF);
 		BIN         = xBF.length/xBF.order;
-		X           = spm_Volterra(U,xBF.bf,1);
+		X           = pr_spm_volterra(U,xBF.bf,1);
 		k           = SPM.nscan(s);
 		X           = X([0:(k - 1)]*SPM.xBF.T + SPM.xBF.T0 + 32,:);
 
@@ -429,7 +442,7 @@ case 'Parametric responses'
 	P     = Sess(s).U(u).P(p).P;
 	q     = [];
 	for i = 0:Sess(s).U(u).P(p).h;
-		q = [q spm_en(P).^i];
+		q = [q pr_spm_en(P).^i];
 	end
 	q     = spm_orth(q);
 

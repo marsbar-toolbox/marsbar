@@ -12,9 +12,9 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %          - required fields are:
 %          .c  - contrast vector/matrix
 %          (see spm_FcUtil.m for details of contrast structure... )
-%        marsY  - the data itself
+%        marsY  - the data itself (as a data object)
 %
-% rno    - region number (index into marsD.marsY.Y)
+% rno    - region number (index for marsD.marsY)
 %
 % Y      - fitted   data for the selected voxel
 % y      - adjusted data for the selected voxel
@@ -31,12 +31,24 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %
 % $Id$
 
+if nargin < 2
+  rno = [];
+end
+
 % make values ready for return 
 cbeta = [];
 
 % get stuff from object
 mRes = des_struct(marsD);
 xCon = mRes.xCon;
+
+% Check if we want to, and can, assume region no is 1
+if isempty(rno) 
+  if n_regions(mRes.marsY) > 1
+    error('Need to specify region number');
+  end
+  rno = 1;
+end
 
 %-Get Graphics figure handle
 %-----------------------------------------------------------------------
@@ -47,13 +59,15 @@ Fgraph = spm_figure('GetWin','Graphics');
 spm_results_ui('Clear',Fgraph,2);
 
 % Get required data
-y    = mRes.marsY.Y(:,rno);
+sY   = summary_data(mRes.marsY); 
+y    = sY(:,rno);
 
 % Get design matrix for convenience
 xX = mRes.xX;
 
 % Label for region
-XYZstr = mRes.marsY.cols{rno}.name;
+XYZstr = region_name(mRes.marsY, rno);
+XYZstr = XYZstr{1};
 
 %-Get parameter estimates, ResidualMS, (compute) fitted data & residuals
 %=======================================================================

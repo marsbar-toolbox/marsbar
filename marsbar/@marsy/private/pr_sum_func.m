@@ -12,6 +12,9 @@ if any([m n] == 0)
   error('Data vector is empty');
 end
 if nargin < 3
+  wt = [];
+end
+if isempty(wt)
   wt = ones(n,1);
 end
 if size(wt,1)==1
