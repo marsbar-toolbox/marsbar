@@ -40,15 +40,13 @@ if isempty(flags)
   flags = 'i';  % id image is default
 end
 
-if ischar(roi_list), roi_list = cellstr(roi_list); end
-if ~iscell(roi_list), roi_list = {roi_list};end
+roi_list = maroi('load_cell', roi_list);
 roi_len = prod(size(roi_list));
 
 img_data = zeros(roi_space.dim);
 roi_ctr = 1;
 for i = 1:roi_len
-  fprintf('Loading %s\n', roi_list{i});
-  roi = maroi('load', roi_list{i});
+  roi = roi_list{i};
   % check ROI contains something
   if isempty(roi) 
     warning(sprintf('ROI %d is missing', i));
