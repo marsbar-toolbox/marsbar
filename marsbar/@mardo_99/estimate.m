@@ -1,9 +1,14 @@
-function [marsD] = estimate(marsD, marsY, flags)
+function [marsD] = estimate(marsD, marsY, params)
 % estimate method - estimates GLM for SPM99 model
 %
 % marsD           - SPM design object
 % marsY           - MarsBaR data object, or 2D matrix
-% flags           - cell array of options
+% param           - struct containing options
+%                    (not currently used)
+%
+% e.g.
+% % Estimate model on design D and data Y
+% E = estimate(D, Y);
 %
 % $Id$
 
@@ -11,9 +16,8 @@ if nargin < 2
   error('Need data to estimate');
 end
 if nargin < 3
-  flags = {''};
+  params = [];
 end
-if ischar(flags), flags = {flags}; end
 
 % ensure we have a data object
 marsY = marsy(marsY);

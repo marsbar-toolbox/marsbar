@@ -1,19 +1,37 @@
-function [marsD] = estimate(marsD, marsY, flags)
+function [marsD] = estimate(marsD, marsY, params)
 % estimate method - estimates GLM for SPM2 model
 %
 % marsD           - SPM design object
 % marsY           - MarsBaR data object or 2D data matrix
-% flags           - cell array of options
-%
+% params          - struct containing options, as fields
+%                   redo_covar     - if 1, remodels covariance 
+%                   redo_whitening - if 1, recalcalates whitening
+%                   (by default, both are set to 1)
+% 
+% e.g.
+% % Estimate model on design D and data Y, using original covariance and
+% % whitening
+% E = estimate(D, Y, struct('reco_covar', 0, ...
+%                           'redo_whitening', 0);
+%  
 % $Id$
+
+def_params = struct(...
+    'redo_covar', 1, ...
+    'redo_whitening', 1);
 
 if nargin < 2
   error('Need data to estimate');
 end
 if nargin < 3
-  flags = {'redo_covar','redo_whitening'};
+  params = [];
 end
-if ischar(flags), flags = {flags}; end
+
+% Replicate original behaviour calling with cell array of strings
+params = sf_call_compat(params);
+
+% Fill with defaults
+params = mars_struct('ffillmerge', def_params, params);
 
 % ensure we have a data object
 marsY = marsy(marsY);
@@ -31,8 +49,8 @@ end
 % get SPM design structure
 SPM = des_struct(marsD);
 
-% process flags
-if ismember('redo_covar', flags)
+% process params
+if params.redo_covar
   if isfield(SPM, 'xVi') 
     if isfield(SPM.xVi, 'V') & isfield(SPM.xVi, 'Vi')
       SPM.xVi = rmfield(SPM.xVi, 'V');
@@ -42,7 +60,7 @@ if ismember('redo_covar', flags)
     end
   end
 end
-if ismember('redo_whitening', flags)
+if params.redo_whitening
   if isfield(SPM.xX, 'W')
     SPM.xX = rmfield(SPM.xX, 'W');
     if verbose(marsD)
@@ -59,3 +77,27 @@ SPM.SPMid  = sprintf('SPM2: MarsBaR estimation. mardo_2 version %s', ...
 % return modified structure
 marsD = des_struct(marsD, SPM);
 
+return
+
+function params = sf_call_compat(params)
+% Replicates old calling behaviour, for backwards compatibility
+  
+% Replicate result of passing empty cell array, but warn that this
+% will be removed soon  
+if ischar(params) | iscell(params)
+  warning(['Cell / char form of params deprecated, ' ...
+	   'please use struct form instead']);
+end
+if iscell(params) & isempty(params)
+  warning(['Empty cell array changes default options; '...
+	  'This behaviour will change for future versions']);
+  params = struct(...
+    'redo_covar', 0, ...
+    'redo_whitening', 0);
+end
+if ischar(params)params = {params}; end
+if iscell(params)
+  params = params(:); 
+  params = cell2struct(num2cell(ones(size(params))), params, 1);
+end
+return
