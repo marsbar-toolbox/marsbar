@@ -522,7 +522,10 @@ if isempty(fn) | any(flags=='l')
   fn = maroi('filename', marsbar('str2fname', label(o)));
 end
 
-[f p] = mars_uifile('put', fn, 'File name for ROI');
+f_f = ['*' maroi('classdata', 'fileend')];
+[f p] = mars_uifile('put', ...
+		    {f_f, ['ROI files (' f_f ')']},...
+		    'File name for ROI', fn);
 if any(f~=0)
   roi_fname = maroi('filename', fullfile(p, f));
   try
@@ -537,7 +540,8 @@ case 'combinerois'                                        %-combine ROIs
 %=======================================================================
 % marsbar('combinerois')
 %-----------------------------------------------------------------------
-roilist = spm_get(Inf,'_roi.mat','Select ROI(s) to combine');
+roilist = spm_get(Inf,maroi('classdata', 'fileend'), ...
+		  'Select ROI(s) to combine');
 if isempty(roilist)
   return
 end
@@ -578,7 +582,8 @@ case 'flip_lr'                                          %-flip roi L<->R
 %=======================================================================
 % marsbar('flip_lr')
 %-----------------------------------------------------------------------
-roilist = spm_get([0 1],'_roi.mat','Select ROI to flip L/R');
+roilist = spm_get([0 1],maroi('classdata', 'fileend'),...
+		  'Select ROI to flip L/R');
 if isempty(roilist)
   return
 end
@@ -662,7 +667,9 @@ else
   V = varargin{1};
 end
 if nargin < 3
-  rois = spm_get([0 Inf], '_roi.mat', 'Select ROIs to image to');
+  rois = spm_get([0 Inf], maroi('classdata', 'fileend'), ...
+		 'Select ROIs to attach image to');
+  
   if isempty(rois), return, end
 else
   rois = varargin{2};
