@@ -40,11 +40,14 @@ for e_i = 1:e_s_l
   [X dt]= event_regressor(D, es, dur);
   B     = betas(event_cols(D, es), :);
   Yh    = X*B;
+  
+  % Sum over events
   sz    = size(Yh, 1);
   szo   = size(tc, 1);
   if sz > szo
     tc(end+1:sz, :) = 0;
   end
   tc(1:sz,:) = tc(1:sz,:) + Yh;  
+  
 end
 tc = tc / e_s_l;
