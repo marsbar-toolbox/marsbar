@@ -12,5 +12,5 @@ if binarize(o)
 else
   v.dim(4) = spm_type('float');
 end
-v = spm_create_image(v);
+v = spm_create_vol(v);
 v = spm_write_vol(v, o.dat);

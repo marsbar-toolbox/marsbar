@@ -126,7 +126,7 @@ elseif strcmp(action,'ROItomask');
 		      'pinfo',	[1 0 0]',...
 		      'descrip',	'mask from ROI')); 
   
-    mask = spm_create_image(mask);
+    mask = spm_create_vol(mask);
 
     Bw=zeros(DIM); n = 1;
     for k=1:size(Pos{n},1)
