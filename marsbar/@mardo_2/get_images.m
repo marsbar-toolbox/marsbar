@@ -1,5 +1,6 @@
 function VY = get_images(marsD)
 % method to get image vols from design
+% FORMAT VY = get_images(marsD)
 % 
 % $Id$
     
