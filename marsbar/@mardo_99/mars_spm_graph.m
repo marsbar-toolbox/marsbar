@@ -77,7 +77,7 @@ spm_results_ui('Clear',Fgraph,2);
 
 % Get required data
 sY   = summary_data(mRes.marsY); 
-y    = sY(:,rno);
+y    = apply_filter(marsD, sY(:, rno));
 
 % Get design matrix for convenience
 xX = mRes.xX;
