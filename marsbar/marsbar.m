@@ -1605,10 +1605,10 @@ if isempty(ic), return, end
 et = event_types(marsRes);
 ic_len = length(ic);
 
-% Flat or stacked?
-% If all the events have zero duration, the model is already flat, and
+% Single or stacked?
+% If all the events have zero duration, the model is already single, and
 % there is no point in asking.  If any of the durations are different
-% across events, then the flat model is invalid.
+% across events, then the single model is invalid.
 d_a = []; opts = []; 
 for i = 1:ic_len
   [o d] = event_onsets(marsRes, et(ic(i)).e_spec);
@@ -1616,8 +1616,8 @@ for i = 1:ic_len
 end
 if any(d_a) & ~any(diff(d_a))
   if spm_input('FIR type', '+1','m',...
-	       'Flat|Stacked', [1 0], 1)
-    opts.flat = 1;
+	       'Single|Stacked', [1 0], 1)
+    opts.single = 1;
   end
 end
 if spm_input('Signal units', '+1','m',...

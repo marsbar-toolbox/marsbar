@@ -11,7 +11,7 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % bin_length  - duration of time bin for FIR in seconds [TR]
 % bin_no      - number of time bins [24 seconds / TR]
 % opts       - structure, containing fields with options
-%                'flat' - if field present, gives flat FIR 
+%                'single' - if field present, gives single FIR 
 %                  This option removes any duration information, and
 %                  returns a simple per onset FIR model, where 1s in the
 %                  design matrix corresponds to 1 event at the given
@@ -23,7 +23,7 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % tc         - fitted event time course, averaged over events
 % dt         - time units (seconds per row in tc = bin_length)
 %
-% Here, just some notes to explain 'flat' and 'stacked' FIR models.  Imagine
+% Here, just some notes to explain 'single' and 'stacked' FIR models.  Imagine
 % you have an event of duration 10 seconds, and you want an FIR model.  To
 % make things simple, let's say the TR is 1 second, and that a standard
 % haemodynamic response function (HRF) lasts 24 seconds.
@@ -32,7 +32,7 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % make an FIR model which estimates the signal (say) at every second (TR)
 % after event onset, where your model (Impulse Response) lasts long enough
 % to capture the event and its HRF response - say 10+24 = 24 seconds.  This
-% is what I will call a 'flat' FIR model.  Another approach - and this is
+% is what I will call a 'single' FIR model.  Another approach - and this is
 % what SPM does by default - is to think of the 10 second event as a (say)
 % 10 events one after the other, each starting 1 second after the last.
 % Here the FIR model estimates the effect of one of these 1 second events,
@@ -40,19 +40,19 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % the HRF (24 seconds).  This second approach I will call a 'stacked' FIR
 % model, because the events are stacking up one upon another.
 % 
-% The flat and stacked models are the same thing, if you specify a duration
-% of 0 for all your events.  If your events have different durations, it is
-% very difficult to model the event response sensibly with a flat FIR,
-% because, for the later FIR time bins, some events will have stopped, and
-% activity will be dropping to baseline, whereas other events will still be
-% continuing.  In this case the stacked model can make sense, as it just
-% models longer events as having more (say) 1 second events.  However, if
-% your events have non-zero durations, but each duration is the same, then
-% it may be that you do not want the stacked model, because your interest is
-% in the event time course across the whole event, rather than some average
-% response which pools together responses in the start middle and end of
-% your actual event response, as the stacked model does.  In such a case,
-% you may want to switch to a flat FIR model.
+% The single and stacked models are the same thing, if you specify a
+% duration of 0 for all your events.  If your events have different
+% durations, it is very difficult to model the event response sensibly with
+% a single FIR, because, for the later FIR time bins, some events will have
+% stopped, and activity will be dropping to baseline, whereas other events
+% will still be continuing.  In this case the stacked model can make sense,
+% as it just models longer events as having more (say) 1 second events.
+% However, if your events have non-zero durations, but each duration is the
+% same, then it may be that you do not want the stacked model, because your
+% interest is in the event time course across the whole event, rather than
+% some average response which pools together responses in the start middle
+% and end of your actual event response, as the stacked model does.  In such
+% a case, you may want to switch to a single FIR model.
 %
 % There is an added problem for the stacked models, which is what to do
 % about the actual height of the regressors.  That problem also requires

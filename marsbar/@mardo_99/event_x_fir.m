@@ -8,7 +8,7 @@ function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % bin_length - bin length in seconds
 % bin_no     - number of bins for FIR
 % opts       - structure, containing fields with options
-%                'flat' - if field present, gives flat FIR 
+%                'single' - if field present, gives single FIR 
 %                 This option removes any duration information, and
 %                 returns a simple per onset FIR model, where ones in the
 %                 design matrix corresponds to 1 event at the given
@@ -72,7 +72,7 @@ BF{1}       = bf / bf(1);
 
 k           = length(Sess.row);
 
-if isfield(opts, 'flat')
+if isfield(opts, 'single')
   [onsets durations] = event_onsets(D, e_spec);
   ons   = sparse(k*T,1);
   for p = 1:length(onsets)
@@ -82,7 +82,7 @@ if isfield(opts, 'flat')
   SF{1} = ons(1:(k*T));
   if verbose(D) & any(diff(durations))
       warning(['Apparently there were different event durations; ' ...
-	       'flat FIR model likely to be invalid']);
+	       'single FIR model likely to be invalid']);
   end
 else
   SF{1}       = Sess.sf{e}(:,1);

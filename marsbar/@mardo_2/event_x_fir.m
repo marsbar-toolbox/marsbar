@@ -8,7 +8,7 @@ function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % bin_length - bin length in seconds  [TR]
 % bin_no     - number of bins for FIR [25 seconds / bin_length]
 % opts       - structure, containing fields with options
-%                'flat' - if field present, gives flat FIR 
+%                'single' - if field present, gives single FIR 
 %                 This option removes any duration information, and
 %                 returns a simple per onset FIR model, where ones in the
 %                 design matrix corresponds to 1 event at the given
@@ -52,17 +52,17 @@ xBF         = pr_spm_get_bf(xBF);
 U           = SPM.Sess(s).U(e);
 k           = SPM.nscan(s);
 
-% If all the durations are zero, the model is already flat.  The stick
+% If all the durations are zero, the model is already single.  The stick
 % function values have been set to 1/dt though, which is confusing, so
 % we'll reset the stick functions to have 1s
-if ~any(U.dur), opts.flat = 1; end
+if ~any(U.dur), opts.single = 1; end
 
-if isfield(opts, 'flat')
+if isfield(opts, 'single')
   U.u = sf_ones_ons(U, xBF, k);
   if verbose(D)
     if any(diff(U.dur))
       warning(['Different event durations; ' ...
-	       'flat FIR model likely to be invalid']);
+	       'single FIR model likely to be invalid']);
     end
   end
 else
