@@ -22,40 +22,60 @@ function [o, others] = mardo(params,passf)
 % 
 % Methods
 % is_valid     - returns 1 if des_struct contains a valid design
+% is_fmri      - returns 1 if design is modality 'fmri'
 % is_marsed    - returns 1 if design has been processed with MarsBaR
 % is_mars_estimated - returns 1 if design has Mars estimation data
 % is_spm_estimated - returns 1 if design has SPM estimation data  
-% has_images   - returns 1 if the design contains images, NaN if not known
-% has_filter   - returns 1 if the design contains a filter, NaN if not known
-% has_contrasts - returns 1 if the design contains contrasts
 % modality     - returns one of 'fmri','pet','unknown'
-% is_fmri      - returns 1 if design is modality 'fmri'
 % verbose      - whether reporting is verbose or not (1 or 0)
-% type         - returns SPM version string 'SPM2' or 'SPM99'
+% type         - returns design version string 'SPM2' or 'SPM99'
 % block_rows   - returns cell array, one cell per subject or session,
 %                containing indices of design rows for that
 %                subject/session
+% block_means  - returns means for each block in the design
+% n_time_points - number of rows (time points) in design
+% n_effects    - number of columns (effects) in design
+% ui_report    - display design report and query menu in UI
+% ui_report_fmri - design report + inspection tools for FMRI
+% 
+% savestruct   - saves design structure to file, with fields as variables
 % des_struct   - sets or gets design structure
 %  
-% ui_report    - runs UI design report in SPM graphics window
-% 
+% has_filter   - returns 1 if the design contains a filter, NaN if not known
 % apply_filter - applies design filter to data
+% ui_get_filter - gets filter and stocks in design
+% fill          - fills design with filter, images, or default values
 % 
+% data          - get/set data in estimated design
+% get_data      - get data
+% set_data      - set_data
+%
+% contrasts     - get/set contrasts 
+% has_contrasts - returns 1 if the design contains contrasts
 % set_contrasts - set contrasts to design
 % get_contrasts - returns contrasts if present
 % add_contrasts - adds contrasts from a design, xCon struct or passed values
 % ui_get_contrasts - runs spm_conman to choose contrasts, returns indices
 % 
+% has_images   - returns 1 if the design contains images, NaN if not known
+% images       - gets / sets images in design
 % get_images   - gets image vol structs if present
-% get_image_names - gets image names as cell array 
+% set_images   - sets images 
+% image_names  - gets image names as cell array 
 % cd_images    - changes root directory to design images
-% deprefix_images - removes prefix from images names (e.g. 's')
+% prefix_images - adds, removes prefix from images names (e.g. 's')
 % 
 % estimate     - estimates design, given data
 % compute_contrasts - computes contrasts, returns statistics structure
 % stat_table   - return statistic table report and structures for
 %                contrasts
 % mars_spm_graph - runs graph UI, displays in SPM windows
+%
+% event_signal - calculates % signal change for (maybe compound) event
+% event_fitted - gets fitted time course for (maybe compound) event
+% event_regressor - returns regressor for given event type and duration
+% ui_get_event - runs UI to select an event
+% event_cols   - returns column in design from given event
 %
 % $Id$
   
