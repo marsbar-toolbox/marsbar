@@ -1,14 +1,13 @@
 function fmri_design_show(D,s,i)
-% meothd for interactive review of fMRI design matrix
-% FORMAT spm_fMRI_design_show(SPM,s,i)
+% Interactive review of fMRI design matrix
+% FORMAT fmri_design_show(D,s,i)
 %
-% Copied with tiny edits from:
+% Copied with minor edits from:
 % @(#)spm_fMRI_design_show.m	2.22 Karl Friston 03/02/21
-% 
+
 % $Id$
 
-% simplify access to design
-SPM = des_struct(D);
+SPM = des_struct(D);  
 Sess  = SPM.Sess;
 
 % Do not proceed unless there are trials specified
