@@ -523,7 +523,7 @@ end
 if nargin < 3
   flags = '';
 else
-  flags = varargin{2};
+  flags = varargin{3};
 end
 if isempty(flags), flags = ' '; end
 o = varargin{2};
