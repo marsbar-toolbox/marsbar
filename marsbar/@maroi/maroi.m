@@ -8,7 +8,16 @@ function [o, others] = maroi(params, varargin)
 % o = maroi('load', fname);
 % or
 % o = maroi(fname);
-% 
+% (where fname is a string)
+% or
+% o_cell_arr = maroi(name_cell_arr);
+% (where 
+% o_cell_arr is a cell array of ROI objects and
+% name_cell_arr is a cell array of filenames)
+% or 
+% o_cell_arr = maroi('load_cell', fnames)
+% to load strings/cell array of strings into cell array of objects
+%
 % or to access class data
 % res = maroi('classdata', p1, p2); (see classdata method)
 %
@@ -115,15 +124,29 @@ if ischar(params)
     o = my_classdata(varargin{:});
    case 'load'
     o = my_loadroi(varargin{:});
+   case 'load_cell'
+    params = varargin{1};
+    if ischar(params), params = cellstr(params); 
+    elseif ~iscell(params), params = {params}; end
+    o = maroi(params);
    case 'filename'
     o = my_roifname(varargin{:});
-   otherwise
-    if exist(params, 'file')
-      o = maroi('load', params);
-    else
-      error(['Don''t recognize maroi action string: ' params ]);
+   otherwise % single filename
+    if size(params, 1) > 1
+      error('Use cell form of call to load multiple objects');
     end
-   end
+    o = my_loadroi(params);
+  end
+  return
+end
+
+% cell array - array of filenames, or objects, or something
+if iscell(params)
+  sz = size(params);
+  o = cell(sz);
+  for r = 1:prod(sz)
+    o{r} = maroi(params{r});
+  end
   return
 end
 
