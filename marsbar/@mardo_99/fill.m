@@ -35,7 +35,6 @@ if ~isempty(fe)
   actions = [actions(1:fe(1)-1) A actions(fe(1):end)];
 end
 actions = [{'defaults'}, actions];
-actions = unique(actions);
 
 % Get design, put into some useful variables
 spmD = des_struct(D);
@@ -56,7 +55,10 @@ for  i = 1:nsess
   nscan(i) = length(row{i});
 end
 
+done_list = {};
 for a = 1:length(actions)
+  if ismember(actions{a}, done_list), continue, end
+  done_list = [actions(a) done_list];
   switch lower(actions{a})
    case 'defaults'
 
@@ -210,7 +212,7 @@ for a = 1:length(actions)
     end
     
     spm_input('High and low pass filter','+1','d',mfilename)
-    [spmD.xX.K HFstr LFstr] = pr_get_filter(RT, Sess);
+    [spmD.xX.K HFstr LFstr] = pr_get_filter(spmD.xX.RT, Sess);
     xsDes = struct(...
 	'Interscan_interval',	sprintf('%0.2f',spmD.xX.RT),...
 	'High_pass_Filter',     LFstr,...
