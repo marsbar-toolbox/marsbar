@@ -43,8 +43,9 @@ if isempty(bin_length)
   bin_length = tr(D);
 end
 if isempty(bin_no)
-  bin_no = round(25/bin_length);
+  bin_no = 25/bin_length;
 end
+bin_no = round(bin_no);
 
 % build a simple FIR model subpartition (X)
 %------------------------------------------
