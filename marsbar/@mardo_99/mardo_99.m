@@ -52,9 +52,17 @@ end
 [params, others] = mars_struct('split', params, defstruct);
 
 % add cvs tag
-params.cvs_version = mars_cvs_version([myclass filesep myclass]);
+params.cvs_version = mars_cvs_version(myclass);
 
 % set the mardo object
 o  = class(params, myclass, uo);
+
+% set filter (to allow sparse->full trick to work for spm_spm.m)
+SPM = des_struct(o);
+K   = mars_struct('getifthere', SPM, 'xX', 'K');
+if iscell(K);
+  SPM.xX.K = pr_spm_filter('set', K);
+  o = des_struct(o, SPM);
+end
 
 return
