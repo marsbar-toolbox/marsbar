@@ -1,15 +1,16 @@
-function o = fill_design(o, actions)
+function D = fill_design(D, actions)
 % fills missing entries from SPM FMRI design matrix 
-% FORMAT o = fill_design(o, actions)
+% FORMAT D = fill_design(D, actions)
 % 
-% o          - mardo object containing spm design
+% D          - mardo object containing spm design
 % actions    - string or cell array of strings with actions:
 %            'defaults' - fills empty parts of design with defaults
 %            (in fact this is always done)
 %            'filter'  - asks for and fills filter, autocorrelation 
 %            'images'  - asks for and fills with images, mask, scaling
 %
-% o         - returned mardo SPM design
+% Returns
+% D         - returned mardo SPM design
 %
 % Copied/pasted then rearranged from SPM99 spm_fmri_spm_ui
 % Matthew Brett - 17/11/01 - MRS2TH
@@ -25,7 +26,7 @@ actions = [{'defaults'}, actions];
 actions = unique(actions);
 
 % Get design, put into some useful variables
-spmD = des_struct(o);
+spmD = des_struct(D);
 xX = spmD.xX;
 if isfield(spmD, 'Sess')
   have_sess = 1;
@@ -33,24 +34,20 @@ if isfield(spmD, 'Sess')
 else
   have_sess = 0;
 end
-if isfield(xX, 'RT')
+try 
   RT     = xX.RT;
-else
-  RT = 1;
+catch
+  RT  = spm_input('Interscan interval {secs}','+1','batch',{},'RT');
+  spmD.xX.RT = RT;
 end
 
 % get file indices
 %---------------------------------------------------------------
-nsess  = length(xX.iB);
+row = block_rows(D);
+nsess  = length(row);
 nscan  = zeros(1,nsess);
 for  i = 1:nsess
-  nscan(i) = length(find(xX.X(:,xX.iB(i))));
-end
-
-% get rows
-%-----------------------------------------------------------------------
-for i = 1:nsess
-  row{i} = find(xX.X(:,xX.iB(i)));
+  nscan(i) = length(row{i});
 end
 
 for a = 1:length(actions)
@@ -262,4 +259,4 @@ for a = 1:length(actions)
 end
 
 % put stuff into object
-o = des_struct(o,spmD);
+o = des_struct(D,spmD);

@@ -78,8 +78,6 @@ set([Fmenu],'Visible','on')
 case 'on'                              %-Initialise marsbar
 %=======================================================================
 
-% check paths 
-
 % promote spm replacement directory, affichevol directories
 mbpath = fileparts(which('marsbar.m'));
 spmV = spm('ver');
@@ -89,6 +87,9 @@ MARS.ADDPATHS = {fullfile(mbpath, ['spm' spmV(4:end)]),...
 		 fullfile(mbpath, 'init')};
 addpath(MARS.ADDPATHS{:}, '-begin');
 fprintf('MarsBaR analysis functions prepended to path\n');
+
+% check SPM defaults are loaded
+mars_veropts('defaults');
 
 % set up the ARMOIRE stuff
 % see mars_armoire help for details
@@ -261,7 +262,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|FMRI models',...
 		    '|Basic models',...
 		    '|Explore',...
-		    '|Add filter+images to FMRI design',...
+		    '|Add images to FMRI design',...
 		    '|Add/edit filter for FMRI design',...	
 		    '|Set design from file',...
 		    '|Save design to file'],...
@@ -619,9 +620,21 @@ else  % full options extraction
   VY = mars_image_scaling(marsD);
 end
 
+% Summary function
+sumfunc = MARS.OPTIONS.statistics.sumfunc;
+if strcmp(sumfunc, 'ask')
+  sumfunc = char(spm_input('Summary function', '+1','m',...
+			   'Mean|Weighted mean|Median|1st eigenvector',...
+			   {'mean','wtmean','median','eigen1'}, 1));
+end
+
+% ROI names to objects
+for i = 1:size(roi_list, 1)
+  o{i} = maroi('load', deblank(roi_list(i,:)));
+end
+
 % Do data extraction
-marsY = mars_roidata(roi_list, VY, ...
-		     MARS.OPTIONS.statistics.sumfunc, 'v');
+marsY = get_marsy(o{:}, VY, sumfunc, 'v');
 if isempty(marsY.Y)
   msgbox('No data returned','Data extraction', 'warn');
   return
@@ -646,17 +659,13 @@ varargout = {1};
 return
 
 %=======================================================================
-case 'add_images'                 %-add filter and images to FMRI design
+case 'add_images'                            %-add images to FMRI design
 %=======================================================================
 % marsbar('add_images')
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
-if has_images(marsD)
-  msgbox('Design already contains images', 'Add images', 'warn');
-  return
-end
-marsD = fill_design(marsD, {'images', 'filter'});
+marsD = fill_design(marsD, {'images'});
 mars_armoire('set', 'def_design', marsD);
 
 %=======================================================================
@@ -671,7 +680,7 @@ mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');
 
 %=======================================================================
-case 'set_defcon'                                  %-set default contrast
+case 'set_defcon'                                 %-set default contrast
 %=======================================================================
 % donef = marsbar('set_defcon')
 %-----------------------------------------------------------------------
@@ -685,7 +694,7 @@ MARS.WORKSPACE.default_contrast = defcon;
 varargout = {1};
 
 %=======================================================================
-case 'set_defregion'                                  %-set default region
+case 'set_defregion'                                %-set default region
 %=======================================================================
 % donef = marsbar('set_defregion')
 %-----------------------------------------------------------------------
@@ -731,10 +740,21 @@ case 'merge_xcon'                                  %-import contrasts
 %=======================================================================
 % marsbar('merge_xcon')
 %-----------------------------------------------------------------------
-marsRes = mars_armoire('get', 'est_design');
-if isempty(marsRes), return, end
-marsRes.xCon = mars_merge_xcon(...
-    marsRes.xX, marsRes.xCon);
+D = mars_armoire('get', 'est_design');
+if isempty(D), return, end
+filter_spec = {...
+    'SPM.mat','SPM: SPM.mat';...
+    '*_mres.mat','MarsBaR: *_mres.mat';...
+    '*x?on.mat','xCon.mat file'};
+[fn pn] = uigetfile(...
+    filter_spec, ...
+    'Select design/contrast file...');
+if isequal(fn,0) | isequal(pn,0), return, end
+fname = fullfile(pn, fn);
+[D changef] = merge_contrasts(D, load(fname));
+if changef
+  mars_armoire('set', 'est_design', D);
+end
 
 %=======================================================================
 case 'splash'                           %-show splash screen

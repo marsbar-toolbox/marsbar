@@ -34,3 +34,5 @@ check images function.
 
 Don't want to clear ROI data without warnings, when loading a new
 default design.  ?Ask.  Or don't clear, just warn?
+
+What should be done about trial-specific F contrasts? (fill_design)

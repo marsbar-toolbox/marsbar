@@ -120,7 +120,7 @@ h = uimenu(hC,'Label','Design orthogonality','Accelerator','O',...
 hExplore = uimenu(hC,'Label','Explore','HandleVisibility','off');
 
 switch modality(D)
-case 'PET'
+case 'pet'
 	hFnF = uimenu(hExplore,'Label','Files and factors','Accelerator','F',...
 		'CallBack',[cb,...
 		'des_rep(tmp, ''Files&Factors'')'],...
@@ -132,7 +132,7 @@ case 'PET'
 		'UserData',hC,...
 		'HandleVisibility','off');
 	if isempty(D.xC), set(hCovs,'Enable','off'), end
-case 'fMRI'
+case 'fmri'
     for j = 1:length(SPM.Sess)
         h = uimenu(hExplore,'Label',sprintf('Session %.0f ',j),...
             'HandleVisibility','off');
@@ -145,15 +145,6 @@ case 'fMRI'
         end
     end
 end
-
-
-%-Estimate
-%-----------------------------------------------------------------------
-hEst = uimenu(hC,'Label','Estimate','Accelerator','E','Separator','on',...
-	'CallBack',[cb, 'estimate(tmp)'],...
-	'UserData',hC,...
-	'HandleVisibility','off');
-if ~strcmp(SPM.cfg,'SPMcfg'), set(hEst,'Enable','off'), end
 
 
 %-Clear, Quit, Help

@@ -12,6 +12,12 @@ if nargin < 1
 end
 
 switch lower(arg)
+ case 'defaults'
+  global defaults
+  if isempty(defaults)
+    spm_defaults;
+  end
+  varargout = {defaults};
  case 'template_ext' % extension for template images
   varargout = {'.mnc'}; 
  case 'get_img_ext' % default image extension for spm_get

@@ -1,9 +1,7 @@
-function [sumY, varY] = mars_sum_func(y, sumfunc, wt)
+function [sumY, varY] = pr_sum_func(y, sumfunc, wt)
 % creates summary stats for region data
-% FORMAT [sumY, varY] = mars_sum_func(y, sumfunc, wt)
+% FORMAT [sumY, varY] = pr_sum_func(y, sumfunc, wt)
 % 
-% Version 0.2; bugs fixed in weighting
-%
 % $Id$
   
 if nargin < 2

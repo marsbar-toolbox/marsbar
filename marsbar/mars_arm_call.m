@@ -49,6 +49,9 @@ switch lower(action)
   
   data = varargin{1};
   if isempty(data), return, end
+  if ~is_estimated(data)
+    error('Design has not been estimated')
+  end
   mars_armoire('set', 'roi_data', data.marsY);
   mars_armoire('has_changed', 'roi_data', 0);
   fprintf('Set ROI data from estimated design...\n');

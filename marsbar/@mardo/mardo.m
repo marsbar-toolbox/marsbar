@@ -55,7 +55,7 @@ end
 if isstruct(params)
   if ~isfield(params, 'des_struct')
     % Appears to be an SPM design
-    params.des_struct = params;
+    params = struct('des_struct',params);
   end
 end
 
