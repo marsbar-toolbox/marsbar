@@ -4,18 +4,20 @@ function [D,Ic,changef] = add_contrasts(D, C, varargin)
 % The function has many different formats
 % 
 % FORMAT [D Ic changef] = add_contrasts(D, D2 [,Ic])
-% where D2 is a design; all contraasts are added from D2
-% If third argument (Ic) is passed, specifies 
-% which contrasts in D2 to add. If Ic passed, and empty
-% contrasts numbers are fetched using the GUI
+%
+% where D2 is a design. If there is no third argument, all the contrasts in
+% D2 will be added.  If third argument (Ic) is passed, specifies which
+% contrasts in D2 to add. If Ic passed, and empty, or contains the string
+% 'ui', contrasts to add are fetched using the GUI
 %
 % OR
 % FORMAT [D Ic changef] = add_contrasts(D, xCon)
-% where xCon is a structure in SPM contrast format
-% containing contrasts to add
-% If third argument (Ic) is passed, specifies 
-% which contrasts in xCon to add. If Ic is passed, and empty
-% contrasts numbers are fetched using the GUI
+% 
+% where xCon is a structure in SPM contrast format containing contrasts to
+% add.  If there is no third argument, all the contrasts in xCon will be
+% added.  If third argument (Ic) is passed, specifies which contrasts in xCon
+% to add. If Ic passed, and empty, or contains the string 'ui', contrasts to
+% add are fetched using the GUI
 % 
 % OR
 % FORMAT [D Ic changef] = add_contrasts(D, stat_struct)
