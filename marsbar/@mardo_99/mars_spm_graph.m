@@ -1,6 +1,6 @@
-function r_st = mars_spm_graph(marsD,rno)
+function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)
 % Graphical display of adjusted data
-% FORMAT r_st = mars_spm_graph(marsD, rno)
+% FORMAT [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)
 %
 % marsD    - SPM design object
 %        required fields in des_struct are:
@@ -15,7 +15,8 @@ function r_st = mars_spm_graph(marsD,rno)
 %        marsY  - the data itself (as a data object)
 %
 % rno    - region number (index for marsD.marsY)
-%
+% Ic     - contrast number (optional)
+% 
 % Returns
 % r_st   - return structure, with fields
 %          Y      - fitted   data for the selected voxel
@@ -23,6 +24,8 @@ function r_st = mars_spm_graph(marsD,rno)
 %          beta   - parameter estimates
 %          SE     - standard error of parameter estimates
 %          cbeta  = betas multiplied by contrast
+% marsD   - design structure, with possibly added contrasts
+% changef - set to 1 if design has changed
 %
 % see spm99 version of spm_graph for details
 %_______________________________________________________________________
@@ -35,6 +38,10 @@ function r_st = mars_spm_graph(marsD,rno)
 if nargin < 2
   rno = [];
 end
+if nargin < 3
+  Ic = [];
+end
+changef = 0;
 
 % make values ready for return 
 def_r_st = struct(...
@@ -126,7 +133,13 @@ case {'Contrast of parameter estimates','Fitted and adjusted responses'}
 
 	% determine current contrasts
 	%---------------------------------------------------------------
-	Ic    = spm_input('Which contrast?','!+1','m',{xCon.name});
+	if isempty(Ic)
+	  % determine which contrast
+	  %---------------------------------------------------------------
+	  [Ic marsD changef] = ui_get_contrasts(...
+	      marsD, 'T|F',1, 'Select contrast...', ' for plot', 1);
+	  if changef, xCon = get_contrasts(marsD); end
+	end
 	TITLE = {Cplot xCon(Ic).name};
 
 	% fitted (corrected) data (Y = X1o*beta)
