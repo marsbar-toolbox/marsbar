@@ -33,7 +33,7 @@ if isempty(roipath)
   return
 end
 if isempty(rootn)
-  rootn = marsbar('str2fname', xSPM.title);
+  rootn = mars_utils('str2fname', xSPM.title);
   rootn = spm_input('Root name for clusters', '+1', 's', rootn);
 end
 
@@ -57,7 +57,7 @@ for c = unique(A)
     % file name and labels
     d = sprintf('%s cluster at [%0.1f %0.1f %0.1f]', rootn, maxmm);
     l = sprintf('%s_%0.0f_%0.0f_%0.0f', rootn, maxmm);
-    fn = marsbar('str2fname', l);
+    fn = mars_utils('str2fname', l);
     fname = maroi('filename', fullfile(roipath, fn));
     o = maroi_pointlist(struct('XYZ',XYZ,'mat',xSPM.M,...
 			       'descrip',d, 'label', l), ...

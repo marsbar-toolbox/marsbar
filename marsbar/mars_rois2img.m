@@ -31,7 +31,7 @@ if isempty(roi_list)
   if isempty(roi_list), return, end
 end
 if isempty(img_name)
-  img_name = marsbar('get_img_name');
+  img_name = mars_struct('get_img_name');
   if isempty(img_name), return, end
 end
 if isempty(roi_space)
