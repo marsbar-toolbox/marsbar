@@ -70,9 +70,14 @@ if isfield(des.xX, 'K')
   des.xX.K = K2;
 end
 
+% Null F contrast
+des.F_iX0 = [];
+
 % put into parent object
 params.des_struct = des;
 o = mardo_99(params);
 
+% Set filters
+o = filter_prep(o);
 
 
