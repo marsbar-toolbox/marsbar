@@ -5,6 +5,11 @@ function [o, others] = mardo_99(params, others)
 % params  - structure,containing fields, or SPM/MarsBaR design
 % others  - structure, containing other fields to define
 %
+% Outputs
+% o       - mardo_99 object (unless disowned)
+% others  - any unrecognized fields from params, for processing by
+%           children
+%
 % This object is called from the mardo object contructor
 % with a mardo object as input.  mardo_99 checks to see
 % if the contained design is an SPM99 design, returns
@@ -39,18 +44,17 @@ else
   uo = [];
 end
 
-% fill with other parameters, defaults
-params = mars_struct('ffillmerge', params, others);
-params = mars_struct('ffillmerge', defstruct, params);
-
 if ~isa(uo, 'mardo') % mardo object not passed
   % umbrella object, parse out fields for (this object and children)
-  % second argument of 0 prevents recursive call back to here
-  [uo, params] = mardo(params, 0);
-end
+  % third argument of 0 prevents recursive call back to here
+  [uo, params] = mardo(params, others, 0);
+else
+  % fill params with other parameters
+  params = mars_struct('ffillmerge', params, others);
+end  
 
-% reparse parameters into those for this object, children
-[params, others] = mars_struct('split', params, defstruct);
+% parse parameters into those for this object, children
+[params, others] = mars_struct('ffillsplit', defstruct, params);
 
 % add cvs tag
 params.cvs_version = mars_cvs_version(myclass);
