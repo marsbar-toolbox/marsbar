@@ -1,6 +1,6 @@
 function [o,others] = marsy(params, region_stuff, summary_stuff)
-% Class constructor for marsy object
-% inputs [defaults]
+% Class constructor for marsy: the MarsBaR data object
+% Inputs
 % params  - can be: structure, either:
 %             containing MarsBaR data structure or
 %             containing fields for marsy object, which should include
@@ -39,6 +39,11 @@ function [o,others] = marsy(params, region_stuff, summary_stuff)
 %                descrip - text field describing the origin of the data  
 %                info    - a structure with fields defining any other
 %                          interesting information about the region
+%                block_rows - optional cell array, specifying the rows in
+%                          the data that correspond to a particular
+%                          session or subject (see below). If absent, the
+%                          data is assumed to come from a single session
+%                          or subject.
 %
 % Any data in region_stuff, summary info will overwrite region or summary
 % information passed in the first argument
@@ -91,6 +96,10 @@ function [o,others] = marsy(params, region_stuff, summary_stuff)
 % whole object, for examnple specifying where (all) the data was
 % extraxcted from.
 % 
+% The data can come from several sessions or subjects.  Optionally, this
+% can be specified with the summary data field 'block_rows', specifying
+% which rows in the data correspond to which session or subject
+%
 % The object contains a data structure of a particular format, listed in
 % the programmer's help for this function.  Please avoid using this
 % structure directly, as this format may change at any time.  Instead,
@@ -105,6 +114,13 @@ function [o,others] = marsy(params, region_stuff, summary_stuff)
 % is_summarized - returns 1 if data has been summarized already
 % can_summarize - returns 1 if data can be suumarized without error
 % sumfunc      - gets/sets summary function to summarize data
+% block_rows   - gets/sets information on rows corresponding to
+%                sessions/subjects 
+% n_regions    - gets number of regions (R above)
+% n_time_points - gets number of time points (N above)
+% ui_plot      - a variety of plots of the data to SPM interface
+% save_struct  - saves y_struct to disk as structure
+%  
 % region       - returns region structure, filled with defaults as necessary
 % region_data  - gets region sample (voxel) data as cell array; returns
 %                all regions if no region number specificed, or one cell
@@ -115,15 +131,11 @@ function [o,others] = marsy(params, region_stuff, summary_stuff)
 %                if a single region is specified
 % region_descrip - gets cell array of descriptions of specified region
 % region_stuff  - gets cell array of info field of specified region
-% n_regions    - gets number of regions (R above)
-% n_time_points - gets number of time points (N above)
 % xyz          - gets voxel or mm XYZ coordinates of given region
 % join         - accepts several marsy objects, and merges into one (if
 %                possible)
 % split        - splits object into array of objects, with one element
 %                for each region 
-% ui_plot      - plot data in SPM interface
-% save_struct  - saves y_struct to disk as structure
 % 
 % Other methods (to avoid)
 % y_struct     - sets or gets data structure
