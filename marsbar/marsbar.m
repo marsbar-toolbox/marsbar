@@ -647,7 +647,7 @@ if has_images(marsD)
   msgbox('Design already contains images', 'Add images', 'warn');
   return
 end
-marsD = fill_design(marsD, 'fi');
+marsD = fill_design(marsD, {'images', 'filter'});
 mars_armoire('set', 'def_design', marsD);
 
 %=======================================================================
@@ -657,7 +657,7 @@ case 'edit_filter'                   %-add / edit filter for FMRI design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
-marsD = fill_design(marsD, 'f');
+marsD = fill_design(marsD, 'filter');
 mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');
 
