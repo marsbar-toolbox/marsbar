@@ -12,6 +12,7 @@ end
 
 % MarsBaR version
 V = marsbar('ver');
+rname = sprintf(rname, V);
 
 % export from CVS
 proj    = 'marsbar';
@@ -24,7 +25,7 @@ make_contents(['Contents of MarsBaR ROI toolbox version ' V], 'fncrd', ...
 	      fullfile(pwd, proj));
 
 % move, tar directory
-full_name = sprintf('%s-%s%s',proj,V,rname);
+full_name = sprintf('%s%s',proj, rname);
 unix(sprintf('mv %s %s', proj, full_name));
 unix(sprintf('tar zcvf %s.tar.gz %s', full_name, full_name));
 unix(sprintf('rm -rf %s', full_name));
