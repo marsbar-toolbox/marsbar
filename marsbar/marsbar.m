@@ -38,7 +38,6 @@ MBver = '0.35';  % 6th SPM2 development release
 
 % Various working variables in global variable structure
 global MARS;
-if ~isfield(MARS, 'ARMOIRE'), MARS.ARMOIRE = []; end
 
 %-Format arguments
 %-----------------------------------------------------------------------
@@ -97,8 +96,10 @@ mars_veropts('defaults');
 % see marmoire help for details
 o = marmoire;
 
-filter_specs  = {[{'*_mdes.mat','MarsBaR: *_mdes.mat'}; ...
-		  mars_veropts('design_filter_spec')],...
+spm_design_filter = mars_veropts('design_filter_spec');
+filter_specs  = {[spm_design_filter(1,:);...
+		  {'*_mdes.mat','MarsBaR: *_mdes.mat'}; ...
+		  spm_design_filter(2:end,:)], ...
 		 {'*_mdata.mat','MarsBaR data file (*_mdata.mat)'},...
 		 {'*_mres.mat', 'MarsBaR results (*_mres.mat)'}};
 
@@ -147,8 +148,7 @@ varargout = {0};
 if ~marsbar('is_started'), return, end
 
 % save outstanding information
-[btn MARS.ARMOIRE] = save_item_data_ui(MARS.ARMOIRE, 'all', ...
-					 struct('ync', 1));
+btn = mars_arm('save_ui', 'all', struct('ync', 1));
 if any(btn == -1), varargout = {-1}; return, end % cancel
 
 % remove marsbar added directories
@@ -165,9 +165,7 @@ case 'quit'                                        %-Quit MarsBaR window
 if marsbar('off') == -1, return, end % check for cancel
 
 % leave if no signs of MARSBAR
-if isempty(MARS)
-  return
-end
+if ~marsbar('is_started'), return, end
 
 %-Close any existing 'MarsBaR' 'Tag'ged windows
 delete(spm_figure('FindWin','MarsBaR'))
@@ -177,10 +175,7 @@ fprintf('Au revoir...\n\n')
 case 'is_started'        %-returns 1 if MarsBaR GUI has been initialized
 %=======================================================================
 % tf  = marsbar('is_started')
-varargout = {0};
-if isempty(MARS), return, end
-if ~isfield(MARS, 'ARMOIRE'), return, end
-varargout = {~isempty(MARS.ARMOIRE)};
+varargout = {~isempty(MARS)};
 
 %=======================================================================
 case 'cfgfile'                                  %-finds MarsBaR cfg file
@@ -270,10 +265,8 @@ funcs = {...
     'marsbar(''ana_cd'')',...
     'marsbar(''ana_desmooth'')',...
     'marsbar(''def_from_est'')',...
-    ['global MARS; MARS.ARMOIRE = ' ...
-     'set_item_data_ui(MARS.ARMOIRE, ''def_design'');'],...
-    ['global MARS; [d MARS.ARMOIRE] = ' ...
-     'save_item_data_ui(MARS.ARMOIRE, ''def_design'', ' fw_st ');']};
+    'mars_arm(''set_ui'', ''def_design'');',...
+    ['mars_arm(''save_ui'', ''def_design'', ' fw_st ');']};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Design...'...
@@ -305,10 +298,8 @@ funcs = {'marsbar(''extract_data'', ''default'');',...
 	 'marsbar(''export_data'');',...
 	 'marsbar(''split_data'');',...
 	 'marsbar(''join_data'');',...
-	 ['global MARS; MARS.ARMOIRE = ' ...
-	  'set_item_data_ui(MARS.ARMOIRE, ''roi_data'');'],...
-	 ['global MARS; [d MARS.ARMOIRE] = ' ...
-	  'save_item_data_ui(MARS.ARMOIRE, ''roi_data'', ' fw_st ');']};
+	 'mars_arm(''set_ui'', ''roi_data'');',...
+	 ['mars_arm(''save_ui'', ''roi_data'', ' fw_st ');']};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Data...'...
@@ -340,8 +331,7 @@ funcs = {...
     'marsbar(''stat_table'');',...
     'marsbar(''signal_change'');',...
     'marsbar(''set_results'');',...
-    ['global MARS; [d MARS.ARMOIRE] = ' ...
-     'save_item_data_ui(MARS.ARMOIRE, ''est_design'', ' fw_st ');']};
+    ['mars_arm(''save_ui'', ''est_design'', ' fw_st ');']};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Results...'...
@@ -733,7 +723,7 @@ else
 end
 if sf_prev_save('def_design') == -1, return, end
 D = ui_build(mars_veropts('default_design'), des_type);
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'def_design', D);
+mars_arm('set', 'def_design', D);
 marsbar('design_report');
 
 %=======================================================================
@@ -741,7 +731,7 @@ case 'list_images'                     %-lists image files in SPM design
 %=======================================================================
 % marsbar('list_images')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
 if has_images(marsD)
   P = image_names(marsD);
@@ -755,7 +745,7 @@ case 'check_images'                   %-checks image files in SPM design
 %=======================================================================
 % marsbar('check_images')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
 if ~has_images(marsD)
   disp('Design does not contain images');
@@ -781,7 +771,7 @@ case 'ana_cd'                      %-changes path to files in SPM design
 %=======================================================================
 % marsbar('ana_cd')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
 
 % Setup input window
@@ -799,17 +789,17 @@ if isempty(newpath), return, end
 
 % do
 marsD = cd_images(marsD, newpath);
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'def_design', marsD);
+mars_arm('set', 'def_design', marsD);
 
 %=======================================================================
 case 'ana_desmooth'           %-makes new SPM design for unsmoothed data
 %=======================================================================
 % marsbar('ana_desmooth')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
 marsD = prefix_images(marsD, 'remove', 's');
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'def_design', marsD);
+mars_arm('set', 'def_design', marsD);
 disp('Done');
 
 %=======================================================================
@@ -817,37 +807,35 @@ case 'add_images'                            %-add images to FMRI design
 %=======================================================================
 % marsbar('add_images')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end
 if ~is_fmri(marsD), return, end
 marsD = fill(marsD, {'images'});
-MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'def_design', marsD);
-MARS.ARMOIRE = set_item_param(MARS.ARMOIRE, ...
-			      'def_design', 'file_name', '');
+mars_arm('update', 'def_design', marsD);
+mars_arm('set_param', 'def_design', 'file_name', '');
 
 %=======================================================================
 case 'edit_filter'                   %-add / edit filter for FMRI design
 %=======================================================================
 % marsbar('edit_filter')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end
 if ~is_fmri(marsD), return, end
 tmp = {'filter'};
 if ~strcmp(type(marsD), 'SPM99'), tmp = [tmp {'autocorr'}]; end
 marsD = fill(marsD, tmp);
-MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'def_design', marsD);
-MARS.ARMOIRE = set_item_param(MARS.ARMOIRE, ...
-			      'def_design', 'file_name', '');
+mars_arm('update', 'def_design', marsD);
+mars_arm('set_param', 'def_design', 'file_name', '');
 
 %=======================================================================
 case 'def_from_est'          %-sets default design from estimated design
 %=======================================================================
 % marsbar('def_from_est')
 %-----------------------------------------------------------------------
-[marsE MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsE = mars_arm('get', 'est_design');
 if isempty(marsE), return, end;
-[MARS.ARMOIRE errf] = set_item_data(MARS.ARMOIRE, 'def_design', marsE);
+errf = mars_arm('set', 'def_design', marsE);
 if ~errf, marsbar('design_report'); end
 
 %=======================================================================
@@ -855,7 +843,7 @@ case 'design_report'                         %-does explore design thing
 %=======================================================================
 % marsbar('design_report')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
 spm('FnUIsetup','Explore design', 0);
 
@@ -869,12 +857,12 @@ case 'design_filter'                      %-shows FFT of data and design
 %=======================================================================
 % marsbar('design_filter')
 %-----------------------------------------------------------------------
-[marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+marsD = mars_arm('get', 'def_design');
 if isempty(marsD), return, end;
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
 % If the design and data didn't match, the design will have been cleared
-if isempty_item_data(MARS.ARMOIRE, 'def_design')
+if mars_arm('isempty', 'def_design')
   error('Need data and design with matching number of rows');
 end
 ui_ft_design_data(marsD, marsY);
@@ -907,12 +895,11 @@ if isempty(roi_list), return, end
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Extract data', 0);
 
 if strcmp(etype, 'default')
-  [marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+  marsD = mars_arm('get', 'def_design');
   if isempty(marsD), return, end;
   if ~has_images(marsD),
     marsD = fill(marsD, 'images');
-    MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, ...
-					    'def_design', marsD);
+    mars_arm('update', 'def_design', marsD);
   end
   VY = marsD;
   row = block_rows(marsD);
@@ -921,11 +908,10 @@ else  % full options extraction
   
   marsD = [];
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
-    [marsD MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+    marsD = mars_arm('get', 'def_design');
     if ~has_images(marsD),
       marsD = fill(marsD, 'images');
-      MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, ...
-				    'def_design', marsD);
+      mars_arm('update', 'def_design', marsD);
     end
   end
   [VY row] = mars_image_scaling(marsD);
@@ -946,7 +932,7 @@ if ~n_regions(marsY)
 end
 
 % set into armoire
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'roi_data', marsY);
+mars_arm('set', 'roi_data', marsY);
 
 varargout = {marsY};
 
@@ -966,13 +952,13 @@ end
 if isempty(p_type)
   p_type = 'full';
 end
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
 
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Plot data', 0);
 if strcmp(p_type, 'full')
-  if ~isempty_item_data(MARS.ARMOIRE, 'def_design')
-    [D MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'def_design');
+  if ~mars_arm('isempty', 'def_design')
+    D = mars_arm('get', 'def_design');
     if isempty(D), return, end
     if has_filter(D)
       if spm_input('Use design filter?', '+1', 'y/n', [1 0], 1)
@@ -1086,7 +1072,7 @@ if ~stop_f
   marsY = region_name(marsY, [], ns);
 end
 
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'roi_data', marsY);
+mars_arm('set', 'roi_data', marsY);
 disp(['Data loaded from ' pn_fn]);
 
 %=======================================================================
@@ -1094,7 +1080,7 @@ case 'export_data'                                            %- exports
 %=======================================================================
 % marsbar('export_data')
 %-----------------------------------------------------------------------
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
 
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Export data', 0);
@@ -1176,7 +1162,7 @@ case 'split_data'                %- splits data into one file per region
 %=======================================================================
 % marsbar('split_data')
 %-----------------------------------------------------------------------
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
 if n_regions(marsY) == 1
   disp('Only one region in ROI data');
@@ -1208,7 +1194,7 @@ case 'join_data'                %- joins many data files into one object
 % marsbar('join_data')
 %-----------------------------------------------------------------------
 
-% Ckeck save of current data first
+% Check save of current data first
 if sf_prev_save('roi_data') == -1, return, end
 
 P = spm_get([0 Inf], '*_mdata.mat', 'Select data files to join');
@@ -1218,7 +1204,7 @@ for i = 1:size(P,1)
   d_o{i} = marsy(deblank(P(i,:)));
 end
 marsY = join(d_o{:});
-MARS.ARMOiRE = set_item_data(MARS.ARMOIRE, 'roi_data', marsY);
+mars_arm('set', 'roi_data', marsY);
 disp(P)
 disp('Files merged and set as current data')
 
@@ -1230,20 +1216,20 @@ case 'estimate'                                       %-Estimates design
 % Sequence is bit complex here, as setting the design may clear the ROI
 % data, and setting the ROI data may clear the default design, if they
 % have different numbers of rows
-[marsD MARS.ARMOIRE]= get_item_data(MARS.ARMOIRE, 'def_design');
+marsD= mars_arm('get', 'def_design');
 if isempty(marsD), return, end
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
-if isempty_item_data(MARS.ARMOIRE, 'def_design')
+if mars_arm('isempty', 'def_design')
   error('Need design and data with matching number of rows');
 end
 if sf_prev_save('est_design') == -1, return, end
 if ~can_mars_estimate(marsD)
   marsD = fill(marsD, 'for_estimation');
-  MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'def_design', marsD);
+  mars_arm('update', 'def_design', marsD);
 end
 marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
-MARS.ARMOIRE = set_item_data(MARS.ARMOIRE, 'est_design', marsRes);
+mars_arm('set', 'est_design', marsRes);
 
 %=======================================================================
 case 'set_results'          %-sets estimated design into global stucture
@@ -1251,9 +1237,9 @@ case 'set_results'          %-sets estimated design into global stucture
 % donef = marsbar('set_results')
 %-----------------------------------------------------------------------
 varargout = {0};
-MARS.ARMOIRE = set_item_data_ui(MARS.ARMOIRE, 'est_design');
-if isempty_item_data(MARS.ARMOIRE, 'est_design'), return, end
-marsRes = get_item_data(MARS.ARMOIRE, 'est_design');
+mars_arm('set_ui', 'est_design');
+if mars_arm('isempty', 'est_design'), return, end
+marsRes = mars_arm('get', 'est_design');
 fprintf('%-40s: ','Design reporting');
 ui_report(marsRes, 'DesMtx');
 ui_report(marsRes, 'DesRepUI');
@@ -1266,7 +1252,7 @@ case 'plot_residuals'                  %-plots residuals from estimation
 %=======================================================================
 % marsbar('plot_residuals')
 %-----------------------------------------------------------------------
-[marsRes MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsRes = mars_arm('get', 'est_design');
 if isempty(marsRes), return, end
 Y = residuals(marsRes);
 ns  = region_name(Y);
@@ -1286,7 +1272,7 @@ case 'set_defcon'                                 %-set default contrast
 % Ic = marsbar('set_defcon')
 %-----------------------------------------------------------------------
 varargout = {[]};
-[marsRes MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsRes = mars_arm('get', 'est_design');
 if isempty(marsRes), return, end
 
 % Setup input window
@@ -1307,7 +1293,7 @@ switch spm_input('What to do?', '+1', 'm', opts, [1:length(opts)], 1);
   [Ic marsRes changef] = ui_get_contrasts(marsRes, 'T|F',1,...
 			 'Select default contrast','',1);
   if changef
-    MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'est_design', marsRes);
+    mars_arm('update', 'est_design', marsRes);
   end
  case 3
   Ic = [];
@@ -1321,7 +1307,7 @@ case 'set_defregion'                                %-set default region
 % rno = marsbar('set_defregion')
 %-----------------------------------------------------------------------
 varargout = {[]};
-[marsY MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'roi_data');
+marsY = mars_arm('get', 'roi_data');
 if isempty(marsY), return, end
 ns = region_name(marsY);
 if length(ns) == 1
@@ -1390,7 +1376,7 @@ case 'spm_graph'                                         %-run spm_graph
 %=======================================================================
 % marsbar('spm_graph')
 %-----------------------------------------------------------------------
-[marsRes MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsRes = mars_arm('get', 'est_design');
 if isempty(marsRes), return, end
 
 % Setup input window
@@ -1422,7 +1408,7 @@ end
 
 % Store if changed
 if changef
-  MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'est_design', marsRes); 
+  mars_arm('update', 'est_design', marsRes); 
 end
 
 %=======================================================================
@@ -1430,7 +1416,7 @@ case 'stat_table'                                       %-run stat_table
 %=======================================================================
 % marsbar('stat_table')
 %-----------------------------------------------------------------------
-[marsRes MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsRes = mars_arm('get', 'est_design');
 if isempty(marsRes), return, end
 Ic = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_contrast');
 if ~isempty(Ic)
@@ -1442,7 +1428,7 @@ end
 disp(char(strs));
 assignin('base', 'marsS', marsS);
 if changef
-  MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'est_design', marsRes); 
+  mars_arm('update', 'est_design', marsRes); 
 end
 
 %=======================================================================
@@ -1450,7 +1436,7 @@ case 'signal_change'                             % percent signal change
 %=======================================================================
 % marsbar('signal_change')
 %-----------------------------------------------------------------------
-[marsRes MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+marsRes = mars_arm('get', 'est_design');
 if isempty(marsRes), return, end
 if ~is_fmri(marsRes)
   fprintf('Need FMRI design for %% signal change\n');
@@ -1477,7 +1463,7 @@ case 'merge_contrasts'                                %-import contrasts
 %=======================================================================
 % marsbar('merge_contrasts')
 %-----------------------------------------------------------------------
-[D MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+D = mars_arm('get', 'est_design');
 if isempty(D), return, end
 filter_spec = {...
     'SPM.mat','SPM: SPM.mat';...
@@ -1503,7 +1489,7 @@ end
 [D Ic changef] = add_contrasts(D, D2, 'ui');
 disp('Done');
 if changef
-  MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'est_design', D);
+  mars_arm('update', 'est_design', D);
 end
 
 %=======================================================================
@@ -1511,7 +1497,7 @@ case 'add_trial_f'            %-add trial-specific F contrasts to design
 %=======================================================================
 % marsbar('add_trial_f')
 %-----------------------------------------------------------------------
-[D MARS.ARMOIRE] = get_item_data(MARS.ARMOIRE, 'est_design');
+D = mars_arm('get', 'est_design');
 if isempty(D), return, end
 if ~is_fmri(D)
   disp('Can only add trial specific F contrasts for FMRI designs');
@@ -1520,7 +1506,7 @@ end
 [D changef] = add_trial_f(D);
 disp('Done');
 if changef
-  MARS.ARMOIRE = update_item_data(MARS.ARMOIRE, 'est_design', D);
+  mars_arm('update', 'est_design', D);
 end
  
 %=======================================================================
@@ -1583,18 +1569,13 @@ if strcmp(sum_func, 'ask')
 end
 
 function btn = sf_prev_save(obj_name)
-global MARS
-[btn MARS.ARMOIRE] = save_item_data_ui(...
-    MARS.ARMOIRE, ...
-    obj_name, ...
-    struct('ync', 1, ...
-	   'no_no_save', 1, ...
-	   'prompt_prefix', 'previous '));
+btn = mars_arm('save_ui', obj_name, ...
+	       struct('ync', 1, ...
+		      'no_no_save', 1, ...
+		      'prompt_prefix', 'previous '));
 % If answer is 'No', then flag that we don't need to save
 if btn == 0
-  MARS.ARMOIRE = set_item_param(MARS.ARMOIRE, ...
-				obj_name, ...
-				'has_changed', 0);
+  mars_arm('set_param', obj_name, 'has_changed', 0);
 end
 return
 
