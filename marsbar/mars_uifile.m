@@ -45,11 +45,20 @@ else
   arglist = {filter_spec, prompt, filename, varargin{:}};
 end  
 
+fi = [];
 switch lower(action)
  case 'get'
-  [fn pn fi] = uigetfile(arglist{:});
+  if mlv < 6
+    [fn pn] = uigetfile(arglist{:});
+  else
+    [fn pn fi] = uigetfile(arglist{:});
+  end
  case 'put'
-  [fn pn fi] = uiputfile(arglist{:});
+  if mlv < 6
+    [fn pn] = uiputfile(arglist{:});
+  else
+    [fn pn fi] = uiputfile(arglist{:});
+  end
  otherwise 
    error(['Strange desire for ' action]);
 end
