@@ -24,10 +24,11 @@ if nargin < 1
   design_paths = spm_get([0 Inf], 'SPM*.mat', 'Select SPM designs');
 end
 
-res = 1;
-for d = 1:size(design_paths, 1)
+n_designs = size(design_paths, 1);
+res = zeros(n_designs, 1);
+for d = 1:n_designs
   d_path = deblank(design_paths(d,:));
-  res = res & sf_test_design(d_path);
+  res(d) = sf_test_design(d_path);
 end
 return
 
