@@ -70,7 +70,7 @@ if isfield(C, 'STAT')     % xCon structure
     Ic = varargin{1};
     if isempty(Ic) | strcmp(Ic,'ui')
       D2 = set_contrasts(D, C);
-      Ic = ui_get_contrast(D2,'T&F',Inf,...
+      Ic = ui_get_contrasts(D2,'T&F',Inf,...
 			   'Select contrasts to merge','',1);
     end
     C = C(Ic);

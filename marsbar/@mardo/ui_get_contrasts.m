@@ -1,6 +1,6 @@
-function [I,D,changef]=ui_get_contrast(D, varargin)
+function [I,D,changef]=ui_get_contrasts(D, varargin)
 % wrapper for spm_conman, adding indicator for change of xCon
-% FORMAT [I,D,changef]=ui_get_contrast(D, varargin)
+% FORMAT [I,D,changef]=ui_get_contrasts(D, varargin)
 %
 % See spm_conman for details of call
 %

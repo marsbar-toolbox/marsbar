@@ -17,6 +17,7 @@ function make_contents(aString, flags, start_dir)
 %      'r'    - recursively list subdirectory contents also
 %      'i'    - include starting directory from file name path list
 %      'p'    - save contents file in current rather than listed directory 
+%      'd'    - don't make backup of old contents file  
 % 
 %   START_DIR can be omitted, giving a listing of current working
 %       directory, or it can specify the directory to list
@@ -64,10 +65,12 @@ else
 end
 disp(['Creating "' cont_file '" in ' cont_dir])
 cont_path = fullfile(cont_dir, cont_file);
-if exist(cont_path, 'file') 
-     copyfile(cont_path, ...
-	      fullfile(cont_dir, [cont_file(1:end-1) 'old']));
-     delete(cont_path)
+if ~any(flags == 'd')  
+  if exist(cont_path, 'file') 
+    copyfile(cont_path, ...
+	     fullfile(cont_dir, [cont_file(1:end-1) 'old']));
+    delete(cont_path)
+  end
 end
 
 % Header lines

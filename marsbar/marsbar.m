@@ -911,7 +911,7 @@ case 'set_defcon'                                 %-set default contrast
 varargout = {0};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[defcon marsRes changef] = ui_get_contrast(marsRes, 'T|F',1,...
+[defcon marsRes changef] = ui_get_contrasts(marsRes, 'T|F',1,...
 			 'Select default contrast','',1);
 if changef, mars_armoire('update', 'est_design', marsRes); end
 MARS.WORKSPACE.default_contrast = defcon;
@@ -1371,11 +1371,9 @@ if isempty(flags)
   flags = 'k';
 end
 
-varargout = {};
-
+varargout = {''};
 fdir = spm_get(-1, '', 'Directory to save image');
 fname = spm_input('Image filename', '+1', 's', fname);
-
 if isempty(fname), return, end
 
 % set img extension and make absolute path

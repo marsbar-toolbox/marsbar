@@ -8,6 +8,13 @@ if nargin ~= 2
   error('Need matfile name');
 end
 
+% allow args to be in reverse order
+if ischar(obj)
+  tmp = obj;
+  obj = filename;
+  filename = tmp;
+end
+
 % unobjectify marsy object before save
 SPM = des_struct(obj);
 if isfield(SPM, 'marsY')

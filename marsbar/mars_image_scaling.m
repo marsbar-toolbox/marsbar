@@ -14,14 +14,23 @@ VY = [];
 if nargin < 1
   marsD = [];
 end
+if isempty(marsD)
+  mod_code = spm_input('Modality of images to scale', '+1', 'b', ...
+		      'PET|FMRI|Other', [1 2 3], 2);
+else
+  mod_code = is_fmri(marsD) + 1;
+end
 
-switch lower(modality(marsD))
- case 'pet'
+switch mod_code
+ case 1  % PET
   dGM   = 50;
   sess_str = 'Subject';
- case 'fmri'
+ case 2   % FMRI
   dGM =   100;
   sess_str = 'Session';
+ case 3   % Other
+  dGM =   0;
+  sess_str = 'Subject';
 end
   
 VY = [];
@@ -31,7 +40,7 @@ Global = [];
 
 % images
 if isempty(marsD)
-  spmf = 0
+  spmf = 0;
 else
   spmf = spm_input('Images from:', '+1','b',['SPM design|GUI select'], ...
 		   [1 0], 2);

@@ -21,12 +21,12 @@ end
 
 changef = 0;
 if isempty(Ic)
-  [Ic marsD changef] = ui_get_contrast(marsD,'T|F',Inf,...
+  [Ic marsD changef] = ui_get_contrasts(marsD,'T|F',Inf,...
 			 'Select contrasts ','',1);
 end
 
 % Do statistics work
-[marsS] = compute_contrast(marsD, Ic);
+[marsS] = compute_contrasts(marsD, Ic);
 
 % output to text table
 if isempty(marsS), return, end

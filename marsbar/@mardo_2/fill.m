@@ -27,14 +27,11 @@ actions = [{'defaults'}, actions];
 actions = unique(actions);
 
 % Get design, put into some useful variables
+v_f = verbose(D);
 SPM = des_struct(D);
-xX = SPM.xX;
-if isfield(SPM, 'Sess')
-  have_sess = 1;
-  Sess = SPM.Sess;
-else
-  have_sess = 0;
-end
+xX  = SPM.xX;
+have_sess = isfield(SPM, 'Sess');
+if have_sess, Sess = SPM.Sess; end
 
 % get file indices
 %---------------------------------------------------------------
@@ -222,23 +219,44 @@ for a = 1:length(actions)
       %---------------------------------------------------------------
       SPM.xVi.Vi = pr_spm_ce(nscan,cVi(1:3));
       cVi        = sprintf('AR(%0.1f)',cVi(1));
+      f2cl       = 'V'; 
       
      case 'none'		
       %  xVi.V is i.i.d
       %---------------------------------------------------------------
       SPM.xVi.V  = speye(sum(nscan));
       cVi        = 'i.i.d';
-      
+      f2cl       = 'Vi'; 
+                  
      otherwise		
       % otherwise assume AR(0.2) in xVi.Vi
       %---------------------------------------------------------------
       SPM.xVi.Vi = pr_spm_ce(nscan,0.2);
       cVi        = 'AR(0.2)';
+      f2cl       = 'V'; 
       
     end
-    SPM.xVi.form = cVi;
+
+    % If we've set V, need to clear Vi, because
+    % esimate method takes the presence of Vi to mean that
+    % V can be cleared, with 'redo_covar' flag
+    % Conversely V needs to be cleared if Vi was estimated
+    if isfield(SPM.xVi, f2cl)
+      SPM.xVi = rmfield(SPM.xVi, f2cl);
+      if v_f, fprintf('Clearing previous %s matrix\n', f2cl); end
+    end
+    
+    % Also: remove previous W matrices
+    % Either will need to be recalculated or won't be used
+    if isfield(SPM.xX, 'W')
+      SPM.xX = rmfield(SPM.xX, 'W');
+      if v_f, fprintf('Clearing previous W matrix\n'); end
+    end
+
     
     % fill into design
+    SPM.xVi.form = cVi;
+    
     xsDes = struct(...
 	'Interscan_interval',	sprintf('%0.2f {s}',RT),...
 	'Intrinsic_correlations',	SPM.xVi.form,...

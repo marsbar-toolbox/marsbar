@@ -34,10 +34,8 @@ return
 function res = sf_test_design(d_path)
 % tests one design
   
-% load design
-D = mardo(d_path);
-
 % Check for SPM estimated design, with estimated contrasts
+D = mardo(d_path);
 if ~is_spm_estimated(D)
   error('Need an SPM estimated design');
 end
@@ -52,14 +50,15 @@ end
 swd = fileparts(d_path);
 xCon = get_contrasts(D);
 stats = [xCon(:).STAT];
-types = 'TF';
 Ic    = []; fnames = {};
-for t = 1:2
-  T = find(stats == types(t));
-  for c = fliplr(T) % find last
-    F = sf_spm_file(xCon(c).Vspm, swd);
+for t = 'TF'
+  for c = fliplr(find(stats == t))
+    F = xCon(c).Vspm;
     if ~isempty(F)
-      Ic = [Ic c]; fnames{end+1} = F; break
+      % SPM99 = filename, SPM2 = vol_struct
+      if isstruct(F), F = F.fname; end
+      F = fullfile(swd, F);
+      if exist(F, 'file'), Ic = [Ic c]; fnames{end+1} = F; break, end
     end
   end
 end
@@ -79,26 +78,13 @@ for c = 1:length(Ic)
   Y = get_marsy(mx_roi(c), D, 'mean');
   E = estimate(D, Y);
   [E n_Ic] = add_contrasts(E, D, Ic(c));
-  marsS = compute_contrast(E, n_Ic);
+  marsS = compute_contrasts(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
 	  mx(c), marsS.stat(1));
-  if (marsS.stat(1) - mx(c)) > 1e5
+  if abs(marsS.stat(1) - mx(c)) > 1e-5
     disp('MarsBaR gives a different result for contrast');
     res = 0;
   end
-end
-return
-
-
-
-function fname = sf_spm_file(fname, swd)
-if isempty(fname), return, end
-if isstruct(fname)
-  fname = fname.fname;
-end
-fname = fullfile(swd, fname);
-if ~exist(fname, 'file')
-  fname = '';
 end
 return
 

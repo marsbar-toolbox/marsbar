@@ -1,6 +1,6 @@
-function [marsS] = compute_contrast(marsDe, Ic)
+function [marsS] = compute_contrasts(marsDe, Ic)
 % compute and return stats
-% FORMAT marsS = compute_contrast(marsDe, Ic)
+% FORMAT marsS = compute_contrasts(marsDe, Ic)
 % 
 % marsDe     - Mars design structure
 % Ic         - indices into contrast structure
@@ -18,13 +18,9 @@ if nargin < 2
 end
 
 %- results
-
 [marsS.con marsS.stat, marsS.P, marsS.Pc] = ...
-    pr_stat_compute(xCon(Ic), SPM.xX.xKXs, SPM.xX.V, ...
-		      SPM.betas, SPM.ResidualMS);
-marsS.MVres = pr_stat_compute_mv(xCon(Ic), SPM.xX.xKXs, SPM.xX.V, ...
-				 SPM.betas, SPM.ResidualMS, ...
-				 summary_data(SPM.marsY));
+    pr_stat_compute(SPM, Ic);
+marsS.MVres = pr_stat_compute_mv(SPM, Ic);
 
 marsS.columns = region_name(SPM.marsY);
 for i = 1:length(Ic)
