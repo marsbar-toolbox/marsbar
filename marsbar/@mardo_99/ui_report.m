@@ -58,18 +58,6 @@ case 'desrepui'                                    %-Design reporting UI
 %
 %  .cfg
 
-%-Canonicalise data
-%=======================================================================
-%-Work out where design configuration has come from!
-if ~isfield(SPM,'cfg')
-	if isfield(SPM.xX,'V'),				cfg = 'SPM';
-	elseif isfield(SPM,'VY'), 			cfg = 'SPMcfg';
-	elseif isfield(SPM,'Sess') & ~isempty(SPM.Sess),	cfg = 'SPM_fMRIDesMtx';
-	else, error('Can''t fathom origin!')
-	end
-	SPM.cfg = cfg;
-end
-
 %-Add a scaled design matrix to the design data structure
 %-----------------------------------------------------------------------
 if ~isfield(SPM.xX,'nKX'), SPM.xX.nKX = spm_DesMtx('Sca',SPM.xX.X,SPM.xX.Xnames); end
@@ -100,7 +88,6 @@ hDesMtx = uimenu(hC,'Label','Design Matrix','Accelerator','D',...
 		'ui_report(tmp, ''DesMtx'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
-if strcmp(SPM.cfg,'SPM_fMRIDesMtx'), set(hDesMtx,'Enable','off'), end
 
 %-Design matrix orthogonality
 %-----------------------------------------------------------------------
@@ -166,15 +153,16 @@ case 'files&factors'                         %-Summarise files & factors
 % ui_report(D, 'Files&Factors',fnames,I,xC,sF,xs)
 
 fnames  = image_names(D);
-if isempty(fnames)
-  fnames = cell(size(SPM.xX.X, 1));
-end
 I       = SPM.xX.I;
 xC      = SPM.xC;
 sF      = SPM.xX.sF;
 xs      = SPM.xsDes;  %-Structure of description strings
 
-[fnames,CPath] = spm_str_manip(fnames,'c');	%-extract common path component
+if isempty(fnames)
+  fnames = cell(size(SPM.xX.X, 1), 1);
+else
+  [fnames,CPath] = spm_str_manip(fnames,'c');	%-extract common path
+end
 nScan          = size(I,1);			%-#images
 nVar           = size(fnames,2);		%-Variates
 bL             = any(diff(I,1),1); 		%-Multiple factor levels?
@@ -310,9 +298,6 @@ case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 
 xX      = SPM.xX;
 fnames  = image_names(D);
-if isempty(fnames)
-  fnames = cell(size(SPM.xX.X, 1));
-end
 
 xs      = SPM.xsDes;  %-Structure of description strings
 
