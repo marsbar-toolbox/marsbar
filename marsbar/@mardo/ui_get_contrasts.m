@@ -229,9 +229,10 @@ status   = get(hDone,'UserData');
 hConList = findobj(F,'Tag','ConList');
 Q        = get(hConList,'UserData');
 I        = Q(get(hConList,'Value'));
-tmpD     = get(F,'UserData');
-xCon     = get_contrasts(D);
 changef  = get(findobj(F,'Tag','D_Reset'), 'UserData');
+
+% Return new contrasts, if modified
+if changef, D = set_contrasts(D, get_contrasts(get(F,'UserData'))); end
 
 %-Reset and hide SelFileWin
 ui_get_contrasts(D, 'Initialise','off');
