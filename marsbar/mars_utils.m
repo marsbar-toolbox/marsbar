@@ -21,6 +21,11 @@ function varargout=mars_utils(varargin)
 % absf = mars_utils('isabspath', path);
 %    Takes path name, and returns flag, 1 if path is absolute on this
 %    system, 0 if relative or empty
+% 
+% mars_utils('graphic_text', strs, [title_str, [, figure_str]])
+%    Displays cell array of text (strs) in SPM graphics window 
+%    with optional title (char) title_string.  Can also set to display to
+%    other figure window (string or figure handle).
 %
 % $Id$
 
@@ -137,6 +142,43 @@ switch (spm_platform('filesys'))
 end
 varargout = {absf};
 
+%=======================================================================
+case 'graphic_text'                 % Displays text in SPM figure window
+%=======================================================================
+if nargin < 2, error('Need text to show'); else S = varargin{2}; end
+if ischar(S), S = cellstr(S); end
+if nargin < 3, TTitle = ''; else TTitle = varargin{3}; end
+if nargin < 4, F = []; else, F=varargin{4}; end
+if isempty(F), F='Graphics'; end
+if ischar(F), F = spm_figure('GetWin', F); end
+if isempty(F), F = spm_figure('GetWin', 'Graphics'); end
+
+FS = spm('FontSizes');
+PF = spm_platform('fonts');
+
+spm_figure('clear', F);
+figure(F);
+hAxes = axes('Position',[0.028,0.05,0.85,0.85],...
+		'DefaultTextInterpreter','none',...
+		'Units','Points','Visible','off');
+AxPos = get(hAxes,'Position'); set(hAxes,'YLim',[0,AxPos(4)])
+
+dy = FS(10)*1.2; y0 = floor(AxPos(4)) -dy; y  = y0;
+
+text(-0.03,y0,TTitle,'FontSize',FS(14),'FontWeight','bold');
+y     = y0 - FS(14);
+
+%-Loop over lines of text
+%------------------------
+for i = 1:prod(size(S))
+  d = S{i};
+  
+  %-For some reason, '|' characters cause a CR.
+  d = strrep(d,'|','I');
+  h = text(0,y,d,'FontName',PF.courier,'FontSize',FS(10));
+  y = y - dy;
+end
+ 
 otherwise
   error('Beyond my range');
 end
