@@ -377,8 +377,7 @@ marsD = mars_armoire('get', 'def_design');
 if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
-%marsRes = mars_stat(marsD, marsY);
-marsRes = estimate(marsD, marsY);
+marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
 mars_armoire('set', 'est_design', marsRes);
 
 %=======================================================================
@@ -705,11 +704,10 @@ if ~is_there(MARS.WORKSPACE, 'default_region')
 end
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[Y,y,beta,SE,cbeta] = mars_spm_graph(...
+[Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(...
     marsRes, ...
-    marsRes.xCon, ...
     MARS.WORKSPACE.default_region);
-varargout = {Y, y, beta, SE, cbeta};
+varargout = {Y, y, beta, Bcov, SE, cbeta};
 
 %=======================================================================
 case 'stat_table'                                  %-run stat_table
