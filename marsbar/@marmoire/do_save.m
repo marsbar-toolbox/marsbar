@@ -8,7 +8,7 @@ function [res, o] = do_save(o, item, flags, filename)
 % filename - (maybe) filename for save
 % 
 % Returns
-% saved_f  - flag is 1 if item was in fact saved
+% saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel
 % o        - possibly modified object 
 %
 % The function is written like this so that, in the future, we can use
@@ -64,7 +64,7 @@ if pr_needs_save(item_struct) | isfield(flags, 'force') % force flag
       if strcmp(save_yn, 'Cancel'), res = -1; return, end      
       if strcmp(save_yn, 'No')
 	if isfield(flags, 'no_no_save')
-	  item_struct.has_changed = 0; 
+	  o  = set_item_param(o, item, 'has_changed', 0);
 	end
 	res = 0; 
 	return
