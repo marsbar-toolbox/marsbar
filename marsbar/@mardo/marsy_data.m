@@ -1,4 +1,4 @@
-function r = data(o, Y)
+function r = marsy_data(o, Y)
 % method to get or set marsy data
 % 
 % $Id$
