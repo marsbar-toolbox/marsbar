@@ -18,12 +18,15 @@ st = y_struct(o);
 if nargin > 1 | ...              % sumfunc passed
       ~isfield(st, 'Y') | ...    % Y not yet calculated
       (nargout > 2 & ~isfield(st, 'Yvar')) % Yvar needed
+  if strcmp(s_f, 'unknown')
+    error('Cannot recalculate from unknown sumfunc');
+  end
   Ys = region_data(o);
   if isempty(Ys)
     error('No region data to summarize');
   end
   
-  sz = size(o);
+  sz = summary_size(o);
   Y = zeros(sz);
   Yvar = zeros(sz);
   for i = 1:sz(2);

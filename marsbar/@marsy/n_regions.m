@@ -3,4 +3,4 @@ function n = n_regions(o)
 % 
 % $Id$ 
 
-n = size(o, 2);
+n = summary_size(o, 2);

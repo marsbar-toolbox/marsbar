@@ -1,5 +1,5 @@
-function [m,n] = size(o, dim)
-% overloaded method returns number of time points x number of regions
+function [m,n] = summary_size(o, dim)
+% method returns number of time points x number of regions
 %
 % $Id$
   

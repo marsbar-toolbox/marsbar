@@ -3,4 +3,4 @@ function n = n_time_points(o)
 % 
 % $Id$ 
 
-n = size(o, 1);
+n = summary_size(o, 1);

@@ -1,6 +1,6 @@
 function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)
 % getdata method - fetches time series data for ROI from images 
-% FORMAT [Y multv] = getdata(roiobj, data_imgs, flags)
+% FORMAT [Y multv vXYZ mat] = getdata(roiobj, data_imgs, flags)
 %
 % roiobj    - an object of type maroi
 % data_imgs - images to fetch data from.  These can be in the form of
@@ -90,6 +90,10 @@ for i = 1:nimgs
 
   if chgflgs(i)  % images not the same, (re)get resample points
     ixyz = data_imgs(i).mat \ XYZ;
+  end
+  if i == 1; % record voxel XYZ for return 
+    vXYZ = ixyz;
+    mat  = data_imgs(1).mat;
   end
   
   % resample data at voxel centres of ROI

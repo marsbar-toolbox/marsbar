@@ -1,5 +1,16 @@
-function XYZ = xyz(o, r_no, xyz_type)
+function [XYZ, M]= xyz(o, r_no, xyz_type)
 % gets XYZ coordinates for region 
+% FORMAT [XYZ M]= xyz(o, r_no, xyz_type)
+% 
+% Inputs
+% o         - marsy object
+% r_no      - region number
+% xyz_type  - string, one of 'mm','real','vox' 
+%             where 'real' is a synonym for 'mm'
+%             and 'mm' is the default (if not passed)
+% Outputs
+% XYZ       - coordinates in specified reference
+% M         - 4x4 transformation mapping voxels to mm
 % 
 % $Id$
 
@@ -15,6 +26,7 @@ if nargin < 3
 end
 
 XYZ = [];
+M = eye(4);
 st = y_struct(o);
 if ~isfield(st, 'regions')
   return
