@@ -27,12 +27,8 @@ xX.trRVRV      %-Variance expectations
 xX.nKX         % scaled design matrix for display 
 [xCon]
 
-remove mars_inputdata_ui, mars_model_data_ui spm2/spm_filter
-add cd_images set_images get_images get_image_names in mardo mardo_99 _2
-
 check images function.
 
 Don't want to clear ROI data without warnings, when loading a new
 default design.  ?Ask.  Or don't clear, just warn?
 
-What should be done about trial-specific F contrasts? (fill_design)

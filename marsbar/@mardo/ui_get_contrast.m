@@ -7,8 +7,17 @@ function [I,D,changef]=ui_get_contrast(D, varargin)
 % $Id$  
 
 SPM = des_struct(D);
+xX = SPM.xX;
+
+% A little hack to make spm_conman compatible between SPM 99 and 2
+if isfield(xX, 'name')
+  xX.Xnames = xX.name;
+elseif isfield(xX, 'Xnames')
+  xX.name = xX.Xnames;
+end
+
 conlen = length(SPM.xCon);
-[I SPM.xCon] = spm_conman(SPM.xX,SPM.xCon,varargin{:});
+[I SPM.xCon] = spm_conman(xX,SPM.xCon,varargin{:});
 if length(SPM.xCon) == conlen
   changef = 0;
 else

@@ -57,6 +57,7 @@ if isa(VY, 'mardo')
   end
   VY = get_images(VY);
 end
+
 % or be filenames
 if ischar(VY)
   if vf, fprintf('\n%-40s: %30s','Mapping files',' ');end
@@ -81,7 +82,7 @@ for r = 1:rlen
     if vf & r < rlen, fprintf('%-40s: %30s','Fetching data',' '); end
   else
     rno = rno + 1;
-    [marsY.Y(:,rno) marsY.Yvar(:,rno)] = pr_sum_func(y, sumfunc, vals);
+    [marsY.Y(:,rno) marsY.Yvar(:,rno)] = mars_sum_func(y, sumfunc, vals);
     
     % get data for columns
     marsY.cols{rno} = struct(...

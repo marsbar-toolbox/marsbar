@@ -1,6 +1,6 @@
-function [sumY, varY] = pr_sum_func(y, sumfunc, wt)
+function [sumY, varY] = mars_sum_func(y, sumfunc, wt)
 % creates summary stats for region data
-% FORMAT [sumY, varY] = pr_sum_func(y, sumfunc, wt)
+% FORMAT [sumY, varY] = mars_sum_func(y, sumfunc, wt)
 % 
 % $Id$
   

@@ -52,12 +52,16 @@ if isa(params, myclass)
 end
 
 % check inputs
+if ischar(params)  % maybe filename
+  params = load(params);
+end
 if isstruct(params)
   if ~isfield(params, 'des_struct')
     % Appears to be an SPM design
     params = struct('des_struct',params);
   end
 end
+
 
 % fill with defaults, parse into fields for this object, children
 [pparams, others] = mars_struct('ffillsplit', defstruct, params);
@@ -102,31 +106,20 @@ if ~is_marsed(o)
 end
 
 % resolve confusing field name in marsbar <= 0.23
-% ResMS was in fact the Root Mean Square
+% ResMS was in fact the _Root_ Mean Square
 D = o.des_struct;
-d_chgf = 0;
 if isfield(D, 'ResMS')
   if verbose(o)
-    disp(['Squaring root mean square in ResMS field' ...
-	 ' and moving to ResidualMS']);
+    msg = {'Estimated results from Versions of MarsBaR <=0.23 use a field', ...
+	   'called ResNS to store the ROOT mean square, rather than the',...
+	   'Residual mean square, as is the case for SPM.  Later versions of',...
+	   'MarsBaR use a field called ResidualMS to avoid confusion.',...
+	   'For compatility with this version of MarsBaR, I am sqauring',...
+	   'the values in ResMS, and storing them in ResidualMS'};
+    fprintf('\n%s',sprintf('%s\n',msg{:})); 
   end
   D.ResidualMS = D.ResMS .^ 2;
   D = rmfield(D, 'ResMS');
-  d_chgf = 1;
-end
-
-% Nasty little hack to make spm_conman compatible between SPM 99 and 2
-if isfield(D, 'xX') % allow empty structure
-  if isfield(D.xX, 'name')
-    D.xX.Xnames = D.xX.name;
-    d_chgf = 1;
-  elseif isfield(D.xX, 'Xnamea')
-    D.xX.name = D.xX.Xnames;
-    d_chgf = 1;
-  end
-end
-
-if d_chgf
   o.des_struct = D;
 end
 
