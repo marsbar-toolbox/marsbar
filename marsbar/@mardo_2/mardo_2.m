@@ -26,7 +26,7 @@ defstruct = [];
 
 if nargin < 1
   defstruct.cvs_version = cvs_v;
-  o = class(defstruct, myclass);
+  o = class(defstruct, myclass, mardo);
   others = [];
   return
 end
