@@ -1242,14 +1242,34 @@ case 'set_results'          %-sets estimated design into global stucture
 %=======================================================================
 % donef = marsbar('set_results')
 %-----------------------------------------------------------------------
+% Set results, put results ROI data into roi_data container
+
 varargout = {0};
+
+% Check if there's anything we don't want to write over 
+if sf_prev_save('est_design') == -1, return, end
+if sf_prev_save('roi_data') == -1, return, end
+
+% Do set
 mars_arm('set_ui', 'est_design');
 if mars_arm('isempty', 'est_design'), return, end
+
+% Get design, set ROI data 
 marsRes = mars_arm('get', 'est_design');
+mars_arm('set', 'roi_data', get_data(marsRes));
+
+% Clear default contrast
+if mars_struct('isthere', MARS, 'WORKSPACE', 'default_contrast')
+  MARS.WORKSPACE.default_contrast = [];
+  fprintf('Reset of estimated design, cleared default contrast...\n');
+end
+
+% Report on design
 fprintf('%-40s: ','Design reporting');
 ui_report(marsRes, 'DesMtx');
 ui_report(marsRes, 'DesRepUI');
 fprintf('%30s\n','...done');
+
 varargout = {1};
 return
 

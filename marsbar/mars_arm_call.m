@@ -138,29 +138,6 @@ switch lower(action)
   item_struct.data = data;
   o = set_item_struct(o, item, item_struct);
   
-  % Save and replace ROI data if necessary
-  if ~isempty_item_data(o, 'roi_data')
-    Y  = get_data(data);
-    if Y ~= get_item_data(o, 'roi_data') 
-      [btn o]  = save_item_data_ui(o, 'roi_data', struct('ync', 1));
-      if btn == -1
-	errf = 1;
-	msg = 'Cancelled save ROI data'; 
-	return
-      end
-      o = set_item_data(o, 'roi_data', Y);
-      o = set_item_param(o, 'roi_data', 'has_changed', 0);
-      fprintf('Set ROI data from estimated design...\n');
-    end
-  end
-
-  % Clear default contrast
-  global MARS;
-  if mars_struct('isthere', MARS, 'WORKSPACE', 'default_contrast')
-    MARS.WORKSPACE.default_contrast = [];
-    fprintf('Reset of estimated design, cleared default contrast...\n');
-  end
-
  otherwise
   error(['Peverse request for ' action]);
 end
