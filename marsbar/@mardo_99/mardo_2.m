@@ -24,39 +24,62 @@ SPM.xCon = mars_struct('getifthere', SPM99, 'xCon');
 % actual work to assemble.  Much of the details of the
 % condition structures (U) can be gleaned from the SPM99
 % Sess variable - onset vectors, stick functions, etc. - but
-% not quite everything.  Trial durations, in particular, are
-% are very tricky thing to figure out, and for now, they've
-% been left blank.
+% not quite everything.  Trial durations are difficult to figure out, but
+% we'll give it a go here with the event_onsets method
 
 if isfield(SPM99, 'Sess'), Sess = SPM99.Sess; else Sess = []; end
 for i = 1:length(Sess)
     currsess = Sess{i};
-    SPM.Sess(i).row = currsess.row;      % indices for this session's row in design matrix
-    SPM.Sess(i).col = currsess.col;      % indices for this session's cols in design matrix
-    SPM.nscan(i) = length(currsess.row); % number of scans in this session
+    
+    % indices for this session's row in design matrix
+    SPM.Sess(i).row = currsess.row;      
+    
+    % indices for this session's cols in design matrix
+    SPM.Sess(i).col = currsess.col;      
+    
+    % number of scans in this session
+    SPM.nscan(i) = length(currsess.row);
+    
     % We can use the length of the onset cell array as an
     % effective number of conditions variable - only 'true'
     % conditions have onset vectors, not Volterra items or
     % user-specified covariates.
-    for j = 1:length(currsess.ons)     
-        SPM.Sess(i).U(j).dt = xX.dt;                        % time bin length in seconds
-        SPM.Sess(i).U(j).name = {currsess.name{j}};         % name of trial type
-        SPM.Sess(i).U(j).ons = currsess.ons{j};             % vector of onsets
-        SPM.Sess(i).U(j).dur = [];                          % duration of trials - not saved in SPM99
-        SPM.Sess(i).U(j).u = [zeros(32,1); currsess.sf{j}]; % actual stick functions - SPM2 uses 32-bin offset.
-        SPM.Sess(i).U(j).pst = currsess.pst{j};             % peristimulus time course (seconds)
-        SPM.Sess(i).U(j).P.name = currsess.Pname{j};        % parameter name
-        if isempty(currsess.Pname{j})
-            % SPM2 includes these values for 'none'
-            % parameters - just mimicking what they do...
-            SPM.Sess(i).U(j).P.name = 'none';
-            SPM.Sess(i).U(j).P.P = currsess.ons{j};         % values of parameter
-            SPM.Sess(i).U(j).P.h = 0;                       % order of polynomial expansion
-        else
-            SPM.Sess(i).U(j).P.name = currsess.Pname{j};    % parameter name
-            SPM.Sess(i).U(j).P.P = currsess.Pv{j};          % parameter values
-            % leave h and i blank for now...
-        end
+    for j = 1:length(currsess.ons) 
+      
+      % Try getting onsets and durations from design
+      [ons dur] = event_onsets(D, [i j]);
+      
+      % time bin length in seconds
+      SPM.Sess(i).U(j).dt = xX.dt;
+      
+      % name of trial type
+      SPM.Sess(i).U(j).name = {currsess.name{j}};
+      
+      % vector of onsets
+      SPM.Sess(i).U(j).ons = ons;
+      
+      % duration of trials 
+      SPM.Sess(i).U(j).dur = dur;
+      
+      % actual stick functions - SPM2 uses 32-bin offset.
+      SPM.Sess(i).U(j).u = [zeros(32,1); currsess.sf{j}];
+      
+      % peristimulus time course (seconds)
+      SPM.Sess(i).U(j).pst = currsess.pst{j};
+      
+      % parameter name
+      SPM.Sess(i).U(j).P.name = currsess.Pname{j};
+      if isempty(currsess.Pname{j})
+	% SPM2 includes these values for 'none'
+	% parameters - just mimicking what they do...
+	SPM.Sess(i).U(j).P.name = 'none';
+	SPM.Sess(i).U(j).P.P = currsess.ons{j};         % values of parameter
+	SPM.Sess(i).U(j).P.h = 0;                       % order of polynomial expansion
+      else
+	SPM.Sess(i).U(j).P.name = currsess.Pname{j};    % parameter name
+	SPM.Sess(i).U(j).P.P = currsess.Pv{j};          % parameter values
+							% leave h and i blank for now...
+      end
     end
     % SPM99 doesn't save regressors in independent
     % structures as SPM2 does, but it does always append
@@ -135,11 +158,12 @@ if ~isempty(Sess)
     disp('Warning: Defaults don''t contain reference slice value!');
     SPM.xBF.T0 = 1;
   end
-  % SPM99 onsets are always specified in scans but saved in
-  % seconds...
-  SPM.xBF.UNITS = 'seconds';                  % units that onsets are in ['scans', 'seconds']
+  % SPM99 onsets were reconstructed in scan units
+  % units that onsets are in ['scans', 'seconds']
+  SPM.xBF.UNITS = 'scans';
   if length(SPM.Sess(1).U) < length(SPM.Sess(1).Fc)
-    SPM.xBF.Volterra = 2;                   % Volterra flag [1=no Volterra, 2=Volterra modeled]
+    % Volterra flag [1=no Volterra, 2=Volterra modeled]
+    SPM.xBF.Volterra = 2;                   
   else
     SPM.xBF.Volterra = 1;
   end
