@@ -17,7 +17,7 @@ switch lower(arg)
  case 'get_img_ext' % default image extension for spm_get
   varargout = {'IMAGE'};
  case 'des_conf'     % filter for configured, not estimated SPM designs
-  varargout = {'SPMcfg.mat'};
+  varargout = {'SPM.mat'};
  case 'stat_buttons' 
   varargout = {{'PET', 'fMRI', 'Basic models'...
 	 'Review design', '-> Bayesian', 'Estimate', 'Results'}};

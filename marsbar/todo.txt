@@ -1,6 +1,7 @@
 To do list
 ----------
 
-Save yes/no for mars_armoire
-try / catch round load, specify mat file type
-default file name in mars_armoire
+try / catch round load in mars_armoire
+
+move mars_fill_design to version directories
+force edit of filter in mars_fill_design
