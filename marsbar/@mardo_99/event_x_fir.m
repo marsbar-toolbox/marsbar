@@ -1,6 +1,6 @@
-function [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
+function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % method to return FIR design matrix columns for session
-% FORMAT [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
+% FORMAT Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % 
 % D          - design object
 % e_spec     - event specification for single event
@@ -16,8 +16,6 @@ function [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % 
 % Returns
 % Xn         - columns in design matrix for FIR model
-% rh         - regressor height: value for regressor for one event of
-%              duration dt in design matrix
 % 
 % Note that we have a problem, in that the assumed start bin is not saved
 % in the SPM99 design format, so we have to hope it has not changed from
@@ -67,8 +65,11 @@ if recorded_fMRI_T ~= fMRI_T & verbose(D)
 end
 T           = recorded_fMRI_T;
 bf          = kron(eye(bin_no),ones(round(bin_length/dt),1));
-BF{1}       = pr_spm_orth(bf);
-rh          = BF{1}(1);
+bf          = pr_spm_orth(bf);
+
+% Reset columns to 1 after orthogonalization
+BF{1}       = bf / bf(1);
+
 k           = length(Sess.row);
 
 if isfield(opts, 'flat')
