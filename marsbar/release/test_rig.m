@@ -77,7 +77,7 @@ for c = 1:length(Ic)
   mx_roi(c) = maroi_pointlist(struct('XYZ', xyz(:, c), ...
 				     'mat', V.mat), 'vox');
   Y = get_marsy(mx_roi(c), D, 'mean');
-  E = estimate(D, Y, {});
+  E = estimate(D, Y);
   [E n_Ic] = add_contrasts(E, D, Ic(c));
   marsS = compute_contrast(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
@@ -92,6 +92,7 @@ return
 
 
 function fname = sf_spm_file(fname, swd)
+if isempty(fname), return, end
 if isstruct(fname)
   fname = fname.fname;
 end
