@@ -1,0 +1,21 @@
+MarsBaR installation
+---------------------
+
+MarsBaR is a region of interest toolbox for use within SPM
+(http://wwww.fil.ion.ucl.ac.uk/spm).
+
+When you unpack the MarsBaR archive, you should have a new directory
+named after the MarsBaR release number for example "marsbar-0.21"
+
+You have two options for using MarsBaR within SPM.  
+
+First, you can add the new MarsBaR directory to your matlab path. To
+use MarsBaR, start it from the matlab prompt with the command
+"marsbar".
+
+Second, you could copy / move or link the MarsBaR directory to the
+"marsbar" directory in the SPM "toolbox" directory. If you do this,
+the next time you start spm you can start the toolbox by selecting
+'marsbar' from the toolbox button on the SPM interface.
+
+Matthew Brett, 19 April 2003
