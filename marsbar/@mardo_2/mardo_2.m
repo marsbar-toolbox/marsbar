@@ -13,7 +13,7 @@ function [o, others] = mardo_2(params, others)
 % $Id$
   
 myclass = 'mardo_2';
-defstruct = struct([]);
+defstruct = [];
 
 if nargin < 1
   params = [];
@@ -54,6 +54,9 @@ end
 
 % reparse parameters into those for this object, children
 [params, others] = mars_struct('split', params, defstruct);
+
+% add cvs tag
+params.cvs_version = mars_cvs_version(mfilename);
 
 % set the mardo object
 o  = class(params, myclass, uo);
