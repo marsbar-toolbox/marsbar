@@ -63,13 +63,16 @@ switch lower(optstr)
     [fn, fn2] = marsbar('cfgfile');
     if isempty(fn), fn=fn2;end
     [f p] = mars_uifile('put', fn, 'Configuration file to save');
+    if isequal(f,0) | isequal(p,0), return, end
     cfg_fname = fullfile(p, f);
   end
   if ~isempty(cfg_fname)
     try
       save(cfg_fname, 'mars');
+      fprintf('Saved options to %s\n', cfg_fname);
     catch
-      warning(['Error saving config to file ' cfg_fname])
+      warning(sprintf('%s: error saving config to file %s', ...
+		      lasterr, cfg_fname))
     end
   end
   
