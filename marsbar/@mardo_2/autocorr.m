@@ -31,7 +31,7 @@ end
 % Get design, put into some useful variables
 v_f = verbose(D);
 SPM = des_struct(D);
-nscan = size(SPM.xX.X, 1);
+nscan = SPM.nscan;
 
 SPM.xVi.cov_calc = 'summary';
 
