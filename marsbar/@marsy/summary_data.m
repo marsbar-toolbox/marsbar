@@ -38,7 +38,7 @@ if nargin > 1 | ...              % sumfunc passed
     end
   end
   if verbose(o)
-    fprintf(['Summarizing data with summary function: %s\n', s_f);
+    fprintf('Summarizing data with summary function: %s\n', s_f);
   end
   if nargout > 2
     st.Y = Y;
