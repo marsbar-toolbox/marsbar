@@ -7,9 +7,15 @@ function D = autocorr(D, autocorr_type, varargin)
 %                 'SPM'
 %                 'fmristat'
 %                 'none'
-% varargin      - parameters defining autocorrelation model.  One of 
-%                 (SPM) vector with estimated AR coefficients [0.2]
-%                 (fmristat) order of fmristat model [1]
+% varargin      - parameters defining autocorrelation model.  
+%                 If autocorr type is 'SPM':
+%                   varargin{1} should be vector with estimated AR
+%                      coefficients (default is [0.2])
+%                   varargin{2} is optional, and is flag; non-zero value
+%                   specifies voxel-wise covariance estimates (default 0)
+%                 If autocorr type is 'fmristat'
+%                   varargin{1} is scalar value for order of fmristat
+%                   model (default is 1);
 % 
 % $Id$
   
@@ -27,6 +33,8 @@ v_f = verbose(D);
 SPM = des_struct(D);
 nscan = size(SPM.xX.X, 1);
 
+SPM.xVi.cov_calc = 'summary';
+
 switch lower(autocorr_type)
  case 'fmristat'
   % Fit fmristat model AR(n)
@@ -38,11 +46,11 @@ switch lower(autocorr_type)
   SPM.xVi.Vi = struct('type', 'fmristat', 'order', cVi);
   cVi        = sprintf('fmristat AR(%d)',cVi);
   f2cl       = 'V'; % Field to CLear
-  SPM.xVi.cov_calc = 'summary';
   
  case 'spm'
   % SPM AR coefficient(s) to be specified
   if nargin < 3, varargin{1} = 0.2; end
+  if nargin < 4, varargin{2} = 1; end
   cVi = varargin{1};
   if any(cVi > 1 | cVi < 0)
     error('Rho estimates should be > 0 and < 1');
@@ -50,6 +58,9 @@ switch lower(autocorr_type)
   SPM.xVi.Vi = pr_spm_ce(nscan, cVi);
   cVi        = sprintf('AR(%0.1f)',cVi(1));
   f2cl       = 'V'; 
+  if varargin{2}
+    SPM.xVi.cov_calc = 'vox';
+  end
   
  case 'none'		
   %  xVi.V is i.i.d
