@@ -840,6 +840,26 @@ ui_report(marsD, 'DesRepUI');
 fprintf('%30s\n','...done');
 
 %=======================================================================
+case 'design_filter'                      %-shows FFT of data and design
+%=======================================================================
+% marsbar('design_filter')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+marsY = mars_armoire('get','roi_data');
+if isempty(marsY), return, end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Design filter', 0);
+[e_s e_n] = ui_get_event(marsD);
+X         = x(marsD);
+R         = X(:, event_cols(marsD,e_s));
+PY        = marsy({summary_data(marsY), R},...
+		  {summary_descrip(marsY) e_n}, 'mean');
+PY        = block_rows(PY, block_rows(marsD));
+ui_plot(PY, struct('types', 'fft', 's_nos', e_s(1)));
+
+%=======================================================================
 case 'extract_data'                       % gets data maybe using design
 %=======================================================================
 % marsY = marsbar('extract_data'[, roi_list [, 'full'|'default']]);
@@ -927,15 +947,17 @@ if isempty(marsY), return, end
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Plot data', 0);
 if strcmp(p_type, 'full')
   if ~mars_armoire('isempty', 'def_design')
-    if spm_input('Use design filter?', '+1', 'y/n', [1 0], 1)
-      D = mars_armoire('get', 'def_design');
-      flags = {};
-      if has_whitener(D) 
-	if ~spm_input('Use whitening filter?', '+1', 'y/n', [1 0], 1)
-	  flags = 'no_whitening';
+    D = mars_armoire('get', 'def_design');
+    if has_filter(D)
+      if spm_input('Use design filter?', '+1', 'y/n', [1 0], 1)
+	flags = {};
+	if has_whitener(D) 
+	  if ~spm_input('Use whitening filter?', '+1', 'y/n', [1 0], 1)
+	    flags = 'no_whitening';
+	  end
 	end
+	marsY = apply_filter(D, marsY, flags);
       end
-      marsY = apply_filter(D, marsY, flags);
     end
   end
   p_type = char(spm_input('Type of plot', '+1', 'm', ...
@@ -1380,6 +1402,10 @@ case 'signal_change'                             % percent signal change
 %-----------------------------------------------------------------------
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
+if ~is_fmri(marsRes)
+  fprintf('Need FMRI design for %% signal change\n');
+  return
+end
 
 % Setup input window
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Percent signal change', 0);
@@ -1394,6 +1420,7 @@ disp(sprintf('Duration: %3.2f seconds', dur));
 for r = 1:length(rns)
   disp(sprintf('Region: %40s; %5.3f', rns{r}, pc(r)));
 end
+assignin('base', 'pc', pc);
 
 %=======================================================================
 case 'merge_contrasts'                                %-import contrasts
@@ -1411,7 +1438,7 @@ filter_spec = {...
     'Source design/contrast file...');
 if isequal(fn,0) | isequal(pn,0), return, end
 fname = fullfile(pn, fn);
-D2 = mardo(load(fname));
+D2 = mardo(fname);
 
 % has this got contrasts?
 if ~has_contrasts(D2)
@@ -1436,10 +1463,11 @@ case 'add_trial_f'            %-add trial-specific F contrasts to design
 D = mars_armoire('get', 'est_design');
 if isempty(D), return, end
 if ~is_fmri(D)
-  disp('Can only add F contrasts for FMRI designs');
+  disp('Can only add trial specific F contrasts for FMRI designs');
   return
 end
 [D changef] = add_trial_f(D);
+disp('Done');
 if changef
   mars_armoire('update', 'est_design', D);
 end
