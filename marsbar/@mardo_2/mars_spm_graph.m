@@ -65,9 +65,9 @@ if isempty(rno)
   rno = 1;
 end
 
-% Get required data
+% Get required data and filter
 sY    = summary_data(SPM.marsY);
-y     = sY(:,rno);
+y     = apply_filter(marsD, sY(:, rno));
 
 % Get design matrix for convenience
 xX = SPM.xX;
