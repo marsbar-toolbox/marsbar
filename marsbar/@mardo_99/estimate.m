@@ -19,8 +19,8 @@ if ischar(flags), flags = {flags}; end
 marsY = marsy(marsY);
 
 % check design is complete
-if ~can_mars_estimate(D)
-  error('This design needs more information before it can be estimate');
+if ~can_mars_estimate(marsD)
+  error('This design needs more information before it can be estimated');
 end
 
 % Check data and design dimensions
