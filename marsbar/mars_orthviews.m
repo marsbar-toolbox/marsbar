@@ -1,6 +1,7 @@
-function varargout = spm_orthviews(action,varargin)
+function varargout = mars_orthviews(action,varargin)
 % Display Orthogonal Views of a Normalized Image
-% FORMAT H = spm_orthviews('Image',filename[,position])
+% MarsBaR version of spm_orthviews with very minor modifications 
+% FORMAT H = mars_orthviews('Image',filename[,position])
 % filename - name of image to display
 % area     - position of image
 %            -  area(1) - position x
@@ -8,51 +9,51 @@ function varargout = spm_orthviews(action,varargin)
 %            -  area(3) - size x
 %            -  area(4) - size y
 % H        - handle for ortho sections
-% FORMAT spm_orthviews('BB',bb)
+% FORMAT mars_orthviews('BB',bb)
 % bb       - bounding box
 %            [loX loY loZ
 %             hiX hiY hiZ]
 %
-% FORMAT spm_orthviews('Redraw')
+% FORMAT mars_orthviews('Redraw')
 % Redraws the images
 %
-% FORMAT spm_orthviews('Reposition',centre)
+% FORMAT mars_orthviews('Reposition',centre)
 % centre   - X, Y & Z coordinates of centre voxel
 %
-% FORMAT spm_orthviews('Space'[,handle])
+% FORMAT mars_orthviews('Space'[,handle])
 % handle   - the view to define the space by
 % with no arguments - puts things into mm space
 %
-% FORMAT spm_orthviews('MaxBB')
+% FORMAT mars_orthviews('MaxBB')
 % sets the bounding box big enough display the whole of all images
 %
-% FORMAT spm_orthviews('Resolution',res)
+% FORMAT mars_orthviews('Resolution',res)
 % res      - resolution (mm)
 %
-% FORMAT spm_orthviews('Delete', handle)
+% FORMAT mars_orthviews('Delete', handle)
 % handle   - image number to delete
 %
-% FORMAT spm_orthviews('Reset')
+% FORMAT mars_orthviews('Reset')
 % clears the orthogonal views
 %
-% FORMAT spm_orthviews('Pos')
+% FORMAT mars_orthviews('Pos')
 % returns the co-ordinate of the crosshairs in millimetres in the
 % standard space.
 %
-% FORMAT spm_orthviews('Pos', i)
+% FORMAT mars_orthviews('Pos', i)
 % returns the voxel co-ordinate of the crosshairs in the image in the
 % ith orthogonal section.
 %
-% FORMAT spm_orthviews('Xhairs','off') OR spm_orthviews('Xhairs')
+% FORMAT mars_orthviews('Xhairs','off') OR mars_orthviews('Xhairs')
 % disables the cross-hairs on the display.
 %
-% FORMAT spm_orthviews('Xhairs','on')
+% FORMAT mars_orthviews('Xhairs','on')
 % enables the cross-hairs.
 %
-% FORMAT spm_orthviews('Interp',hld)
+% FORMAT mars_orthviews('Interp',hld)
 % sets the hold value to hld (see spm_slice_vol).
 %
-% FORMAT spm_orthviews('AddBlobs',handle,XYZ,Z,mat)
+% FORMAT mars_orthviews('AddBlobs',handle,XYZ,Z,mat)
 % Adds blobs from a pointlist to the image specified by the handle(s).
 % handle   - image number to add blobs to
 % XYZ      - blob voxel locations (currently in millimeters)
@@ -61,7 +62,7 @@ function varargout = spm_orthviews(action,varargin)
 % This method only adds one set of blobs, and displays them using a
 % split colour table.
 %
-% spm_orthviews('AddColouredBlobs',handle,XYZ,Z,mat,colour)
+% mars_orthviews('AddColouredBlobs',handle,XYZ,Z,mat,colour)
 % Adds blobs from a pointlist to the image specified by the handle(s).
 % handle   - image number to add blobs to
 % XYZ      - blob voxel locations (currently in millimeters)
@@ -72,22 +73,22 @@ function varargout = spm_orthviews(action,varargin)
 % Although it may not be particularly attractive on the screen, the colour
 % blobs print well.
 %
-% spm_orthviews('AddColouredMatrix',handle,matrix,mat,colour)
+% mars_orthviews('AddColouredMatrix',handle,matrix,mat,colour)
 % Adds blobs from a matrix to the image specified by the handle(s).
 % handle   - image number to add blobs to
 % matrix   - voxel matrix
 % mat      - matrix from matrix coordinates to millimeters 
 % colour   - the 3 vector containing the colour that the blobs should be
 %
-% FORMAT spm_orthviews('RemoveBlobs',handle)
+% FORMAT mars_orthviews('RemoveBlobs',handle)
 % Removes all blobs from the image specified by the handle(s).
 %
-% spm_orthviews('Register',hReg)
+% mars_orthviews('Register',hReg)
 % hReg      - Handle of HandleGraphics object to build registry in.
 % See spm_XYZreg for more information.
 %
 %_______________________________________________________________________
-% @(#)spm_orthviews.m	2.25 John Ashburner & Matthew Brett 01/03/19
+% @(#)mars_orthviews.m	2.25 John Ashburner & Matthew Brett 01/03/19
 %
 % $Id$
 
@@ -111,7 +112,7 @@ function varargout = spm_orthviews(action,varargin)
 %         st.registry.hMe  /
 % 
 % For each of the displayed images, there is a non-empty entry in the
-% vols cell array.  Handles returned by "spm_orthviews('Image',.....)"
+% vols cell array.  Handles returned by "mars_orthviews('Image',.....)"
 % indicate the position in the cell array of the newly created ortho-view.
 % Operations on each ortho-view require the handle to be passed.
 % 
@@ -272,7 +273,7 @@ case 'addcolouredimage',
 	addcolouredimage(varargin{1}, varargin{2},varargin{3});
  
 case 'addtruecolourimage',
- % spm_orthviews('Addtruecolourimage',handle,filename,colourmap,prop,mx,mn)
+ % mars_orthviews('Addtruecolourimage',handle,filename,colourmap,prop,mx,mn)
  % Adds blobs from an image in true colour
  % handle   - image number to add blobs to [default 1]
  % filename of image containing blob data [default - request via GUI]
@@ -478,7 +479,7 @@ h   = valid_handles(1:24);
 if ~isempty(h),
 	tmp = st.vols{h(1)}.ax{1}.ax;
 	st.registry = struct('hReg',hreg,'hMe', tmp);
-	spm_XYZreg('Add2Reg',st.registry.hReg,st.registry.hMe, 'spm_orthviews');
+	spm_XYZreg('Add2Reg',st.registry.hReg,st.registry.hMe, 'mars_orthviews');
 else,
 	warning('Nothing to register with');
 end;
@@ -612,7 +613,7 @@ end;
 ii = 1;
 while ~isempty(st.vols{ii}), ii = ii + 1; end;
 
-DeleteFcn = ['spm_orthviews(''Delete'',' num2str(ii) ');'];
+DeleteFcn = ['mars_orthviews(''Delete'',' num2str(ii) ');'];
 V.ax = cell(3,1);
 for i=1:3,
 	ax = axes('Visible','off','DrawMode','fast','Parent',st.fig,'DeleteFcn',DeleteFcn,...
@@ -669,7 +670,7 @@ for i=valid_handles(1:24),
 		skx = s*(Dims(1)+Dims(2))*0.02;
 	end;
 
-	DeleteFcn = ['spm_orthviews(''Delete'',' num2str(i) ');'];
+	DeleteFcn = ['mars_orthviews(''Delete'',' num2str(i) ');'];
 
 	% Transverse
 	set(st.vols{i}.ax{1}.ax,'Units','pixels', ...
@@ -956,7 +957,7 @@ for i = valid_handles(arg1),
 			imgs = imgs*scal+dcoff;
 		end;
 
-		callback = 'spm_orthviews(''Reposition'');';
+		callback = 'mars_orthviews(''Reposition'');';
 
 		set(st.vols{i}.ax{1}.d,'ButtonDownFcn',callback, 'Cdata',imgt);
 		set(st.vols{i}.ax{1}.lx,'ButtonDownFcn',callback,...
