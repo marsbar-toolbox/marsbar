@@ -24,15 +24,15 @@ end
 VY = get_images(D);
 
 % now change directory
-if filesep == '\',sepchar='/';else sepchar='\';end
+if filesep == '\', other_filesep='/';else other_filesep='\';end
 n = length(VY);
 strout = strvcat(VY(:).fname);
 msk    = diff(strout+0)~=0; % common path
 d1     = min(find(sum(msk,1))); 
-d1     = max([find(strout(1,1:d1) == sepchar | strout(1,1:d1) == filesep) 0]);
+d1     = max([find(strout(1,1:d1) == other_filesep | strout(1,1:d1) == filesep) 0]);
 ffnames = strout(:,d1+1:end); % common path removed
-tmp = ffnames == sepchar; % sepchar exchanged for this platform
-ffnames(ffnames == sepchar) = filesep;
+tmp = ffnames == other_filesep; % filesep exchanged for this platform
+ffnames(tmp) = filesep;
 nfnames = cellstr(...
     strcat(repmat(newpath,n,1),filesep,ffnames));
 [VY(:).fname] = deal(nfnames{:});
