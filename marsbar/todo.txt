@@ -29,33 +29,10 @@ add pairs of get/set functions for mardo
 Remove mars_mm_model, I guess
 Script to fish out version, do CVS export, and pack in release directory
 Test rig with various models for estimation 
-add 'mm' as synonym for 'real' in marois, and marsy's
-add add_contrast function to mardo methods
-(should check if contrast is already present, return indices into xCon
-when adding e.g
-
-[D Ic] = add_contrasts(D, names, stat_types, values)
-OR
-[D Ic] = add_contrasts(D, names, stat_types, values, con_types)
-
-SPMest.xCon(end + 1)   = spm_FcUtil('Set','stim_hrf',...
-				   'T','c',[1 0 0]',SPMest.xX.xKXs);
-
-contrast = spm_FcUtil('Set',names{n}, types{n}, 'c', values{n}', sX);
-if isempty(xCon),xCon = contrast;
-else
-iFc2 = spm_FcUtil('In', contrast, sX, xCon);
-     if ~iFc2, 
-       xCon(length(xCon)+1) = contrast;
-     else 
-       %- 
-       fprintf('\ncontrast %s (type %s) already in xCon', names{n}, types{n});
-     end
-   end
-
 
 marsy
 add functions as listed
 move get_marsy to marsy in maroi/, add VY, design 
 add voxel coordinate return to getdata
 change references to marsY in marsbar functions to use methods
+
