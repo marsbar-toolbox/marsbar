@@ -967,11 +967,11 @@ case 'spm_graph'                                         %-run spm_graph
 %=======================================================================
 % marsbar('spm_graph')
 %-----------------------------------------------------------------------
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
 if ~mars_struct('isthere', MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
-marsRes = mars_armoire('get', 'est_design');
-if isempty(marsRes), return, end
 
 % Variables returned in field names to allow differences
 % in return variables between versions of spm_graph
