@@ -66,8 +66,8 @@ for i = 1:length(Ic)
     %-----------------------------------------------------------
     h          = spm_FcUtil('Hsqr',xCon(ic),SPM.xX.xKXs);
     con(i,:)   = sum((h * betas).^2);
-    stat(i,:)  = con./Hp/trMV;;
-    Ps = (1 - spm_Fcdf(stat(i,:),df));
+    stat(i,:)  = con(i,:) ./ Hp / trMV;
+    Ps(i,:)    = (1 - spm_Fcdf(stat(i,:),df));
 
    otherwise
     %---------------------------------------------------------------
