@@ -886,8 +886,10 @@ case 'add_images'                            %-add images to FMRI design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
+if ~is_fmri(marsD), return, end
 marsD = fill(marsD, {'images'});
-mars_armoire('set', 'def_design', marsD);
+mars_armoire('update', 'def_design', marsD);
+mars_armoire('file_name', 'def_design', '');
 
 %=======================================================================
 case 'edit_filter'                   %-add / edit filter for FMRI design
@@ -896,6 +898,7 @@ case 'edit_filter'                   %-add / edit filter for FMRI design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
+if ~is_fmri(marsD), return, end
 marsD = fill(marsD, 'filter');
 mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');

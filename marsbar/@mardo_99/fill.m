@@ -20,6 +20,7 @@ function D = fill(D, actions)
 if nargin < 2
   actions = '';
 end
+if ~is_fmri(D), return, end
 if isempty(actions), actions = {'defaults'}; end
 if ischar(actions), actions = {actions}; end
 actions = [{'defaults'}, actions];
@@ -33,12 +34,6 @@ if isfield(spmD, 'Sess')
   Sess = spmD.Sess;
 else
   have_sess = 0;
-end
-try 
-  RT     = xX.RT;
-catch
-  RT  = spm_input('Interscan interval {secs}','+1');
-  spmD.xX.RT = RT;
 end
 
 % get file indices
@@ -78,7 +73,6 @@ for a = 1:length(actions)
 		    'Basis_functions',		BFstr,...
 		    'Number_of_sessions',	sprintf('%d',nsess),...
 		    'Conditions_per_session',	sprintf('%-3d',ntr),...
-		    'Interscan_interval',	sprintf('%0.2f',RT),...
 		    'Global_calculation',	sGXcalc,...
 		    'Grand_mean_scaling',	sGMsca,...
 		    'Global_normalisation',	Global);
@@ -201,6 +195,12 @@ for a = 1:length(actions)
     
     [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
     
+    % TR if not set (it should be) 
+    if isfield(xX, 'RT')
+      spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+    RT = spmD.xX.RT;
+
     % Temporal filtering
     %=======================================================================
     spm_input('Temporal autocorrelation options','+1','d',mfilename)
@@ -226,6 +226,7 @@ for a = 1:length(actions)
     
     % fill into design
     xsDes = struct(...
+	'Interscan_interval',	sprintf('%0.2f',RT),...
 	'Intrinsic_correlations',	xVi.Form,...
 	'High_pass_Filter',             LFstr,...
 	'Low_pass_Filter',              HFstr);

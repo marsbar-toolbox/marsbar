@@ -20,6 +20,7 @@ function D = fill(D, actions)
 if nargin < 2
   actions = '';
 end
+if ~is_fmri(D), return, end
 if isempty(actions), actions = {'defaults'}; end
 if ischar(actions), actions = {actions}; end
 actions = [{'defaults'}, actions];
@@ -33,12 +34,6 @@ if isfield(SPM, 'Sess')
   Sess = SPM.Sess;
 else
   have_sess = 0;
-end
-try 
-  RT     = SPM.xY.RT;
-catch
-  RT  = spm_input('Interscan interval {secs}','+1');
-  SPM.xY.RT = RT;
 end
 
 % get file indices
@@ -71,7 +66,6 @@ for a = 1:length(actions)
 	'Basis_functions',	BFstr,...
 	'Number_of_sessions',	sprintf('%d',nsess),...
 	'Trials_per_session',	sprintf('%-3d',ntr),...
-	'Interscan_interval',	sprintf('%0.2f {s}',RT),...
 	'Global_calculation',	sGXcalc,...
 	'Grand_mean_scaling',	sGMsca,...
 	'Global_normalisation',	Global);
@@ -195,6 +189,12 @@ for a = 1:length(actions)
     
     [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
     
+    % TR if not set (it should be) 
+    if ~mars_struct('isthere', SPM, 'xY', 'RT')
+      SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+    RT = SPM.xY.RT;
+
     % High-pass filtering and serial correlations
     %=======================================================================
     
@@ -240,6 +240,7 @@ for a = 1:length(actions)
     
     % fill into design
     xsDes = struct(...
+	'Interscan_interval',	sprintf('%0.2f {s}',RT),...
 	'Intrinsic_correlations',	SPM.xVi.form,...
 	'High_pass_Filter',             str);
     
