@@ -1,4 +1,4 @@
-function [o,others] = marsy(params, names, sumfunc)
+function [o,others] = marsy(params, region_info, summary_info)
 % Class constructor for marsy object
 % inputs [defaults]
 % params  - can be: structure, either:
@@ -7,10 +7,35 @@ function [o,others] = marsy(params, names, sumfunc)
 %             'y_struct', containing data structure
 %           OR: filename, which loads to give structure as above
 %           OR: 2D matrix, containing summary data (Y) only (see below)
-%           OR: cell array of matrices, one per region 
+%           OR: cell array of 2D matrices, one per region 
 % 
-% names   - cell array of names for regions (optional)
-% sumfunc - summary function to summarize data (optional)
+% region_info  - (optional) cell array of names for regions 
+%                or array of structures containing information for
+%                   regions
+%                or cell array of structures with information 
+%                Structure can have fields;
+%                name    - string identifying region
+%                descrip - longer description of region
+%                info    - structure containing any other fields of
+%                          interest  
+%                vXYZ    - any voxel coordinates in X Y Z dimension 
+%                          (3 by S1 for region 1 etc).  
+%                mat     - a 4x4 transformation matrix giving coordinates
+%                          in mm from voxel coordinates in vXYZ
+%
+% summary_info - (optional) summary function to summarize data (string)
+%                or structure containing information for summary data
+%                Structure can have fields;
+%                sumfunc - the summary function used to summarize the
+%                          samples (voxels) per time point;  a string, 
+%                          which is usually one of 'mean', 'median',
+%                          'wtmean', 'eigen1', or 'unknown'
+%                descrip - text field describing the origin of the data  
+%                info    - a structure with fields defining any other
+%                          interesting information about the region
+%
+% Any data in region_info, summary info will overwrite region or summary
+% information passed in the first argument
 % 
 % Outputs
 % o       - marsy object
@@ -187,19 +212,41 @@ switch class(params)
   end
   params = struct('y_struct', struct('regions', {regions}));
  otherwise
-  error('Unexpected first input');
+  error('Unexpected data type for first input');
 end
 
 % process further inputs
 if nargin > 1
-  % names have been specified
-  for i = 1:length(names)
-    params.y_struct.regions{i}.name = names{i};
+  % region_info has been specified
+  if iscell(region_info) & ischar(region_info{1}) % names only
+    tmp = region_info; region_info = cell(size(region_info));
+    for i = 1:length(tmp)
+      region_info{i}.name = tmp{i};
+    end
+  end
+  if isstruct(region_info) % need a cell array
+    tmp = region_info; region_info = cell(size(region_info));
+    for i = 1:length(tmp)
+      region_info{i} = tmp(i);
+    end
+  end
+
+  % set 
+  for i = 1:length(region_info)
+    params.y_struct.regions{i} = mars_struct('ffillmerge', ...
+					     params.y_struct.regions{i},...
+					     region_info{i});
   end
 end
+
 if nargin > 2
-  % sumfunc has been specified
-  params.y_struct.sumfunc = sumfunc;
+  % summary_info has been specified
+  if ischar(summary_info) % sumfunc only
+    summary_info = struct('sumfunc', summary_info);
+  end
+  params.y_struct = mars_struct('ffilmerge', ...
+				params.y_struct, ...
+				summary_info);
 end
 
 % fill with defaults, parse into fields for this object, children
