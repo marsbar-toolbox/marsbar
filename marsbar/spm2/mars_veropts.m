@@ -19,6 +19,8 @@ switch lower(arg)
     spm('defaults','FMRI');
   end
   varargout = {defaults};
+ case 'default_design'
+  varargout = {mardo_2};
  case 'template_ext' % extension for template images
   varargout = {'.mnc'}; 
  case 'get_img_ext' % default image extension for spm_get

@@ -14,6 +14,8 @@ end
 switch lower(arg)
  case 'defaults'
   varargout = {};
+ case 'default_design'
+  varargout = {mardo_99};
  case 'template_ext' % extension for template images
   varargout = {'.img'};
  case 'get_img_ext'  % default image extension for spm_get
