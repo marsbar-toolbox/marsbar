@@ -1,7 +1,13 @@
 function D = cd_images(D, newpath, byteswap)
 % method for changing path to image files in design
-% FORMAT D = cd_imgs(D, newpath [, byteswap])
+% FORMAT D = cd_images(D, newpath [, byteswap])
 %
+% Synopsis
+% D = cd_images(D); % get new path from GUI
+% D = cd_images(D, '/new/root/path'); 
+% D = cd_images(D, '/new/root/path', 1); % force byteswap
+% D = cd_images(D, '/new/root/path', 1); % prevent byteswap  
+%  
 % D          - mardo design
 % newpath    - path to replace common path of files in analysis [GUI]
 % byteswap   - whether to indicate byte swapping in vol structs 
