@@ -30,8 +30,8 @@ Remove mars_mm_model, I guess
 Script to fish out version, do CVS export, and pack in release directory
 Test rig with various models for estimation 
 
-Add plot, split, join functions to data menu
-Add import export function
+Odd EoI + subset contrast error in MV routine.
+Adding of names, label for ROI import.
 
 Test...
 
