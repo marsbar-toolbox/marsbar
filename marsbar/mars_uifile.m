@@ -48,13 +48,13 @@ end
 fi = [];
 switch lower(action)
  case 'get'
-  if mlv < 6
+  if mlv < 6.5
     [fn pn] = uigetfile(arglist{:});
   else
     [fn pn fi] = uigetfile(arglist{:});
   end
  case 'put'
-  if mlv < 6
+  if mlv < 6.5
     [fn pn] = uiputfile(arglist{:});
   else
     [fn pn fi] = uiputfile(arglist{:});
