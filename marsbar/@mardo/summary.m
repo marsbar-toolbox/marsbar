@@ -11,8 +11,11 @@ else
   tmp = 'N/A';
 end
 strs{3} = sprintf('Has filter?:       \t%s',  tmp);
-strs{4} = sprintf('Has images?:       \t%s',  sf_recode(has_images(D)));
-strs{5} = sprintf('MarsBaR estimated?:\t%s',  sf_recode(is_estimated(D)));
+strs{4} = sprintf('Has images?:       \t%s',  ...
+		  sf_recode(has_images(D)));
+strs{5} = sprintf('MarsBaR estimated?:\t%s', ...
+		  sf_recode(is_mars_estimated(D)));
+
 
 return
 

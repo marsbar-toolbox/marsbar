@@ -180,10 +180,15 @@ defstruct = struct('y_struct', [],...
 if nargin < 1
   params = [];
 end
-
 if isa(params, myclass)
   o = params;
   return
+end
+if nargin < 2
+  region_stuff = [];
+end
+if nargin < 3
+  summary_stuff = [];
 end
 
 % check first input
@@ -241,7 +246,7 @@ elseif isfield(st, 'regions')
 end
 
 % process further inputs
-if nargin > 1
+if ~isempty(region_stuff)
   % region_stuff has been specified
   if ischar(region_stuff)
     region_stuff = {region_stuff};
@@ -275,7 +280,7 @@ if nargin > 1
   end
 end
 
-if nargin > 2
+if ~isempty(summary_stuff)
   % summary_stuff has been specified
   if ischar(summary_stuff) % sumfunc only
     summary_stuff = struct('sumfunc', summary_stuff);

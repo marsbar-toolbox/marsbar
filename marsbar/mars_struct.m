@@ -53,10 +53,13 @@ function varargout = mars_struct(action, varargin)
 % d contains fields in a that were not present in b
 % c contains fields present in both, or just in b
 %
-% FORMAT c = mars_struct('isthere', a, b)
+% FORMAT z = mars_struct('isthere', a, b [, c [, d ...])
 % returns 1 if field named in b is present in a
 % and field value is not empty.
-%
+% The call is recursive if more than two arguments are passed
+% Thus with structure s = struct('one', struct('two', 3))
+% mars_struct('isthere', s, 'one', 'two') returns 1
+%   
 % $Id$
 
 if nargin < 1
@@ -197,10 +200,15 @@ switch lower(action)
   varargout = {mars_struct('merge', a, b) c};
   
  case 'isthere'
-  if isfield(a, b)
-    c = ~isempty(getfield(a,b));
-  else c = 0; end
-  varargout = {c};
+  for v = 2:nargin-1
+    b = varargin{v};
+    if ~isfield(a, b)
+      varargout = {0};
+      return
+    end
+    a = getfield(a, b);
+  end
+  varargout = {~isempty(a)};
   
  otherwise
   error(['Suspicious action was ' action]);

@@ -55,13 +55,9 @@ switch lower(action)
 
   % Clear default region if data has changed
   global MARS;
-  if isfield(MARS, 'WORKSPACE')
-    if isfield(MARS.WORKSPACE, 'default_region')
-      if ~isempty(MARS.WORKSPACE.default_region)
-	MARS.WORKSPACE.default_region = [];
-	fprintf('Reset of data, cleared default region...\n');
-      end
-    end
+  if mars_struct('isthere', MARS, 'WORKSPACE', 'default_region')
+    MARS.WORKSPACE.default_region = [];
+    fprintf('Reset of data, cleared default region...\n');
   end
   res = I;
   
@@ -80,7 +76,7 @@ switch lower(action)
     res = [];
     return
   end
-  if ~is_estimated(data)
+  if ~is_mars_estimated(data)
     error('Design has not been estimated')
   end
   

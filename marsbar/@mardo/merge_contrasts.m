@@ -1,6 +1,6 @@
-function [D,changef] = merge_contrasts(D, D2, Ic)
+function [D,changef,Ic_o] = merge_contrasts(D, D2, Ic)
 % merge contrasts from one design to another
-% FORMAT [D changef] = merge_contrasts(D, D2, Ic)
+% FORMAT [D changef Ic_o] = merge_contrasts(D, D2, Ic)
 %
 % D         - design to put contrasts into
 % D2        - design with contrasts to add OR
@@ -12,7 +12,8 @@ function [D,changef] = merge_contrasts(D, D2, Ic)
 % Returns
 % D         - design with any added contrasts
 % changef   - set to 1 if any contrasts have been added
-%  
+% Ic_o      - the indices of the merged contrasts in D
+%
 % The routine only adds contrasts that are not already present
 %
 % Matthew Brett 13/11/01 - CRD
@@ -51,15 +52,18 @@ if size(xX.X, 2) ~= size(xCon_s(1).c, 1)
 end
 
 changef = 0;
-if isempty(Ic);
-  % need to make a design for running GUI, if only a structure
-  if ~isa(D2, 'mardo')
-    D2 = set_contrasts(D, D2);
+if isempty(Ic)
+  if length(xCon_s) == 1
+    Ic = 1;
+  else
+    % need to make a design for running GUI, if only a structure
+    if ~isa(D2, 'mardo')
+      D2 = set_contrasts(D, D2);
+    end
+    Ic = ui_get_contrast(D2,'T&F',Inf,...
+			 'Select contrasts to merge','',0);
   end
-  Ic = ui_get_contrast(D2,'T&F',Inf,...
-		       'Select contrasts to merge','',0);
-end
-if strcmp(Ic, 'all')
+elseif strcmp(Ic, 'all')
   Ic = 1:length(xCon_s);
 end
 if isempty(Ic)
@@ -69,20 +73,23 @@ end
 % input, check if already present
 sX = xX.xKXs;
 xCon = xCon_o;
-changef = 0;
-for i=Ic
-  contrast = xCon_s(i);
+xc_len = length(xCon);
+old_xc_len = xc_len;
+for i=1:length(Ic)
+  contrast = xCon_s(Ic(i));
   iFc2 = spm_FcUtil('In', contrast, sX, xCon);
-  if ~iFc2, 
-      xCon(length(xCon)+1) = contrast;
-      changef = 1;
-   else 
-      %- 
-      fprintf('\ncontrast %s (type %s) already in xCon\n', ...
-	      contrast.name, contrast.STAT);
-   end
+  if ~iFc2
+    xc_len = xc_len+1;
+    xCon(xc_len) = contrast;
+    Ic_o(i) = xc_len;
+  else 
+    Ic_o(i) = iFc2;
+    fprintf('\ncontrast %s (type %s) already in xCon\n', ...
+	    contrast.name, contrast.STAT);
+  end
 end
-if changef
+if xc_len ~= old_xc_len
+  changef = 1;
   SPM.xCon = xCon;
   D = des_struct(D, SPM);
 end

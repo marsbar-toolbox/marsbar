@@ -23,7 +23,8 @@ function [o, others] = mardo(params,passf)
 % Methods
 % is_valid     - returns 1 if des_struct contains a valid design
 % is_marsed    - returns 1 if design has been processed with MarsBaR
-% is_estimated - returns 1 if design has Mars estimation data
+% is_mars_estimated - returns 1 if design has Mars estimation data
+% is_spm_estimated - returns 1 if design has SPM estimation data  
 % has_images   - returns 1 if the design contains images, NaN if not known
 % has_filter   - returns 1 if the design contains a filter, NaN if not known
 % has_contrasts - returns 1 if the design contains contrasts
@@ -76,7 +77,10 @@ end
 
 % check inputs
 if ischar(params)  % maybe filename
-  params = load(params);
+  fname  = deblank(params);
+  params = load(fname);
+else
+  fname = '';
 end
 if isstruct(params)
   if ~isfield(params, 'des_struct')
@@ -100,6 +104,38 @@ end
 % convert data field to object
 if isfield(o.des_struct, 'marsY')
   o.des_struct.marsY = marsy(o.des_struct.marsY);
+end
+
+% if the design was loaded from a file, and is 99 type
+% then it may need contrasts.
+% If it wass estimated in MarsBaR, try loading mars_xCon.mat
+% in the same directory.
+% If it wass estimated in SPM, try loading xCon.mat
+% in the same directory.
+if ~isempty(fname) & ...
+      strcmp(type(o), 'SPM99') & ...
+      ~has_contrasts(o)
+  [pn fn ext] = fileparts(fname);
+  if is_mars_estimated(o)        
+    xcon_name = fullfile(pn, 'mars_xCon.mat')
+  elseif is_spm_estimated(o) 
+    xcon_name = fullfile(pn, 'xCon.mat');
+  else
+    xcon_name = '';
+  end
+  if ~isempty(xcon_name)
+    if exist(xcon_name, 'file')
+      xc = load(xcon_name);
+      if isfield(xc, 'xCon')
+	o = set_contrasts(o, xc.xCon);
+	if verbose(o)
+	  disp(['Set contrasts from ' xcon_name]);
+	end
+      end
+    elseif verbose(o)
+      disp('Failed to load contrasts');
+    end
+  end
 end
 
 % sort out design image flipping

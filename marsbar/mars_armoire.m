@@ -37,6 +37,9 @@ function varargout = mars_armoire(action, item, data, filename)
 % clear          - clears data for item
 % isempty        - returns 1 if no data for item
 % need_save      - returns 1 if this item needs a save
+%
+% And for use in debugging:
+% dump           - returns contents of the underling variable
 %   
 % for any other action string, mars_armoire will look to see if the action
 % matches any of the field names in the structures and get/set this
@@ -111,9 +114,11 @@ if nargin < 1 % no action
   error('Need action!');
   return
 end
-if nargin < 2  % no item
-  error('Need item!');
-  return
+if ~ismember(action, {'dump'})
+  if nargin < 2  % no item
+    error('Need item!');
+    return
+  end
 end
 if nargin < 3
   data = NaN;
@@ -123,7 +128,7 @@ if nargin < 4
 end
 
 % certain actions do not require valid item names
-if ~ismember(action, {'add', 'add_if_absent', 'exist'})
+if ~ismember(action, {'add', 'add_if_absent', 'exist', 'dump'})
   % the rest do
   flist = i_item_list;
   switch item
@@ -202,6 +207,8 @@ switch lower(action)
   varargout = {i_need_save(i_contents)};
  case 'isempty'
   varargout = {i_isempty(i_contents)};
+ case 'dump'
+  varargout = {i_dump};
  otherwise
   % look in fieldnames
   if ismember(action, fieldnames(i_contents))
@@ -397,6 +404,11 @@ I = getfield(g_check_var, i_name);
 return
 
 % Routines below explicity manipulate global variable
+
+function I = i_dump
+global MARMOIRE
+I = MARMOIRE;
+return
 
 function I = i_down_dump(I)
 global MARMOIRE

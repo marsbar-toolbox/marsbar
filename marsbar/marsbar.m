@@ -236,29 +236,29 @@ uicontrol(Fmenu,'Style','PopUp',...
 
 % Design menu
 funcs = {...
-    'marsbar(''list_images'')',...
-    'marsbar(''ana_cd'')',...
-    'marsbar(''ana_desmooth'')',...
     'marsbar(''make_design'', ''pet'');',...
     'marsbar(''make_design'', ''fmri'');',...
     'marsbar(''make_design'', ''basic'');',...
     'marsbar(''design_report'')',...
     'marsbar(''add_images'')',...
     'marsbar(''edit_filter'')',...
+    'marsbar(''check_images'')',...
+    'marsbar(''ana_cd'')',...
+    'marsbar(''ana_desmooth'')',...
     'mars_armoire(''set_ui'', ''def_design'');',...
     'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Design...'...
-		    '|List image names to console',...
-		    '|Change design path to images',...
-		    '|Convert to unsmoothed',...
 		    '|PET models',...
 		    '|FMRI models',...
 		    '|Basic models',...
 		    '|Explore',...
 		    '|Add images to FMRI design',...
 		    '|Add/edit filter for FMRI design',...	
+		    '|Check image names in design',...
+		    '|Change design path to images',...
+		    '|Convert to unsmoothed',...
 		    '|Set design from file',...
 		    '|Save design to file'],...
 	  'Position',[bx by(2) bw bh].*WS,...
@@ -363,7 +363,7 @@ set(Fmenu,'Visible',Vis)
 varargout = {Fmenu};
 
 %=======================================================================
-case 'ver'                                      %-Return MarsBaR version
+case {'ver', 'version'}                         %-Return MarsBaR version
 %=======================================================================
 % [v [,banner]] = marsbar('Ver')
 %-----------------------------------------------------------------------
@@ -562,6 +562,7 @@ fprintf('\nSaved ROI as %s\n', source(o));
 case 'extract_data'                       % gets data maybe using design
 %=======================================================================
 % marsY = marsbar('extract_data'[, roi_list [, 'full'|'default']]);
+
 if nargin < 2
   etype = 'default';
 else
@@ -589,6 +590,9 @@ if strcmp(etype, 'default')
   VY = get_images(marsD);
 else  % full options extraction
   % question for design
+  
+  [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Extract data', 0);
+
   marsD = [];
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
     marsD = mars_armoire('get','def_design');
@@ -647,17 +651,25 @@ case 'import_data'                                    %- it imports data
 % marsbar('import_data')
 %-----------------------------------------------------------------------
 
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Import data', 0);
+
 r_f = spm_input('Import what?', '+1', 'm', ...
 		['Sample time courses for one region'...
 		 '|Summary time course(s) for region(s)'],...
 		[1 0], 2);
-src = spm_input('Import fron?', '+1', 'm', ...
-		['Matlab workspace' ...
-		 '|Text file',...
-		 '|Lotus spreadsheet',...
-		 '|Excel spreadsheet'], ...
-		{'matlab','txt','wk1','xls'}, 1);
 
+Ls = 		['Matlab workspace' ...
+		 '|Text file',...
+		 '|Lotus spreadsheet'];,...
+Os =            {'matlab','txt','wk1'};
+
+if ~isempty(which('xlsread'))
+  Ls = [Ls  '|Excel spreadsheet'];
+  Os = [Os {'xls'}];
+end
+
+src = spm_input('Import fron?', '+1', 'm', Ls, Os, 1);
+  
 switch src{1}
  case 'matlab'
   Y = spm_input('Matlab expression', '+1', 'e');
@@ -690,31 +702,37 @@ switch src{1}
  otherwise
   error('Strange source');
 end
-if r_f
+if r_f   % region data
   s_f = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
   r_st = struct('name', fn,...
-		'descrip', 'Region data Loaded from ' fn;
-  marsY = marsy({Y},str, s_f);
-else
-  marsY = marsy(Y);
-  r_des = [' data oaded from ' fn];
+		'descrip', pn_fn);
+  s_st = struct('descrip', ['Region data loaded from ' pn_fn],...
+		'sumfunc', s_f);
+  marsY = marsy({Y},r_st, s_st);
+  pref = '';  % Region name prefix not used, as names are set
+else     % summary data  
+  s_st = struct('descrip', ['Summary data loaded from ' pn_fn]);
+  marsY = marsy(Y, '', s_st);
+  pref = spm_input('Prefix for region names', '+1', 's', [fn '_']);
 end
 
-% Names and descriptions
+% Names
 stop_f = 0;
-ns = region_name(marsY);
+ns = region_name(marsY, [], [], pref);
+spm_input('Return name with spaces only to abort entry','+1','d');
 for r = 1:length(ns)
   ns{r} = spm_input(...
       sprintf('Name for region %d', r),...
       '+1', 's', ns{r});
-  if isempty(ns{r}), stop_f = 1; break, end
+  if all(ns{r}==' '), stop_f = 1; break, end
 end
 if ~stop_f
-  marsY = region_name(marsY, ns{r});
+  marsY = region_name(marsY, [], ns);
 end
 
 mars_armoire('set', 'roi_data', marsY);
-  
+disp(['Data loaded from ' pn_fn]);
+
 %=======================================================================
 case 'export_data'                                             %- exports
 %=======================================================================
@@ -723,15 +741,32 @@ case 'export_data'                                             %- exports
 marsY = mars_armoire('get','roi_data');
 if isempty(marsY), return, end
 
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Export data', 0);
+
 r_f = spm_input('Export what?', '+1', 'm', ...
 		['Sample time courses for one region'...
 		 '|Summary time course(s) for region(s)'],...
 		[1 0], 2);
-src = spm_input('Export to?', '+1', 'm', ...
-		['Matlab workspace' ...
+
+Ls = 		['Matlab workspace' ...
 		 '|Text file',...
-		 '|Lotus spreadsheet'], ...
-		{'matlab','txt','wk1'}, 1);
+		 '|Lotus spreadsheet'];,...
+Os =            {'matlab','txt','wk1'};
+
+if ~isempty(which('xlswrite'))
+  xls_write = 1;
+elseif ~isempty(which('xlswrite5'))
+  xls_write = 2;
+else
+  xls_write = 0;
+end
+
+if xls_write
+  Ls = [Ls  '|Excel spreadsheet'];
+  Os = [Os {'xls'}];
+end
+
+src = spm_input('Export to?', '+1', 'm', Ls, Os, 1);
 
 if r_f
   rno = marsbar('get_region', region_name(marsY));
@@ -763,9 +798,21 @@ switch src{1}
       'Lotus spreadsheet file');
   if isequal(fn,0), return, end
   wk1write(fullfile(pn,fn), Y);
+ case 'xls'
+  [fn, pn] = uiputfile( ...
+      {'*.xls', 'Excel spreadsheet files (*.wk1)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Excel spreadsheet file');
+  if isequal(fn,0), return, end
+  if xls_write == 1
+    xlswrite(fullfile(pn,fn), Y);
+  else
+    xlswrite5(fullfile(pn,fn), Y);
+  end
  otherwise
   error('Strange source');
 end
+disp(['Data saved to ' fn]);
 
 %=======================================================================
 case 'split_data'                %- splits data into one file per region 
@@ -778,6 +825,9 @@ if n_regions(marsY) == 1
   disp('Only one region in ROI data');
   return
 end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Slit regions to files', 0);
 
 d = spm_get([-1 0], '', 'New directory root for files');
 if isempty(d), return, end
@@ -800,7 +850,9 @@ case 'join_data'                %- joins many data files into one object
 %=======================================================================
 % marsbar('join_data')
 %-----------------------------------------------------------------------
+
 P = spm_get([0 Inf], '*_mdata.mat', 'Select data files to join');
+
 if isempty(P), return, end
 for i = 1:size(P,1)
   d_o{i} = marsy(deblank(P(i,:)));
@@ -1101,12 +1153,41 @@ else
 end
 
 %=======================================================================
+case 'check_images'                   %-checks image files in SPM design
+%=======================================================================
+% marsbar('check_images')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+if ~has_images(marsD)
+  disp('Design does not contain images');
+  return
+end
+
+P = get_image_names(marsD);
+P = strvcat(P{:});
+ok_f = 1;
+for i = 1:size(P, 1)
+  fname = deblank(P(i,:));
+  if ~exist(fname, 'file');
+    fprintf('Image %d: %s does not exist\n', i, fname);
+    ok_f = 0;
+  end
+end
+if ok_f
+  disp('All images in design appear to exist');
+end
+
+%=======================================================================
 case 'ana_cd'                      %-changes path to files in SPM design
 %=======================================================================
 % marsbar('ana_cd')
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Change image path in design', 0);
 
 % root path shown in output window
 P = get_image_names(marsD);
@@ -1135,13 +1216,35 @@ marsD = deprefix_images(marsD, 's');
 mars_armoire('set', 'def_design', marsD);
   
 %=======================================================================
-case 'design_report'                %-does explore design thing
+case 'design_report'                         %-does explore design thing
 %=======================================================================
 % marsbar('design_report')
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
 ui_report(marsD);
+
+%=======================================================================
+case 'error_log'                  %- makes file to help debugging errors
+%=======================================================================
+% fname = marsbar('error_log', fname);
+%-----------------------------------------------------------------------
+if nargin < 2
+  fname = 'error_log.mat';
+else
+  fname = varargin{2};
+end
+
+e_log = struct('last_error', lasterr, ...
+	       'marmoire', mars_armoire('dump'), ...
+	       'm_ver', marsbar('ver'),...
+	       'mars', MARS);
+savestruct(fname, e_log);
+if ~isempty(which('zip'))
+  zip([fname '.zip'], fname);
+  fname = [fname '.zip'];
+end
+disp(['Saved error log as ' fname]);
 
 %=======================================================================
 case 'show_volume'           %- shows ROI volume in mm 
@@ -1163,6 +1266,7 @@ case 'roi_as_image'           %- writes roi as image
 % marsbar('roi_as_image')
 %-----------------------------------------------------------------------
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Write ROI to image');
+
 roi = spm_get([0 1], 'roi.mat', 'Select ROI to write');
 if isempty(roi),return,end
 [pn fn ext] = fileparts(roi);
