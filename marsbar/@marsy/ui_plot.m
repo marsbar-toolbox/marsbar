@@ -157,10 +157,14 @@ for c = plot_spec.r_nos
     
     switch lower(plot_types{p})
      case 'raw'
-      plot(y);
+      a_r = [];
+      for s = 1:n_blocks
+	a_r = [a_r; rows{s}(:)];
+      end
+      plot(y(a_r));
       axis tight
-      % add session indicators
       hold on
+      % add session indicators
       yrg = [min(y) max(y)];
       for s = 1:n_blocks
 	rw = rows{s};
