@@ -38,16 +38,16 @@ r_st = st.regions{r_no};
 if ~isfield(r_st, 'vXYZ') |  ~isfield(r_st, 'mat')
   return
 end
-M = r_st.mat;
 XYZ = r_st.vXYZ;
-XYZ = XYZ(1:3,:);
+if isempty(XYZ), return, end
 switch xyz_type
  case 'vox'
  case {'mm', 'real'}
-  if ~isempty(XYZ)
-    tmp = M * [XYZ; ones(1, size(XYZ, 2))];
-    XYZ = XYZ(1:3,:);
-  end
+  [m n] = size(XYZ);
+  if m == 3, XYZ = [XYZ; ones(1, n)]; end
+  M = r_st.mat;
+  XYZ = M * XYZ;
  otherwise
   error(['Unknown coordinate type: ' xyz_type]);
 end
+XYZ = XYZ(1:3,:);
