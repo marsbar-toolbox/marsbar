@@ -236,7 +236,8 @@ funcs = {'marsbar(''ana_cd'')',...
 	 'spm pointer watch, spm_DesRep; spm pointer arrow',...
 	 'marsbar(''add_images'')',...
 	 'marsbar(''edit_filter'')',...
-	 'marsbar(''set_design'');'};
+	 'marsbar(''set_design'');',...
+	 'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Design...'...
@@ -245,14 +246,18 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|FMRI models|Basic models|Explore',...
 		    '|Add filter+images to FMRI design',...
 		    '|Add/edit filter for FMRI design',...	
-		    '|Set design from file'],...
+		    '|Set design from file',...
+		    '|Save design to file'],...
 	  'Position',[bx by(2) bw bh].*WS,...
 	  'ToolTipString','Set/specify design...',...
 	  'CallBack','spm(''PopUpCB'',gcbo)',...
 	  'UserData',funcs);
 
 % Data menu
-funcs = {'','','','',...
+funcs = {'marsbar(''extract_data'', ''default'');',...
+	 'marsbar(''extract_data'', ''full'');',...
+	 'disp(''Import'');',...
+	 'disp(''Export'');',...
 	 'mars_armoire(''set_ui'', ''roi_data'');',...
 	 'mars_armoire(''save_ui'', ''roi_data'', ''fw'');'};
 
@@ -573,6 +578,7 @@ fprintf('\nSaved ROI as %s\n', source(o));
 %=======================================================================
 case 'get_design'                      % gets SPM design, sets if needed
 %=======================================================================
+% marsD = marsbar('get_design');
 if mars_armoire('isempty', 'def_design')
   marsD = marsbar('set_design');
 else
@@ -584,7 +590,7 @@ varargout = {marsD};
 case 'set_design'                                      % sets SPM design
 %=======================================================================
 % marsD = marsbar('set_design' [,marsD])
-
+varargout = {[]};
 if nargin < 2
   marsD = mars_armoire('set_ui', 'def_design');
 else
@@ -592,17 +598,68 @@ else
 end
 if isempty(marsD), return, end
 
-% Strip any estimation fields from the design
-[marsD changef] = mars_strip_design(marsD);
-if changef, mars_armoire('update', 'def_design', marsD); end
+% Do any required processing of design
+[marsD changef] = mars_process_design(marsD);
+if changef
+  % if changed, reset without filename to protect previous design
+  mars_armoire('set', 'def_design', marsD);
+end
 
 % Unload roi data if design has been set, and data exists
-if ~mars_armoire('isempty', 'roi_data'),
+if ~mars_armoire('isempty', 'roi_data')
   mars_armoire('clear', 'roi_data');
   fprintf('Reset of design, cleared ROI data...\n');
 end
-
 varargout = {marsD};
+
+%=======================================================================
+case 'extract_data'                       % gets data maybe using design
+%=======================================================================
+% marsD = marsbar('extract_data'[, roi_list [, 'full'|'default']]);
+if nargin < 2
+  roi_list = '';
+else
+  roi_list = varargin{2};
+end
+if nargin < 3
+  etype = 'default';
+else
+  etype = varargin{3};
+end
+if isempty(roi_list)
+  roi_list = spm_get(Inf,'roi.mat','Select ROI(s) to extract data for');
+end
+
+varargout = {[]};
+if isempty(roi_list), return, end
+
+if strcmp(etype, 'default')
+  marsD = marsbar('get_design');
+  if isempty(marsD), return, end;
+  if ~is_there(marsD, 'VY')
+    msgbox('Design does not contain images', ...
+	   'Cannot use design', ...
+	   'warn');
+    return
+  end
+  VY = marsD.VY;
+else  % full options extraction
+  % question for design
+  marsD = [];
+  if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
+    marsD = marsbar('get_design');
+  end
+  VY = mars_image_scaling(marsD);
+end
+
+% Do data extraction
+marsY = mars_roidata(roi_list, VY, ...
+		     MARS.OPTIONS.statistics.sumfunc, 'v');
+if isempty(marsY.Y)
+  msgbox('No data returned','Data extraction', 'warn');
+  return
+end
+varargout = {marsY};
 
 %=======================================================================
 case 'set_results'                                  %-set results
@@ -628,8 +685,8 @@ if isfield(marsD, 'VY')
   msgbox('Design already contains images', 'Add images', 'warn');
   return
 end
-marsD = mars_fill_design(spmD, 'fi');
-mars_armoire('update', 'def_design', marsD);
+marsD = mars_fill_design(marsD, 'fi');
+mars_armoire('set', 'def_design', marsD);
 
 %=======================================================================
 case 'edit_filter'                   %-add / edit filter for FMRI design
@@ -638,8 +695,9 @@ case 'edit_filter'                   %-add / edit filter for FMRI design
 %-----------------------------------------------------------------------
 marsD = marsbar('get_design');
 if isempty(marsD), return, end
-marsD = mars_fill_design(spmD, 'f');
+marsD = mars_fill_design(marsD, 'f');
 mars_armoire('update', 'def_design', marsD);
+mars_armoire('file_name', 'def_design', '');
 
 %=======================================================================
 case 'set_defcon'                                  %-set default contrast
