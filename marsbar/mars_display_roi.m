@@ -92,7 +92,7 @@ for i = 1:olen
     else
       dat(dat == 0) = NaN;
       % add to image to display
-      spm_orthviews('AddColouredMatrix', 1, dat, nsp.mat, cmap(col_inds(i),:));
+      mars_orthviews('AddColouredMatrix', 1, dat, nsp.mat, cmap(col_inds(i),:));
   
       % Information for display
       XYZ = realpts(roi,nsp);
@@ -183,13 +183,13 @@ st.mars.roi_info = roi_info;
 st.callback = 'mars_display_roi(''orthcb'');';
 
 % Move to centre of mass of last ROI in list
-spm_orthviews('Reposition', roi_info(end).c_o_m);
+mars_orthviews('Reposition', roi_info(end).c_o_m);
 mars_display_roi('show_info', length(roi_info));
 
 case 'roi_menu'         % callback service from ROI menu
 if isfield(st, 'mars')
   v = get(gco, 'Value');
-  spm_orthviews('Reposition', st.mars.roi_info(v).c_o_m);
+  mars_orthviews('Reposition', st.mars.roi_info(v).c_o_m);
   mars_display_roi('show_info', v);
 end
  
@@ -220,17 +220,17 @@ if isfield(st, 'mars')
   end 
 end
 
-case 'orthcb'           % callback service from spm_orthviews
+case 'orthcb'           % callback service from mars_orthviews
   
-% This copied from spm_orthviews 'shopos' function
+% This copied from mars_orthviews 'shopos' function
 
 % The position of the crosshairs has been moved.
 %-----------------------------------------------------------------------
 if isfield(st,'mp'),
   fg = spm_figure('Findwin','Graphics');
   if any(findobj(fg) == st.mp),
-    set(st.mp,'String',sprintf('%.1f %.1f %.1f',spm_orthviews('pos')));
-    pos = spm_orthviews('pos',1);
+    set(st.mp,'String',sprintf('%.1f %.1f %.1f',mars_orthviews('pos')));
+    pos = mars_orthviews('pos',1);
     set(st.vp,'String',sprintf('%.1f %.1f %.1f',pos));
     
     % Set intensity to ROI list
