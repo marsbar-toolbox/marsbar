@@ -1550,6 +1550,7 @@ def_bin_no = round(25/bin_length);
 bin_no     = spm_input('No of bins', '+1', 'e', def_bin_no);
 
 et = event_types(marsRes);
+ic_len = length(ic);
 for i = 1:ic_len
   tc{i} = event_fitted_fir(marsRes, ...
 			   et(ic(i)).e_spec, ...
