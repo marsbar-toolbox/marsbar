@@ -3,7 +3,7 @@ function ui_report_fmri(D,s,i)
 % FORMAT ui_report_fmri(D,s,i)
 %
 % Copied with minor edits from:
-% @(#)spm_ui_report_fmri.m	2.17	2.16 Karl Friston 99/09/20
+% @(#)spm_fMRI_design_show.m	2.17	2.16 Karl Friston 99/09/20
 % see that file for comments
 % 
 % $Id$
@@ -11,6 +11,10 @@ function ui_report_fmri(D,s,i)
 SPM = des_struct(D);
 xX   = SPM.xX;
 Sess = SPM.Sess;
+
+%-Generic CallBack code
+%-----------------------------------------------------------------------
+cb = 'tmp = get(findobj(''Tag'', ''DesRepUI''),''UserData''); ';
 
 % Do not proceed unless there are trials specified
 %-----------------------------------------------------------------------
@@ -85,7 +89,7 @@ title('Design Matrix','FontSize',16)
 %-Setup callbacks to allow interrogation of design matrix
 %-----------------------------------------------------------------------
 set(hDesMtxIm,'UserData',struct('X',xX.X,'Xnames',{xX.Xnames}))
-set(hDesMtxIm,'ButtonDownFcn','spm_DesRep(''SurfDesMtx_CB'')')
+set(hDesMtxIm,'ButtonDownFcn',[cb 'ui_report(tmp, ''SurfDesMtx_CB'')'])
 
 
 
@@ -116,7 +120,7 @@ axis square
 xlabel('design orthogonality')
 set(hDesOIm,...
 	'UserData',struct('O',O,'bC',bC,'Xnames',{xX.Xnames}),...
-	'ButtonDownFcn','spm_DesRep(''SurfDesO_CB'')')
+	'ButtonDownFcn',[cb 'ui_report(tmp, ''SurfDesO_CB'')'])
 
 % Trial-specific regressors - time domain
 %-----------------------------------------------------------------------
