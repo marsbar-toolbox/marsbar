@@ -1,4 +1,4 @@
-function Yf = apply_filter(D, Y, flags)
+function Y = apply_filter(D, Y, flags)
 % applies filter in design to data
 % FORMAT Y = apply_filter(D, Y, flags)
 %
