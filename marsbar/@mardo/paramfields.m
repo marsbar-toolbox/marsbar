@@ -4,4 +4,5 @@ function params = paramfields(o)
 % $Id$
 
 params = struct('des_struct', o.des_struct,...
-		'flip_opiton', o.flip_option);
+		'flip_option', o.flip_option,...
+		'verbose', o.verbose);
