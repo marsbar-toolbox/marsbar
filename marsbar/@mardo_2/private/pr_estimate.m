@@ -51,13 +51,14 @@ catch
   %---------------------------------------------------------------
   xVi   = struct(	'form',  'i.i.d.',...
 			'V',	 speye(nScan,nScan));
+
 end
 
 % Work out what we are going to do
 have_W     = isfield(xX, 'W');
 have_V     = isfield(xVi, 'V');
 
-% Work out type of covariance modelling We get Vi, cov_type (as a string),
+% Work out type of covariance modelling. We get Vi, cov_type (as a string):
 % one of 'SPM' or 'fmristat' and cov_vox, which is a flag set to 1 if all
 % the voxel time courses should be used to calculate the resdiduals and
 % covariance.
