@@ -30,8 +30,9 @@ end
 msgstr = '';
 
 % editable fields, and descriptions of fields, in mars options structure
-optfields = {'spacebase','structural','statistics'}; 
-optlabs =  {'Base space for ROIs','Default structural','Statistics'};
+optfields = {'spacebase','structural','statistics', 'events'}; 
+optlabs =  {'Base space for ROIs','Default structural','Statistics', ...
+	    'Working with events'};
 
 switch lower(optstr)
   
@@ -102,6 +103,9 @@ switch lower(optstr)
   % to and from spm99 designs
   mars.statistics.flip_option = mars_veropts('flip_option');
   
+  % Difference function to calculate % signal change
+  mars.events.diff_func = 'abs max';
+  
 % --------------------------------------------------
  case 'edit'
   
@@ -110,11 +114,7 @@ switch lower(optstr)
   if isempty(defarea)
     % get defaults area
     [Finter,Fgraph,CmdLine] = spm('FnUIsetup','MarsBar Defaults');
-    % fields, and descriptions of fields, in mars options structure
-    optfields = {'spacebase','roidefs', 'structural','statistics'};
-    optlabs =  {'Base space for ROIs',...
-		'Defaults for ROIs', 'Default structural',...
-		'Statistics'};
+
     defarea = char(...
       spm_input('Defaults area', '+1', 'm',{optlabs{:} 'Quit'},...
 		{optfields{:} 'quit'},length(optfields)+1));
@@ -160,11 +160,16 @@ switch lower(optstr)
     mars.statistics.flip_option = spm_input('Flip design images SPM99-2',...
 					 '+1','b','Yes|No',tmp, tmpi);
 
-    % - not currently used
-% $$$     mars.statistics.voxfilt = spm_input('Accept these settings', '+1', ...
-% $$$ 					 'b','Yes|No',[0 1], ...
-% $$$ 					 mars.statistics.voxfilt);
      
+   case 'events'
+    mars.events = getdefs(...
+	mars.events,...
+	oldmars.events,...
+	'diff_func',...
+	'Event height function',...
+	{'abs max','abs max-min','max','min','window'},...
+	'Abs max|Abs max-min|Max|Min|Mean over time window');
+    
    otherwise 
     error('Unknown defaults area')
   end
