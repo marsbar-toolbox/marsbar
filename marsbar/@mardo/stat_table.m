@@ -1,6 +1,6 @@
-function [marsS, marsD, changef] = mars_stat_table(marsD, Ic)
+function [marsS, marsD, changef] = stat_table(marsD, Ic)
 % gets Mars statistics and displays to a table on the matlab console  
-% FORMAT [marsS, marsD, changef] = mars_stat_table(marsD, Ic)
+% FORMAT [marsS, marsD, changef] = stat_table(marsD, Ic)
 %
 % Inputs
 % marsD               - MarsBaR design structure
@@ -13,11 +13,6 @@ function [marsS, marsD, changef] = mars_stat_table(marsD, Ic)
 % changef              - flag to indicate if design has changed
 %
 % $Id$
-
-if nargin < 1
-  error('Need design as first argument');
-end
-marsD = mardo(marsD);
 
 if nargin < 2
   Ic = [];

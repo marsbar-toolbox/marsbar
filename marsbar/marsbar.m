@@ -668,8 +668,7 @@ case 'set_defcon'                                  %-set default contrast
 varargout = {0};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[defcon xCon changef] = mars_conman(marsRes.xX,...
-			   marsRes.xCon,'T|F',1,...
+[defcon marsRes changef] = ui_get_contrast(marsRes, 'T|F',1,...
 			 'Select default contrast','',1);
 if changef, mars_armoire('update', 'est_design', marsRes); end
 MARS.WORKSPACE.default_contrast = defcon;
@@ -713,8 +712,8 @@ case 'stat_table'                                  %-run stat_table
 varargout = {};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[varargout{1} marsRes.xCon changef] = ... 
-    mars_stat_table(marsRes, marsRes.xCon);
+[varargout{1} marsRes changef] = ... 
+    stat_table(marsRes);
 if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================

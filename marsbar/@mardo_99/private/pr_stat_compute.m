@@ -1,6 +1,6 @@
-function [Num, Stat, P, Pc] = mars_stat_compute(xCon, Xs, V, betas, RMS);
+function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, RMS);
 % calculates contrast value, stats and p values for contrasts
-% FORMAT [Num, Stat, P, Pc] = mars_stat_compute(xCon, Xs, V, betas, RMS);
+% FORMAT [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, RMS);
 % 
 % xCon      - contrast structure
 % Xs        - design matrix

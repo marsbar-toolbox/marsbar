@@ -1,9 +1,7 @@
-function [MVres]= mars_stat_compute_mv(xCon, Xs, V, betas, RMS, Y)
+function [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, RMS, Y)
 % compute multivariate statistics across ROIs
-% FORMAT [MVres]= mars_stat_compute_mv(xCon, Xs, V, betas, RMS, Y)
+% FORMAT [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, RMS, Y)
 %
-% $Id$
-
 % xCon      - contrast structure
 % Xs        - design matrix
 % V         - covariance matrix
@@ -13,6 +11,8 @@ function [MVres]= mars_stat_compute_mv(xCon, Xs, V, betas, RMS, Y)
 %  
 % Output
 % MVres     - result structure
+%
+% $Id$
   
 [nBetas nROI]   = size(betas);
 nCon          = length(xCon);
