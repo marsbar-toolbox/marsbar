@@ -24,14 +24,22 @@ GLM_resol = 'OLS';               % ordinary least square
 %-------------------------------------------------------------------------
 %- get the design structure, the filter and the data
 xX = spmD.xX;  
-if ~isfield(spmD.xX,'X'), 
-  error('Please load an SPMcfg containing an X')
+if ~isfield(xX,'X'), 
+  error('The design does not contain a design matrix');
 end
 
 % allow matrix or object to be passed as input data
 marsY = marsy(marsY);
 Y = summary_data(marsY);
 nROI = size(Y,2);  %- Y is a time by nROI matrix
+
+% We are going to ignore AR(1) options
+if mars_struct('isthere', xX, 'xVi', 'Form')
+  if ~strcmp(xX.xVi.Form, 'none')
+    warning(['Sorry, we are going to ignore autocorrelation option: ' ...
+	     xX.xVi.Form]);
+  end
+end
 
 %----------------------------------------------------------------------------------
 %- Estimation of the covariance structure of the Ys
