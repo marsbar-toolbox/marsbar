@@ -56,9 +56,6 @@ if nargout > 1
 end
 
 if nargout > 2
-% $$$   % Estimated covariance
-% $$$   A = tril(toeplitz([0; rho; zeros(n-nlp1, 1)]));
-% $$$   k = inv(eye(n)-A);
-% $$$   V = k*k';
+  % Estimated covariance
   V = inv(Vmhalf*Vmhalf');
 end
