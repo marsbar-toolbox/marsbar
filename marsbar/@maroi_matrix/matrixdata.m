@@ -5,10 +5,9 @@ function dat = matrixdata(o, dat)
 
 % a warning here about empty matrices  
 if nargin > 1 % call to set matrix data
-  if ~isa(o, 'maroi_matrix')
-    error('Cannot set matrix from non maroi_matrix object');
-  end 
-
+  % change to maroi_matrix type before setting data
+  o = maroi_matrix(o);
+  
   % apply implied thresholding
   tmp = find(isnan(dat) | abs(dat) < roithresh(o));
   if binarize(o), dat(:) = 1; end

@@ -16,6 +16,6 @@ if isempty(img)
 		     'Try to reattach with marsbar(''attach_image'')');
   end
   error(errstr);
-else
-  o = matrixdata(o, img);
 end
+
+o = matrixdata(o, img);
