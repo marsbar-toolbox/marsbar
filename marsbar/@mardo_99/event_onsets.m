@@ -54,7 +54,7 @@ end
 
 sc = dt / TR;
 onsets    = (onsets - 1) * sc;
-durations = durations * sc;
+durations = (durations - 1) * sc;
        
-% In fact, the above is durations, as expressed in the design matrix. The
-% durations as entered by the user is given by (durations-1) * sc
+% In fact, the above is durations, as entered by the users.  The durations
+% as expressed in the design matrix are given by (durations) * sc
