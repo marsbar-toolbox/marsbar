@@ -361,7 +361,7 @@ if i_need_save(I) | any(flags == 'f') % force flag
       if strcmp(save_yn, 'No'), return, end
     end
     prompt = ['Filename to save ' I.title]; 
-    [f p] = uiputfile(filename, prompt);
+    [f p] = uiputfile(I.filter_spec, prompt, filename);
     if all(f==0), return, end
     filename = fullfile(p, f);
   end
