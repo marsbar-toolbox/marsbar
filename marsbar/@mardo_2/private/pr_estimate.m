@@ -204,7 +204,7 @@ if ~have_V
   if n_roi > 1
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
-	    'is to run estimation separatly for each ROI'};
+	    'is to run estimation separately for each ROI'};
     fprintf('\n');
     warning(sprintf('%s\n', wstr{:}));
   end
