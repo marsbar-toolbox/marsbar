@@ -14,13 +14,14 @@ des = params.des_struct;
 if isfield(des,'xY') 
   des = mars_struct('merge', des, ...
 		    mars_struct('split', des.xY, {'VY', 'RT'})); 
+  des = rmfield(des, 'xY');
 end
 
 % move names 
 des.xX.Xnames = des.xX.name;
 
 % Strip unused fields
-des.xX = mars_struct('strip', des.xX, {'W', 'name', 'xY'});
+des.xX = mars_struct('strip', des.xX, {'W', 'name'});
 
 % convert sessions (sort of)
 if isfield(des, 'Sess')
@@ -95,6 +96,9 @@ end
 % Default F contrast field
 des.F_iX0 = struct('iX0', [des.xX.iB des.xX.iG], ...
 		   'name', 'effects of interest');
+
+% Need to identify as SPM99 design
+des.SPMid = ['SPM99: Results imported from SPM2 design: ' des.SPMid];
 
 % put into parent object
 params.des_struct = des;
