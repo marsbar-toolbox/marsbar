@@ -109,7 +109,8 @@ fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 if ~isfield(xX, 'W') & ...
       isfield(marsY, 'cols') & ...
       use_all_data
-  Y = [marsY.cols{:}.y];
+  Y = [marsY.cols{:}];
+  Y = [Y(:).y];
 else
   Y = marsY.Y;
 end
@@ -143,8 +144,9 @@ if ~isfield(xVi,'V')
   if n_roi > 1
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
-	    'is to run estimation separatly for each ROI'}
-    warning(sprintf('%s\n', wstr));
+	    'is to run estimation separatly for each ROI'};
+    disp;
+    warning(sprintf('%s\n', wstr{:}));
   end
   q  = diag(sqrt(trRV./ResSS'),0);
   Y  = Y * q;
