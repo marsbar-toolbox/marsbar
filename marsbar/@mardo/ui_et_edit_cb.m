@@ -15,16 +15,20 @@ switch action
   % Deblank name, and check name is not empty
   hName = findobj(F, 'Tag', 'ui_et_name');
   new_name = get(hName, 'String');
+  old_name = get(hName, 'UserData');
   new_name = deblank(fliplr(deblank(fliplr(new_name))));
   if isempty(new_name) | strcmp(new_name, 'New event')
     msgbox('Need a name for this event type'); return
   end
-  % Check name has not been used
-  ets = event_types(D);
-  if ~isempty(ets)
-    if ismember(new_name, {ets(:).name})
-      msgbox(['Event type ' new_name ' already exists']); return
-    end    
+  % Check if name has been changed
+  if ~strcmp(new_name, old_name)
+    % Check name has not been used 
+    ets = event_types(D);
+    if ~isempty(ets)
+      if ismember(new_name, {ets(:).name})
+	msgbox(['Event type ' new_name ' already exists']); return
+      end    
+    end
   end
   % Check events not empty
   if isempty(get(findobj(F, 'Tag', 'ui_et_IN'), 'String'))
