@@ -23,13 +23,6 @@ if ~has_images(D)
 end
 VY = get_images(D);
 
-% check for byteswap
-if isempty(byteswap)
-  V1 = VY(1);
-  V2 = spm_vol(V1.fname);
-  byteswap = V2.dim(4) ~= V1.dim(4);
-end
-
 % now change directory
 if filesep == '\',sepchar='/';else sepchar='\';end
 n = length(VY);
@@ -43,6 +36,15 @@ ffnames(ffnames == sepchar) = filesep;
 nfnames = cellstr(...
     strcat(repmat(newpath,n,1),filesep,ffnames));
 [VY(:).fname] = deal(nfnames{:});
+
+% do the files exist here then?
+if ~exist(nfnames{1}, 'file')
+  error(['Cannot find first file here: ' nfnames{1}]);
+end
+if isempty(byteswap) 
+  V2 = spm_vol(nfnames{1});
+  byteswap = V2.dim(4) ~= VY(1).dim(4);
+end
 
 % do byteswap as necessary
 if byteswap

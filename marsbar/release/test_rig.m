@@ -24,7 +24,7 @@ if nargin < 1
   design_paths = spm_get([0 Inf], 'SPM*.mat', 'Select SPM designs');
 end
 
-res = 0;
+res = 1;
 for d = 1:size(design_paths, 1)
   d_path = deblank(design_paths(d,:));
   res = res & sf_test_design(d_path);
@@ -49,30 +49,20 @@ if ~has_images(D)
 end
 
 % try to get one F and one T contrast
-xCon = get_contrasts(D);
-f_i = []; t_i = [];
 swd = fileparts(d_path);
-for i = 1:length(xCon)
-  C = xCon(i);
-  switch C.STAT
-   case 'F'
-    if isempty(f_i)
-      f_file = sf_spm_file(C, swd);
-      if ~isempty(f_file)
-	f_i = i;
-      end
-    end
-   case 'T'
-    if isempty(t_i)
-      t_file = sf_spm_file(C, swd);
-      if ~isempty(t_file)
-	t_i = i;
-      end
+xCon = get_contrasts(D);
+stats = [xCon(:).STAT];
+types = 'TF';
+Ic    = []; fnames = {};
+for t = 1:2
+  T = find(stats == types(t));
+  for c = fliplr(T) % find last
+    F = sf_spm_file(xCon(c).Vspm, swd);
+    if ~isempty(F)
+      Ic = [Ic c]; fnames{end+1} = F; break
     end
   end
 end
-Ic = [f_i t_i];
-Fs = {f_file, t_file};
 if isempty(Ic)
   error(['Could not find any contrast images for ' d_path]);
 end
@@ -80,7 +70,7 @@ end
 % find maximum voxel coordinate for contrasts and test
 res = 1;
 for c = 1:length(Ic)
-  V = spm_vol(Fs{c});
+  V = spm_vol(fnames{c});
   img = spm_read_vols(V);
   [mx(c) i] = max(img(:));
   xyz(:, c) = sf_e2xyz(i, V.dim(1:3));
@@ -101,12 +91,7 @@ return
 
 
 
-function fname = sf_spm_file(C, swd)
-fname = '';
-if ~mars_struct('isthere', C, 'Vspm')
-  return
-end
-fname = C.Vspm;
+function fname = sf_spm_file(fname, swd)
 if isstruct(fname)
   fname = fname.fname;
 end
