@@ -1,10 +1,11 @@
-function C = get_contrasts(D)
+function xCon = get_contrasts(D)
 % method to get contrasts from design object
+% FORMAT xCon = get_contrasts(D)
 % 
+% Returns contrast structure from design
+% See ui_get_contrasts for UI to get individual contrasts
+%  
 % $Id$
   
-C = [];
 SPM = des_struct(D);
-if isfield(SPM, 'xCon');
-  C = SPM.xCon;
-end
+xCon = mars_struct('getifthere', SPM, 'xCon');
