@@ -41,7 +41,7 @@ switch lower(action)
   res = I;
   
  case 'set_data'
-  % callback for setting design
+  % callback for setting data
   % FORMAT [data errf msg] = mars_arm_call('set_data', I);
 
   I = varargin{1};
@@ -86,7 +86,18 @@ switch lower(action)
 		       'Select contrast file')); 
     data = set_contrasts(data, tmp);
   end
-    
+
+  % Save and replace data if necessary
+  if ~mars_armoire('isempty','roi_data')
+    Y  = get_data(data);
+    if Y ~= mars_armoire('get', 'roi_data'); 
+      mars_armoire('save_ui', 'roi_data', 'y');
+      mars_armoire('set', 'roi_data', Y);
+      mars_armoire('has_changed', 'roi_data', 0);
+      fprintf('Set ROI data from estimated design...\n');
+    end
+  end
+  
   res = data;
  otherwise
   error(['Peverse request for ' action]);
