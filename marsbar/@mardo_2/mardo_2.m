@@ -50,7 +50,7 @@ end
 
 if ~isa(uo, 'mardo') % mardo object not passed
   % umbrella object, parse out fields for (this object and children)
-  % second argument of 0 prevents recursive call back to here
+  % third argument of 0 prevents recursive call back to here
   [uo, params] = mardo(params, others, 0);
 else
   % fill params with other parameters

@@ -25,10 +25,14 @@ function [o, others] = mardo(params, others, passf)
 % % or
 % load('/my/spm/analysis/directory/SPM.mat');
 % D = mardo(struct('des_struct', SPM, 'verbose', 0));
-%
-% mardo is a simple object to contain SPM designs. It allows us to
-% deal with different design formats by overloading functions in 
-% child objects, here for harmonizing between SPM2 and SPM99 designs
+% % or
+% D = mardo(SPM, struct('verbose', 0));
+% 
+% mardo is an object to contain SPM designs. It allows us to deal with
+% different design formats by overloading functions in child objects, here
+% for harmonizing between SPM2 and SPM99 designs.  It is transparent, in
+% the sense that it can be referenced as a structure, so to the user, it
+% can appear as if the design continues to be the familiar old SPM structure.
 % 
 % This constructor first checks for strings; it treats strings as filenames
 % containing SPM designs, and loads the file.  By now it should have an SPM
@@ -46,10 +50,24 @@ function [o, others] = mardo(params, others, passf)
 % to claim ownership.  The other mardo classes can call this constructor
 % with passf set to 0 in order for the constructor merely to make a mardo
 % object, without passing back to the other classes.
-% 
+%
+% Note also the way that the constructor passes out fields in the input
+% structures that it does not recognize.  This is so apparently useless
+% field information can be passed to child objects for processing (or
+% parent objects, but mardo does not have a parent).
+%
 % Fields 
-% des_struct - structure containing SPM design
-% 
+% des_struct  - structure containing SPM design
+% verbose     - flag; if 1, display text messages during processing
+% flip_option - flag; only used on creation of the object.  If 1, and the
+%               design not the same format as the current version of SPM
+%               on the path, then this constructor will flip the images
+%               in the design left to right.  So, if an SPM99 design
+%               object is being created, and SPM2 is the version on the
+%               path, and flip_option is set to 1, then the images will
+%               be automatically flipped in the design, as the object is
+%               being created.
+%
 % Methods
 % is_valid     - returns 1 if des_struct contains a valid design
 % is_fmri      - returns 1 if design is modality 'fmri'
@@ -104,7 +122,8 @@ function [o, others] = mardo(params, others, passf)
 % event_signal - calculates % signal change for (maybe compound) event
 % event_fitted - gets fitted time course for (maybe compound) event
 % event_regressor - returns regressor for given event type and duration
-% ui_get_event - runs UI to select an event
+% ui_get_event    - runs UI to select a single event
+% ui_event_types  - runs UI to select, create, edit event types.
 % event_cols   - returns column in design from given event
 %
 % $Id$
@@ -141,11 +160,11 @@ end
 if isstruct(params)
   if ~isfield(params, 'des_struct')
     % Appears to be an SPM design
-    params = struct('des_struct',params);
+    params = struct('des_struct', params);
   end
 end
 
-% fill with pther params, defaults, parse into fields for this object,
+% fill with other params, defaults, parse into fields for this object,
 % children
 params = mars_struct('ffillmerge', params, others);
 [params, others] = mars_struct('ffillsplit', defstruct, params);
@@ -156,6 +175,9 @@ params.cvs_version = mars_cvs_version(myclass);
 % set the mardo object
 o  = class(params, myclass);
 
+% Return if des_struct is empty, there's nothing to do
+if isempty(o.des_struct), return, end
+
 % If requested, pass to child objects to request ownership
 if passf
   [o others] = mardo_99(o, others);
@@ -164,17 +186,15 @@ if passf
   end
 end
 
-% convert data field to object
+% convert MarsBaR data field to object, if present
 if isfield(o.des_struct, 'marsY')
   o.des_struct.marsY = marsy(o.des_struct.marsY);
 end
 
-% if the design was loaded from a file, and is 99 type
-% then it may need contrasts.
-% If it wass estimated in MarsBaR, try loading mars_xCon.mat
-% in the same directory.
-% If it wass estimated in SPM, try loading xCon.mat
-% in the same directory.
+% If the design was loaded from a file, and is 99 type then it may need
+% contrasts.  If it wass estimated in MarsBaR, try loading mars_xCon.mat in
+% the same directory.  If it wass estimated in SPM, try loading xCon.mat in
+% the same directory.
 if ~isempty(fname) & ...
       strcmp(type(o), 'SPM99') & ...
       ~has_contrasts(o)
