@@ -20,3 +20,8 @@ for f = 1:length(fname)
     o(f).source = fname{f};
   end
 end
+  o = F.roi;
+  o = source(o, fname);
+else
+  warning(['Loading file ' fname ' did not return an ROI'])'
+end
