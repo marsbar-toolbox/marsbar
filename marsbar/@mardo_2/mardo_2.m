@@ -33,7 +33,10 @@ if isa(params, 'mardo')
   des = des_struct(params);
   if ~my_design(des), o = params; return, end
   % own
-  uo = des_struct(params, des.SPM);
+  if isfield(des, 'SPM')
+    des = des.SPM;
+  end
+  uo = des_struct(params, des);
   params = [];
 else
   uo = [];

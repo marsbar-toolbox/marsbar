@@ -3,11 +3,6 @@ To do list
 
 try / catch round load in mars_armoire
 
-delete fillafromb, fillstruct @maroi/private/...
-my_fillsplit, my_merge, my_split
-delete @mars_space/private/...
-my_fillsplit
-
 Strategy is to use an object to contain MarsBaR / SPM designs
 Not quite worked out yet.
 
