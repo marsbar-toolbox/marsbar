@@ -88,7 +88,11 @@ n_evs = size(all_es, 2);
 ev_names = cellstr([char(ev_names) ...     % add session names
 	    repmat(': session ', n_evs, 1) ...
 	    num2str(all_es(1, :)')]);
-in_cols = ismember(all_es', my_event.e_spec', 'rows');
+if isempty(my_event.e_spec)
+  in_cols = logical(zeros(n_evs, 1));
+else
+  in_cols = ismember(all_es', my_event.e_spec', 'rows');
+end
 IN_evs = pr_sort_evs(struct('names', {ev_names(in_cols)},...
 			    'e_spec', all_es(:, in_cols)), ...
 		     'session');
