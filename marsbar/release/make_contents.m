@@ -1,5 +1,5 @@
 function make_contents(aString, flags, start_dir)
-% MAKECONTENTS makes Contents file in current working directory.
+% MAKECONTENTS makes Contents file, usually in current working directory.
 %   MAKECONTENTS(STRING [FLAGS [START_DIR]]) 
 %   creates a standard "Contents.m" file in the
 %   current directory by assembling the first comment (H1) line in
@@ -37,7 +37,7 @@ function make_contents(aString, flags, start_dir)
 
 % Default value of input string
 if nargin < 1,
-     aString =' ';
+  aString =' ';
 end
 if nargin < 2
   flags = '';
@@ -75,7 +75,10 @@ end
 
 % Header lines
 line1 = ['% ' aString];
-fcontents = fopen(cont_path,'w'); 
+fcontents = fopen(cont_path,'wt');
+if fcontents == -1
+  error(['Could not open file: ' cont_path]);
+end
 fprintf(fcontents,'%s\n',line1);     
 if ~any(flags == 'n')
   line2 = ['% Path ->  ' start_dir];
@@ -140,38 +143,40 @@ maxlen = size(char(files.m),2) + length(dirlab);
 
 % Write first lines to Contents.m if they exist
 for i = 1:length(files.m)
-   fid=fopen(fullfile(files.path, files.m{i}),'r'); 
-   aLine = '';
-   while(isempty(aLine) | length(aLine) < 8)
-     aLine = fgetl(fid);
-   end
-   if strcmp(aLine(1:8),'function'),
-	count_percent = 0;
-	while count_percent < 1 & feof(fid)==0; 
-	     line = fgetl(fid);
-	     if length(line) > 0 
-		  if ~isempty(findstr(line,'%')) 
-		       count_percent = count_percent + 1;
-		       rr=line(2:length(line));
-		       if ~any(flags == 'f') % remove first word
-			 [tt,rr]=strtok(line(2:length(line)));
-		       end
-		       rr = fliplr(deblank(fliplr(rr)));
-		       fn = [dirlab strtok(char(files.m(i)),'.')];
-		       n = maxlen - length(fn) - 1;
-		       line = ['%   ' fn blanks(n) '- ' rr];
-		       fprintf(fcontents,'%s\n',line);
-		  end % if ~isempty
-	     end % if length
-	     if feof(fid)==1  
-		  fn = [dirlab strtok(char(files.m(i)),'.')];
-		  n = maxlen - length(fn) - 1;
-		  line = ['%   ' fn blanks(n) '- (No help available)'];
-		  fprintf(fcontents,'%s\n',line); 
-	     end % if feof
-	end % while
-   end % if strcmp
-   fclose(fid);
+  fname = fullfile(files.path, files.m{i});
+  fid=fopen(fname, 'rt'); 
+  if fid == -1, error(['Error opening file: ' fname]); end
+  aLine = '';
+  while(isempty(aLine) | length(aLine) < 8)
+    aLine = fgetl(fid);
+  end
+  if strcmp(aLine(1:8),'function'),
+    count_percent = 0;
+    while count_percent < 1 & feof(fid)==0; 
+      line = fgetl(fid);
+      if length(line) > 0 
+	if ~isempty(findstr(line,'%')) 
+	  count_percent = count_percent + 1;
+	  rr=line(2:length(line));
+	  if ~any(flags == 'f') % remove first word
+	    [tt,rr]=strtok(line(2:length(line)));
+	  end
+	  rr = fliplr(deblank(fliplr(rr)));
+	  fn = [dirlab strtok(char(files.m(i)),'.')];
+	  n = maxlen - length(fn) - 1;
+	  line = ['%   ' fn blanks(n) '- ' rr];
+	  fprintf(fcontents,'%s\n',line);
+	end % if ~isempty
+      end % if length
+      if feof(fid)==1  
+	fn = [dirlab strtok(char(files.m(i)),'.')];
+	n = maxlen - length(fn) - 1;
+	line = ['%   ' fn blanks(n) '- (No help available)'];
+	fprintf(fcontents,'%s\n',line); 
+      end % if feof
+    end % while
+  end % if strcmp
+  fclose(fid);
 end
 % recurse down directory tree
 flags = flags(flags ~= '1'); % reset first pass flag 
