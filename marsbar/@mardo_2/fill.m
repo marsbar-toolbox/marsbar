@@ -227,8 +227,8 @@ for a = 1:length(actions)
       %---------------------------------------------------------------
       cVi = spm_input('fmristat AR model order', '+1', 'e', 2);
       SPM.xVi.Vi = struct('type', 'fmristat', 'order', cVi);
-      cVi        = sprintf('fmristat AR(%0.1f)',cVi);
-      f2cl       = 'V'; 
+      cVi        = sprintf('fmristat AR(%d)',cVi);
+      f2cl       = 'V'; % Field to CLear
       
      case 'spm ar (specify)'
       % SPM AR coefficient(s) to be specified
