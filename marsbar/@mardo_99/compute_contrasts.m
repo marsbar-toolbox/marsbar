@@ -8,6 +8,9 @@ function [marsS] = compute_contrasts(marsDe, Ic)
 % Output
 % marsS      - statistic result structure
 %
+% For the 'con', 'stat' 'P' 'Pc' fields below, the results are matrices
+% with one row per contrast, one column per ROI estimated
+%
 % The statistics results structure has fields
 % 'con'      - contrast value (numerator of t statistic, or ESS for F)
 % 'stat'     - t or F statistic value
