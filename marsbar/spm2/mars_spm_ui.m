@@ -21,7 +21,7 @@ if nargin<2, D = []; else, D = varargin{2}; end
 
 %-GUI setup
 %-----------------------------------------------------------------------
-CVSid    = marsbar('get_cvs_version', mfilename('fullpath'));
+CVSid    = mars_cvs_version(mfilename);
 SPMid    = spm('SFnBanner',mfilename,CVSid);
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Stats: Setup analysis',0);
 spm_help('!ContextHelp',mfilename)
@@ -768,13 +768,6 @@ SPM.xsDes	= xsDes;		% description
 SPM.SPMid	= SPMid;		% version
 
 varargout = {SPM};
-
-%-Display Design report
-%=======================================================================
-fprintf('%-40s: ','Design reporting')                                %-#
-fname     = cat(1,{SPM.xY.VY.fname}');
-spm_DesRep('DesMtx',SPM.xX,fname,SPM.xsDes)
-fprintf('%30s\n','...done')     
 
 %-End: Cleanup GUI
 %=======================================================================
