@@ -92,7 +92,6 @@ if ~have_V
     cov_vox = strcmpi(xVi.cov_calc, 'vox');
   end
 else cov_vox = 0; end
-    
 
 %-Get non-sphericity V
 %=======================================================================
@@ -165,11 +164,16 @@ fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 % Select whether to work with all voxel data in ROIs, or summary data
 % Using all data only makes sense for intial estimation of whitening
 if ~have_W & cov_vox
+  str = 'voxelwise';
   Y = region_data(marsY);
   Y = [Y{:}];
 else
+  str = 'pooled';
   Y = summary_data(marsY);
 end
+fprintf('%-40s: %30s\n','Covariance estimate',['...' str])               %-#
+fprintf('%-40s: %30s','Model','...start')    %-#
+
 n_roi = n_regions(marsY);
 
 %-Intialise variables used in the loop 
@@ -186,7 +190,7 @@ KWY   = pr_spm_filter(xX.K,W*Y);
 
 %-General linear model: Weighted least squares estimation
 %------------------------------------------------------
-fprintf('%s%30s',sprintf('\b')*ones(1,30),' estimation') %-#
+fprintf('%s%30s',sprintf('\b')*ones(1,30),'estimation') %-#
 
 beta  = xX.pKX*KWY;			%-Parameter estimates
 res   = spm_sp('r',xX.xKXs,KWY);	%-Residuals
