@@ -1042,6 +1042,7 @@ switch src{1}
     if isempty(str), return, end
   end
   assignin('base', str, Y);
+  fn = ['Matlab variable: ' str];
  case 'txt'
   [fn, pn] = mars_uifile('put',  ...
       {'*.txt;*.dat;*.csv', 'Text files (*.txt, *.dat, *.csv)'; ...
@@ -1144,7 +1145,10 @@ case 'set_results'          %-sets estimated design into global stucture
 varargout = {0};
 marsRes = mars_armoire('set_ui', 'est_design');
 if isempty(marsRes), return, end
-ui_report(marsRes);
+fprintf('%-40s: ','Design reporting');
+ui_report(marsRes, 'DesMtx');
+ui_report(marsRes, 'DesRepUI');
+fprintf('%30s\n','...done');
 MARS.WORKSPACE.default_contrast = [];
 varargout = {1};
 return
