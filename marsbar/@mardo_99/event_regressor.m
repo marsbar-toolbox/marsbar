@@ -23,6 +23,8 @@ if ~is_fmri(D)
   error('Needs FMRI design');
 end
 
+if size(e_spec, 1) == 1, e_spec = e_spec'; end
+
 SPM   = des_struct(D);
 Sess  = SPM.Sess;
 xX    = SPM.xX;
