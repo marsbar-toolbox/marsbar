@@ -3,6 +3,6 @@ function tf = can_mars_estimate(D)
 % 
 % $Id$
 
-tf = ~isfmri(D) | (has_filter(D) & has_autocorr(D));
+tf = ~is_fmri(D) | has_filter(D);
 
   
