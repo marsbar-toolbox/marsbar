@@ -734,7 +734,7 @@ if nargin < 2
 end
 str = varargin{2};
 % forbidden chars in file name
-badchars = unique([filesep '/\ :;.''"~*?<>|']);
+badchars = unique([filesep '/\ :;.''"~*?<>|&']);
 
 tmp = find(ismember(str, badchars));   
 if ~isempty(tmp)
