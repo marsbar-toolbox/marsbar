@@ -220,6 +220,7 @@ for a = 1:length(actions)
     
     % create Vi struct
     %-----------------------------------------------------------------------
+    vox_cov_possible = 0;
     switch lower(cVi{1})
 
      case 'fmristat ar(n)'
@@ -237,6 +238,7 @@ for a = 1:length(actions)
       SPM.xVi.Vi = pr_spm_ce(nscan,cVi);
       cVi        = sprintf('AR(%0.1f)',cVi(1));
       f2cl       = 'V'; 
+      vox_cov_possible   = 1;
       
      case 'none'		
       %  xVi.V is i.i.d
@@ -251,6 +253,7 @@ for a = 1:length(actions)
       SPM.xVi.Vi = pr_spm_ce(nscan,0.2);
       cVi        = 'AR(0.2)';
       f2cl       = 'V'; 
+      vox_cov_possible   = 1;
       
     end
 
@@ -271,10 +274,11 @@ for a = 1:length(actions)
     end
     
     % Whether to average covariance estimates over voxels
-    if spm_input('Use voxel data for covariance','+1','y/n', [1 0], 2);
-      SPM.xVi.cov_calc = 'vox';
-    else
-      SPM.xVi.cov_calc = 'summary';
+    SPM.xVi.cov_calc = 'summary';
+    if vox_cov_possible
+      if spm_input('Use voxel data for covariance','+1','y/n', [1 0], 2);
+	SPM.xVi.cov_calc = 'vox';
+      end
     end
     
     % fill into design
