@@ -1611,8 +1611,11 @@ ic_len = length(ic);
 % across events, then the single model is invalid.
 d_a = []; opts = []; 
 for i = 1:ic_len
-  [o d] = event_onsets(marsRes, et(ic(i)).e_spec);
-  d_a = [d_a; d];
+  e_spec = et(ic(i)).e_spec;
+  for j = 1:size(e_spec, 2)
+    [o d] = event_onsets(marsRes, e_spec(:, j));
+    d_a = [d_a; d];
+  end
 end
 if any(d_a) & ~any(diff(d_a))
   if spm_input('FIR type', '+1','m',...
