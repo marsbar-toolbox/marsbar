@@ -52,6 +52,11 @@ xBF         = pr_spm_get_bf(xBF);
 U           = SPM.Sess(s).U(e);
 k           = SPM.nscan(s);
 
+% If all the durations are zero, the model is already flat.  The stick
+% function values have been set to 1/dt though, which is confusing, so
+% we'll reset the stick functions to have 1s
+if ~any(U.dur), opts.flat = 1; end
+
 if isfield(opts, 'flat')
   U.u = sf_ones_ons(U, xBF, k);
   if verbose(D)
