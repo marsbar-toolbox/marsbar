@@ -32,8 +32,9 @@ end
 SPM = des_struct(marsD);
   
 % do estimation
-SPM = pr_estimate(SPM, marsY);
+SPM       = pr_estimate(SPM, marsY);
 SPM.marsY = marsY;
+SPM.SPMid = marsD.cvs_version;
 
 % return modified structure
 marsD = des_struct(marsD, SPM);
