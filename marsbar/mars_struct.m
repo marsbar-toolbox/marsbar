@@ -29,18 +29,23 @@ function varargout = mars_struct(action, varargin)
 % FORMAT c = mars_struct('merge', a, b)
 % merges structure a and b (fields present in b added to a)
 %
-% FORMAT [c,d] = mars_struct('fillsplit', a, b)
-% fills fields in a from those present in b, returns as c, remaining d
-% a, b are structures
-% c, d are returned structure
+% FORMAT [c,d] = mars_struct('ffillsplit', a, b)
+% force fill, followed by split
+% All fields from a, that are also present in b, and not empty, 
+% are replaced with the values in b; the result is returned as c  
+% Any fields present in a, but not present in b, are returned in d
 %
-% FORMAT c = mars_struct('fillmerge', a, b)
-% performs 'fillsplit' on a and b, then merges a and b
-% This is very similar to, but simpler than, fillafromb
+% FORMAT c = mars_struct('ffillmerge', a, b)
+% force fill followed by merge
+% performs 'ffillsplit' on a and b, then merges a and b
+% All fields present in a or b are returned in c, but 
+% any fields present in both, now have the value from b
 %
 % FORMAT [c d] = mars_struct('splitmerge', a, b)
 % performs 'split' on a and b, creating c and d
-% d is returned, c is merged with b to give returned c
+% then merges c with b.
+% d contains fields in a that were not present in b
+% c contains fields present in both, or just in b
 %
 % $Id$
 
@@ -61,7 +66,7 @@ switch lower(action)
   if nargin < 4, fieldns = []; else fieldns = varargin{3}; end
   if isempty(fieldns), fieldns = fieldnames(b); end
   
-  if nargin < 4, flags = ''; else flags = varargin{4}; end
+  if nargin < 5, flags = ''; else flags = varargin{4}; end
   if isempty(flags), flags = ' ';end
   
   if ischar(fieldns), fieldns=cellstr(fieldns);end
@@ -124,26 +129,26 @@ switch lower(action)
   varargout = {c};
   
  case 'split'
-  stout = a;
-  stin = [];
+  if isempty(a), varargout = {a,a}; return, end
+  if isempty(b), varargout = {b,a}; return, end
+  d = a;
+  c = [];
   
-  % Return for empty second arg
-  if isempty(b), varargout = {stin, stout}; return, end
-
   if ischar(b), b = {b};end
   if isstruct(b), b = fieldnames(b);end
   
   for bf = b(:)'
     if isfield(a, bf{1})
-      stin = setfield(stin, bf{1}, getfield(a, bf{1}));
-      stout = rmfield(stout, bf{1});
+      c = setfield(c, bf{1}, getfield(a, bf{1}));
+      d = rmfield(d, bf{1});
     end
   end  
-  varargout = {stin, stout};
+  varargout = {c, d};
   
  case 'merge'
+  if isempty(a), varargout = {b}; return, end
+  if isempty(b), varargout = {a}; return, end
   c = a;
-  if isempty(b), varargout = {c}; return, end
   
   for bf = fieldnames(b)';
     if ~isfield(a, bf{1})
@@ -152,9 +157,10 @@ switch lower(action)
   end
   varargout = {c};
   
- case 'fillsplit'
+ case 'ffillsplit'
+  if isempty(a), varargout = {b,a}; return,  end
+  if isempty(b), varargout = {a,b}; return,  end
    c = a; d = b;
-   if isempty(b), varargout = {c,d}; return,  end
    
    cf = fieldnames(c);
    for i=1:length(cf)
@@ -168,8 +174,8 @@ switch lower(action)
    end
    varargout = {c,d};
    
- case 'fillmerge'
-  [a b] = mars_struct('fillsplit', a, b);
+ case 'ffillmerge'
+  [a b] = mars_struct('ffillsplit', a, b);
   varargout = {mars_struct('merge', a, b)};
   
  case 'splitmerge'

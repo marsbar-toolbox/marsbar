@@ -1,25 +1,25 @@
-function [o, others] = mardo_2(params, others)
-% mardo_2 - class constructor for SPM2 MarsBaR design object
+function [o, others] = mardo_99(params, others)
+% mardo_2 - class constructor for SPM99 MarsBaR design object
 % inputs [defaults]
 % params  - structure,containing fields, or SPM/MarsBaR design
 % others  - structure, containing other fields to define
 %
 % This object is called from the mardo object contructor
-% with a mardo object as input.  mardo_2 checks to see
-% if the contained design is an SPM2 design, returns
-% the object unchanged if not.  If it is an SPM2
+% with a mardo object as input.  mardo_99 checks to see
+% if the contained design is an SPM99 design, returns
+% the object unchanged if not.  If it is an SPM99
 % design, it claims ownership of the passed object.
 %
 % $Id$
   
-myclass = 'mardo_2';
+myclass = 'mardo_99';
 defstruct = struct([]);
 
 if nargin < 1
   params = [];
 end
 if nargin < 2
-  others = [];
+  others = struct([]);
 end
 
 if isa(params, myclass)
@@ -32,9 +32,8 @@ if isa(params, 'mardo')
   % Check to see if this is a suitable design, return if not
   des = des_struct(params);
   if ~my_design(des), o = params; return, end
-  % own
-  uo = des_struct(params, des.SPM);
-  params = [];
+  uo = params;
+  params = struct([]);
 else
   uo = [];
 end

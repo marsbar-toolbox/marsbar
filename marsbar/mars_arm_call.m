@@ -26,7 +26,7 @@ switch lower(action)
   I = varargin{1};
 
   % Make design into object, do conversions
-  I.data = mardo(I.data);
+  I.data = mardo_99(mardo(I.data));
   if ~is_valid_design(I.data)
     errf = 1; 
     msg = 'This does not appear to be a valid design';
@@ -50,6 +50,7 @@ switch lower(action)
   data = varargin{1};
   if isempty(data), return, end
   mars_armoire('set', 'roi_data', data.marsY);
+  mars_armoire('has_changed', 'roi_data', 0);
   fprintf('Set ROI data from estimated design...\n');
   if ~is_there(data, 'xCon'),
     tmp = load(spm_get(1, 'x?on.mat',...
@@ -60,3 +61,4 @@ switch lower(action)
  otherwise
   error(['Peverse request for ' action]);
 end
+

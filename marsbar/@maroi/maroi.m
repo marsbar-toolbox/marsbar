@@ -122,7 +122,7 @@ if ischar(params)
 end
 
 % fill with defaults, parse into fields for this object, children
-[pparams, others] = mars_struct('fillsplit', defstruct, params);
+[pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
 % Check for default thresholds according to binarize flag
 if isfield(params, 'binarize') & ~isempty(params.binarize) & ...

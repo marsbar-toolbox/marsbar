@@ -1,10 +1,12 @@
-function [o, others] = mardo(params)
+function [o, others] = mardo(params,passf)
 % mardo - class constructor for MarsBaR design object
 % inputs [defaults]
 % params  - structure, either:
 %             containing SPM/MarsBaR design or
 %             containing fields for mardo object, which should include
 %             'des_struct', containing design structure
+% passf   - if 1, or not passed, will try children objects to see if
+%           they would like to own this design
 %
 % outputs
 % o       - mardo object
@@ -23,6 +25,7 @@ function [o, others] = mardo(params)
 % has_images   - returns 1 if the design contains images
 % has_filter   - returns 1 if the design contains a filter
 % modality     - returns 'FMRI' for an FMRI design, else 'PET'
+% verbose      - whether reporting is verbose or not
 % design_type  - returns SPM version string corresponding to design type
 % is_marsed    - returns 1 if design has been processed with MarsBaR
 % is_spm_estimated - returns 1 if design has SPM estimation data
@@ -34,10 +37,14 @@ function [o, others] = mardo(params)
   
 myclass = 'mardo';
 defstruct = struct('des_struct', [],...
-		   'flip_option', 0);
+		   'flip_option', 0,...
+		   'verbose', 1);
 
 if nargin < 1
   params = [];
+end
+if nargin < 2
+  passf = 1;
 end
 if isa(params, myclass)
   o = params;
@@ -53,36 +60,44 @@ if isstruct(params)
 end
 
 % fill with defaults, parse into fields for this object, children
-[pparams, others] = mars_struct('fillsplit', defstruct, params);
+[pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
 % set the mardo object
 o  = class(pparams, myclass);
 
-% offer as food to children
-o = mardo_2(o, others);
-% note that the returned object might not be child object
+% If requested, pass to child objects to request ownership
+if passf
+  o = mardo_99(o, others);
+  o = mardo_2(o, others);
+end
 
-% sort out flipping
+% sort out design image flipping
 dt = design_type(o);
 sv = spm('ver');
-if ~is_marsed(o) & has_images(o) & ~strcmp(dt,sv)
-  fprintf('This a design from %s, but you are currently using %s\n',...
-	  dt, sv);
-  fprintf(['Results may be flipped when estimating ' ...
-	  'in different SPM versions\n']);
-  flip_option = flip_option(o);
-  switch flip_option
-   case 1
-    o = flip_images(o);
-    add_str = '';
-   case 0
-    add_str = 'not ';
-   otherwise
-    error(['Do not recognize flip option ' o.flip_option]);
-  end
-  fprintf('Images have %sbeen flipped in design\n', add_str);
+if ~is_marsed(o) 
+  if has_images(o) & ~strcmp(dt,sv)
+    flippo = flip_option(o);
+    switch flippo
+     case 1
+      o = flip_images(o);
+      add_str = '';
+     case 0
+      add_str = 'not ';
+     otherwise
+      error(['Do not recognize flip option ' flippo]);
+    end
+    if verbose(o)
+      fprintf([...
+	'This a design from %s, but you are currently using %s\n',...
+	'Data may be extracted from different sides in X (L/R)\n',...
+	'when using this design with %s compared to %s.\n',...
+	'NB MarsBaR has %sflipped the images for this design\n'],...
+		  dt, sv, dt, sv, add_str);
+    end
+  end % has_images, design/running SPM version differ
+  % Add Mars tag 
   o = mars_tag(o, struct(...
       'ver', marsbar('ver'),...
-      'flipped', flip_option));
+      'flipped', flip_option(o)));
 end
 return

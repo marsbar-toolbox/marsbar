@@ -55,7 +55,7 @@ end
 % Constructor call
 
 % fill with defaults
-pparams = mars_struct('fillmerge', defstruct, params);
+pparams = mars_struct('ffillmerge', defstruct, params);
 
 % umbrella object, parse out fields for (this object and children)
 [uo, pparams] = maroi(pparams);

@@ -39,7 +39,7 @@ if isfield(params, 'fname')
 end
 
 % fill with defaults
-pparams = mars_struct('fillmerge', defstruct, params);
+pparams = mars_struct('ffillmerge', defstruct, params);
 
 if ~isempty(pparams.vol) % check for attempt at create empty object
 

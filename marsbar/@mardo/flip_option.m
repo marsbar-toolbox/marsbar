@@ -1,3 +1,8 @@
-function tf = flip_option(o)
-% returns flags for flipping images in design
-tf = o.flip_option;  
+function res = flip_option(obj, data)
+% get/set flag for flipping images in design
+if nargin > 1
+  obj.flip_option = data;
+  res = obj;
+else
+  res = obj.flip_option;  
+end
