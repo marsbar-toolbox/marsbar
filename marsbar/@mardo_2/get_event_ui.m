@@ -1,15 +1,16 @@
-function [e_spec] = get_event_ui(D)
+function [e_spec, e_name] = get_event_ui(D)
 % method to select an event 
-% FORMAT [s,u] = get_event_ui(D)
+% FORMAT [e_spec, e_name] = get_event_ui(D)
 % D      - design
 % 
 % Returns
 % e_spec - 2 by 1 matrix with 
 %          e_epec(1) - session number
 %          e_spec(2) - event number in session
+% e_name - name of event
 %
-% $Id$ 
-
+% $Id$
+  
 if ~is_fmri(D)
   error('Need FMRI design');
 end
@@ -35,3 +36,4 @@ str   = sprintf('which effect');
 u     = spm_input(str,'+1','m',Uname);
 
 e_spec = [s u]';
+e_name = Uname{u};
