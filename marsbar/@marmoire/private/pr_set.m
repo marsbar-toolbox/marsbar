@@ -1,14 +1,14 @@
-function I = pr_set(I, action, data, filename)
+function item_struct = pr_set(item_struct, action, data, filename)
 % private function to set data into item
-% FORMAT I = pr_set(I, action, data, filename)
+% FORMAT item_struct = pr_set(item_struct, action, data, filename)
 %
-% I        - whole item, including parameters
-% action   - one of: set set_ui get clear update
-% data     - the data to set into this item
-% filename - (possibly) filename for these data
+% item_struct - whole item, including parameters
+% action      - one of: set set_ui get clear update
+% data        - the data to set into this item
+% filename    - (possibly) filename for these data
 %
 % Returns
-% I        - item with data set as specified
+% item_struct - item structure with data set as specified
 %
 % $Id$
 
@@ -30,7 +30,7 @@ passed_filename = filename;
   
 % optionally, treat char data as filename
 % but passed filename overrides char data
-if I.char_is_filename & ischar(data)
+if item_struct.char_is_filename & ischar(data)
   if ~pr_is_nix(filename)
     warning(sprintf(...
 	'Passed filename %s overrides data filename %s\n',...
@@ -42,14 +42,14 @@ if I.char_is_filename & ischar(data)
 end
 
 if pr_is_nix(filename) % may need to save if no associated filename
-  I.has_changed = 1;
+  item_struct.has_changed = 1;
 else % don't need to save, but may need to load from file
-  I.has_changed = 0;
+  item_struct.has_changed = 0;
   if isempty(data)
-    data = load(filename, ['-' I.file_type]);
+    data = load(filename, ['-' item_struct.file_type]);
   end
 end
-I.data = data;
+item_struct.data = data;
 
 % If no filename passed:
 % if new set, filename is empty
@@ -60,18 +60,18 @@ if pr_is_nan(filename)
     filename = '';
   end
 end  
-I.file_name = filename;
+item_struct.file_name = filename;
 
 % If this was a clear, don't flag for save
-if i_isempty(I), I.has_changed = 0; end
+if pr_isempty(item_struct), item_struct.has_changed = 0; end
 
 % and here is where we do the rules stuff
 is_clear = strcmp(action, 'clear');
-if ~isempty(I.set_action) & ...
+if ~isempty(item_struct.set_action) & ...
       (ismember(action, {'get','set','set_ui'}) | ...
-       (is_update & I.set_action_if_update) | ...
-       (is_clear & I.set_action_if_clear))  
-  [tmp errf msg] = eval(I.set_action);
+       (is_update & item_struct.set_action_if_update) | ...
+       (is_clear & item_struct.set_action_if_clear))  
+  [tmp errf msg] = eval(item_struct.set_action);
   if errf
       res = [];
     warning(['Data not set: ' msg]);
@@ -79,18 +79,18 @@ if ~isempty(I.set_action) & ...
   end
   % work out if whole thing as been returned, or only data
   if isfield(tmp, 'set_action') % whole thing
-    I = tmp;
+    item_struct = tmp;
   else % it's just the data
-    I.data = tmp;
+    item_struct.data = tmp;
   end
 end
 
 % return set data
-res = I.data;
+res = item_struct.data;
 
 % possibly remove data from structure 
-if ~I.has_changed & I.leave_as_file
-  I.data = [];
+if ~item_struct.has_changed & item_struct.leave_as_file
+  item_struct.data = [];
 end
 
 return

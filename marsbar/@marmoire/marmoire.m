@@ -85,18 +85,18 @@ function [o, others] = marmoire(params, varargin)
 % [data errf msg] = my_function(args)  or
 % [item_field errf msg] = my_function(args) 
 %
-% The first form just returns the data desired to be set, 
-% the second returns the whole item field, where the data
-% is contained in the field 'data'.
-% if 'errf' is set, the routine warns, and abort the set with 
-% the 'msg'.
+% The first form just returns the data desired to be set, the second returns
+% the whole item field, where the data is contained in the field 'data'.  if
+% 'errf' is set, the routine warns, and aborts the set action with the
+% 'msg'.
 %
 % The available args are:
-% I      - proposed whole item field contents
-% data   - proposed data to be inserted 
+% item_struct     - proposed whole item field contents
+% data            - proposed data to be inserted 
 % passed_filename - filename passed to function
 % 
-% and anything else...
+% and anything else you can see in context, for the line containing the
+% 'eval' statement in the file private/pr_set.m
   
 myclass = 'marmoire';
 defstruct = struct('items', []);

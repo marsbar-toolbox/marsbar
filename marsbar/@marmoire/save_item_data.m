@@ -47,7 +47,7 @@ saved_f = zeros(n_items, 1);
 for i_no = 1:n_items
   item = item_list{i_no};
   I = get_item_struct(o, item);
-  tmp_flgs = flags;
+  tmp_flags = flags;
   if pr_is_nix(filename) & ...
 	isempty(I.file_name)
     tmp_flags.ui = 1;

@@ -1,5 +1,5 @@
 function o = update_item_data(o, item, data, filename)
-% updates data for item
+% updates data for item (sets data, flags change)
 % FORMAT o = update_item_data(o, item, data, filename)
 %
 % o        - object

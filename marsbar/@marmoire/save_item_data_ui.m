@@ -1,4 +1,4 @@
-function [saved_f o] = save_item_data_ui(o, item, flags, filename)
+function [saved_f, o] = save_item_data_ui(o, item, flags, filename)
 % save data for item to file using GUI
 % FORMAT [saved_f o] = save_item_data_ui(o, item, flags, filename)
 %
@@ -24,21 +24,7 @@ if nargin < 4
   filename = NaN;
 end
 
-if strcmp(item, 'all')
-  item_list = fieldnames(o.items);
-else 
-  item_list = {item};
-end
+if ~isstruct(flags), flags = []; end
+flags.ui = 1;
 
-n_items = length(item_list);
-saved_f = zeros(n_items, 1);
-for i_no = 1:n_items
-  item = item_list{i_no};
-  I = get_item_struct(o, item);
-  [saved_f(i_no) I] = pr_save_ui(I, flags, filename);
-  if saved_f(i_no) == -1 % cancel in GUI save
-    break
-  else
-    o.items = setfield(o.items, item, I);  
-  end
-end
+[saved_f o] = save_item_data(o, item, flags, filename);

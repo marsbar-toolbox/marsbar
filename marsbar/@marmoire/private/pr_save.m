@@ -27,20 +27,14 @@ if ~isstruct(flags), flags = []; end
 if pr_is_nix(filename), filename = I.file_name; end
 if pr_is_nix(filename), filename = I.default_file_name; end
 
-% if UI, and warn and no data, warn and return
-if pr_isempty(I) & isfield(flags, 'ui') & 
-  isfield(flags, 'force') & isfield(flags, 'warn_empty')
-  msgbox('Nothing to save', [I.title ' is not set'], 'warn');
-  res = 0;
-  return
-end
-
 if pr_needs_save(I) | isfield(flags, 'force') % force flag
   % prompt for filename if UI
   if isfield(flags, 'ui')
     % warn if empty, and warn_empty flag (we must be forcing to get here)
-    if pr_isempty(I) & isfield(flags, 'warn_empty')
-      msgbox('Nothing to save', [I.title ' is not set'], 'warn');
+    if pr_isempty(I)
+      if isfield(flags, 'warn_empty')
+	msgbox('Nothing to save', [I.title ' is not set'], 'warn');
+      end
       res = 0;
       return
     end
@@ -70,7 +64,7 @@ if pr_needs_save(I) | isfield(flags, 'force') % force flag
     end
     pr = ['Filename to save ' prompt]; 
     [f p] = mars_uifile('put', I.filter_spec, pr, filename);
-    if all(f==0), res = -1, return, end
+    if all(f==0), res = -1; return, end
     filename = fullfile(p, f);
   end
   savestruct(I.data, filename);
