@@ -46,12 +46,12 @@ if isempty(flags), flags = ' '; end
 vf = any(flags == 'v');
 
 % images can come from a design
-xsDes = 'None';
+des_summary = 'None';
 if isa(VY, 'mardo')
   if ~has_images(VY)
     error('This design does not contain images');
   end
-  xsDes = descrip(VY);
+  des_summary = summary(VY);
   VY = get_images(VY);
 end
 
@@ -95,10 +95,11 @@ for r = 1:rlen
 	'mat', mat);
   end
 end
+if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
+
 marsY = marsy(r_data, r_info, struct(...
     'sumfunc', sumfunc, ...
     'descrip', ['Data extracted from ' label(o)],...
-    'info', struct('VY', VY)));
+    'info', struct('VY', VY, 'des_summary', des_summary)));
 
-if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
 
