@@ -4,14 +4,14 @@ function varargout=marsbar(varargin)
 % MarsBaR: Marseille Boite a Regions d'interet 
 %          Marseille Region of Interest Toolbox 
 %
-% MarsBaR (the collection of files listed by Contents.m) is copyright under
+% MarsBaR (the collection of files listed by contents.m) is copyright under
 % the GNU general public license.  Please see mars_licence.man for details.
 % 
 % Marsbar written by 
 % Jean-Luc Anton, Matthew Brett, Jean-Baptiste Poline, Romain Valabregue 
 %
-% Portions of the code rely heavily on (or are copied from) SPM99
-% (http://www.fil.ion.ucl.ac.uk/spm99), which is also released under the GNU
+% Portions of the code rely heavily on (or are copied from) SPM99 and SPM2
+% (http://www.fil.ion.ucl.ac.uk/spm), which is also released under the GNU
 % public licence.  Many thanks the SPM authors: (John Ashburner, Karl
 % Friston, Andrew Holmes et al, and of course our own Jean-Baptiste).
 %
@@ -28,8 +28,13 @@ function varargout=marsbar(varargin)
 %
 % $Id$
 
+% Programmer's help
+% -----------------
+% For a list of the functions implemented here, try
+% grep "^case " marsbar.m
+  
 % Marsbar version
-MBver = '0.30';  % SPM2 development release 
+MBver = '0.31';  % Second SPM2 development release 
 
 % Various working variables in global variable structure
 global MARS;
@@ -39,7 +44,7 @@ global MARS;
 if nargin == 0, Action='Startup'; else, Action = varargin{1}; end
 
 %=======================================================================
-switch lower(Action), case 'startup'             %-Start marsbar
+switch lower(Action), case 'startup'                     %-Start marsbar
 %=======================================================================
 
 %-Turn on warning messages for debugging
@@ -72,7 +77,7 @@ Fmenu = marsbar('CreateMenuWin','off');
 set([Fmenu],'Visible','on')
 
 %=======================================================================
-case 'on'                              %-Initialise marsbar
+case 'on'                                           %-Initialise MarsBaR
 %=======================================================================
 
 % promote spm replacement directory, affichevol directories
@@ -126,7 +131,7 @@ if loadf
 end
 
 %=======================================================================
-case 'off'                             %-Unload marsbar 
+case 'off'                                              %-Unload MarsBaR 
 %=======================================================================
 % marsbar('Off')
 %-----------------------------------------------------------------------
@@ -143,7 +148,7 @@ rmpath(MARS.ADDPATHS{:});
 fprintf('MarsBaR analysis functions removed from path\n');
 
 %=======================================================================
-case 'quit'                                      %-Quit MarsBaR window
+case 'quit'                                        %-Quit MarsBaR window
 %=======================================================================
 % marsbar('Quit')
 %-----------------------------------------------------------------------
@@ -161,14 +166,14 @@ delete(spm_figure('FindWin','MarsBaR'))
 fprintf('Au revoir...\n\n')
 
 %=======================================================================
-case 'cfgfile'                             %-file with marsbar cfg
+case 'cfgfile'                                  %-finds MarsBaR cfg file
 %=======================================================================
 % cfgfn  = marsbar('cfgfile')
 cfgfile = 'marsbarcfg.mat';
 varargout = {which(cfgfile), cfgfile}; 
 
 %=======================================================================
-case 'createmenuwin'                              %-Draw marsbar menu window
+case 'createmenuwin'                          %-Draw MarsBaR menu window
 %=======================================================================
 % Fmenu = marsbar('CreateMenuWin',Vis)
 if nargin<2, Vis='on'; else, Vis=varargin{2}; end
@@ -302,6 +307,7 @@ funcs = {...
     'marsbar(''add_trial_f'');',...
     'marsbar(''spm_graph'');',...
     'marsbar(''stat_table'');',...
+    'marsbar(''signal_change'');',...
     'marsbar(''set_results'');',...
     'mars_armoire(''save_ui'', ''est_design'', ''fw'');'};
 
@@ -312,6 +318,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Add trial-specific F',...
 		    '|MarsBaR SPM graph',...
 		    '|Statistic table',...
+		    '|% signal change',...
 		    '|Set results from file',...
 		    '|Save results to file'],...
 	  'Position',[bx by(4) bw bh].*WS,...
@@ -370,23 +377,36 @@ case {'ver', 'version'}                         %-Return MarsBaR version
 varargout = {MBver, 'MarsBaR - Marseille ROI toolbox'};
 
 %=======================================================================
-case 'estimate'                                 %-Estimate callback
+case 'splash'                                       %-show splash screen
 %=======================================================================
-% marsbar('estimate')
+% marsbar('splash')
 %-----------------------------------------------------------------------
-marsD = mars_armoire('get', 'def_design');
-if isempty(marsD), return, end
-marsY = mars_armoire('get', 'roi_data');
-if isempty(marsY), return, end
-if is_fmri(marsD) & ~has_filter(marsD)
-  marsD = fill(marsD, 'filter');
-  mars_armoire('update', 'def_design', marsD);
-end
-marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
-mars_armoire('set', 'est_design', marsRes);
-
+% Shows splash screen  
+WS   = spm('WinScale');		%-Window scaling factors
+[X,map] = imread('marsbar.jpg');
+aspct = size(X,1) / size(X,2);
+ww = 400;
+srect = [200 300 ww ww*aspct] .* WS;   %-Scaled size splash rectangle
+h = figure('visible','off',...
+	   'menubar','none',...
+	   'numbertitle','off',...
+	   'name','Welcome to MarsBaR',...
+	   'pos',srect);
+im = image(X);
+colormap(map);
+ax = get(im, 'Parent');
+axis off;
+axis image;
+axis tight;
+set(ax,'plotboxaspectratiomode','manual',...
+       'unit','pixels',...
+       'pos',[0 0 srect(3:4)]);
+set(h,'visible','on');
+pause(3);
+close(h);
+ 
 %=======================================================================
-case 'buildroi'                                  %-build and save roi
+case 'buildroi'                                     %-build and save ROI
 %=======================================================================
 % o = marsbar('buildroi')
 %-----------------------------------------------------------------------
@@ -398,7 +418,7 @@ if ~isempty(o)
 end
 
 %=======================================================================
-case 'transform'                                  %-transform rois
+case 'transform'                                        %-transform ROIs
 %=======================================================================
 % marsbar('transform')
 %-----------------------------------------------------------------------
@@ -407,7 +427,7 @@ marsbar('mars_menu', 'Transform ROI', 'Transform:', ...
 	{'Combine ROIs','Flip L/R'});
 
 %=======================================================================
-case 'import_rois'                                  %- er... import rois
+case 'import_rois'                                       %- import ROIs!
 %=======================================================================
 % marsbar('import_rois')
 %-----------------------------------------------------------------------
@@ -419,7 +439,7 @@ marsbar('mars_menu', 'Import ROIs', 'Import ROIs from:',...
 	 'number labelled ROI image'});
 
 %=======================================================================
-case 'export_rois'                                         %-export rois
+case 'export_rois'                                         %-export ROIs
 %=======================================================================
 % marsbar('export_rois')
 %-----------------------------------------------------------------------
@@ -432,7 +452,7 @@ marsbar('mars_menu', 'Export ROI(s)', 'Export ROI(s) to:',...
 	'number labelled ROI image'});
 
 %=======================================================================
-case 'img2rois'                                        %-import ROI image
+case 'img2rois'                                       %-import ROI image
 %=======================================================================
 %  marsbar('img2rois', roi_type)
 %-----------------------------------------------------------------------
@@ -458,7 +478,7 @@ end
 mars_rois2img('','','',roi_type);
 
 %=======================================================================
-case 'saveroi'                                  %-save roi
+case 'saveroi'                                                %-save ROI
 %=======================================================================
 % o = marsbar('saveroi', obj, flags)
 %-----------------------------------------------------------------------
@@ -500,7 +520,7 @@ if any(f~=0)
 end
 
 %=======================================================================
-case 'combinerois'                                  %-combine rois
+case 'combinerois'                                        %-combine ROIs
 %=======================================================================
 % marsbar('combinerois')
 %-----------------------------------------------------------------------
@@ -541,7 +561,7 @@ else
 end
 
 %=======================================================================
-case 'flip_lr'                                  %-flip roi L<->R
+case 'flip_lr'                                          %-flip roi L<->R
 %=======================================================================
 % marsbar('flip_lr')
 %-----------------------------------------------------------------------
@@ -556,6 +576,238 @@ o = flip_lr(o);
 % save ROI
 o = marsbar('saveroi', o, 'l'); 
 fprintf('\nSaved ROI as %s\n', source(o));
+
+%=======================================================================
+case 'show_volume'                  %- shows ROI volume in mm to console 
+%=======================================================================
+% marsbar('show_volume')
+%-----------------------------------------------------------------------
+roi_names = spm_get([0 Inf], 'roi.mat', 'Select ROIs tp get volume');
+if isempty(roi_names),return,end
+rois = maroi('load_cell', roi_names);
+for i = 1:size(rois, 1)
+  fprintf('Volume of %s: %6.2f\n', source(rois{i}), volume(rois{i}));
+end
+return
+
+%=======================================================================
+case 'roi_as_image'                               %- writes ROI as image 
+%=======================================================================
+% marsbar('roi_as_image')
+%-----------------------------------------------------------------------
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Write ROI to image');
+
+roi = spm_get([0 1], 'roi.mat', 'Select ROI to write');
+if isempty(roi),return,end
+[pn fn ext] = fileparts(roi);
+roi = maroi('load', roi);
+
+% space of object
+spopts = {'spacebase','image'};
+splabs =  {'Base space for ROIs','From image'};
+if has_space(roi)
+  spopts = {spopts{:} 'native'};
+  splabs = {splabs{:} 'ROI native space'};
+end
+spo = spm_input('Space for ROI image', '+1', 'm',splabs,...
+		spopts, 1);
+switch char(spo)
+ case 'spacebase'
+   sp = maroi('classdata', 'spacebase');
+ case 'image'
+  img = spm_get([0 1], 'img', 'Image defining space');
+  if isempty(img),return,end
+  sp = mars_space(img);
+ case 'native'
+  sp = [];
+end
+
+% remove ROI file ending
+gend = maroi('classdata', 'fileend');
+lg = length(gend);
+f2 = [fn ext];
+if length(f2)>=lg & strcmp(gend, [f2(end - lg +1 : end)])
+  f2 = f2(1:end-lg);
+else
+  f2 = fn;
+end
+
+fname = marsbar('get_img_name', f2);
+if isempty(fname), return, end
+save_as_image(roi, fname, sp);
+fprintf('Saved ROI as %s\n',fname);
+
+%=======================================================================
+case 'attach_image'                          %- attaches image to ROI(s)
+%=======================================================================
+% marsbar('attach_image' [,img [,roilist]])
+%-----------------------------------------------------------------------
+if nargin < 2
+  V = spm_get([0 1], 'img', 'Image to attach');
+  if isempty(V), return, end
+else
+  V = varargin{1};
+end
+if nargin < 3
+  rois = spm_get([0 Inf], '_roi.mat', 'Select ROIs to image to');
+  if isempty(rois), return, end
+else
+  rois = varargin{2};
+end
+if ischar(V), V = spm_vol(V); end
+for i = 1:size(rois, 1)
+  n = deblank(rois(i,:));
+  try 
+    r = maroi('load', n);
+  catch
+    if ~strmatch(lasterr, 'Cant map image file.')
+      error(lasterr);
+    end
+  end
+  if isempty(r)
+    continue
+  end
+  if ~isa(r, 'maroi_image')
+    fprintf('ROI %s is not an image ROI - ignored\n', n);
+    continue
+  end
+
+  r = vol(r, V);
+  saveroi(r, n);
+  fprintf('Saved ROI %s, attached to image %s\n',...
+	  n, V.fname)
+end
+return
+
+%=======================================================================
+case 'make_design'                       %-runs design creation routines
+%=======================================================================
+% marsbar('make_design', des_type)
+%-----------------------------------------------------------------------
+if nargin < 2
+  des_type = 'basic';
+else
+  des_type = varargin{2};
+end
+
+switch lower(des_type)
+ case 'pet'
+  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
+ case 'basic'
+  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
+ case 'fmri'
+  SPM = mars_fmri_design;
+end
+mars_armoire('set','def_design', SPM);
+
+%=======================================================================
+case 'list_images'                     %-lists image files in SPM design
+%=======================================================================
+% marsbar('list_images')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+if has_images(marsD)
+  P = image_names(marsD);
+  strvcat(P{:})
+else
+  disp('Design does not contain images');
+end
+
+%=======================================================================
+case 'check_images'                   %-checks image files in SPM design
+%=======================================================================
+% marsbar('check_images')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+if ~has_images(marsD)
+  disp('Design does not contain images');
+  return
+end
+
+P = image_names(marsD);
+P = strvcat(P{:});
+ok_f = 1;
+for i = 1:size(P, 1)
+  fname = deblank(P(i,:));
+  if ~exist(fname, 'file');
+    fprintf('Image %d: %s does not exist\n', i, fname);
+    ok_f = 0;
+  end
+end
+if ok_f
+  disp('All images in design appear to exist');
+end
+
+%=======================================================================
+case 'ana_cd'                      %-changes path to files in SPM design
+%=======================================================================
+% marsbar('ana_cd')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Change image path in design', 0);
+
+% root path shown in output window
+P = image_names(marsD);
+P = strvcat(P{:});
+root_names = spm_str_manip(P, 'H');
+spm_input(deblank(root_names(1,:)),1,'d','Common path is:');
+
+% new root
+newpath = spm_get([-1 0], '', 'New directory root for files');
+if isempty(newpath), return, end
+
+% do
+marsD = cd_images(marsD, newpath);
+mars_armoire('set', 'def_design', marsD);
+
+%=======================================================================
+case 'ana_desmooth'           %-makes new SPM design for unsmoothed data
+%=======================================================================
+% marsbar('ana_desmooth')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+marsD = prefix_images(marsD, 'remove', 's');
+mars_armoire('set', 'def_design', marsD);
+  
+%=======================================================================
+case 'add_images'                            %-add images to FMRI design
+%=======================================================================
+% marsbar('add_images')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end
+if ~is_fmri(marsD), return, end
+marsD = fill(marsD, {'images'});
+mars_armoire('update', 'def_design', marsD);
+mars_armoire('file_name', 'def_design', '');
+
+%=======================================================================
+case 'edit_filter'                   %-add / edit filter for FMRI design
+%=======================================================================
+% marsbar('edit_filter')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end
+if ~is_fmri(marsD), return, end
+marsD = fill(marsD, 'filter');
+mars_armoire('update', 'def_design', marsD);
+mars_armoire('file_name', 'def_design', '');
+
+%=======================================================================
+case 'design_report'                         %-does explore design thing
+%=======================================================================
+% marsbar('design_report')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+spm('FnUIsetup','Explore design', 0);
+ui_report(marsD);
 
 %=======================================================================
 case 'extract_data'                       % gets data maybe using design
@@ -579,6 +831,8 @@ end
 varargout = {[]};
 if isempty(roi_list), return, end
 
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Extract data', 0);
+
 if strcmp(etype, 'default')
   marsD = mars_armoire('get','def_design');
   if isempty(marsD), return, end;
@@ -590,8 +844,6 @@ if strcmp(etype, 'default')
 else  % full options extraction
   % question for design
   
-  [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Extract data', 0);
-
   marsD = [];
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
     marsD = mars_armoire('get','def_design');
@@ -622,7 +874,7 @@ mars_armoire('set', 'roi_data', marsY);
 varargout = {marsY};
 
 %=======================================================================
-case 'plot_data'                                   %- guess what it does
+case 'plot_data'                                       %- it plots data!
 %=======================================================================
 % marsbar('plot_data', p_type)
 %-----------------------------------------------------------------------
@@ -731,7 +983,7 @@ mars_armoire('set', 'roi_data', marsY);
 disp(['Data loaded from ' pn_fn]);
 
 %=======================================================================
-case 'export_data'                                             %- exports
+case 'export_data'                                            %- exports
 %=======================================================================
 % marsbar('export_data')
 %-----------------------------------------------------------------------
@@ -824,7 +1076,7 @@ if n_regions(marsY) == 1
 end
 
 % Setup input window
-[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Slit regions to files', 0);
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Split regions to files', 0);
 
 d = spm_get([-1 0], '', 'New directory root for files');
 if isempty(d), return, end
@@ -860,45 +1112,32 @@ disp(P)
 disp('Files merged and set as current data')
 
 %=======================================================================
-case 'set_results'                                  %-set results
+case 'estimate'                                       %-Estimates design
+%=======================================================================
+% marsbar('estimate')
+%-----------------------------------------------------------------------
+marsD = mars_armoire('get', 'def_design');
+if isempty(marsD), return, end
+marsY = mars_armoire('get', 'roi_data');
+if isempty(marsY), return, end
+if is_fmri(marsD) & ~has_filter(marsD)
+  marsD = fill(marsD, 'filter');
+  mars_armoire('update', 'def_design', marsD);
+end
+marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
+mars_armoire('set', 'est_design', marsRes);
+
+%=======================================================================
+case 'set_results'          %-sets estimated design into global stucture
 %=======================================================================
 % donef = marsbar('set_results')
 %-----------------------------------------------------------------------
 varargout = {0};
 marsRes = mars_armoire('set_ui', 'est_design');
 if isempty(marsRes), return, end
-mars_armoire('save_ui', 'roi_data', 'y');
-mars_armoire('set', 'roi_data', get_data(marsRes));
-mars_armoire('has_changed', 'roi_data', 0);
-fprintf('Set ROI data from estimated design...\n');
-
 MARS.WORKSPACE.default_contrast = [];
 varargout = {1};
 return
-
-%=======================================================================
-case 'add_images'                            %-add images to FMRI design
-%=======================================================================
-% marsbar('add_images')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end
-if ~is_fmri(marsD), return, end
-marsD = fill(marsD, {'images'});
-mars_armoire('update', 'def_design', marsD);
-mars_armoire('file_name', 'def_design', '');
-
-%=======================================================================
-case 'edit_filter'                   %-add / edit filter for FMRI design
-%=======================================================================
-% marsbar('edit_filter')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end
-if ~is_fmri(marsD), return, end
-marsD = fill(marsD, 'filter');
-mars_armoire('update', 'def_design', marsD);
-mars_armoire('file_name', 'def_design', '');
 
 %=======================================================================
 case 'set_defcon'                                 %-set default contrast
@@ -969,6 +1208,10 @@ case 'spm_graph'                                         %-run spm_graph
 %-----------------------------------------------------------------------
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Mars SPM graph', 0);
+
 if ~mars_struct('isthere', MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
@@ -997,6 +1240,28 @@ if isempty(marsRes), return, end
 disp(char(strs));
 assignin('base', 'marsS', marsS);
 if changef, mars_armoire('update', 'est_design', marsRes); end
+
+%=======================================================================
+case 'signal_change'                             % percent signal change
+%=======================================================================
+% marsbar('signal_change')
+%-----------------------------------------------------------------------
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Percent signal change', 0);
+
+dur       = spm_input('Event duration', '+1', 'e', 0);
+[e_s e_n] = ui_get_event(marsRes);
+pc        = event_signal(marsRes, e_s, dur, 'max');
+rns       = region_name(get_data(marsRes));
+disp('Sort-of % signal change');
+disp(['Event: ' e_n]);
+disp(sprintf('Duration: %3.2f seconds', dur));
+for r = 1:length(rns)
+  disp(sprintf('Region: %40s; %5.3f', rns{r}, pc(r)));
+end
 
 %=======================================================================
 case 'merge_contrasts'                                %-import contrasts
@@ -1048,36 +1313,7 @@ if changef
 end
 
 %=======================================================================
-case 'splash'                           %-show splash screen
-%=======================================================================
-% marsbar('splash')
-%-----------------------------------------------------------------------
- % Shows splash screen  
- WS   = spm('WinScale');		%-Window scaling factors
- [X,map] = imread('marsbar.jpg');
- aspct = size(X,1) / size(X,2);
- ww = 400;
- srect = [200 300 ww ww*aspct] .* WS;   %-Scaled size splash rectangle
- h = figure('visible','off',...
-	    'menubar','none',...
-	    'numbertitle','off',...
-	    'name','Welcome to MarsBaR',...
-	    'pos',srect);
- im = image(X);
- colormap(map);
- ax = get(im, 'Parent');
- axis off;
- axis image;
- axis tight;
- set(ax,'plotboxaspectratiomode','manual',...
-	'unit','pixels',...
-	'pos',[0 0 srect(3:4)]);
- set(h,'visible','on');
- pause(3);
- close(h);
- 
-%=======================================================================
-case 'str2fname'                        %-string to file name
+case 'str2fname'                                   %-string to file name
 %=======================================================================
 % fname = marsbar('str2fname', str)
 %-----------------------------------------------------------------------
@@ -1101,7 +1337,7 @@ end
 varargout={str};
  
 %=======================================================================
-case 'is_valid_varname'           %- tests string is valid variable name
+case 'is_valid_varname'        %- tests if string is valid variable name
 %=======================================================================
 % tf = marsbar('is_valid_varname', str)
 %-----------------------------------------------------------------------
@@ -1117,113 +1353,6 @@ catch
   varargout = {0};
 end
  
-%=======================================================================
-case 'make_design'                                               %-er...
-%=======================================================================
-% marsbar('make_design', des_type)
-%-----------------------------------------------------------------------
-if nargin < 2
-  des_type = 'basic';
-else
-  des_type = varargin{2};
-end
-
-switch lower(des_type)
- case 'pet'
-  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
- case 'basic'
-  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
- case 'fmri'
-  SPM = mars_fmri_design;
-end
-mars_armoire('set','def_design', SPM);
-
-%=======================================================================
-case 'list_images'                     %-lists image files in SPM design
-%=======================================================================
-% marsbar('list_images')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end;
-if has_images(marsD)
-  P = get_image_names(marsD);
-  strvcat(P{:})
-else
-  disp('Design does not contain images');
-end
-
-%=======================================================================
-case 'check_images'                   %-checks image files in SPM design
-%=======================================================================
-% marsbar('check_images')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end;
-if ~has_images(marsD)
-  disp('Design does not contain images');
-  return
-end
-
-P = get_image_names(marsD);
-P = strvcat(P{:});
-ok_f = 1;
-for i = 1:size(P, 1)
-  fname = deblank(P(i,:));
-  if ~exist(fname, 'file');
-    fprintf('Image %d: %s does not exist\n', i, fname);
-    ok_f = 0;
-  end
-end
-if ok_f
-  disp('All images in design appear to exist');
-end
-
-%=======================================================================
-case 'ana_cd'                      %-changes path to files in SPM design
-%=======================================================================
-% marsbar('ana_cd')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end;
-
-% Setup input window
-[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Change image path in design', 0);
-
-% root path shown in output window
-P = get_image_names(marsD);
-P = strvcat(P{:});
-root_names = spm_str_manip(P, 'H');
-spm_input(deblank(root_names(1,:)),1,'d','Common path is:');
-
-% new root
-newpath = spm_get([-1 0], '', 'New directory root for files');
-if isempty(newpath), return, end
-
-% do
-marsD = cd_images(marsD, newpath);
-mars_armoire('set', 'def_design', marsD);
-
-%=======================================================================
-case 'ana_desmooth'           %-makes new SPM design for unsmoothed data
-%=======================================================================
-% marsbar('ana_desmooth')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end;
-
-% do
-marsD = deprefix_images(marsD, 's');
-mars_armoire('set', 'def_design', marsD);
-  
-%=======================================================================
-case 'design_report'                         %-does explore design thing
-%=======================================================================
-% marsbar('design_report')
-%-----------------------------------------------------------------------
-marsD = mars_armoire('get','def_design');
-if isempty(marsD), return, end;
-ui_report(marsD);
-
 %=======================================================================
 case 'error_log'                  %- makes file to help debugging errors
 %=======================================================================
@@ -1247,109 +1376,7 @@ end
 disp(['Saved error log as ' fname]);
 
 %=======================================================================
-case 'show_volume'                   %- shows ROI volume in mm to conole 
-%=======================================================================
-% marsbar('show_volume')
-%-----------------------------------------------------------------------
-roi_names = spm_get([0 Inf], 'roi.mat', 'Select ROIs tp get volume');
-if isempty(roi_names),return,end
-rois = maroi('load_cell', roi_names);
-for i = 1:size(rois, 1)
-  fprintf('Volume of %s: %6.2f\n', source(rois{i}), volume(rois{i}));
-end
-return
-
-%=======================================================================
-case 'roi_as_image'           %- writes roi as image 
-%=======================================================================
-% marsbar('roi_as_image')
-%-----------------------------------------------------------------------
-[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Write ROI to image');
-
-roi = spm_get([0 1], 'roi.mat', 'Select ROI to write');
-if isempty(roi),return,end
-[pn fn ext] = fileparts(roi);
-roi = maroi('load', roi);
-
-% space of object
-spopts = {'spacebase','image'};
-splabs =  {'Base space for ROIs','From image'};
-if has_space(roi)
-  spopts = {spopts{:} 'native'};
-  splabs = {splabs{:} 'ROI native space'};
-end
-spo = spm_input('Space for ROI image', '+1', 'm',splabs,...
-		spopts, 1);
-switch char(spo)
- case 'spacebase'
-   sp = maroi('classdata', 'spacebase');
- case 'image'
-  img = spm_get([0 1], 'img', 'Image defining space');
-  if isempty(img),return,end
-  sp = mars_space(img);
- case 'native'
-  sp = [];
-end
-
-% remove ROI file ending
-gend = maroi('classdata', 'fileend');
-lg = length(gend);
-f2 = [fn ext];
-if length(f2)>=lg & strcmp(gend, [f2(end - lg +1 : end)])
-  f2 = f2(1:end-lg);
-else
-  f2 = fn;
-end
-
-fname = marsbar('get_img_name', f2);
-if isempty(fname), return, end
-save_as_image(roi, fname, sp);
-fprintf('Saved ROI as %s\n',fname);
-
-%=======================================================================
- case 'attach_image'                          %- attaches image to ROI(s)
-%=======================================================================
-% marsbar('attach_image' [,img [,roilist]])
-%-----------------------------------------------------------------------
-if nargin < 2
-  V = spm_get([0 1], 'img', 'Image to attach');
-  if isempty(V), return, end
-else
-  V = varargin{1};
-end
-if nargin < 3
-  rois = spm_get([0 Inf], '_roi.mat', 'Select ROIs to image to');
-  if isempty(rois), return, end
-else
-  rois = varargin{2};
-end
-if ischar(V), V = spm_vol(V); end
-for i = 1:size(rois, 1)
-  n = deblank(rois(i,:));
-  try 
-    r = maroi('load', n);
-  catch
-    if ~strmatch(lasterr, 'Cant map image file.')
-      error(lasterr);
-    end
-  end
-  if isempty(r)
-    continue
-  end
-  if ~isa(r, 'maroi_image')
-    fprintf('ROI %s is not an image ROI - ignored\n', n);
-    continue
-  end
-
-  r = vol(r, V);
-  saveroi(r, n);
-  fprintf('Saved ROI %s, attached to image %s\n',...
-	  n, V.fname)
-end
-return
-
-%=======================================================================
- case 'get_img_name'          %-gets name of image, checks for overwrite
+case 'get_img_name'          %-gets name of image, checks for overwrite
 %=======================================================================
 % P = marsbar('get_img_name', fname, flags);
 %-----------------------------------------------------------------------
@@ -1386,7 +1413,7 @@ end
 varargout = {fname};
 
 %=======================================================================
- case 'mars_menu'                    %-menu selection of marsbar actions 
+case 'mars_menu'                    %-menu selection of marsbar actions 
 %=======================================================================
 % marsbar('mars_menu',tstr,pstr,tasks_str,tasks)
 %-----------------------------------------------------------------------
