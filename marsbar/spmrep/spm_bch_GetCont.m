@@ -22,10 +22,13 @@ status.err = 0;
 
 swd = pwd;
 
+% results and contrast files
+res_file = 'mars_estimated.mat';
+con_file = 'mars_xcon.mat';
 
 %-----------------------------------------------------------------------
-if exist(fullfile('.','mars_xcon.mat'),'file'), 
-	load('mars_xcon.mat'), 
+if exist(fullfile('.',con_file),'file'), 
+	load(con_file), 
 	lxCon = length(xCon);
 else, 
 %	xCon = spm_FcUtil('FconFields');
@@ -34,11 +37,11 @@ else,
 end
 
 %-----------------------------------------------------------------------
-if exist(fullfile('.','mars_estimated.mat'),'file'), 
+if exist(fullfile('.',res_file),'file'), 
 	try 
-	   load(fullfile('.','.mat'),'xX');	
+	   load(fullfile('.',res_file),'xX');	
 	catch 
-	   str = ['cannot open ' fullfile('.','mars_estimated.mat') ...
+	   str = ['cannot open ' fullfile('.',res_file) ...
                   ' file in spm_bch_GetCont ' swd];
 	   warning(str);
 	   status.str = str;
@@ -46,7 +49,7 @@ if exist(fullfile('.','mars_estimated.mat'),'file'),
 	   return;
 	end
 else 
-	str = ['cannot find ' fullfile('.','mars_estimated.mat') ...
+	str = ['cannot find ' fullfile('.',res_file) ...
                ' file in spm_bch_GetCont ' swd];
 	warning(str);
 	status.str = str;
@@ -81,10 +84,13 @@ for n=1:min(len)
    end
 end
 try
-	save('mars_xcon.mat','xCon')
+	save(con_file,'xCon')
 catch
-	str = ['Can''t write mars_xcon.mat to the results directory: ' swd];
+	str = ['Can''t write ' con_file ' to the results directory: ' swd];
 	warning(str);
 	status.str = str;
 	status.err = 3;
 end
+
+% set contrasts into marsbar results
+marsbar('set_contrasts', con_file);

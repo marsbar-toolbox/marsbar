@@ -63,6 +63,9 @@ switch func
   error(['Function ' func ' not yet defined']);
 end
 
+% convert from logical to double if necessary
+o.dat = double(o.dat);
+
 binf = ismember(func, {...
     'and',...
     'or',...

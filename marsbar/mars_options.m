@@ -62,7 +62,7 @@ switch lower(optstr)
   end
   if ~isempty(cfg_fname)
     % don't save the default contrasts etc
-    [mars mars_results] = splitstruct(mars, resfields);
+    [mars_results, mars] = splitstruct(mars, resfields);
     try
       save(cfg_fname, 'mars');
     catch
@@ -75,6 +75,7 @@ switch lower(optstr)
   % --------------------------------------------------
  case 'basedefaults'
   % hardcoded defaults
+  msgstr = 'base defaults';
 
   % default structural image for display
   mars.structural.fname = fullfile(spm('Dir'), 'canonical', 'avg152T1.img');
@@ -140,8 +141,8 @@ switch lower(optstr)
     
    % statistics 
    case 'statistics'
-    mars = getdefs(mars,oldmars,...
-			'statistics.sumfunc',...
+    mars.statistics = getdefs(mars.statistics,oldmars.statistics,...
+			'sumfunc',...
 			'Data summary function',...
 			{'mean','wtmean','median','eigen1','ask'},...
 			['Mean|Weighted mean|Median|1st eigenvector|Always ask']);

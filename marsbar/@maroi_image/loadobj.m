@@ -16,6 +16,7 @@ if isempty(img)
 		     'Try to reattach with marsbar(''attach_image'')');
   end
   error(errstr);
-else
-  o = matrixdata(o, img);
 end
+
+% set using maroi_matrix object to avoid object conversion 
+o.maroi_matrix = matrixdata(o.maroi_matrix,img); 

@@ -33,7 +33,7 @@ if nargin < 3
   if ~isempty(mb)
     structv = mb.structural.fname;
   else
-    structv = fullfile(spm('dir'), 'canonical', 'avg152t1.img');
+    structv = fullfile(spm('dir'), 'canonical', 'avg152T1.img');
   end
 else
   structv = varargin{2};
@@ -64,6 +64,7 @@ spm_image('init', structv.fname);
 sp = mars_space(structv);
 
 mo = [];
+roi_ctr = 1;
 for i = 1:olen
   roi = maroi('load', roi_obj{i});
   % check ROI contains something
@@ -72,50 +73,146 @@ for i = 1:olen
   elseif is_empty_roi(roi)
     warning(sprintf('ROI %d:%s is empty', i, label(roi)));
   else
-    % convert ROI to matrix
+    % Define space for ROI
     nsp = native_space(roi);
     if isempty(nsp)
       nsp = sp;
     end
+    
+    % convert ROI to matrix
     mo = maroi_matrix(roi, nsp);
     dat = matrixdata(mo);
     if isempty(dat) | ~any(dat(:))
       warning(sprintf('ROI %d: %s  - contains no points to show',...
 		      i, label(roi)));
-      mo = [];
     else
       dat(dat == 0) = NaN;
       % add to image to display
       spm_orthviews('AddColouredMatrix', 1, dat, nsp.mat, cmap(col_inds(i),:));
+  
+      % Information for display
+      XYZ = realpts(roi,nsp);
+      mx = max(XYZ, [], 2); mn = min(XYZ, [], 2);
+      roi_info(roi_ctr) = struct(...
+	  'label', label(roi),...
+	  'num', i,...
+	  'c_o_m', c_o_m(mo, nsp, 'real'),...
+	  'volume', volume(mo),...
+	  'maxx', [mn(1) mx(1)],...
+	  'maxy', [mn(2) mx(2)],...
+	  'maxz', [mn(3) mx(3)] ...
+	  );
+      roi_ctr = roi_ctr + 1;
     end
   end
 end
-if ~isempty(mo)
-  spm_orthviews('Reposition', c_o_m(mo, sp, 'real'));
+if roi_ctr == 1
+  return
 end
 
 % ROI information panel
 %-----------------------------------------------------------------------
 WS = spm('WinScale');
 fg = spm_figure('GetWin','Graphics');
+% Frame for ROI info
+uicontrol(fg,'Style','Frame','Position',[305 375 280 240].*WS);
 
-uicontrol(fg,'Style','Text', 'Position',[75 295 35 020].*WS,'String','mm:');
-uicontrol(fg,'Style','Text', 'Position',[75 275 35 020].*WS,'String','vx:');
-uicontrol(fg,'Style','Text', 'Position',[75 255 65 020].*WS,'String','Intensity:');
+% ROI selection menu
+rl = length(roi_info); 
+labs = [num2str([1:rl]') repmat(': ', rl, 1) strvcat(roi_info(:).label)];
+uicontrol(fg,'Style','popupmenu' ,'Position',[320 585 250 20].*WS,...
+	  'String',labs,...
+	  'Callback','mars_display_roi(''roi_menu'')', ...
+	  'ToolTipString','ROIs', 'Userdata', roi_info);
 
-st.mars.mp = uicontrol(fg,'Style','edit', 'Position',[110 295 135 ...
-		    020].*WS,'String','','Callback', ...
-		       'spm_image(''setposmm'')','ToolTipString',...
-		       'move crosshairs to mm coordinates');
-st.mars.vp = uicontrol(fg,'Style','edit', 'Position',[110 275 135 ...
-		    020].*WS,'String','','Callback', ...
-		       'spm_image(''setposvx'')','ToolTipString',...
-		       'move crosshairs to voxel coordinates');
-st.mars.in = uicontrol(fg,'Style','Text', 'Position',[140 255  85 ...
-		    020].*WS,'String','');
+uicontrol(fg,'Style','Text', 'Position',[310 535 50 020].*WS,...
+	  'String','Label:','HorizontalAlignment','left');
+uicontrol(fg,'Style','Text', 'Position',[310 505 110 020].*WS,...
+	  'String','Centre of mass:','HorizontalAlignment','left');
+uicontrol(fg,'Style','Text', 'Position',[310 475 110 020].*WS,...
+	  'String','Volume (mm):','HorizontalAlignment','left');
+uicontrol(fg,'Style','Text', 'Position',[310 445 110 020].*WS,...
+	  'String','Max/min X(mm):','HorizontalAlignment','left');
+uicontrol(fg,'Style','Text', 'Position',[310 415 110 020].*WS,...
+	  'String','Max/min Y(mm):','HorizontalAlignment','left');
+uicontrol(fg,'Style','Text', 'Position',[310 385 110 020].*WS,...
+	  'String','Max/min Z(mm):','HorizontalAlignment','left');
+
+% Text information
+st.mars.txt.label = uicontrol(fg,'Style','Text', ...
+			      'Position',[360 535 220 020].*WS,...
+			      'String','',...
+			      'HorizontalAlignment','left',...
+			      'FontWeight','bold');
+st.mars.txt.c_o_m = uicontrol(fg,'Style','Text', ...
+			      'Position',[425 505 155 020].*WS,...
+			      'String','',...
+			      'HorizontalAlignment','left',...
+			      'FontWeight','bold');
+st.mars.txt.volume = uicontrol(fg,'Style','Text', ...
+			       'Position',[425 475 155 020].*WS,...
+			       'String','',...
+			       'HorizontalAlignment','left',...
+			       'FontWeight','bold');
+st.mars.txt.maxx = uicontrol(fg,'Style','Text', ...
+			     'Position',[425 445 155 020].*WS,...
+			     'String','',...
+			     'HorizontalAlignment','left',...
+			     'FontWeight','bold');
+st.mars.txt.maxy = uicontrol(fg,'Style','Text', ...
+			     'Position',[425 415 155 020].*WS,...
+			     'String','',...
+			     'HorizontalAlignment','left',...
+			     'FontWeight','bold');
+st.mars.txt.maxz = uicontrol(fg,'Style','Text', ...
+			     'Position',[425 385 155 020].*WS,...
+			     'String','',...
+			     'HorizontalAlignment','left',...
+			     'FontWeight','bold');
+
+% store ROI information is orthviews global structure
+st.mars.roi_info = roi_info;
 
 % set our own callback for crosshair move
 st.callback = 'mars_display_roi(''orthcb'');';
+
+% Move to centre of mass of last ROI in list
+spm_orthviews('Reposition', roi_info(end).c_o_m);
+mars_display_roi('show_info', length(roi_info));
+
+case 'roi_menu'         % callback service from ROI menu
+if isfield(st, 'mars')
+  v = get(gco, 'Value');
+  spm_orthviews('Reposition', st.mars.roi_info(v).c_o_m);
+  mars_display_roi('show_info', v);
+end
+ 
+case 'show_info'    % show info for ROI, from ROI info structure
+v = varargin{1};  
+if isfield(st, 'mars')
+  if ~isempty(v)
+    set(st.mars.txt.label, 'String', ...
+		      st.mars.roi_info(v).label);
+    set(st.mars.txt.c_o_m, 'String', ...
+		      sprintf('%.3g  %.3g %.3g', ...
+			      st.mars.roi_info(v).c_o_m));
+    set(st.mars.txt.volume, 'String', ...
+		      sprintf('%8.2f', st.mars.roi_info(v).volume));
+    set(st.mars.txt.maxx, 'String', ...
+		      sprintf('%.3g %.3g', st.mars.roi_info(v).maxx));
+    set(st.mars.txt.maxy, 'String', ...
+		      sprintf('%.3g %.3g', st.mars.roi_info(v).maxy));
+    set(st.mars.txt.maxz, 'String', ...
+		      sprintf('%.3g %.3g', st.mars.roi_info(v).maxz));
+  else
+    set(st.mars.txt.label, 'String','');
+    set(st.mars.txt.c_o_m, 'String','');
+    set(st.mars.txt.volume, 'String','');
+    set(st.mars.txt.maxx, 'String','');
+    set(st.mars.txt.maxy, 'String','');
+    set(st.mars.txt.maxz, 'String','');
+  end 
+end
 
 case 'orthcb'           % callback service from spm_orthviews
   
@@ -133,15 +230,26 @@ if isfield(st,'mp'),
     % Set intensity to ROI list
     in_str = '';
     roi_p = [];
-    for r = 1:length(st.vols{1}.blobs)
-      if ~isnan(spm_sample_vol(st.vols{1}.blobs{r}.vol,...
-			pos(1),pos(2),pos(3), ...
-			0))
+    V1 = st.vols{1};
+    for r = 1:length(V1.blobs)
+      p2 = V1.blobs{r}.mat \ V1.mat * [pos; 1];
+      rval = spm_sample_vol(V1.blobs{r}.vol,...
+			p2(1),p2(2),p2(3), ...
+			0);
+      if ~isnan(rval) & rval ~= 0
 	roi_p = [roi_p r];
 	in_str = [in_str num2str(r) ' '];
       end
     end
     set(st.in,'String',in_str);
+    
+    % find, and show info for ROI
+    if ~isempty(roi_p)
+      v = find(roi_p(end) == [st.mars.roi_info(:).num]);
+      mars_display_roi('show_info', v);
+    else
+      mars_display_roi('show_info', []);
+    end      
     
   else,
     st.Callback = ';';

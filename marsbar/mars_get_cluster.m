@@ -12,8 +12,10 @@ function [cXYZ, Z, M, pt, str] = mars_get_cluster
 % $Id$
   
 [cXYZ Z M pt str] = deal([]);
- 
+
+% load new results
 evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
+
 cXYZ = []; M = [];
 spm_input('Select cluster, then Yes to continue',1,'d');
 if ~spm_input('Continue?',2, 'y/n',[1 0],1)
@@ -21,7 +23,7 @@ if ~spm_input('Continue?',2, 'y/n',[1 0],1)
 end
 
 errstr = sprintf(['''Cannot find SPM/VOL structs in the workspace; '...
-		  'Please run SPM results GUI''']);
+		  'Please (re)run SPM results GUI''']);
 SPM = evalin('base', 'SPM', ['error(' errstr ')']);
 M = evalin('base', 'VOL.M', ['error(' errstr ')']);
 

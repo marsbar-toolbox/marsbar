@@ -49,7 +49,12 @@ if isempty(roipath)
 end
 if isempty(rootn)
   [pn rootn ext] = fileparts(P.fname);
+  rootn = spm_input('Prefix for ROI filenames', '+1', 's', rootn);
 end
+if isempty(rootn)
+  return
+end
+
 if isempty(flags)
   flags = 'i';  % id image is default
 end
@@ -75,15 +80,13 @@ vals = img(pts);
 % select cluster or id 
 if any(flags == 'i')
   cl_vals = vals;
-  u_vals = unique(vals);
 else
   cl_vals = spm_clusters(XYZ);
-  u_vals = unique(cl_vals);
 end
 
-for c = u_vals
-  % maximum maximum for this cluster
-  t_cl_is = find(vals == c);
+for c = unique(cl_vals)
+  % points for this region/cluster
+  t_cl_is = find(cl_vals == c);
 
   % corresponding XYZ
   cXYZ = XYZ(:, t_cl_is);
