@@ -140,6 +140,11 @@ if fill_filt
   for   i = 1:nsess
     xVi.row{i} = row{i};
   end
+  
+  % fill into design
+  xX.K   = K;
+  xX.xVi = xVi;
+  
 end
 
 if fill_filt & ~will_have_imgs
@@ -199,14 +204,6 @@ if fill_imgs
 		      'I',	0,...
 		      'VM',	{[]},...
 		      'xs',	struct('Masking','analysis threshold'));
-end
-
-if fill_filt
-  %-Complete design matrix (xX)
-  %=======================================================================
-  xX.K   = K;
-  xX.xVi = xVi;
-  
 end
 
 %-Design description (an nx2 cellstr) - for saving and display
