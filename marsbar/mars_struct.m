@@ -88,10 +88,11 @@ switch lower(action)
   % Return for empty passed args
   if isempty(a), varargout = {b}; return, end
   if isempty(b), varargout = {a}; return, end
-  
   if nargin < 4, fieldns = []; else fieldns = varargin{3}; end
-  if isempty(fieldns), fieldns = fieldnames(b); end
-  
+  if isempty(fieldns)
+    if ~isstruct(b), error('Need struct as 2nd argument'); end 
+    fieldns = fieldnames(b); 
+  end
   if nargin < 5, flags = ''; else flags = varargin{4}; end
   if isempty(flags), flags = ' ';end
   
