@@ -588,18 +588,14 @@ if isempty(roi_list), return, end
 if strcmp(etype, 'default')
   marsD = mars_armoire('get','def_design');
   if isempty(marsD), return, end;
-  if ~has_images(marsD)
-    msgbox('Design does not contain images', ...
-	   'Cannot use design', ...
-	   'warn');
-    return
-  end
+  marsD = add_images(marsD);
   VY = marsD.VY;
 else  % full options extraction
   % question for design
   marsD = [];
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
     marsD = mars_armoire('get','def_design');
+    marsD = add_images(marsD);
   end
   VY = mars_image_scaling(marsD);
 end
@@ -1092,5 +1088,13 @@ otherwise                                        %-Unknown action string
 error('Unknown action string')
 
 %=======================================================================
+end
+return
+
+% function to add images to default design if not present
+function o = add_images(o)
+if ~has_images(o)
+  o = fill_design(o, 'images');
+  mars_armoire('set', 'def_design', des_struct(o));
 end
 return

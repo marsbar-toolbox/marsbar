@@ -1,10 +1,9 @@
-function VY = mars_image_scaling(marsD, modality)
+function VY = mars_image_scaling(marsD)
 % get image scaling data for images, maybe via SPM design
 %-----------------------------------------------------------------------
 %
 % Inputs
 % marsD      - design matrix to (optionally) get parameters from
-% modality   - optional string for modality ('pet' or 'fmri')
 % 
 % Returns
 % VY         - SPM vol structs with selected scaling
@@ -15,19 +14,8 @@ VY = [];
 if nargin < 1
   marsD = [];
 end
-if nargin < 2
-  modality = '';
-end
 
-% if modality not passed, try and work it out from design
-if isempty(modality)
-  if ~isempty(marsD)
-    % some good code here
-  else
-    modality = 'fmri'; % The don't know default
-  end
-end
-switch lower(modality)
+switch lower(modality(marsD))
  case 'pet'
   dGM   = 50;
   sess_str = 'Subject';
@@ -51,12 +39,12 @@ end
 
 % get images, from design, or by hand
 if spmf
-  if ~isfield(marsD, 'VY')
+  if ~has_images(marsD);
     warning('Design structure does not specify images');
     return
   end
   VY = marsD.VY;
-  if isfield(marsD, 'Sess')
+  if strcmp(modality(marsD), 'FMRI')
     nsess = length(marsD.Sess);
     for s = 1:nsess
       row{s} = marsD.Sess{s}.row;
