@@ -164,7 +164,9 @@ for c = plot_spec.r_nos
       yrg = [min(y) max(y)];
       for s = 1:n_blocks
 	rw = rows{s};
-	plot([rw(1) rw(1)], yrg, 'k:');
+	if s > 1 % session divider
+	  plot([rw(1) rw(1)]-0.5, yrg, 'k:');
+	end
       end
       ylabel(['Signal intensity' S])
       xlabel('Time point');
@@ -202,7 +204,9 @@ for c = plot_spec.r_nos
 	s_vals = [0 lags] + (s-1)*(lags+1) + 1;
 	plot(s_vals,  [r_th(s) r_th(s)], 'r:');
 	plot(s_vals, -[r_th(s) r_th(s)], 'r:');
-	plot([s_vals(1) s_vals(1)], Crg, 'k:');
+	if s > 1 % session divider line
+	  plot([s_vals(1) s_vals(1)]-0.5, Crg, 'k:');
+	end
       end
       xtl = get(gca,'xticklabel');
       xtl = num2str(mod(str2num(xtl)-1, lags+1));
@@ -221,23 +225,26 @@ for c = plot_spec.r_nos
       end
       P = []; H = []; St = [];
       for s = 1:n_blocks
-	by = y(rows{s});
+	by    = y(rows{s});
 	gX    = abs(fft(by)).^2;
 	gX    = gX*diag(1./sum(gX));
 	q     = size(gX,1);
 	Hz    = [0:(q - 1)]/(q * b_len);
 	q     = 2:fix(q/2);
-	St    = [St length(P)+1];
 	P     = [P gX(q)'];
+	St(s) = length(H)+1;
 	H     = [H Hz(q)'];
       end
       plot(P)
       hold on
       Prg = [min(P) max(P)];
-      for s = 1:n_blocks
-	plot([St(s) St(s)], Prg, 'k-');
+      for s = 2:n_blocks
+	plot([St(s) St(s)]-0.5, Prg, 'k-');
       end
       axis tight
+      % Rename tick labels 
+      xt  = get(gca, 'xtick');
+      set(gca, 'xtick', xt(xt==fix(xt)));
       xtl = str2num(get(gca,'xticklabel'));
       for t = 1:length(xtl)
 	xtl2{t} = sprintf('%5.3f', H(xtl(t)));
