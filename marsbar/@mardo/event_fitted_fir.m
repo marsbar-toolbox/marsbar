@@ -34,6 +34,7 @@ if ~is_mars_estimated(D)
   error('Need a MarsBaR estimated design');
 end
 
+if size(event_spec, 1) == 1, event_spec = event_spec'; end
 [SN EN] = deal(1, 2);
 e_s_l = size(event_spec, 2);
 SPM   = des_struct(D);
