@@ -1,36 +1,37 @@
 % Contents of MarsBaR ROI toolbox version 0.22
 %
-%   mars_stat            - compute and save statistics for timecourses
-%   make_contents        - MAKECONTENTS makes Contents file in current working directory.
-%   mars_new_space       - make a new image space to contain image with rotations etc
-%   mars_spm_graph       - Graphical display of adjusted data
-%   marsbar              - Startup, callback and utility routine for Marsbar
-%   mars_roidata         - gets data in ROIs from images
+%   affichevol           - main ROI drawing function with all callbacks from the interface
+%   fillafromb           - fills structure fields empty or missing in a from those present in b
 %   is_there             - determines if field specified by string input is present and not empty
+%   make_contents        - MAKECONTENTS makes Contents file in current working directory.
 %   mars_argfill         - checks number of varargin arguments and fills missing args with defaults
-%   mars_options         - options utility routines
-%   mars_fill_design     - fills missing entries from SPM FMRI design matrix
-%   mars_get_region      - select region from list box / input
 %   mars_build_roi       - builds ROIs via the SPM GUI
-%   mars_mm_model        - set sub-space of interest and the related matrix of normalisation. 
+%   mars_extract_data    - helper function to extract raw / filtered data from images via ROIs
+%   mars_fill_design     - fills missing entries from SPM FMRI design matrix
+%   mars_get_cluster     - load SPM results, returns XYZ point list for cluster
+%   mars_get_filter      - gets filter using spm_fmri_spm_ui routines
+%   mars_get_region      - select region from list box / input
+%   mars_glm_estim       - does General Linear Model given data, design, covariance
 %   mars_inputdata_ui    - gets model and data from matlab input
 %   mars_merge_xcon      - merge contrasts from one xCon to another
+%   mars_mm_model        - set sub-space of interest and the related matrix of normalisation. 
 %   mars_model_data_ui   - gets model and data from matlab input
+%   mars_new_space       - make a new image space to contain image with rotations etc
+%   mars_roidata         - gets data in ROIs from images
+%   mars_spm_graph       - Graphical display of adjusted data
+%   mars_stat            - compute and save statistics for timecourses
 %   mars_stat_compute    - calculates contrast value, stats and p values for contrasts
+%   mars_stat_compute_mv - compute multivariate statistics across ROIs
+%   mars_stat_struct     - compute and return stats
+%   mars_stat_table      - gets Mars statistics and displays to a table on the matlab console  
 %   mars_sum_func        - creates summary stats for region data
 %   savestruct           - saves data in structure as variables in .mat file
 %   splitstruct          - split input structure a into two, according to fields in b
-%   mars_stat_compute_mv - compute multivariate statistics across ROIs
-%   mars_stat_struct     - compute and return stats
-%   mars_glm_estim       - does General Linear Model given data, design, covariance
-%   affichevol           - main ROI drawing function with all callbacks from the interface
+%   mars_options         - options utility routines
+%   mars_rois2img        - creates cluster or number labelled ROI image from ROIs
+%   marsbar              - Startup, callback and utility routine for Marsbar
 %   mars_display_roi     - utility routines for display of ROIs in graphic window
 %   mars_img2rois        - creates ROIs from cluster image or image containing ROIs defined by unique nos
-%   mars_get_cluster     - load SPM results, returns XYZ point list for cluster
-%   fillafromb           - fills structure fields empty or missing in a from those present in b
-%   mars_extract_data    - helper function to extract raw / filtered data from images via ROIs
-%   mars_get_filter      - gets filter using spm_fmri_spm_ui routines
-%   mars_stat_table      - gets Mars statistics and displays to a table on the matlab console  
 %
 %   @maroi\and           - overloaded add function 
 %   @maroi\back2base     - back2base method - check for spacebase, transform thereto
@@ -71,6 +72,7 @@
 %   @maroi\times         - overloaded times function 
 %   @maroi\volume        - volume method - returns volume of ROI in mm
 %   @maroi\xor           - overloaded xor function 
+%   @maroi\flip_lr       - flips ROI left / right
 %
 %   @maroi\private\my_classdata - my_classdata method - sets/gets class data
 %   @maroi\private\my_fillsplit - fills fields in a from those present in b, returns a, remaining b
@@ -83,12 +85,15 @@
 %   @maroi_box\maroi_box    - maroi_box - class constructor
 %   @maroi_box\volume       - volume method - returns volume of ROI in mm
 %   @maroi_box\voxpts       - voxpts method - voxels within a box in given space
+%   @maroi_box\flip_lr      - flips ROI left / right
+%   @maroi_box\centre       - centre method - sets / returns centre of ROI in mm
 %
+%   @maroi_image\maroi_matrix - maroi_matrix method - converts maroi_image to maroi_matrix
+%   @maroi_image\vol          - vol - returns / sets image vol for object
+%   @maroi_image\flip_lr      - flips ROI left / right
 %   @maroi_image\loadobj      - loadobj method - reloads matrix from img file
 %   @maroi_image\maroi_image  - maroi_image - class constructor
-%   @maroi_image\maroi_matrix - maroi_matrix method - converts maroi_image to maroi_matrix
 %   @maroi_image\saveobj      - saveobj method - removes matrix information from parent to save space
-%   @maroi_image\vol          - vol - returns / sets image vol for object
 %
 %   @maroi_image\private\my_vol_func - checks vol and func, returns processed image matrix or error
 %
@@ -97,12 +102,13 @@
 %   @maroi_matrix\is_empty_roi   - is_empty_roi - returns true if ROI contains no volume
 %   @maroi_matrix\loadobj        - loadobj function - undoes run length encoding if appropriate
 %   @maroi_matrix\maroi_matrix   - maroi_matrix - class constructor
-%   @maroi_matrix\matrixdata     - matrixdata method - gets matrix from ROI object
 %   @maroi_matrix\native_space   - native_space method - returns native space of object
 %   @maroi_matrix\rebase         - rebase method - returns data from maroi_matrix in new space
 %   @maroi_matrix\saveobj        - saveobj function - does run length encoding if helpful
 %   @maroi_matrix\spm_mat        - spm_mat method - returns mat file defining orientation etc
 %   @maroi_matrix\voxpts         - voxpts method - returns 3xN ijk matrix in voxels
+%   @maroi_matrix\flip_lr        - flips ROI left / right
+%   @maroi_matrix\matrixdata     - matrixdata method - gets matrix from ROI object
 %
 %   @maroi_matrix\private\my_rld - function to do run length decoding 
 %   @maroi_matrix\private\my_rle - method to do run length encoding on matrix
@@ -115,17 +121,21 @@
 %   @maroi_pointlist\native_space    - native_space method - returns native space of object
 %   @maroi_pointlist\saveobj         - saveobj method - removes temporary voxblock structure
 %   @maroi_pointlist\voxpts          - voxpts method - returns 3xN ijk matrix in voxels
+%   @maroi_pointlist\flip_lr         - flips ROI left / right
 %
 %   @maroi_pointlist\private\my_voxblock - my_voxblock function - returns voxel block and modified mat file
 %
 %   @maroi_shape\has_space    - has_space method - returns true if object has a native space
 %   @maroi_shape\maroi_matrix - maroi_matrix converter method for shape objects
 %   @maroi_shape\maroi_shape  - maroi_shape - (virtual) shape roi class constructor
+%   @maroi_shape\c_o_m        - c_o_m method - calculates centre of mass
 %
 %   @maroi_sphere\is_empty_roi - is_empty_roi - returns true if ROI contains no volume
 %   @maroi_sphere\maroi_sphere - maroi_sphere - class constructor
 %   @maroi_sphere\volume       - volume method - returns volume of ROI in mm
 %   @maroi_sphere\voxpts       - voxpts method - voxels within a sphere in given space
+%   @maroi_sphere\flip_lr      - flips ROI left / right
+%   @maroi_sphere\centre       - centre method - sets / returns centre of ROI in mm
 %
 %   @mars_space\display    - display - placeholder display for mars_space
 %   @mars_space\eq         - overloaded eq method for mars_space objects
@@ -134,12 +144,6 @@
 %   @mars_space\subsref    - method to overload the . notation.
 %
 %   @mars_space\private\my_fillsplit - fills fields in a from those present in b, returns a, remaining b
-%
-%   spmrep\spm_bch_DoCont  - SPM batch system: Contrast computation - disabled for MarsBar
-%   spmrep\spm_bch_GetCont - SPM batch system: Contrast structure creation - MarsBar version
-%   spmrep\spm_get_bf      - creates basis functions for each trial type {i} in struct BF{i}
-%   spmrep\spm_orthviews   - Display Orthogonal Views of a Normalized Image
-%   spmrep\spm_spm         - replacement spm_spm function to trap design->estimate calls
 %
 %   fonct\bare_head    - returns bare header (pre mat file) mat info
 %   fonct\draw         - draw function for ROI drawing tool
@@ -151,3 +155,9 @@
 %   init\initfigvol   - initialize figure for volume
 %   init\mycolorbar   - display color bar (color scale) for ROI drawing tool
 %   init\panel        - do panel for ROI drawing tool
+%
+%   spmrep\spm_bch_DoCont  - SPM batch system: Contrast computation - disabled for MarsBar
+%   spmrep\spm_get_bf      - creates basis functions for each trial type {i} in struct BF{i}
+%   spmrep\spm_orthviews   - Display Orthogonal Views of a Normalized Image
+%   spmrep\spm_bch_GetCont - SPM batch system: Contrast structure creation - MarsBar version
+%   spmrep\spm_spm         - replacement spm_spm function to trap design->estimate calls

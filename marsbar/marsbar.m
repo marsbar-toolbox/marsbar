@@ -40,7 +40,7 @@ function varargout=marsbar(varargin)
 % $Id$
 
 % Marsbar version
-MBver = '0.22';  % Second beta release
+MBver = '0.22';  % Development release 
 
 % Marsbar defaults in global variable structure
 global MARSBAR;
