@@ -208,7 +208,8 @@ bEstNow = spm_input('estimate?','_','b','now|later',[1,0],1,...
 if bEstNow
 	spm('Pointer','Watch')
 	spm('FigName','Stats: estimating...',Finter,CmdLine);
-	mars_stat(spmD, marsY);
+	mars_armoire('set', 'est_design', mars_stat(spmD, marsY));
+	fprintf('Results loaded into MarsBar default results\n');
 	spm('Pointer','Arrow')
 else
 	spm_clf(Finter)

@@ -40,4 +40,5 @@ if isempty(marsY.Y)
 end
 
 % do stats
-mars_stat(spmD, marsY);
+mars_armoire('set', 'est_design', mars_stat(spmD, marsY));
+fprintf('Results loaded into MarsBar default results\n');

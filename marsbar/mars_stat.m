@@ -1,8 +1,11 @@
-function mars_stat(spmD, marsY)
-% compute and store statistics for timecourses
-% FORMAT mars_stat(spmD, marsY)
+function marsD = mars_stat(spmD, marsY)
+% compute statistics for timecourses from design and data
+% FORMAT marsF = mars_stat(spmD, marsY)
 % See spm_spm for details on the design specification, which are here
 % passed as a structure spmD.  marsY contains the data to be analyzed
+%
+% Output 
+% marsD    - design with estimated parameters, default contrasts
 %
 % $Id$
 
