@@ -51,12 +51,10 @@ if isa(VY, 'mardo')
   if ~has_images(VY)
     error('This design does not contain images');
   end
-  TR = tr(VY);
-  des_summary = summary(VY);
+  D  = VY;
   VY = get_images(VY);
 else
-  TR = [];
-  des_summary = 'None';
+  D  = [];
 end
 % or be filenames
 if ischar(VY)
@@ -96,15 +94,23 @@ for r = 1:rlen
 	'info', struct('file', source(o)),...
 	'vXYZ', vXYZ,...
 	'mat', mat);
+    if rno < 2,  lbl = label(o); else lbl = [lbl ' & ' label(o)]; end
   end
 end
 if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
 
-marsY = marsy(r_data, r_info, struct(...
+s_info = struct(...
     'sumfunc', sumfunc, ...
-    'descrip', ['Data extracted from ' label(o)],...
-    'info', struct('VY', VY, ...
-		   'des_summary', {des_summary},...
-		   'TR', TR)));
+    'descrip', ['Data from ' lbl],...
+    'info', struct('VY', VY));
+
+% Fill any available information from design if passed
+if ~isempty(D)
+  s_info.info.des_summary = summary(D);
+  s_info.info.TR          = tr(D);
+  s_info.block_rows       = block_rows(D);
+end
+
+marsY = marsy(r_data, r_info, s_info);
 
 
