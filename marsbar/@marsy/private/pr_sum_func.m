@@ -20,7 +20,7 @@ end
 if size(wt,1)==1
   wt = wt';
 end
-if n == 1 % only 1 ROI
+if n == 1 % only 1 sample in ROI
   sumY = y; varY = y*Inf;
   return
 end
@@ -29,7 +29,8 @@ varY = ones(m,1) * Inf;
 switch sumfunc
  case 'mean'
   sumY = mean(y, 2);
-  varY = var(y')';
+  ssy  = sum(y.^2, 2);
+  varY = (ssy - n*sumY.^2)/(n-1);
  case 'wtmean'
   % Formulae from GNU scientific library
   % $\hat\mu = (\sum w_i x_i) / (\sum w_i)$
