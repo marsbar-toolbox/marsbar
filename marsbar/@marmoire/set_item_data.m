@@ -1,6 +1,6 @@
-function o = set_item_data(o, item, data, filename)
+function [o, errf] = set_item_data(o, item, data, filename)
 % sets data for item
-% FORMAT o = set_item_data(o, item, data, filename)
+% FORMAT [o errf] = set_item_data(o, item, data, filename)
 %
 % o        - object
 % item     - name of item to set for
@@ -11,7 +11,8 @@ function o = set_item_data(o, item, data, filename)
 % 
 % Returns
 % o        - object with data set
-% 
+% errf     - flag is 1 if data was not set
+%
 % $Id$
 
 if nargin < 2
@@ -29,4 +30,4 @@ if pr_is_nan(data) & pr_is_nan(filename)
 else
   action = 'set';
 end
-o = do_set(o, item, action, data, filename);
+[o errf] = do_set(o, item, action, data, filename);
