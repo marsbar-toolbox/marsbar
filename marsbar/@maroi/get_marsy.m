@@ -51,10 +51,12 @@ else
 end
 
 % images can come from a design
+xsDes = 'None';
 if isa(VY, 'mardo')
   if ~has_images(VY)
     error('This design does not contain images');
   end
+  xsDes = descrip(VY);
   VY = get_images(VY);
 end
 
