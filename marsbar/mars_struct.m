@@ -60,13 +60,20 @@ function varargout = mars_struct(action, varargin)
 % Thus with structure s = struct('one', struct('two', 3))
 % mars_struct('isthere', s, 'one', 'two') returns 1
 %   
+% FORMAT strs = mars_struct('celldisp', a)
+% returns output like disp(a) as a cell array
+% Useful for printing text description of structure
+% 
 % $Id$
 
 if nargin < 1
   error('Action needed');
 end
+if nargin < 2
+  error('Must specify structure')
+end
 if nargin < 3
-  error('Must specify a and b')
+  varargin = {varargin{:} []};
 end
 [a b] = deal(varargin{1:2});
 
@@ -209,6 +216,26 @@ switch lower(action)
     a = getfield(a, b);
   end
   varargout = {~isempty(a)};
+  
+ case 'celldisp'
+  af = fieldnames(a);
+  c = {};
+  for f = 1:length(af)
+    d     = getfield(a, af{f});
+    cls   = class(d);
+    sz    = size(d);
+    szstr = sprintf('%dx', size(d));
+    szstr(end) = [];
+    switch cls
+     case 'char'
+     case {'double', 'float'}
+      d = ['['  num2str(d) ']'];
+     otherwise
+      d = sprintf('[%s %s]', szstr, cls);
+    end
+    c{f} = sprintf('%40s: %s', af{f}, d);
+  end
+  varargout = {c};
   
  otherwise
   error(['Suspicious action was ' action]);
