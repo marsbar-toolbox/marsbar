@@ -396,11 +396,11 @@ end
 return
 
 function items = i_item_list
-items = fieldnames(g_check_var);
+items = g_fieldnames;
 return
 
 function I = i_up_dump(i_name)
-I = getfield(g_check_var, i_name);
+I = g_getfield(i_name);
 return
 
 % Routines below explicity manipulate global variable
@@ -415,11 +415,16 @@ global MARMOIRE
 MARMOIRE = setfield(MARMOIRE, I.name, I); 
 return
 
-function g = g_check_var
+function fns = g_fieldnames
 global MARMOIRE
 if isempty(MARMOIRE) | ~isstruct(MARMOIRE)
-  MARMOIRE = struct;
+  fns = {};
+else
+  fns = fieldnames(MARMOIRE);
 end
-g = MARMOIRE;
 return
 
+function r = g_getfield(fn)
+global MARMOIRE
+r = getfield(MARMOIRE, fn);
+return
