@@ -65,7 +65,7 @@ for ii = 1:nCon
 		dfnum   = [dfnum trMV^2/trMVMV];
 		h       = spm_FcUtil('Hsqr', xCon(ii), Xs);
 
-		Num(ii,:) = sum( (h*betas).^2 );
+		Num(ii,:) = sum( (h*betas).^2, 1 );
 		Stat(ii,:) = (Num(ii,:)/trMV) ./ (RMS.^2);
 		check_Tvalue(ii,:) = Stat(ii,:) ;
 		P(ii,:) = 1 - spm_Fcdf(Stat(ii,:), ...
