@@ -234,7 +234,7 @@ if isfield(SPM.xsDes, 'Conditions_per_session')
 end
 SPM.xsDes.Serial_correlations = SPM.xVi.form;
 
-SPM.SPMid = ['SPM99: Results imported to SPM2 from: ' SPM99.SPMid];
+SPM.SPMid = ['SPM2: Results imported from SPM99 design: ' SPM99.SPMid];
 
 % Try and deal with estimated result volumes
 if isfield(SPM99, 'swd')
