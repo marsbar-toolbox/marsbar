@@ -38,6 +38,10 @@ if ~isstruct(flags), flags = []; end
 
 if strcmp(item, 'all')
   item_list = fieldnames(o.items);
+  if ~is_nix(filename)
+    warning('Ignoring passed filename for multiple save');
+    filename = NaN;
+  end
 else 
   item_list = {item};
 end
