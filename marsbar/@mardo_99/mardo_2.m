@@ -17,7 +17,8 @@ RT =  mars_struct('getifthere', SPM99, 'xX', 'RT');
 if ~isempty(RT), SPM.xY.RT = RT; end
 
 SPM = mars_struct('merge', SPM, ...
-		  mars_struct('split', SPM99, {'xM', 'xGX', 'xCon'}));
+		  mars_struct('split', SPM99, {'xM', 'xGX'}));
+SPM.xCon = mars_struct('getifthere', SPM99, 'xCon');
 
 % This is the first substructure that we have to do some
 % actual work to assemble.  Much of the details of the
@@ -209,7 +210,7 @@ if isfield(xX, 'K')
     SPM.xX.K = xX.K;
   end
 end
-SPM.xX.W = speye(size(xX,1));       % whitening matrix - identity for ordinary least squares estimates
+SPM.xX.W = speye(size(xX.X,1));       % whitening matrix - identity for ordinary least squares estimates
 
 if isfield(SPM99, 'M')
   SPM.xVol = mars_struct('split', SPM99, ...
