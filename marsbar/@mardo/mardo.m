@@ -1,10 +1,12 @@
 function [o, others] = mardo(params,passf)
 % mardo - class constructor for MarsBaR design object
 % inputs [defaults]
-% params  - structure, either:
-%             containing SPM/MarsBaR design or
-%             containing fields for mardo object, which should include
-%             'des_struct', containing design structure
+% params  -  one of:
+%            - string, specifying SPM design file, OR
+%            - structure, which can:
+%               contain SPM/MarsBaR design or
+%               contain fields for mardo object, which should include
+%               'des_struct', containing design structure
 % passf   - if 1, or not passed, will try children objects to see if
 %           they would like to own this design
 %
@@ -12,6 +14,16 @@ function [o, others] = mardo(params,passf)
 % o       - mardo object
 % others  - any unrecognized fields from params, for processing by
 %           children
+%
+% Synopsis
+% --------
+% D = mardo('/my/spm/analysis/directory/SPM.mat');
+% % or
+% load('/my/spm/analysis/directory/SPM.mat');
+% D = mardo(SPM);
+% % or
+% load('/my/spm/analysis/directory/SPM.mat');
+% D = mardo(struct('des_struct', SPM, 'verbose', 0));
 %
 % mardo is a simple object to contain SPM designs. It allows us to
 % deal with different design formats by overloading functions in 
