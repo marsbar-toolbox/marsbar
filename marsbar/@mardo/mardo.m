@@ -17,6 +17,23 @@ function [o, others] = mardo(params,passf)
 % deal with different design formats by overloading functions in 
 % child objects, here for harmonizing between SPM2 and SPM99 designs
 % 
+% This constructor first checks for strings; it treats strings as filenames
+% containing SPM designs, and loads the file.  By now it should have an SPM
+% design structure (passed or loaded). It then labels itself as a mardo
+% design, and passes itself to candidate mardo design classes (99 and 2 type
+% designs) for these classes to further claim the object.  If the (99 or 2)
+% classes claim the object, they return an object of class (99 or 2), which
+% inherits the mardo class just created in this call to the object.
+% 
+% Note the "passf" input flag; this is a trick to allow the other mardo
+% classes (99 and 2) to create a mardo object for them to inherit, without
+% this constructor passing the mardo object back to the other classes,
+% creating an infinite loop.  So, the flag is by default set to 1, and the
+% newly created mardo object is passed to the other mardo classes for them
+% to claim ownership.  The other mardo classes can call this constructor
+% with passf set to 0 in order for the constructor merely to make a mardo
+% object, without passing back to the other classes.
+% 
 % Fields 
 % des_struct - structure containing SPM design
 % 
