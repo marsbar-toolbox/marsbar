@@ -160,5 +160,10 @@ if isfield(params, 'binarize') & ~isempty(params.binarize) & ...
   pparams.roithresh = my_classdata('def_wtthresh');
 end
   
+% add cvs tag
+pparams.cvs_version = mars_cvs_version([myclass filesep myclass]);
+
+% Set as object
 o  = class(pparams, myclass);
+
 return

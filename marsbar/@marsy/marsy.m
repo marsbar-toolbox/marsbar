@@ -293,6 +293,9 @@ end
 % fill with defaults, parse into fields for this object, children
 [pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
+% add cvs tag
+pparams.cvs_version = mars_cvs_version([myclass filesep myclass]);
+
 % set the marsy object
 o  = class(pparams, myclass);
 
