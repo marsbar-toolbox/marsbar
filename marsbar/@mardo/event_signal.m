@@ -9,9 +9,15 @@ function s = event_signal(D, e_spec, dur, diff_func, varargin)
 %                 This may in due course become an object type
 % dur        - duration in seconds of event to estimate for
 % diff_func  - function to calculate signal change from canonical event
-%              one of 'max', 'max-min'
+%              one of 'max', 'max-min', 'abs max', 'abs max-min', 'window'
 % varargin   - any needed arguments for diff_func
-% 
+%              No arguments are needed for 
+%              'max', 'max-min', 'abs max','abs max-min'
+%              For 'window', you need a 1x2 vector with the time in
+%              seconds over which to take the mean, and the length in
+%              seconds of a time bin for the basis functions (returned
+%              for example by bf_dt(my_design)
+%  
 % Returns
 % s          - average % signal change over the events
 %              1 by n_regions vector
