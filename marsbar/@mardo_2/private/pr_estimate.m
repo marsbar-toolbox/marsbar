@@ -10,7 +10,6 @@ use_all_data_f = 1;
 
 %-Say hello
 %-----------------------------------------------------------------------
-SPMid    = marsbar('get_cvs_version', mfilename('fullpath'));
 Finter   = spm('FigName','Stats: estimation...'); spm('Pointer','Watch')
 
 %=======================================================================
@@ -292,8 +291,6 @@ SPM.xVi.CY     = CY;				%-<(Y - <Y>)*(Y - <Y>)'>
 SPM.xX         = xX;				%-design structure
 
 SPM.xCon       = xCon;				%-contrast structure
-
-SPM.SPMid      = SPMid;
 
 %=======================================================================
 %- E N D: Cleanup GUI
