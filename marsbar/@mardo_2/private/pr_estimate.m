@@ -274,12 +274,6 @@ xCon            = spm_FcUtil('Set',Fcname,'F','iX0',iX0,xX.xKXs);
 %-----------------------------------------------------------------------
 xX.nKX        = spm_DesMtx('sca',xX.xKXs.X,xX.name);
 
-fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
-
-%-Save remaining results files and analysis parameters
-%=======================================================================
-fprintf('%-40s: %30s','Saving results','...writing')                 %-#
-
 %-place fields in SPM
 %-----------------------------------------------------------------------
 
