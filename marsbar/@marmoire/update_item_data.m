@@ -1,6 +1,6 @@
-function o = update_item_data(o, item, data, filename)
+function [o, errf] = update_item_data(o, item, data, filename)
 % updates data for item (sets data, flags change)
-% FORMAT o = update_item_data(o, item, data, filename)
+% FORMAT [o, errf] = update_item_data(o, item, data, filename)
 %
 % o        - object
 % item     - name of item to update for
@@ -8,8 +8,9 @@ function o = update_item_data(o, item, data, filename)
 % filename - filename for data
 % 
 % Returns
-% o        - object with data updated
-% 
+% o        - object with data (probably) updated
+% errf     - flag is 1 if data was not updated for some reason
+%
 % $Id$
 
 if nargin < 2
@@ -22,4 +23,4 @@ if nargin < 4
   filename = NaN;
 end
 
-o = do_set(o, item, 'update', data, filename);
+[o errf] = do_set(o, item, 'update', data, filename);
