@@ -1,84 +1,91 @@
-function Y = mars_extract_data(modality)
-% helper function to extract raw / filtered data from images via ROIs
+function marsY = mars_extract_data(marsD, roi_list, modality)
+% extract raw / scaled data from images via ROIs
 %-----------------------------------------------------------------------
+%
+% The data is always extracted unfiltered
+%
+% Inputs
+% marsD      - design matrix to (optionally) get parameters from
+% roi_list   - ROIs to extract data for (names, or object array)
+% modality   - optional string for modality ('pet' or 'fmri')
+% 
+% Returns
+% marsY      - extracted data in marsY structure
 %
 % $Id$
 
+marsY = [];
 if nargin < 1
-  modality = 'FMRI';
+  marsD = [];
+end
+if nargin < 2
+  roilist = spm_get(Inf,'roi.mat','Select ROI(s) to extract data for');
+end
+if nargin < 3
+  modality = '';
 end
 
+if isempty(roi_list), return, end
+if ischar(roi_list)
+  for i = 1:size(roi_list, 1)
+    o{i} = maroi('load', deblank(roi_list(i,:)));
+  end
+  roi_list = o;
+end
+
+% if modality not passed, try and work it out from design
+if isempty(modality)
+  if ~isempty(marsD)
+    % some good code here
+  else
+    modality = 'fmri'; % The don't know default
+  end
+end
 switch lower(modality)
  case 'pet'
-  filtf = 0;
   dGM   = 50;
   sess_str = 'Subject';
  case 'fmri'
-  filtf = [];  % to be announced
   dGM =   100;
   sess_str = 'Session';
 end
   
-mars_opts = spm('GetGlobal', 'MARS.OPTIONS');
-Y = [];
-K = [];
 VY = [];
 Global = [];  
 
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Extract data from ROI(s)');
 
-roilist = spm_get(Inf,'roi.mat','Select ROI(s) to extract data for');
-if isempty(roilist)
-  return
-end
-
-% filter data or no
-if isempty(filtf)
-  filtf = spm_input('Filter data', '+1','b',...
-				      ['Yes|No'], [1 0],1);
-end
-
 % images
-spmf = spm_input('Images from:', '+1','b',['SPM*.mat|GUI select'], ...
-		 [1 0], 2);
+if isempty(marsD)
+  spmf = 0
+else
+  spmf = spm_input('Images from:', '+1','b',['SPM design|GUI select'], ...
+		   [1 0], 2);
+end
 
-% get images, from SPM, or by hand
+% get images, from design, or by hand
 if spmf
-  S = marsbar('get_spmmat');
-  if ~isfield(S, 'VY')
-    warning('SPM structure does not specify images');
+  if ~isfield(marsD, 'VY')
+    warning('Design structure does not specify images');
     return
   end
-  VY = S.VY;
-  if isfield(S, 'Sess')
-    nsess = length(S.Sess);
+  VY = marsD.VY;
+  if isfield(marsD, 'Sess')
+    nsess = length(marsD.Sess);
     for s = 1:nsess
-      row{s} = S.Sess{s}.row;
+      row{s} = marsD.Sess{s}.row;
     end
-    RT = S.xX.RT;
-    have_fdata = 1;
   else % PET I guess
-    if ~isfield(S.xX, 'I') | ~isfield(S.xX, 'sF')
+    if ~isfield(marsD.xX, 'I') | ~isfield(marsD.xX, 'sF')
       error('Expecting I and sF fields in SPM design');
     end
-    scol = S.xX.I(:, find(strcmp('subject', S.xX.sF)));
+    scol = marsD.xX.I(:, find(strcmp('subject', marsD.xX.sF)));
     subjnos = unique(scol);
     nsess = length(subjnos);
     for s = 1:nsess
       row{s} = find(scol == subjnos(s));
     end
-    have_fdata = 0;
   end
-else
-  have_fdata = 0;
-end
-
-if filtf & ~have_fdata % filter, none specified, thus need to know about TR
-	   
-    % get Repeat time
-    %---------------------------------------------------------------
-    RT  = spm_input('Interscan interval {secs}','+1','batch',{},'RT');
-
 end
 
 if isempty(VY)  % need to know about images
@@ -134,25 +141,6 @@ if askGMf
   GM = spm_input('Scale grand mean to (0=raw)','+1','r',dGM,1);
 end
 
-% filter options
-if spmf & filtf
-  if spm_input('Use SPM design filter', '+1','b',...
-	       ['Yes|No'], [1 0],1);
-    K = S.xX.K;
-  end
-end
-
-if filtf & isempty(K)  % need hand specified filter
-  if spmf, filt_inp = S.Sess;else filt_inp = row;end
-  K = mars_get_filter(RT, filt_inp);
-  
-  % Set filter
-  fprintf('%-40s: %30s','Calculating filter',' ')                     %-#
-  K       = spm_filter('set',K);
-  fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
-  
-end % of hand specified filter option
-
 % map files now, if not yet mapped
 if ischar(VY)
   fprintf('\n%-40s: %30s','Mapping files',' ')                     %-#
@@ -193,33 +181,9 @@ end
 %-----------------------------------------------------------------------
 for  i = 1:q, VY(i).pinfo(1:2,:) = VY(i).pinfo(1:2,:)*gSF(i); end
 
-end
+end % of global options
 
 % Now get data
 marsY = mars_roidata(roilist, VY, mars_opts.statistics.sumfunc, 'v');
-Y = marsY.Y;
-
-% Filter
-if filtf
-  Y = spm_filter('apply', K, Y);
-end
-
-% Save to file
-save Y Y
-
-% And leave
-fprintf('Data extracted and saved to variable Y in Y.mat\n');
-
- 
-% $$$ % save to file
-% $$$ [f p] = uiputfile('*.txt', 'File name for extracted data');
-% $$$ if any(f~=0)
-% $$$   fname = fullfile(p, f);
-% $$$   try
-% $$$     save(fname, 'Y', '-ascii');
-% $$$   catch
-% $$$     warning([lasterr ' Error saving data to file ' fname])
-% $$$   end
-% $$$ end
 
   
