@@ -1,24 +1,49 @@
-function [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, ResidualMS, Y)
-% compute multivariate statistics across ROIs
-% FORMAT [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, ResidualMS, Y)
-%
-% xCon      - contrast structure
-% Xs        - design matrix
-% V         - covariance matrix
-% betas     - parameter estimates
-% ResidialMS  - mean sum of squares of residuals
-% Y         - data natrix 
+function [MVres] = pr_stat_compute_mv(SPM,Ic)
+% private function to compute mutlivariate statistics across ROIs
+% FORMAT [MVres] = pr_stat_compute_mv(SPM,Ic)
+% 
+% Input
+% SPM       - SPM design structure
+% Ic        - indices into contrast structure (xCon in SPM)
 %  
 % Output
-% MVres     - result structure
+% MVres     - mulitvariate result structure
 %
 % $Id$
   
+%-Get contrast definitions (if available)
+%-----------------------------------------------------------------------
+try
+  xCon  = SPM.xCon;
+catch
+  xCon  = [];
+end
+
+%-set all contrasts by default
+%-----------------------------------------------------------------------
+if nargin < 2
+  Ic    = 1:length(xCon);
+end
+if any(Ic > length(xCon))
+  error('Indices too large for contrast structure');
+end
+
+
+% Get relevant fields from design
+xCon = xCon(Ic);
+Xs = SPM.xX.xKXs;
+V = SPM.xX.V;
+betas = SPM.betas;
+ResidualMS = SPM.ResidualMS;  
+Y = SPM.marsY.Y;
+
+% setup calculation
 [nBetas nROI]   = size(betas);
 nCon          = length(xCon);
 [trRV trRVRV] = spm_SpUtil('trRV',Xs,V);
 erdf = trRV^2/trRVRV;
 RMS = sqrt(ResidualMS);
+
 %--------------------------------------------------------------------	   
 %- Multivariate analysis
 %--------------------------------------------------------------------	   

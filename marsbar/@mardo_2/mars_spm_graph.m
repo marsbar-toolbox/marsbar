@@ -7,7 +7,7 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %        xX     - Design Matrix structure
 %        - (see spm_spm.m for structure)
 %        betas  - the betas!
-%        ResMS  - the residual mean square
+%        ResidualMS  - the residual mean square
 %        xCon   - contrast definitions
 %          - required fields are:
 %          .c  - contrast vector/matrix
@@ -30,7 +30,7 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 % $Id$
 
 % for return
-cbeta = [];
+[Y,y,beta,Bcov,SE,cbeta] = deal([]);
 
 % get stuff from object
 SPM = des_struct(marsD);
@@ -46,17 +46,17 @@ xX = SPM.xX;
 XYZstr = SPM.marsY.cols{rno}.name;
 
 
-%-Get parameter estimates, ResMS, (compute) fitted data & residuals
+%-Get parameter estimates, ResidualMS, (compute) fitted data & residuals
 %=======================================================================
 
 %-Parameter estimates: beta = xX.pKX*xX.K*y;
 %-----------------------------------------------------------------------
 beta  = SPM.betas(:, rno);
 
-%-Residual mean square: ResMS = sum(R.^2)/xX.trRV;
+%-Residual mean square: ResidualMS = sum(R.^2)/xX.trRV;
 %-----------------------------------------------------------------------
-ResMS = SPM.ResMS(rno);
-Bcov  = ResMS*SPM.xX.Bcov;
+ResidualMS = SPM.ResidualMS(rno);
+Bcov  = ResidualMS*SPM.xX.Bcov;
 
 %-Get Graphics figure handle
 %-----------------------------------------------------------------------
@@ -85,7 +85,7 @@ end
 %-Get parameter and hyperparameter estimates
 %=======================================================================
 %-Parameter estimates:   beta = xX.pKX*xX.K*y;
-%-Residual mean square: ResMS = sum(R.^2)/xX.trRV
+%-Residual mean square: ResidualMS = sum(R.^2)/xX.trRV
 %---------------------------------------------------------------
 
 P05_Z = 1.6449;					% = spm_invNcdf(1 - 0.05);
@@ -128,10 +128,6 @@ case {'Contrast estimates and 90% C.I.','Fitted responses'}
 %		'Select contrast...',' for plot',0);
 	Ic    = spm_input('Which contrast?','!+1','m',{SPM.xCon.name});
 	TITLE = {Cplot SPM.xCon(Ic).name};
-	if xSPM.STAT == 'P'
-		TITLE = {Cplot SPM.xCon(Ic).name '(conditional estimates)'};
-	end
-
 
 % select session and trial if
 %----------------------------------------------------------------------
@@ -555,5 +551,5 @@ spm_results_ui('PlotUi',gca)
 if CI ~= P05_Z
   SE = CI / P05_Z;
 else
-  SE = sqrt(ResMS*diag(Bcov));
+  SE = sqrt(ResidualMS*diag(Bcov));
 end

@@ -7,7 +7,7 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %        xX     - Design Matrix structure
 %        - (see spm_spm.m for structure)
 %        betas  - the betas!
-%        ResMS  - the residual mean square
+%        ResidualMS  - the residual mean square
 %        xCon   - contrast definitions
 %          - required fields are:
 %          .c  - contrast vector/matrix
@@ -55,7 +55,7 @@ xX = mRes.xX;
 % Label for region
 XYZstr = mRes.marsY.cols{rno}.name;
 
-%-Get parameter estimates, ResMS, (compute) fitted data & residuals
+%-Get parameter estimates, ResidualMS, (compute) fitted data & residuals
 %=======================================================================
 
 %-Parameter estimates: beta = xX.pKX*xX.K*y;
@@ -64,13 +64,13 @@ beta  = mRes.betas(:, rno);
 
 %-Compute residuals
 %-----------------------------------------------------------------------
-R   = spm_sp('r',xX.xKXs,spm_filter('apply',xX.K,y));
+R   = spm_sp('r',xX.xKXs,pr_spm_filter('apply',xX.K,y));
 
-%-Residual mean square: ResMS = sum(R.^2)/xX.trRV;
+%-Residual mean square: ResidualMS = sum(R.^2)/xX.trRV;
 %-----------------------------------------------------------------------
-ResMS = mRes.ResMS(rno);
+ResidualMS = mRes.ResidualMS(rno);
 Bcov  = xX.Bcov;
-SE    = sqrt(ResMS*diag(Bcov));
+SE    = sqrt(ResidualMS*diag(Bcov));
 COL   = ['r','b','g','c','y','m','r','b','g','c','y','m'];
 
 
@@ -128,7 +128,7 @@ case 'Contrast of parameter estimates'
 	%--------------------------------------------------------------
 	c     = xCon(Ic).c;
 	cbeta = c'*beta;
-	SE    = sqrt(ResMS*diag(c'*Bcov*c));
+	SE    = sqrt(ResidualMS*diag(c'*Bcov*c));
 
 	% bar chart
 	%--------------------------------------------------------------
@@ -304,9 +304,9 @@ case 'Event/epoch-related responses'
 
 			% fitted responses with standard error
 			%----------------------------------------------
-			KX       = spm_filter('apply',K,X);
+			KX       = pr_spm_filter('apply',K,X);
 			Y(q,s)   = KX*B;
-			se(:,s)  = sqrt(diag(X*Bcov(j,j)*X')*ResMS);
+			se(:,s)  = sqrt(diag(X*Bcov(j,j)*X')*ResidualMS);
 		end
 
 		% average over sessions
@@ -425,7 +425,7 @@ case 'Plots of parametric responses'
 				'row',		q,...
 				'RT',		xX.dt);
 
-	KX    = spm_filter('apply',K,X);
+	KX    = pr_spm_filter('apply',K,X);
 	p     = size(SF,2);
 	b     = [];
 	for i = 1:size(KX,2)

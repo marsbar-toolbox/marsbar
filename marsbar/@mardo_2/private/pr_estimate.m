@@ -68,7 +68,7 @@ catch
     
     % otherwise make W a whitening filter W*W' = inv(V)
     %-------------------------------------------------------
-    [u s] = spm_svd(xVi.V);
+    [u s] = pr_spm_svd(xVi.V);
     s     = spdiags(1./sqrt(diag(s)),0,nScan,nScan);
     W     = u*s*u';
     W     = W.*(abs(W) > 1e-6);
@@ -83,7 +83,7 @@ end
 
 %-Design space and projector matrix [pseudoinverse] for WLS
 %=======================================================================
-xX.xKXs = spm_sp('Set',spm_filter(xX.K,W*xX.X));		% KWX
+xX.xKXs = spm_sp('Set',pr_spm_filter(xX.K,W*xX.X));		% KWX
 xX.pKX  = spm_sp('x-',xX.xKXs);				% projector
 
 %-If xVi.V is not defined compute Hsqr 
@@ -125,7 +125,7 @@ EY    = 0;					    % <Y>    for ReML
 %-------------------------------------------------------
 fprintf('%s%30s',sprintf('\b')*ones(1,30),'filtering')	%-#
 
-KWY   = spm_filter(xX.K,W*Y);
+KWY   = pr_spm_filter(xX.K,W*Y);
 
 %-General linear model: Weighted least squares estimation
 %------------------------------------------------------
@@ -217,12 +217,12 @@ if ~isfield(xVi,'V')
       % ReML
       %-----------------------------------------------
       fprintf('%-30s- %i\n','  ReML Block',i);
-      [Vp,hp]  = spm_reml(Cy(q,q),Xp,Qp);
+      [Vp,hp]  = pr_spm_reml(Cy(q,q),Xp,Qp);
       V(q,q)   = V(q,q) + Vp;
       h(p)     = hp;
     end
   else
-    [V,h] = spm_reml(Cy,xX.X,xVi.Vi);
+    [V,h] = pr_spm_reml(Cy,xX.X,xVi.Vi);
   end
   
   % normalize non-sphericity and save hyperparameters
@@ -248,7 +248,7 @@ end
 
 %-Use non-sphericity xVi.V to compute [effective] degrees of freedom
 %=======================================================================
-xX.V            = spm_filter(xX.K,spm_filter(xX.K,W*V*W')');	% KWVW'K'
+xX.V            = pr_spm_filter(xX.K,pr_spm_filter(xX.K,W*V*W')');	% KWVW'K'
 [trRV trRVRV]   = spm_SpUtil('trRV',xX.xKXs,xX.V);		% trRV (for X)
 xX.trRV         = trRV;						% <R'*y'*y*R>
 xX.trRVRV       = trRVRV;					%-Satterthwaite
@@ -298,7 +298,7 @@ fprintf('%-40s: %30s','Saving results','...writing')                 %-#
 %-----------------------------------------------------------------------
 
 SPM.betas      = beta;	
-SPM.ResMS      = ResMS;	
+SPM.ResidualMS = ResMS;	
 
 SPM.xVi        = xVi;				% non-sphericity structure
 SPM.xVi.CY     = CY;				%-<(Y - <Y>)*(Y - <Y>)'> 

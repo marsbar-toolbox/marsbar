@@ -73,11 +73,11 @@ switch GLM_resol
 		end
 		% else assume that the filter is xX.K
 	
-		KVi    = spm_filter('apply', xX.K, xX.xVi.Vi); 
-		V      = spm_filter('apply', xX.K, KVi'); 
-		Y      = spm_filter('apply', xX.K, Y);
+		KVi    = pr_spm_filter('apply', xX.K, xX.xVi.Vi); 
+		V      = pr_spm_filter('apply', xX.K, KVi'); 
+		Y      = pr_spm_filter('apply', xX.K, Y);
 		fprintf('Setting filter...');
-		KXs    = spm_sp('Set', spm_filter('apply', xX.K, xX.X));
+		KXs    = spm_sp('Set', pr_spm_filter('apply', xX.K, xX.X));
 		fprintf('Done.\n');
 		clear KVi;
 
@@ -98,7 +98,7 @@ if ~spm_sp('isspc',KXs), Xs = spm_sp('set',KXs); else Xs = KXs;  end
 [trRV trRVRV] = spm_SpUtil('trRV',Xs,V); 
 spmD.betas    = spm_sp('x-', Xs, Y);                 %-Parameter estimates
 res           = spm_sp('r', Xs, Y);                  %-Residuals
-spmD.ResMS    = sqrt(sum(res.^2)./trRV);             %-Res variance estimation
+spmD.ResidualMS = sum(res.^2)./trRV;             %-Res variance estimation
 xX.erdf      = trRV^2/trRVRV;
 
 fprintf('Done.\n');

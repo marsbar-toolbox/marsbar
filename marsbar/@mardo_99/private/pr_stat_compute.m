@@ -1,12 +1,12 @@
-function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, RMS);
+function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);
 % calculates contrast value, stats and p values for contrasts
-% FORMAT [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, RMS);
+% FORMAT [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);
 % 
 % xCon      - contrast structure
 % Xs        - design matrix
 % V         - covariance matrix
 % betas     - parameter estimates
-% RMS       - root mean square of residuals
+% ResidualMS       - root mean square of residuals
 % 
 % Output
 % Num       - contrast value (ess for F test)
@@ -26,7 +26,7 @@ Bcov = xpxm*xpVx*xpxm;
 
 [trRV trRVRV] = spm_SpUtil('trRV',Xs,V);
 erdf = trRV^2/trRVRV;
-
+RMS = sqrt(ResidualMS);
 
 T_indices = [];
 F_indices = [];

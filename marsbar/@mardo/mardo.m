@@ -100,4 +100,34 @@ if ~is_marsed(o)
       'ver', marsbar('ver'),...
       'flipped', flip_option(o)));
 end
+
+% resolve confusing field name in marsbar <= 0.23
+% ResMS was in fact the Root Mean Square
+D = o.des_struct;
+d_chgf = 0;
+if isfield(D, 'ResMS')
+  if verbose(o)
+    disp(['Squaring root mean square in ResMS field' ...
+	 ' and moving to ResidualMS']);
+  end
+  D.ResidualMS = D.ResMS .^ 2;
+  D = rmfield(D, 'ResMS');
+  d_chgf = 1;
+end
+
+% Nasty little hack to make spm_conman compatible between SPM 99 and 2
+if isfield(D, 'xX') % allow empty structure
+  if isfield(D.xX, 'name')
+    D.xX.Xnames = D.xX.name;
+    d_chgf = 1;
+  elseif isfield(D.xX, 'Xnamea')
+    D.xX.name = D.xX.Xnames;
+    d_chgf = 1;
+  end
+end
+
+if d_chgf
+  o.des_struct = D;
+end
+
 return
