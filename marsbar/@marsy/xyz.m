@@ -40,6 +40,7 @@ if ~isfield(r_st, 'vXYZ') |  ~isfield(r_st, 'mat')
 end
 M = r_st.mat;
 XYZ = r_st.vXYZ;
+XYZ = XYZ(1:3,:);
 switch xyz_type
  case 'vox'
  case {'mm', 'real'}

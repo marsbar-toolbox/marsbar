@@ -91,7 +91,7 @@ for i = 1:nimgs
     ixyz = data_imgs(i).mat \ XYZ;
   end
   if i == 1; % record voxel XYZ for return 
-    vXYZ = ixyz;
+    vXYZ = ixyz(1:3,:);
     mat  = data_imgs(1).mat;
   end
   
