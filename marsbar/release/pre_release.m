@@ -1,9 +1,12 @@
-function pre_release(rname, outdir)
+function pre_release(username, rname, outdir)
 % Runs pre-release export, cleanup
 if nargin < 1
-  rname = '';
+  error('Need username');
 end
 if nargin < 2
+  rname = '';
+end
+if nargin < 3
   outdir = pwd;
 end
 
@@ -12,12 +15,13 @@ V = marsbar('ver');
 
 % export from CVS
 proj    = 'marsbar';
-cmd = sprintf('cvs export -D tomorrow %s',...
-	      proj);
+cmd = sprintf(['cvs -d:ext:%s@cvs.sourceforge.net:/cvsroot/%s ' ...
+	       'export -D tomorrow %s'], username, proj, proj);
 unix(cmd);
 
 % make contents file
-make_contents(['Contents of MarsBaR ROI toolbox version ' V], 'fncrd', proj);
+make_contents(['Contents of MarsBaR ROI toolbox version ' V], 'fncrd', ...
+	      fullfile(pwd, proj));
 
 % move, tar directory
 full_name = sprintf('%s-%s%s',proj,V,rname);
