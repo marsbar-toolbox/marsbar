@@ -16,6 +16,7 @@ switch lower(arg)
   global defaults
   if isempty(defaults)
     spm_defaults;
+    spm('defaults','FMRI');
   end
   varargout = {defaults};
  case 'template_ext' % extension for template images
