@@ -161,7 +161,7 @@ if isfield(params, 'binarize') & ~isempty(params.binarize) & ...
 end
   
 % add cvs tag
-pparams.cvs_version = mars_cvs_version([myclass filesep myclass]);
+pparams.cvs_version = mars_cvs_version(myclass);
 
 % Set as object
 o  = class(pparams, myclass);
