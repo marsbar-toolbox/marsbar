@@ -1,4 +1,4 @@
-function [vargout] = spm_filter(Action,K,Y)
+function [vargout] = pr_spm_filter(Action,K,Y)
 % filter routine
 % FORMAT [K] = spm_filter('set'  ,K)
 % FORMAT [Y] = spm_filter('apply',K,Y)
@@ -137,13 +137,17 @@ switch Action
 			% apply low pass filter
 			%---------------------------------------------------
 			if ~strcmp(Action,'high')
-				y = K{s}.KL*y;
+			  KL = K{s}.KL;
+			  if issparse(KL), KL = full(KL); end
+			  y = KL*y;
 			end
 
 			% apply high pass filter
 			%---------------------------------------------------
 			if ~isempty(K{s}.KH) & ~strcmp(Action,'low')
-				y = y - K{s}.KH*(K{s}.KH'*y);
+			  KH = K{s}.KH;
+			  if issparse(KH), KH = full(KH); end
+			  y = y - KH*(KH'*y);
 			end
 
 			% reset filtered data in Y
@@ -155,7 +159,8 @@ switch Action
 	% K is simply a convolution matrix
 	%-------------------------------------------------------------------
 	else
-		Y = K*Y;
+	  if issparse(K), K = full(K); end
+	  Y = K*Y;
 	end
 
 	% return filtered data
