@@ -28,7 +28,7 @@ end
 if  ~strcmp(aLine(1:8),'function'), return, end
 aLine = fgetl(fid);
 while ~isempty(findstr(aLine,'%')) & feof(fid)==0; 
-  [cvsno count] = sscanf(aLine, '%%%*[ ]$Id:%*[ _a-zA-Z.,] %f');
+  [cvsno count] = sscanf(aLine, '%%%*[ ]$Id:%*s%*[ ] %f');
   if count
     str = num2str(cvsno);
     break
