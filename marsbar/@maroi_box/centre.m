@@ -1,7 +1,7 @@
 function c = centre(obj, val)
 % centre method - sets / returns centre of ROI in mm
 %
-% $Id
+% $Id$
 
 if nargin > 1
   obj.centre = val;

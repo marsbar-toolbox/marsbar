@@ -1,4 +1,4 @@
-
+% populate figure with menus and other controls
 
 %%%%%%%%%%   UIMENU    %%%%%%%%%%%%
 h0 = hdl.figNum;

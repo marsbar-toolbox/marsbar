@@ -1,7 +1,8 @@
 function [o, others] = maroi_shape(params)
 % maroi_shape - (virtual) shape roi class constructor
-% inputs [defaults]
-%  params  - a structure containing any fields for a maroi parent
+% FORMAT [o, others] = maroi_shape(params)
+% Inputs [defaults]
+% params  - a structure containing any fields for a maroi parent
 % 
 % Only used by inheriting objects
 %

@@ -1,6 +1,7 @@
 function [o, others] = mars_space(params, params2)
 % mars_space - class constructor for space defining object
-% inputs [defaults]
+% FORMAT [o, others] = mars_space(params, params2)
+% Inputs [defaults]
 % params  - either 
 %           a structure, containing fields to construct the object
 %           an spm vol struct (see spm_vol)

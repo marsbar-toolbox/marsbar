@@ -1,5 +1,5 @@
 function v = do_write_image(o, fname)
-% save_as_image method - saves matrix as image and returns spm_vol
+% method saves matrix as image and returns spm_vol
 %
 % $Id$
 

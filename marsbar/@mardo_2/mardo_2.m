@@ -1,6 +1,7 @@
 function [o, others] = mardo_2(params, others)
-% mardo_2 - class constructor for SPM2 MarsBaR design object
-% inputs [defaults]
+% class constructor for SPM2 MarsBaR design object
+% FORMAT [o, others] = mardo_2(params, others)
+% Inputs
 % params  - structure,containing fields, or SPM/MarsBaR design
 % others  - structure, containing other fields to define
 %

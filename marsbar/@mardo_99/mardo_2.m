@@ -2,8 +2,7 @@ function o = mardo_2(o)
 % method to convert SPM2 design to SPM99 design
 %
 % Heavily based with thanks on work by Jeff Cooper:
-% Written June 2003 by Jeff Cooper
-% Comments welcomed at jcooper@stanford.edu
+% Written June 2003 by Jeff Cooper (jcooper@stanford.edu)
 % 
 % $Id$
 

@@ -1,5 +1,6 @@
 function [vargout] = pr_spm_filter(Action,K,Y)
-% filter routine
+% contruct and/or apply high and/or low pass filter
+% Copied from spm_filter.m for SPM99.
 % FORMAT [K] = spm_filter('set'  ,K)
 % FORMAT [Y] = spm_filter('apply',K,Y)
 % FORMAT [Y] = spm_filter('high' ,K,Y)

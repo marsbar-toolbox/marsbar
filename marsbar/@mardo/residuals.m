@@ -1,6 +1,8 @@
 function r = residuals(D)
 % method returns residuals from model
-
+%
+% $Id$
+  
 if ~is_mars_estimated(D)
   error('Need estimated model');
 end

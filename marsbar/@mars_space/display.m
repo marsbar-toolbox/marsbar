@@ -1,5 +1,5 @@
 function display(obj)
-% display - placeholder display for mars_space
+% display method for mars_space object
 %
 % $Id$
   

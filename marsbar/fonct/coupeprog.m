@@ -1,3 +1,5 @@
+% display script
+
 %%*************     AFFICHAGE     *****************
 
     hold on

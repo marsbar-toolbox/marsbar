@@ -1,7 +1,8 @@
 function [o, others] = maroi_sphere(params)
 % maroi_sphere - class constructor
-% inputs [defaults]
-%  params  - a structure containing any fields for a maroi parent and
+% FORMAT [o, others] = maroi_sphere(params)
+% Inputs [defaults]
+% params  - a structure containing any fields for a maroi parent and
 %            .centre - a 1x3 coordinate in mm 
 %            .radius - a 1x1 radius in mm
 %

@@ -1,5 +1,14 @@
 function SPM = pr_estimate(SPM, marsY)
-% [Re]ML Estimation of a General Linear Model
+% Estimation of a General Linear Model
+% FORMAT SPM = pr_estimate(SPM, marsY)
+% Inputs 
+% SPM      - SPM design structure
+% marsY    - marsY data object, or 2D data (Y) matrix
+%
+% Outputs
+% SPM      - modified estimated design structure, with data contained as
+%            field marsY
+%
 % Based on spm_spm from spm2:
 % @(#)spm_spm.m	2.66 Andrew Holmes, Jean-Baptiste Poline, Karl Friston 03/03/27
 %

@@ -1,5 +1,5 @@
 function tf = is_empty_roi(o)
-% is_empty_roi - returns true if ROI contains no volume
+% returns 1 if ROI contains no volume
 %
 % $Id$
 

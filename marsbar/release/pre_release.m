@@ -1,5 +1,17 @@
 function pre_release(username, rname, outdir)
 % Runs pre-release export, cleanup
+% FORMAT pre_release(username, rname, outdir)
+% Inputs
+% username     - marsbar CVS username
+% rname        - string to define release version
+% outdir       - directory to output release to
+% 
+% e.g.  pre_release('matthewbrett', '-devel-%s', '/tmp')
+% would output a release called marsbar-devel-0.34.tar.gz (if the marsbar
+% version string is '0.34') to the /tmp directory
+%
+% $Id$
+  
 if nargin < 1
   error('Need username');
 end

@@ -1,5 +1,5 @@
 function o_arr = split(o)
-% method splits each regions in object into own object
+% method splits regions in object into separate objects
 % 
 % $Id$ 
   

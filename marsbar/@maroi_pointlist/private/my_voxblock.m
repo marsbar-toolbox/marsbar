@@ -1,5 +1,5 @@
 function vblock = my_voxblock(pts, mat, vals)
-% my_voxblock function - returns voxel block and modified mat file
+% returns voxel block and modified mat file for pointlist
 %
 % $Id$
 

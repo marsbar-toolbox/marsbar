@@ -1,6 +1,6 @@
 function bw = remplie(roix,roiy,num_rows,num_cols)
 % find the index of the points within the polygon for image 
-% an image of dimention [ num_rows,num_cols ]
+% an image of dimension [ num_rows,num_cols ]
 %
 % $Id$
 

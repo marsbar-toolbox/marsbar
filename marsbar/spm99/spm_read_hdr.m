@@ -1,12 +1,15 @@
 function [hdr,otherendian] = spm_read_hdr(fname)
-% Read (SPM customised) Analyze header
+% SPM2 routine to read (SPM customised) Analyze header 
+% (Needed for compatibility with SPM99)
 % FORMAT [hdr,otherendian] = spm_read_hdr(fname)
 % fname       - .hdr filename
 % hdr         - structure containing Analyze header
 % otherendian - byte swapping necessary flag
 %_______________________________________________________________________
 % @(#)spm_read_hdr.m	2.2 John Ashburner 03/07/17
-
+% 
+% $Id$
+  
 fid         = fopen(fname,'r','native');
 otherendian = 0;
 if (fid > 0)

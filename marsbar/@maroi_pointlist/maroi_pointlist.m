@@ -1,6 +1,7 @@
 function [o, others] = maroi_pointlist(params, type)
-% mars_roi - class constructor
-% inputs [defaults]
+% maroi_pointlist - class constructor
+% FORMAT [o, others] = maroi_pointlist(params, type)
+% Inputs [defaults]
 %  params  - one of
 %            structure containing fields XYZ, mat
 %

@@ -1,5 +1,5 @@
 function o2 = maroi_matrix(o, space)
-% maroi_matrix converter method for shape objects
+% method to convert shape objects to maroi_matrix objects
 %
 % $Id$
 

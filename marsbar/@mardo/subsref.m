@@ -1,6 +1,6 @@
 function result = subsref(this, Struct)
 % method to overload the . notation.
-% . reference for mardo objects default to the contents of des_struct
+% . reference for mardo objects returns contents of des_struct
 %
 % $Id$
 

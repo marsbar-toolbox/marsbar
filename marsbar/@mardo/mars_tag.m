@@ -1,5 +1,8 @@
 function res = mars_tag(o, data)
 % returns, or sets, Mars tagging structure in design
+% 
+% $Id$
+  
 if nargin > 1 % set
   res = o;
   res.des_struct.xMars = data;

@@ -1,4 +1,4 @@
-%*************** Fonctions Segmentation ***************
+% Segmentation functions
 
 
 if strcmp(action,'Seg'),

@@ -1,5 +1,5 @@
 function marsD = set_images(marsD, VY)
-% method to set image vols from design
+% method to set image vols into design
 % 
 % $Id$ 
   

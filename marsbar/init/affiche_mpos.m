@@ -1,3 +1,6 @@
+% affiche_mpos script for ROI drawing tool
+%
+% $Id$
 
 Mark = ['or';'og';'ob';'om';...
            'xr';'xg';'xb';'xm';...
