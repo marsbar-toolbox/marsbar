@@ -51,7 +51,6 @@ if ismember('redo_whitening', flags)
   end
 end
 
-% do estimation
 SPM        = pr_estimate(SPM, marsY);
 SPM.marsY  = marsY;
 SPM.SPMid  = marsD.cvs_version;
