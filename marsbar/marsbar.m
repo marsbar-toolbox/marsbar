@@ -29,7 +29,7 @@ function varargout=marsbar(varargin)
 % $Id$
 
 % Marsbar version
-MBver = '0.24';  % SPM2 development release 
+MBver = '0.30';  % SPM2 development release 
 
 % Various working variables in global variable structure
 global MARS;
