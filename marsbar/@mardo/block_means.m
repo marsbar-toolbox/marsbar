@@ -1,4 +1,4 @@
-function bms = block_means(D, block_no)
+function bms = block_means(D)
 % method returns means for blocks in design
 % 
 % $Id$
@@ -9,5 +9,5 @@ if ~is_mars_estimated(D)
 end
 
 SPM = des_struct(D);
-bms = SPM.betas(SPM.xX.iB);   
+bms = SPM.betas(SPM.xX.iB,:);   
   

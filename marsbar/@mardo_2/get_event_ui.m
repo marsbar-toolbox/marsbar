@@ -1,11 +1,12 @@
-function [s u] = get_event_ui(D)
+function [e_spec] = get_event_ui(D)
 % method to select an event 
-%
-% D    - design
+% FORMAT [s,u] = get_event_ui(D)
+% D      - design
 % 
 % Returns
-% s    - session number
-% u    - event number in session
+% e_spec - 2 by 1 matrix with 
+%          e_epec(1) - session number
+%          e_spec(2) - event number in session
 %
 % $Id$ 
 
@@ -32,3 +33,5 @@ end
 %--------------------------------------------------------------
 str   = sprintf('which effect');
 u     = spm_input(str,'+1','m',Uname);
+
+e_spec = [s u]';

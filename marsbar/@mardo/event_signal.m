@@ -48,4 +48,4 @@ for e_i = 1:e_s_l
   d     = pr_ev_diff(ev_tc, diff_func, varargin{:});
   s     = s + d/s_mus(ss);
 end
-s = s / e_s_l;
+s = s / e_s_l * 100;

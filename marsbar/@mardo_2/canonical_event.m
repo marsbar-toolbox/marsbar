@@ -21,8 +21,12 @@ Sess  = SPM.Sess;
 dt    = SPM.xBF.dt;
 bf    = SPM.xBF.bf;
 
-if ~dur, dur = dt; end
-sf    = ones(round(dur/dt), 1);
+if ~dur  
+  % SPM2 does a second's worth of spike for events without durations
+  sf = 1/dt; 
+else
+  sf    = ones(round(dur/dt), 1);
+end
 X = [];
 for b = 1:size(bf,2)
   X = [X conv(sf, bf(:,b))];
