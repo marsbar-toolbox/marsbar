@@ -49,7 +49,12 @@ if isempty(roipath)
 end
 if isempty(rootn)
   [pn rootn ext] = fileparts(P.fname);
+  rootn = spm_input('Prefix for ROI filenames', '+1', 's', rootn);
 end
+if isempty(rootn)
+  return
+end
+
 if isempty(flags)
   flags = 'i';  % id image is default
 end
