@@ -1,4 +1,4 @@
-function X = x(D)
+function X = design_matrix(D)
 % method returns design matrix from design
 % 
 % $Id$
