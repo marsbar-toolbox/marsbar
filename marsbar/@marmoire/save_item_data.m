@@ -18,7 +18,10 @@ function [saved_f, o] = save_item_data(o, item, flags, filename)
 % filename - filename for save
 % 
 % Returns
-% saved_f  - flag set to 1 if save done
+% saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel
+%            Note that, if saving with more than one item, then the value
+%            is from the last value saved/not saved.  Cancel aborts the
+%            attempt to save.
 % o        - possibly modified object (changed filename, maybe data is
 %            left as a file, and data field made empty) 
 % 
@@ -47,7 +50,7 @@ else
 end
 
 n_items = length(item_list);
-saved_f = zeros(n_items, 1);
+saved_f = 0;
 for i_no = 1:n_items
   item = item_list{i_no};
   I = get_item_struct(o, item);
@@ -59,5 +62,9 @@ for i_no = 1:n_items
     tmp_flags.ui = 1;
   end
   
+  % Try save
   [saved_f o] = do_save(o, item, tmp_flags, filename);
+  
+  % Stop if cancel
+  if saved_f == -1, return, end
 end
