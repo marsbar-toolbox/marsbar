@@ -102,7 +102,14 @@ switch lower(action)
       fprintf('Set ROI data from estimated design...\n');
     end
   end
-  
+
+  % Clear default contrast
+  global MARS;
+  if mars_struct('isthere', MARS, 'WORKSPACE', 'default_contrast')
+    MARS.WORKSPACE.default_contrast = [];
+    fprintf('Reset of estimated design, cleared default contrast...\n');
+  end
+
   res = data;
  otherwise
   error(['Peverse request for ' action]);
