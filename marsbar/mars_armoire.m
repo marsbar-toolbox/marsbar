@@ -16,7 +16,7 @@ function varargout = mars_armoire(action, item, data, filename)
 % 
 % In terms of the program structure, the function acts an object container,
 % but where the objects are only half implemented, in this case as fields in
-% a global variable MARS.ARMOIRE. 
+% a global variable MARMOIRE. 
 %
 % The permissable actions are:
 %
@@ -49,12 +49,17 @@ function varargout = mars_armoire(action, item, data, filename)
 % data            - the data 
 %                   (or a filename which loads as the data - see the
 %                   char_is_filename field)
-% can_change      - flag, if set, this data can change
-% has_changed     - flag, if set, means data has changed
-% save_if_changed - flag, if set, will try to save changed data
-% load_on_set     - flag, if set, and data field is empty, loads data when
-%                   'set'ing field; otherwise, if data field is empty, loads
-%                   data again for each 'get'
+% has_changed     - flag, if set, means data has changed since first set
+% save_if_changed - flag, if set, will try to save changed data when a
+%                   save is requested.  Saves can also be forced.
+% leave_as_file   - flag, if set, will attempt to leave the data, defined
+%                   by the filename, on the disk, not in memory, and only
+%                   load the data for a 'get'.  
+%                   Otherwise, if a set occurs, and the data field is
+%                   empty, will load data into the global variable when
+%                   'set'ing field and leave it there.
+%                   If the data changes, and requires a save, this field
+%                   has no function, until the next save.
 % file_name       - file name of .mat file containing data
 %                   If data is empty, and file_name is not, 
 %                   an attempt to 'get' data will load contents of
@@ -62,25 +67,40 @@ function varargout = mars_armoire(action, item, data, filename)
 % default_file_name - default filename offered for save 
 % file_type       - type of file to load ('mat' or 'ascii')
 % char_is_filename - flag, if set, char data is assumed to be a filename
-% filter          - filter for GUI to suggest new file_name
+% filter_spec     - filter spec for uigetfile (see help uigetfile)
 % prompt          - prompt for spm_get GUI
 % verbose         - flag, if set, displays more information during
 %                   processing
 % set_action      - actions to perform when item is set
 %                   in form of callback string.  This is executed
 %                   in the 'i_set' subfunction, and can use all
-%                   variables functions defined therein
+%                   variables functions defined therein.  See programmers
+%                   notes in the function for callback format
 % set_action_if_update - flag, if set, applied set_action for 'update' as
 %                   well as 'set'
 % $Id$
   
-% persistent variable containing items
-global MARS
-
-if isempty(MARS) | ~isfield(MARS, 'ARMOIRE') 
-  MARS.ARMOIRE = [];
-end
-
+% Programmers' notes
+% ------------------
+% set_action callbacks
+% callbacks should be one of the following two formats;
+%
+% [data errf msg] = my_function(args)  or
+% [item_field errf msg] = my_function(args) 
+%
+% The first form just returns the data desired to be set, 
+% the second returns the whole item field, where the data
+% is contained in the field 'data'.
+% if 'errf' is set, the routine warns, and abort the set with 
+% the 'msg'.
+%
+% The available args are:
+% I      - proposed whole item field contents
+% data   - proposed data to be inserted 
+% passed_filename - filename passed to function
+% 
+% and anything else...
+  
 % NaN for an argument signals it has not been passed
 % empty means that it was passed, but was empty
 if nargin < 1 % no action
@@ -101,7 +121,7 @@ end
 % certain actions do not require valid item names
 if ~ismember(action, {'add', 'add_if_absent', 'exist'})
   % the rest do
-  flist = fieldnames(MARS.ARMOIRE);
+  flist = i_item_list;
   switch item
    case 'all'
     % If item is 'all', do this action for all items
@@ -114,14 +134,10 @@ if ~ismember(action, {'add', 'add_if_absent', 'exist'})
    otherwise
     % item must be a field name in structure
     % fetch and set name field
-    if ~isstruct(MARS.ARMOIRE)
-      error(['Armoire is not ready for ' action]); 
-    end
-    flist = fieldnames(MARS.ARMOIRE);
     if ~ismember(item, flist)
       error([item ' is an unaccountable item']);
     end
-    i_contents = getfield(MARS.ARMOIRE, item);
+    i_contents = i_up_dump(item);
     i_contents.name = item;
     i_contents.last_action = action;
   end
@@ -132,13 +148,13 @@ switch lower(action)
  case 'add'
   data.name = item;
   data = fillafromb(data, i_def);
-  i_dump(data);
+  i_down_dump(data);
  case 'add_if_absent'
   if ~mars_armoire('exist', item)
     mars_armoire('add', item, data); 
   end
  case 'exist'
-  varargout = {isfield(MARS.ARMOIRE, item)};
+  varargout = {ismember(item, i_item_list)};
  case 'default_item'
   varargout = {i_def};
  case 'set'
@@ -157,9 +173,9 @@ switch lower(action)
   varargout = {i_set_ui(i_contents)};
  case 'update'
   varargout = {i_set(i_contents, data, filename)};
-  i_contents = getfield(MARS.ARMOIRE, item);
+  i_contents = i_up_dump(item);
   i_contents.has_changed = 1;
-  i_dump(i_contents);
+  i_down_dump(i_contents);
  case 'clear'
   varargout = {i_set(i_contents, [], '')}; 
  case 'save'
@@ -182,7 +198,7 @@ switch lower(action)
   if ismember(action, fieldnames(i_contents))
     if is_nan(data) % it's a set
       i_contents = setfield(i_contents, action, data);
-      i_dump(i_contents);
+      i_down_dump(i_contents);
     end
     varargout = {getfield(i_contents, action)};
   else % really, this must be a mistake
@@ -196,16 +212,15 @@ function I = i_def
 I = struct('data', [],...
 	   'file_name', '',...
 	   'default_file_name','',...
-	   'can_change', 0, ...
-	   'has_changed',0,...
-	   'load_on_set', 1,...
-	   'save_if_changed', 0,...
+	   'has_changed', 0,...
+	   'leave_as_file', 0,...
+	   'save_if_changed', 1,...
 	   'file_type', 'mat',...
 	   'char_is_filename',1,...
 	   'set_action_if_update', 0 ,...
 	   'verbose', 1,...
 	   'title', 'file',...
-	   'filter', '',...
+	   'filter_spec', '',...
 	   'set_action', '');
 return
 
@@ -214,14 +229,18 @@ res = isempty(I.data) & isempty(I.file_name);
 return
 
 function res = i_set_ui(I)
-prompt = ['Select ' I.title '...'];
-filename = spm_get([0 1], I.filter, prompt);
-if isempty(filename), res = [];, return, end
-res = i_set(I, [], filename);
+[fn pn] = uigetfile(...
+    I.filter_spec, ...
+    ['Select ' I.title '...']);
+if isequal(fn,0) | isequal(pn,0), res = []; return, end
+res = i_set(I, [], fullfile(pn, fn));
 return
 
 
 function res = i_set(I, data, filename)
+
+% Keep copy of passed filename for set_action call
+passed_filename = filename;
   
 % optionally, treat char data as filename
 % but passed filename overrides char data
@@ -240,7 +259,7 @@ if is_nix(filename) % may need to save if no associated filename
   I.has_changed = 1;
 else % don't need to save, but may need to load from file
   I.has_changed = 0;
-  if I.load_on_set & isempty(data)
+  if isempty(data)
     data = load(filename, ['-' I.file_type]);
   end
 end
@@ -263,14 +282,30 @@ if i_isempty(I), I.has_changed = 0; end
 % and here is where we do the rules stuff
 if ~isempty(I.set_action) & ...
       (~is_update | I.set_action_if_update)
-  eval(I.set_action)
+  [tmp errf msg] = eval(I.set_action);
+  if errf
+    warning(['Data not set: ' msg]);
+    return
+  end
+  % work out if whole thing as been returned, or only data
+  if isfield(tmp, 'set_action') % whole thing
+    I = tmp;
+  else % it's just the data
+    I.data = tmp;
+  end
+end
+
+% return set data
+res = I.data;
+
+% possibly remove data from structure 
+if ~I.has_changed & I.leave_as_file
+  I.data = [];
 end
 
 % do the actual save into global structure
-i_dump(I);
+i_down_dump(I);
 
-% The data may be empty if we haven't loaded it
-res = data;
 return
 
 function res = i_get(I)
@@ -312,17 +347,17 @@ if i_need_save(I) | any(flags == 'f') % force flag
   end
   I.file_name = filename;
   I.has_changed = 0;
-  if ~I.load_on_set
-    % maintain only on file
+  if I.leave_as_file
+    % maintain only on file, as it has beed saved
     I.data = [];
   end
   res = 1;
 end
-i_dump(I);
+i_down_dump(I);
 return
 
 function res = i_need_save(I)
-res = ~i_isempty(I) & I.has_changed & I.can_change & I.save_if_changed;
+res = ~i_isempty(I) & I.has_changed & I.save_if_changed;
 return
 
 function res = is_nix(v)
@@ -330,19 +365,31 @@ res = isempty(v) | is_nan(v);
 return
 
 function res = is_nan(v)
-res = 1;
-if isstruct(v)
-  res = 0;
-elseif isempty(v)
-  res = 0;
-else
+res = 0;
+if isnumeric(v) & ~isempty(v)
   res = isnan(v);
 end
 return
 
-function value = i_dump(I)
-global MARS
-MARS.ARMOIRE = setfield(MARS.ARMOIRE, I.name, I); 
+function items = i_item_list
+items = fieldnames(g_check_var);
 return
 
-  
+function I = i_up_dump(i_name)
+I = getfield(g_check_var, i_name);
+return
+
+% Routines below explicity manipulate global variable
+
+function I = i_down_dump(I)
+global MARMOIRE
+MARMOIRE = setfield(MARMOIRE, I.name, I); 
+return
+
+function g = g_check_var
+global MARMOIRE
+if isempty(MARMOIRE) | ~isstruct(MARMOIRE)
+  MARMOIRE = struct;
+end
+g = MARMOIRE;
+return
