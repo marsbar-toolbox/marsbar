@@ -30,9 +30,8 @@ Remove mars_mm_model, I guess
 Script to fish out version, do CVS export, and pack in release directory
 Test rig with various models for estimation 
 
-marsy
-add functions as listed
-move get_marsy to marsy in maroi/, add VY, design 
-add voxel coordinate return to getdata
-change references to marsY in marsbar functions to use methods
+Add plot, split, join functions to data menu
+Add import export function
+
+Test...
 
