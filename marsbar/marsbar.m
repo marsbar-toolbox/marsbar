@@ -895,13 +895,13 @@ else
   p_type = varargin{2};
 end
 if isempty(p_type)
-  p_type = 'basic';
+  p_type = 'raw';
 end
 
 marsY = mars_armoire('get','roi_data');
 if isempty(marsY), return, end
 
-ui_plot(marsY, p_type);
+ui_plot(marsY, [], p_type);
 
 %=======================================================================
 case 'import_data'                                    %- it imports data
