@@ -55,7 +55,8 @@ if isfield(flags, 'sessions')
       error('Sessions appear to be out of range');
     end
     K = K(ss);
-    W = W([blk_rows{ss}], :);
+    K.row = blk_rows{ss} - blk_rows{ss}(1) + 1; 
+    W = W(blk_rows{ss}, blk_rows{ss});
   end
 end
 
