@@ -5,7 +5,7 @@ function Y = apply_filter(D, Y, flags)
 % D      - design, which includes a filter
 % Y      - data to filter (2D matrix or marsy data object)
 % flags  - cell array of options including none or more of
-%          'whiten'
+%          'no_whitening'
 %
 % Returns
 % Y      - filtered data
@@ -29,13 +29,10 @@ end
 
 SPM = des_struct(D);
 K = SPM.xX.K;
-if any(strmatch('whiten', flags))
-  if ~has_whitener(D)
-    error('No whitening matrix');
-  end
-  W = SPM.xX.W;
-else
+if ~has_whitener(D) | any(strmatch('no_whitening', flags))
   W = eye(n_time_points(D));
+else
+  W = SPM.xX.W;
 end
 
 if isa(Y, 'marsy')  % marsy object
