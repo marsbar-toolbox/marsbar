@@ -15,7 +15,7 @@ switch lower(Action), case 'cfg'
 %=======================================================================
 % - C O N F I G U R E   D E S I G N
 %=======================================================================
-% mars_spm_ui('CFG',D)
+% pr_spm_ui('CFG',D)
 if nargin<2, D = []; else, D = varargin{2}; end
 
 %-GUI setup
@@ -108,7 +108,7 @@ if isempty(D)
 		nVar = spm_input('number of variates?','+1','n1');
 	end
 
-	D    = mars_spm_ui( ...
+	D    = pr_spm_ui( ...
 		char(spm_input('Select design class...','+1','m',...
 		{'Basic stats','Standard PET designs','SPM96 PET designs'},...
 		{'DesDefs_Stats','DesDefs_PET','DesDefs_PET96'},2)));
@@ -126,7 +126,7 @@ sGMsca    = sf_estrrep(sGMsca,[sF',D.sF']);
 
 %-Get filenames & factor indicies
 %-----------------------------------------------------------------------
-[P,I] = mars_spm_ui('Files&Indices',D.sF,D.n,D.b.aTime,nVar);
+[P,I] = pr_spm_ui('Files&Indices',D.sF,D.n,D.b.aTime,nVar);
 nScan = size(I,1);						%-#obs
 
 %-Additional design parameters
@@ -752,7 +752,7 @@ case 'files&indices'
 %=======================================================================
 % - Get files and factor indices
 %=======================================================================
-% [P,I] = mars_spm_ui('Files&Indices',DsF,Dn,DbaTime,nV)
+% [P,I] = pr_spm_ui('Files&Indices',DsF,Dn,DbaTime,nV)
 % DbaTime=D.b.aTime; Dn=D.n; DsF=D.sF;
 if nargin<5, nV = 1; else, nV = varargin{5}; end
 if nargin<4, DbaTime = 1; else, DbaTime = varargin{4}; end
@@ -892,7 +892,7 @@ case 'desdefs_stats'
 %=======================================================================
 % - Basic Stats Design definitions...
 %=======================================================================
-% D = mars_spm_ui('DesDefs_Stats');
+% D = pr_spm_ui('DesDefs_Stats');
 % These are the basic Stats design definitions...
 
 %-Note: struct expands cell array values to give multiple records:
@@ -983,7 +983,7 @@ case 'desdefs_pet'
 %=======================================================================
 % - Standard (SPM99) PET/SPECT Design definitions...
 %=======================================================================
-% D = mars_spm_ui('DesDefs_PET');
+% D = pr_spm_ui('DesDefs_PET');
 % These are the standard PET design definitions...
 
 %-Single subject
@@ -1137,7 +1137,7 @@ case 'desdefs_pet96'
 %=======================================================================
 % - SPM96 PET/SPECT Design definitions...
 %=======================================================================
-% D = mars_spm_ui('DesDefs_PET96');
+% D = pr_spm_ui('DesDefs_PET96');
 
 %-Single subject
 %-----------------------------------------------------------------------
