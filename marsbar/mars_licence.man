@@ -1,15 +1,16 @@
-% MarsBar is copyright, distributed under the GNU General Public Licence.
+
+% MarsBaR is copyright, distributed under the GNU General Public Licence.
 %_______________________________________________________________________
 %
-% MarsBar (being the collection of files given in the manifest in the
-% Contents.m file) is free but copyright software, distributed under
+% MarsBaR (being the collection of files given in the manifest in the
+% contents.m file) is free but copyright software, distributed under
 % the terms of the GNU General Public Licence as published by the Free
 % Software Foundation (either version 2, as given below, or at your
 % option, any later version).
 %
 % For more details on "copyleft", see http://www.gnu.org/copyleft/
 %
-% PhiWave is supplied as is:
+% MarsBaR is supplied as is:
 % No formal support or maintenance is provided or implied.
 %_______________________________________________________________________
 %
@@ -358,4 +359,7 @@
 % library.  If this is what you want to do, use the GNU Library General
 % Public License instead of this License.
 %_______________________________________________________________________
-% @(#)spm_LICENCE.man	2.4 FIL 99/05/16
+%
+% Copied from @(#)spm_LICENCE.man	2.4 FIL 99/05/16
+%
+% $Id$
