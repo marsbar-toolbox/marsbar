@@ -1130,8 +1130,8 @@ marsD = mars_armoire('get', 'def_design');
 if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
-if is_fmri(marsD) & ~has_filter(marsD)
-  marsD = fill(marsD, 'filter');
+if ~can_estimate(D)
+  marsD = fill(marsD, 'for_estimation');
   mars_armoire('update', 'def_design', marsD);
 end
 marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
