@@ -40,8 +40,8 @@ switch lower(action)
 %=======================================================================
 case 'desrepui'                                    %-Design reporting UI
 %=======================================================================
-% h = spm_DesRep('DesRepUI')
-% h = spm_DesRep('DesRepUI',SPM)
+% h = ui_report(D, 'DesRepUI')
+% h = ui_report(D, 'DesRepUI',SPM)
 
 %-Add a scaled design matrix to the design data structure
 %-----------------------------------------------------------------------
@@ -137,7 +137,7 @@ varargout = {hC};
 %=======================================================================
 case 'files&factors'                         %-Summarise files & factors
 %=======================================================================
-% spm_DesRep('Files&Factors',fnames,I,xC,sF,xs)
+% ui_report(D, 'Files&Factors',fnames,I,xC,sF,xs)
 fnames  = image_names(D);
 if isempty(fnames)
   fnames = cell(size(SPM.xX.X, 1), 1);
@@ -276,8 +276,8 @@ figure(Fgraph)
 %=======================================================================
 case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 %=======================================================================
-% spm_DesRep('DesMtx',xX,fnames,xs)
-% spm_DesRep('DesOrth',xX)
+% ui_report(D, 'DesMtx',xX,fnames,xs)
+% ui_report(D, 'DesOrth',xX)
 
 xX      = SPM.xX;
 fnames  = image_names(D);
@@ -359,8 +359,8 @@ else		%-No scaled DesMtx, no .xKXs, DesMtx in .X
 	hDesMtxIm = image((spm_DesMtx('sca',xX.X,     Xnames) + 1)*32);
 end
 
-STick = spm_DesRep('ScanTick',nScan,32);
-PTick = spm_DesRep('ScanTick',nPar,32);
+STick = ui_report(D, 'ScanTick',nScan,32);
+PTick = ui_report(D, 'ScanTick',nPar,32);
 
 set(hDesMtx,'TickDir','out',...
 	'XTick',PTick,'XTickLabel','',...
@@ -514,7 +514,7 @@ figure(Fgraph)
 %=======================================================================
 case 'covs'                %-Plot and describe covariates (one per page)
 %=======================================================================
-% spm_DesRep('Covs',xX,xC)
+% ui_report(D, 'Covs',xX,xC)
 
 xX = SPM.xX;
 xC = SPM.xC;
@@ -682,7 +682,7 @@ figure(Fgraph)
 %=======================================================================
 case 'scantick'
 %=======================================================================
-% spm_DesRep('ScanTick',nScan,lim)
+% ui_report(D, 'ScanTick',nScan,lim)
 % ( Show at most 32, showing every 2nd/3rd/4th/... as necessary to pair )
 % ( down to <32 items. Always show last item so #images is indicated.    )     
 if nargin<3, lim=32; else, lim=varargin{3}; end
@@ -698,9 +698,9 @@ varargout = {s,lim};
 %=======================================================================
 case {'surfdesmtx_cb','surfdesmtxmo_cb','surfdesmtxup_cb'} %-Surf DesMtx
 %=======================================================================
-% spm_DesRep('SurfDesMtx_CB')
-% spm_DesRep('SurfDesMtxMo_CB')
-% spm_DesRep('SurfDesMtxUp_CB')
+% ui_report(D, 'SurfDesMtx_CB')
+% ui_report(D, 'SurfDesMtxMo_CB')
+% ui_report(D, 'SurfDesMtxUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -761,9 +761,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfestim_cb','surfestimmo_cb','surfestimup_cb'}  %-Surf ParEstIm
 %=======================================================================
-% spm_DesRep('SurfEstIm_CB')
-% spm_DesRep('SurfEstImMo_CB')
-% spm_DesRep('SurfEstImUp_CB')
+% ui_report(D, 'SurfEstIm_CB')
+% ui_report(D, 'SurfEstImMo_CB')
+% ui_report(D, 'SurfEstImUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -820,9 +820,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfdeso_cb','surfdesomo_cb','surfdesoup_cb'}    %-Surf DesOrthIm
 %=======================================================================
-% spm_DesRep('SurfDesO_CB')
-% spm_DesRep('SurfDesOMo_CB')
-% spm_DesRep('SurfDesOUp_CB')
+% ui_report(D, 'SurfDesO_CB')
+% ui_report(D, 'SurfDesOMo_CB')
+% ui_report(D, 'SurfDesOUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -887,9 +887,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfcon_cb','surfconmo_cb','surfconup_cb'}        %-Surf Contrast
 %=======================================================================
-% spm_DesRep('SurfCon_CB')
-% spm_DesRep('SurfConOMo_CB')
-% spm_DesRep('SurfConOUp_CB')
+% ui_report(D, 'SurfCon_CB')
+% ui_report(D, 'SurfConOMo_CB')
+% ui_report(D, 'SurfConOUp_CB')
 
 cUD = get(gco,'UserData');
 if ~isstruct(cUD) | ~isfield(cUD,'h')
