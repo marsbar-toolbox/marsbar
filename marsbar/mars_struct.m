@@ -7,6 +7,8 @@ function varargout = mars_struct(action, varargin)
 % 
 % 'merge' means simply that missing fields are added, with
 % values, from a second structure (but not filled if empty)
+%   
+% Each function needs to deal with the case of empty arguments
 %
 % FORMAT c = mars_struct('fillafromb', a, b, fieldns, flags)
 % fills structure fields empty or missing in a from those present in b
@@ -207,6 +209,8 @@ switch lower(action)
   varargout = {mars_struct('merge', a, b) c};
   
  case 'isthere'
+  if isempty(a), varargout = {0}; return, end
+  if isempty(b), varargout = {0}; return, end
   for v = 2:nargin-1
     b = varargin{v};
     if ~isfield(a, b)
@@ -218,6 +222,7 @@ switch lower(action)
   varargout = {~isempty(a)};
   
  case 'celldisp'
+  if isempty(a), varargout = {{}}; return, end
   af = fieldnames(a);
   c  = {};
   pad_len = size(char(af), 2) + 4;
