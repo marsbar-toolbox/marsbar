@@ -4,5 +4,5 @@ function D = set_data(D, d)
 % $Id$
   
 SPM = des_struct(D);
-SPM.marsY = d;
+SPM.marsY = marsy(d);
 D = des_struct(D, SPM);

@@ -30,7 +30,12 @@ if nargin > 1 | ...              % sumfunc passed
   Y = zeros(sz);
   Yvar = zeros(sz);
   for i = 1:sz(2);
-    [Y(:,i) Yvar(:,i)] = pr_sum_func(Ys{i}, s_f);
+    if isempty(Ys{i}) % set to NaN if no data to summarize
+      Y(:,i) = NaN;
+      Yvar(:,i) = NaN;
+    else      
+      [Y(:,i) Yvar(:,i)] = pr_sum_func(Ys{i}, s_f);
+    end
   end
   if nargout > 2
     st.Y = Y;

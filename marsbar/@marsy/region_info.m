@@ -1,26 +1,22 @@
 function ri = region_info(o, r_nos)
 % gets region info fields as cell array
+% FORMAT ri = region_info(o, r_nos)
+% 
+% Inputs
+% o              - marsy object
+% r_nos          - region number 
+%                  or array of region numbers
+%                  or empty - giving all regions
+% 
+% Returns
+% ri             - cell array of region info structures
 % 
 % $Id$
 
-r = n_regions(o);
 if nargin < 2
-  r_nos = 1:r;
+  r_nos = [];
 end
-if any(r_nos > r)
-  error('Region numbers too large');
-end
+rs = region(o, r_nos);
+rs = [rs{:}];
+[ri{1:length(rs)}] = deal(rs.info);
 
-st = y_struct(o);
-r_f = isfield(st, 'regions');
-r_st = [];
-for i = 1:length(r_nos)
-  if r_f
-    r_st = st.regions{r_nos(i)};
-  end
-  if isfield(r_st, 'info')
-    ri{i} = r_st.info;
-  else
-    ri{i} = struct([]);
-  end
-end

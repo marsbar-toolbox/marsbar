@@ -8,6 +8,9 @@ if nargin < 2
   error('Need data matrix and summary function');
 end
 [m n]   = size(y);
+if any([m n] == 0)
+  error('Data vector is empty');
+end
 if nargin < 3
   wt = ones(n,1);
 end

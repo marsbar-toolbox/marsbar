@@ -21,7 +21,7 @@ end
 
 r_st = [];
 if r_f
-  r_st = st.regions{r_nos(i)};
+  r_st = st.regions{r_no};
 end
 if isfield(r_st, 'Y')
   sz = size(r_st.Y);

@@ -12,7 +12,7 @@ function marsY = get_marsy(varargin)
 %                   'v' - selects verbose output to matlab console
 %
 % Returns 
-% marsY      - MarsBaR data structure
+% marsY      - MarsBaR data object
 %
 % $Id$
 
@@ -67,14 +67,13 @@ end
 
 if vf, fprintf('Fetching data...'); end
 rlen = length(roi_array);
-[marsY.Y marsY.Yvar] = deal(zeros(length(VY), rlen));
 rno = 0;
 for r = 1:rlen
   if vf
     fprintf('%s%30s',sprintf('\b')*ones(1,30),sprintf('%4d/%-4d',r,rlen))
   end
   o = roi_array{r};
-  [y vals]  = getdata(o, VY);
+  [y vals vXYZ mat]  = getdata(o, VY);
   [ny nvals] = size(y);
   if isempty(y)
     if vf, fprintf('\n');end
@@ -82,17 +81,18 @@ for r = 1:rlen
     if vf & r < rlen, fprintf('%-40s: %30s','Fetching data',' '); end
   else
     rno = rno + 1;
-    [marsY.Y(:,rno) marsY.Yvar(:,rno)] = mars_sum_func(y, sumfunc, vals);
     
-    % get data for columns
-    marsY.cols{rno} = struct(...
-	'y', y, ...
+    % get data for regions
+    regions{rno} = struct(...
+	'Y', y, ...
 	'name', label(o),...
-	'file', source(o),...
-	'descrip', descrip(o));
+	'info', struct('file', source(o)),...
+	'descrip', descrip(o),...
+	'vXYZ', vXYZ,...
+	'mat', mat);
   end
 end
-marsY.Y = marsY.Y(:,1:rno);
+marsY = marsy(regions, '', sumfunc);
+
 if vf, fprintf('...done\n'); end
 
-marsY.sumfunc = sumfunc;

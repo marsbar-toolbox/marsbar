@@ -8,6 +8,9 @@ function [XYZ, M]= xyz(o, r_no, xyz_type)
 % xyz_type  - string, one of 'mm','real','vox' 
 %             where 'real' is a synonym for 'mm'
 %             and 'mm' is the default (if not passed)
+%             'mm' results in coordinates in mm
+%             'vox' gives coordinates in voxels
+% 
 % Outputs
 % XYZ       - coordinates in specified reference
 % M         - 4x4 transformation mapping voxels to mm
@@ -38,7 +41,7 @@ end
 M = r_st.mat;
 XYZ = r_st.vXYZ;
 switch xyz_type
- case 'voxels'
+ case 'vox'
  case {'mm', 'real'}
   if ~isempty(XYZ)
     tmp = M * [XYZ; ones(1, size(XYZ, 2))];

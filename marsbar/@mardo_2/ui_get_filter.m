@@ -1,16 +1,24 @@
-function [K,descrip] = ui_get_filter(D)
+function [D,descrip] = ui_get_filter(D)
 % method to get filter via GUI
-% FORMAT [K,descrip] = ui_get_filter(D)
+% FORMAT [D,descrip] = ui_get_filter(D)
 %
 % Input 
 % D       - design
 % 
 % Returns
-% K       - filter (structure)
+% D       - design with modified filter
 % descrip - cell array of strings describing filter
 %
 % $Id$  
   
 SPM = des_struct(D);
-[K str] = pr_get_filter(SPM.xY.RT, SPM.Sess);
+[SPM.xX.K str] = pr_get_filter(SPM.xY.RT, SPM.Sess);
+SPM.xX.K = K;
+if ~isfield(SPM, 'xsDes')
+  SPM.xsDes = struct([]);
+end
+SPM.xsDes.High_pass_Filter = str;
+
+% return args
+D = des_struct(SPM);
 descrip = {str};

@@ -1,5 +1,8 @@
 function marsD = set_images(marsD, VY)
 % method to set image vols from design
+% 
+% $Id$ 
+  
 if nargin < 2
   error('Need image volumes');
 end

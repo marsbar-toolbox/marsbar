@@ -4,4 +4,4 @@ function tf = is_summarized(o)
 % $Id$
   
 st = y_struct(o);
-tf = isfield(st, 'Y');
+tf = isfield(st, 'Y') & isfield(st, 'Yvar');

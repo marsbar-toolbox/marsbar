@@ -83,6 +83,10 @@ if isstruct(params)
     % Appears to be an SPM design
     params = struct('des_struct',params);
   end
+  % convert data field to object
+  if isfield(params.des_struct, 'marsY')
+    params.des_struct.marsY = marsy(params.des_struct.marsY);
+  end
 end
 
 % fill with defaults, parse into fields for this object, children

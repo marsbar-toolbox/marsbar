@@ -40,6 +40,20 @@ switch lower(action)
   end
   res = I;
   
+ case 'set_data'
+  % callback for setting design
+  % FORMAT [data errf msg] = mars_arm_call('set_data', I);
+
+  I = varargin{1};
+
+  % Make data into object, do conversions
+  [I.data errf msg] = sf_check_data(I.data);
+  if errf
+    res = [];
+    return
+  end
+  res = I;
+  
  case 'set_results'
   % callback for setting results 
   % FORMAT [data errf msg] = mars_arm_call('set_results', data);
@@ -79,3 +93,11 @@ if ~is_valid(d)
   msg = 'This does not appear to be a valid design';
 end
   
+function [d,errf,msg] = sf_check_data(d)
+% Make data structure into object, do conversions
+errf = 0; msg = {};
+d = marsy(d);
+if ~is_valid(d)
+  errf = 1; 
+  msg = 'This does not appear to be a valid data structure';
+end

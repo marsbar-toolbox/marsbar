@@ -100,7 +100,8 @@ mars_armoire('add_if_absent','roi_data',...
 	     struct('default_file_name', 'untitled_mdata.mat',...
 		    'filter_spec',...
 		    {{'*_mdata.mat','MarsBaR data file (*_mdes.mat)'}},...
-		    'title', 'ROI data'));
+		    'title', 'ROI data',...
+		    'set_action', 'mars_arm_call(''set_data'',I);'));
 mars_armoire('add_if_absent','est_design',...
 	     struct('default_file_name', 'untitled_mres.mat',...
 		    'filter_spec',{{'*_mres.mat'}},...
@@ -111,7 +112,7 @@ mars_armoire('add_if_absent','est_design',...
 if ~isfield(MARS, 'WORKSPACE'), MARS.WORKSPACE = []; end
 
 % read any necessary defaults
-if ~sf_is_there(MARS, 'OPTIONS')
+if ~mars_struct('isthere', MARS, 'OPTIONS')
   loadf = 1;
   MARS.OPTIONS = [];
 else
@@ -685,7 +686,7 @@ marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
 
 MARS.WORKSPACE.default_region = marsbar('get_region',...
-					region_names(marsY));
+					region_name(marsY));
 varargout = {1};
 
 %=======================================================================
@@ -1150,25 +1151,6 @@ error('Unknown action string')
 end
 return
 
-% Subfunctions 
 
-function tf = sf_is_there(st, varargin)
-% determines if field specified by string input is present and not empty
-% FORMAT tf = sf_is_there(st, varargin)
-  
-tf = 0;
-if nargin < 2
-  return
-end
-res = [];
-tmp = st;
-for i = 1:length(varargin)
-  if isfield(tmp, varargin{i})
-    tmp = getfield(tmp, varargin{i});
-  else
-    return
-  end
-end
-tf = ~isempty(tmp);
 
 
