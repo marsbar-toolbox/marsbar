@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.35';  % 6th SPM2 development release 
+MBver = '0.36';  % 7th SPM2 development release 
 
 % Various working variables in global variable structure
 global MARS;
@@ -330,6 +330,9 @@ funcs = {...
     'marsbar(''spm_graph'');',...
     'marsbar(''stat_table'');',...
     'marsbar(''signal_change'');',...
+    'marsbar(''fitted_events'');',...
+    'marsbar(''fir_events'');',...
+    'marsbar(''add_events_by_name'');',...
     'marsbar(''set_results'');',...
     ['mars_arm(''save_ui'', ''est_design'', ' fw_st ');']};
 
@@ -344,6 +347,9 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|MarsBaR SPM graph',...
 		    '|Statistic table',...
 		    '|% signal change',...
+		    '|Fitted event time course',...
+		    '|FIR event time course',...		    
+		    '|Add event types by name',...
 		    '|Set results from file',...
 		    '|Save results to file'],...
 	  'Position',[bx by(4) bw bh].*WS,...
@@ -1446,18 +1452,151 @@ end
 % Setup input window
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Percent signal change', 0);
 
+[marsRes ic status] = ui_event_types(marsRes);
+if (status==0), return, end
+if (status>1), mars_arm('update', 'est_design', marsRes); end
+if isempty(ic), return, end
+
 dur       = spm_input('Event duration', '+1', 'e', 0);
-[e_s e_n] = ui_get_event(marsRes);
-pc        = event_signal(marsRes, e_s, dur, 'max');
+ic_len    = length(ic);
+et = event_types(marsRes);
+for i = 1:ic_len
+  pc(i,:) = event_signal(marsRes, et(ic(i)).e_spec, dur, 'max');
+end
 rns       = region_name(get_data(marsRes));
 disp('Sort-of % signal change');
-disp(['Event: ' e_n]);
 disp(sprintf('Duration: %3.2f seconds', dur));
-for r = 1:length(rns)
-  disp(sprintf('Region: %40s; %5.3f', rns{r}, pc(r)));
+for i = 1:ic_len
+  disp(['Event: ' et(ic(i)).name]);
+  for r = 1:length(rns)
+    disp(sprintf('Region: %40s; %5.3f', rns{r}, pc(i, r)));
+  end
 end
 assignin('base', 'pc', pc);
 
+%=======================================================================
+case 'fitted_events'                    % show fitted event time courses
+%=======================================================================
+% marsbar('fitted_events')
+%-----------------------------------------------------------------------
+marsRes = mars_arm('get', 'est_design');
+if isempty(marsRes), return, end
+if ~is_fmri(marsRes)
+  fprintf('Need FMRI design for fitted event time courses\n');
+  return
+end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Fitted events', 1);
+
+[marsRes ic status] = ui_event_types(marsRes);
+if (status==0), return, end
+if (status>1), mars_arm('update', 'est_design', marsRes); end
+if isempty(ic), return, end
+
+dur       = spm_input('Event duration', '+1', 'e', 0);
+ic_len    = length(ic);
+et = event_types(marsRes);
+for i = 1:ic_len
+  [tc{i} dt] = event_fitted(marsRes, et(ic(i)).e_spec, dur);
+end
+
+if ic_len > 8
+  warning('Too many event types to plot, plotting first 8');
+  ic_len = 8;
+end
+
+figure(Fgraph);
+if ic_len > 1, p_cols = 2; else p_cols = 1; end
+p_rows = ceil(ic_len / p_cols);
+last_row_starts = (p_rows-1) * p_cols + 1;
+for i = 1:ic_len
+  t = tc{i};
+  secs = ([1:size(t, 1)]-1) * dt;
+  subplot(p_rows, p_cols, i);
+  plot(secs, t);
+  title(et(ic(i)).name);
+  if i >= last_row_starts, xlabel('Seconds'); end
+  if rem(i-1, p_cols)==0, ylabel('Signal change'); end
+end
+
+legend(region_name(get_data(marsRes)));
+
+assignin('base', 'time_courses', tc);
+assignin('base', 'dt', dt);
+
+%=======================================================================
+case 'fir_events'                                  % show FIR for events
+%=======================================================================
+% marsbar('fir_events')
+%-----------------------------------------------------------------------
+marsRes = mars_arm('get', 'est_design');
+if isempty(marsRes), return, end
+if ~is_fmri(marsRes)
+  fprintf('Need FMRI design for FIR event time courses\n');
+  return
+end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','FIR for events', 1);
+
+[marsRes ic status] = ui_event_types(marsRes);
+if (status==0), return, end
+if (status>1), mars_arm('update', 'est_design', marsRes); end
+if isempty(ic), return, end
+
+bin_length = spm_input('Bin length (secs)', '+1', 'e', tr(marsRes));
+def_bin_no = round(25/bin_length);
+bin_no     = spm_input('No of bins', '+1', 'e', def_bin_no);
+
+et = event_types(marsRes);
+for i = 1:ic_len
+  tc{i} = event_fitted_fir(marsRes, ...
+			   et(ic(i)).e_spec, ...
+			   bin_length, ...
+			   bin_no);
+end
+
+if ic_len > 8
+  warning('Too many event types to plot, plotting first 8');
+  ic_len = 8;
+end
+
+figure(Fgraph);
+if ic_len > 1, p_cols = 2; else p_cols = 1; end
+p_rows = ceil(ic_len / p_cols);
+last_row_starts = (p_rows-1) * p_cols + 1;
+secs = ([1:bin_no]-1) * bin_length;
+for i = 1:ic_len
+  t = tc{i};
+  subplot(p_rows, p_cols, i);
+  plot(secs, t);
+  title(et(ic(i)).name);
+  if i >= last_row_starts, xlabel('Seconds'); end
+  if rem(i-1, p_cols)==0, ylabel('Signal change'); end
+end
+legend(region_name(get_data(marsRes)));
+
+assignin('base', 'time_courses', tc);
+assignin('base', 'bin_length', bin_length);
+assignin('base', 'bin_no', bin_no);
+
+%=======================================================================
+case 'add_events_by_name'  %-make event types from events with same name
+%=======================================================================
+% marsbar(''add_events_by_name')
+%-----------------------------------------------------------------------
+D = mars_arm('get', 'est_design');
+if isempty(D), return, end
+if ~is_fmri(D)
+  disp('Can only add event types to FMRI designs');
+  return
+end
+et = event_types(D);
+et = [et event_types_named(D)];
+D  = event_types(D, et);
+mars_arm('update', 'est_design', D);
+ 
 %=======================================================================
 case 'merge_contrasts'                                %-import contrasts
 %=======================================================================
@@ -1531,7 +1670,7 @@ end
 disp(['Saved error log as ' fname]);
 
 %=======================================================================
-case 'mars_menu'                    %-menu selection of marsbar actions 
+case 'mars_menu'                     %-menu selection of marsbar actions 
 %=======================================================================
 % marsbar('mars_menu',tstr,pstr,tasks_str,tasks)
 %-----------------------------------------------------------------------
