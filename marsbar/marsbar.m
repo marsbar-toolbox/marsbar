@@ -692,16 +692,8 @@ if nargin < 2
 else
   des_type = varargin{2};
 end
-
-switch lower(des_type)
- case 'pet'
-  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
- case 'basic'
-  SPM = mars_spm_ui('cfg',spm_spm_ui('DesDefs_PET'));
- case 'fmri'
-  SPM = mars_fmri_design;
-end
-mars_armoire('set','def_design', SPM);
+D = ui_build(mars_veropts('default_design'), des_type);
+mars_armoire('set','def_design', D);
 marsbar('design_report');
 
 %=======================================================================
@@ -800,7 +792,9 @@ case 'edit_filter'                   %-add / edit filter for FMRI design
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
 if ~is_fmri(marsD), return, end
-marsD = fill(marsD, 'filter');
+tmp = {'filter'};
+if ~strcmp(type(marsD), 'SPM99'), tmp = [tmp {'autocorr'}]; end
+marsD = fill(marsD, tmp);
 mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');
 
@@ -1130,7 +1124,7 @@ marsD = mars_armoire('get', 'def_design');
 if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
-if ~can_estimate(D)
+if ~can_mars_estimate(marsD)
   marsD = fill(marsD, 'for_estimation');
   mars_armoire('update', 'def_design', marsD);
 end
