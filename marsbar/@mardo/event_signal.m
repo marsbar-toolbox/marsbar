@@ -55,6 +55,6 @@ for e_i = 1:e_s_l
   ss    = es(1);
   Yh    = event_fitted(D, es, dur);
   d     = pr_ev_diff(Yh, diff_func, varargin{:});
-  s     = s + d/s_mus(ss);
+  s     = s + d ./ s_mus(ss,:);
 end
 s = s / e_s_l * 100;
