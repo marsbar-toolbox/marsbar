@@ -32,6 +32,9 @@ if ~mars_utils('isabspath', fname)
 end
 
 try 
+  if verbose(D)
+    fprintf('Saving design to file %s\n', fname);
+  end
   savestruct(SPM, fname);
   tf = 1;
 catch
