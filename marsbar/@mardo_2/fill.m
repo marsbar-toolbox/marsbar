@@ -45,6 +45,13 @@ end
 for a = 1:length(actions)
   switch lower(actions{a})
    case 'defaults'
+    
+    % TR if not set (it should be) 
+    if ~mars_struct('isthere', SPM, 'xY', 'RT')
+      [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Fill FMRI design',0);
+      SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+
     % prepare various default settings, offer to design
     xM = [];             % masking 
     xGX = [];            % globals
@@ -61,6 +68,7 @@ for a = 1:length(actions)
     
     xsDes = struct(...
 	'Basis_functions',	BFstr,...
+	'Interscan_interval',	sprintf('%0.2f {s}',spmD.xX.RT),...
 	'Number_of_sessions',	sprintf('%d',nsess),...
 	'Trials_per_session',	sprintf('%-3d',ntr),...
 	'Global_calculation',	sGXcalc,...
@@ -107,9 +115,6 @@ for a = 1:length(actions)
     spm_help('!ContextHelp',mfilename)
     spm_input('Global intensity normalisation...',1,'d',mfilename);
     
-    % finish GUI
-    spm('Pointer','Arrow')
-
     % get file identifiers and Global values
     %=======================================================================
     fprintf('%-40s: ','Mapping files')                                   %-#
@@ -181,41 +186,37 @@ for a = 1:length(actions)
 			     xsDes);
 
    case 'filter'
-    % Get filter and autocorrelation options
+    % Get filter 
     if ~have_sess, return, end
+    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','FMRI model filter',0);
+    spm_input('High pass filter','+1','d',mfilename)
+    [SPM.xX.K f SPM.xsDes.High_pass_Filter] = ...
+	pr_get_filter(SPM.xY.RT, SPM.Sess);
     
-    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
-    
-    % TR if not set (it should be) 
-    if ~mars_struct('isthere', SPM, 'xY', 'RT')
-      SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
-    end
-    RT = SPM.xY.RT;
+   case 'autocorr'
+    [Finter,Fgraph,CmdLine] = ...
+	spm('FnUIsetup','FMRI autocorrelation options',0);
 
-    % High-pass filtering and serial correlations
-    %=======================================================================
-    
-    % specify low frequnecy confounds
-    %---------------------------------------------------------------
-    spm_input('Temporal autocorrelation options','+1','d',mfilename)
-    [K f_str] = pr_get_filter(SPM.xY.RT, SPM.Sess);
-    SPM.xX.K = K;
-    
-    % intrinsic autocorrelations (Vi)
-    %-----------------------------------------------------------------------
-    
     % Contruct Vi structure for non-sphericity ReML estimation
     %===============================================================
     str   = 'Correct for serial correlations?';
-    cVi   = {'none','AR(1)','specify'};
+    cVi   = {'none','SPM AR(0,2)','SPM AR specify', 'fmristat AR(n)'};
     cVi   = spm_input(str,'+1','b',cVi);
     
     % create Vi struct
     %-----------------------------------------------------------------------
-    switch cVi
+    switch lower(cVi)
 
-     case 'specify'
-      % AR coefficient(s) to be specified
+     case 'fmristat ar(n)'
+      % Fit fmristat model AR(n)
+      %---------------------------------------------------------------
+      cVi = spm_input('fmristat AR model order', '+1', 'e', 2);
+      SPM.xVi.Vi = struct('type', 'fmristat', 'order', cVi);
+      cVi        = sprintf('fmristat AR(%0.1f)',cVi);
+      f2cl       = 'V'; 
+      
+     case 'spm ar specify'
+      % SPM AR coefficient(s) to be specified
       %---------------------------------------------------------------
       cVi = spm_input('AR rho parameter(s)', '+1', 'e', 0.2);
       SPM.xVi.Vi = pr_spm_ce(nscan,cVi);
@@ -253,19 +254,18 @@ for a = 1:length(actions)
       SPM.xX = rmfield(SPM.xX, 'W');
       if v_f, fprintf('Clearing previous W matrix\n'); end
     end
-
+    
+    % Whether to average covariance estimates over voxels
+    if spm_input('Use voxel data for covariance','+1','y/n', [1 0], 2);
+      SPM.xVi.cov_calc = 'vox';
+    else
+      SPM.xVi.cov_calc = 'summary';
+    end
     
     % fill into design
     SPM.xVi.form = cVi;
-    
-    xsDes = struct(...
-	'Interscan_interval',	  sprintf('%0.2f {s}',RT),...
-	'Intrinsic_correlations', SPM.xVi.form,...
-	'High_pass_Filter',	  f_str);
-    
-    SPM.xsDes = mars_struct('ffillmerge',...
-			  SPM.xsDes,...
-			  xsDes);
+    xsDes = struct('Intrinsic_correlations', SPM.xVi.form);
+    SPM.xsDes = mars_struct('ffillmerge', SPM.xsDes, xsDes);
   
    otherwise
     error(['Unpredictable: ' actions{a}]);

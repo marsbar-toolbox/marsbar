@@ -48,6 +48,12 @@ end
 for a = 1:length(actions)
   switch lower(actions{a})
    case 'defaults'
+    % TR if not set (it should be) 
+    if ~isfield(xX, 'RT')
+      [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Fill FMRI design',0);
+      spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+
     % prepare various default settings, offer to design
     xM = [];             % masking 
     xGX = [];            % globals
@@ -70,6 +76,7 @@ for a = 1:length(actions)
     end
     
     xsDes = struct( 'Design',			DSstr,...
+		    'Interscan_interval',	sprintf('%0.2f',spmD.xX.RT),...
 		    'Basis_functions',		BFstr,...
 		    'Number_of_sessions',	sprintf('%d',nsess),...
 		    'Conditions_per_session',	sprintf('%-3d',ntr),...
@@ -113,9 +120,6 @@ for a = 1:length(actions)
     if ischar(Global),
       Global = {Global};
     end
-
-    % finish GUI
-    spm('Pointer','Arrow')
 
     % get file identifiers and Global values
     %=======================================================================
@@ -192,29 +196,24 @@ for a = 1:length(actions)
    case 'filter'
     % Get filter and autocorrelation options
     if ~have_sess, return, end
-    
-    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
-    
-    % TR if not set (it should be) 
-    if ~isfield(xX, 'RT')
-      spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
-    end
+    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Set FMRI filter',0);
     RT = spmD.xX.RT;
+    spm_input('High and low pass filter','+1','d',mfilename)
+    [spmD.xX.K HFstr LFstr] = pr_get_filter(RT, Sess);
+    xsDes = struct(...
+	'High_pass_Filter',             LFstr,...
+	'Low_pass_Filter',              HFstr);
+    spmD.xsDes = mars_struct('ffillmerge',...
+			     spmD.xsDes,...
+			     xsDes);
 
-    % Temporal filtering
-    %=======================================================================
-    spm_input('Temporal autocorrelation options','+1','d',mfilename)
-    
-    [K HFstr LFstr] = pr_get_filter(RT, Sess);
-    
+   case 'autocorr'
+    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','FMRI autocorrelation model',0);
     % intrinsic autocorrelations (Vi)
     %-----------------------------------------------------------------------
     str     = 'Model intrinsic correlations?';
     cVimenu = {'none','AR(1)'};
     cVi     = spm_input(str,'+1','b',cVimenu);
-    
-    % finish GUI
-    spm('Pointer','Arrow')
     
     % create Vi struct
     %-----------------------------------------------------------------------
@@ -225,17 +224,8 @@ for a = 1:length(actions)
     end
     
     % fill into design
-    xsDes = struct(...
-	'Interscan_interval',	sprintf('%0.2f',RT),...
-	'Intrinsic_correlations',	xVi.Form,...
-	'High_pass_Filter',             LFstr,...
-	'Low_pass_Filter',              HFstr);
-
-    spmD.xsDes = mars_struct('ffillmerge',...
-			     spmD.xsDes,...
-			     xsDes);
     spmD.xX.xVi = xVi;
-    spmD.xX.K = K;
+    spmD.xsDes.Intrinsic_correlations = cVi;
     
    otherwise
     error(['Unpredictable: ' actions{a}]);
@@ -244,3 +234,4 @@ end
 
 % put stuff into object
 D = des_struct(D,spmD);
+
