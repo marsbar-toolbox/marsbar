@@ -262,7 +262,7 @@ elseif strcmp(action,'print')
    uuu=get(gca,'unit');
    set(gca,'unit','normalized')
 
-   [Fname, Pname] = uiputfile('*.tif', 'where'); Fname = cat(2,Pname,Fname);
+   [Fname, Pname] = mars_uifile('put', '*.tif', 'where'); Fname = cat(2,Pname,Fname);
    print(gcf,'-dtiff',Fname);
 
    set(gca,'unit',uuu)

@@ -171,7 +171,7 @@ elseif strcmp(action,'SaveTpos'),
 
    workdir=pwd;
    cd ([repDataLog,'volume',filesep,'TPos'])
-   [Fname, Pname] = uiputfile('*.mat', 'where');
+   [Fname, Pname] = mars_uifile('put', '*.mat', 'where');
    if Fname
 	   Fname = cat(2,Pname,Fname)
    	Fname = cat(2,'save ',Fname,' Tpos Tpos_hdr ');
@@ -290,7 +290,7 @@ k_thres=4;
    if ~exist([repDataLog,'volume',filesep,'TPos']), return; end;
    workdir=pwd;
    cd ([repDataLog,'volume',filesep,'TPos'])
-   [Fname, Pname] = uigetfile('*.mat', 'where');
+   [Fname, Pname] = mars_uifile('get', '*.mat', 'where');
    cd (workdir)
    
    if Fname

@@ -155,7 +155,7 @@ elseif strcmp(action,'saveBig');
  %  Big(4) = moyBig(Big(3));
 
    cd data/temporel/Big
-   [Fname, Pname] = uiputfile('*.mat', 'where');
+   [Fname, Pname] = mars_uifile('put', '*.mat', 'where');
    if Fname
 	   Fname = cat(2,Pname,Fname)
    	Fname = cat(2,'save ',Fname,' Big');

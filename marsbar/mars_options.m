@@ -62,7 +62,7 @@ switch lower(optstr)
   if nargin < 3
     [fn, fn2] = marsbar('cfgfile');
     if isempty(fn), fn=fn2;end
-    [f p] = uiputfile(fn, 'Configuration file to save');
+    [f p] = mars_uifile('put', fn, 'Configuration file to save');
     cfg_fname = fullfile(p, f);
   end
   if ~isempty(cfg_fname)

@@ -115,7 +115,7 @@ elseif strcmp(action,'ROItomask');
   workdir=pwd;
   cd (result_path)
   
-  [Fname, Pname] = uiputfile('*', 'where');
+  [Fname, Pname] = mars_uifile('put', '*', 'where');
   if Fname
     Fname = cat(2,Pname,Fname)
     

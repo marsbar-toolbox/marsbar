@@ -45,7 +45,7 @@ nx=dim(1);
   
 elseif strcmp(action,'LoadBw'),
    cd ([repDataLog,'volume',filesep,'Bw'])
-      [Fname, Pname] = uigetfile('*.mat', 'where');
+      [Fname, Pname] = mars_uifile('get', '*.mat', 'where');
    cd (workdir)
    
    if Fname
@@ -154,7 +154,7 @@ elseif strcmp(action,'CleanCoupeBw');
         
 elseif strcmp(action,'SaveBw'),   
    cd ([repDataLog,'volume',filesep,'Bw'])
-   [Fname, Pname] = uiputfile('*.mat', 'where');
+   [Fname, Pname] = mars_uifile('put', '*.mat', 'where');
    if Fname
 	   Fname = cat(2,Pname,Fname)
 	   Fname = cat(2,'save ',Fname,' Bw');
