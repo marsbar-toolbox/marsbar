@@ -238,20 +238,7 @@ for a = 1:length(actions)
 			     spmD.xsDes,...
 			     xsDes);
     spmD.xX.xVi = xVi;
-    spmD.K = K;
-    
-   case 'fcontrasts'
-    
-    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
-    
-    %-Generate default trial-specific F-contrasts specified by session?
-    %-----------------------------------------------------------------------
-    bFcon = spm_input('Setup trial-specific F-contrasts?','+1','y/n',[1,0],1);
-
-    % finish GUI
-    spm('Pointer','Arrow')
-    
-    spmD = my_fcons(spmD, bFcon) ;
+    spmD.xX.K = K;
     
    otherwise
     error(['Unpredictable: ' actions{a}]);
@@ -259,4 +246,4 @@ for a = 1:length(actions)
 end
 
 % put stuff into object
-o = des_struct(D,spmD);
+D = des_struct(D,spmD);

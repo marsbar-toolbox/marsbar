@@ -272,20 +272,6 @@ catch
 end
 xCon            = spm_FcUtil('Set',Fcname,'F','iX0',iX0,xX.xKXs);
 
-%-Append contrasts for fMRI - specified by SPM.Sess(s).Fc(i)
-%-----------------------------------------------------------------------
-if isfield(SPM,'Sess')
-  for s = 1:length(SPM.Sess)
-    for i = 1:length(SPM.Sess(s).Fc)
-      iX0           = 1:nBeta;
-      iX            = SPM.Sess(s).col(SPM.Sess(s).Fc(i).i);
-      iX0(iX)       = [];
-      Fcname        = sprintf('Sess(%d):%s',s,SPM.Sess(s).Fc(i).name);
-%     xCon(end + 1) = spm_FcUtil('Set',Fcname,'F','iX0',iX0,xX.xKXs);
-    end
-  end
-end
-
 %-Compute scaled design matrix for display purposes
 %-----------------------------------------------------------------------
 xX.nKX        = spm_DesMtx('sca',xX.xKXs.X,xX.name);

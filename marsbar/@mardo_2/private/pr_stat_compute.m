@@ -57,7 +57,7 @@ for i = 1:length(Ic)
     
     con(i,:)   = xCon(ic).c'*betas;
     VcB        = xCon(ic).c'*SPM.xX.Bcov*xCon(ic).c; 
-    stat(i,:)  = cB./sqrt(Hp*VcB);
+    stat(i,:)  = con(i,:)./sqrt(Hp*VcB);
     Ps(i,:)    = 1 - spm_Tcdf(stat(i,:),df(2));
 
    case 'F'  %-Implement ESS 

@@ -15,6 +15,11 @@ if nargin < 3
 end
 if ischar(flags), flags = {flags}; end
 
+% check design is complete
+if is_fmri(marsD) & ~has_filter(marsD)
+  error('This FMRI design needs a filter before estimation');
+end
+
 % get SPM design structure
 SPM = des_struct(marsD);
 
@@ -24,19 +29,21 @@ if size(marsY.Y, 1) ~= size(SPM.xX.X, 1)
 end
 
 % process flags
-if strmatch('redo_covar', flags)
-  if isfield(SPM.xVi, 'V')
-    SPM.xVi = rmfield(SPM.xVi, 'V');
-    if verbose(marsD)
-      disp('Re-estimating covariance');
-    end
-  end
-end
-if strmatch('redo_whitening', flags)
-  if isfield(SPM.xX, 'W')
-    SPM.xX = rmfield(SPM.xX, 'W');
-    if verbose(marsD)
-      disp('Re-estimating whitening filter');
+for flag = flags
+  switch flag{1}
+    case 'redo_covar'
+     if isfield(SPM.xVi, 'V')
+       SPM.xVi = rmfield(SPM.xVi, 'V');
+       if verbose(marsD)
+	 disp('Re-estimating covariance');
+       end
+     end
+   case 'redo_whitening'
+    if isfield(SPM.xX, 'W')
+      SPM.xX = rmfield(SPM.xX, 'W');
+      if verbose(marsD)
+	disp('Re-estimating whitening filter');
+      end
     end
   end
 end

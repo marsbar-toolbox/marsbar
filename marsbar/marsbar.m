@@ -67,9 +67,6 @@ end
 %-----------------------------------------------------------------------
 Fmenu = marsbar('CreateMenuWin','off');
 
-% SPM buttons that need disabling
-marsbar('SPMdesconts','off');
-
 %-Reveal windows
 %-----------------------------------------------------------------------
 set([Fmenu],'Visible','on')
@@ -157,9 +154,6 @@ marsbar('off');
 if isempty(MARS)
   return
 end
-
-% reenable SPM controls
-marsbar('SPMdesconts','on');
 
 %-Close any existing 'MarsBaR' 'Tag'ged windows
 delete(spm_figure('FindWin','MarsBaR'))
@@ -295,7 +289,8 @@ uicontrol(Fmenu,'Style','PopUp',...
 % results menu
 funcs = {...
     'marsbar(''estimate'');',...
-    'marsbar(''merge_xcon'');',...
+    'marsbar(''merge_contrasts'');',...
+    'marsbar(''add_trial_f'');',...
     'marsbar(''set_defregion'');',...
     ['evalin(''base'', ',...
      '''[Y y beta SE cbeta] = marsbar(''''spm_graph'''');'');'],...
@@ -308,6 +303,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Results...'...
 		    '|Estimate results',...
 		    '|Import contrasts',...
+		    '|Add trial-specific F',...
 		    '|Set default region',...
 		    '|MarsBaR SPM graph',...
 		    '|Statistic table',...
@@ -377,39 +373,12 @@ marsD = mars_armoire('get', 'def_design');
 if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
+if is_fmri(marsD) & ~has_filter(marsD)
+  marsD = fill_design(marsD, 'filter');
+  mars_armoire('update', 'def_design', marsD);
+end
 marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
 mars_armoire('set', 'est_design', marsRes);
-
-%=======================================================================
-case 'spmdesconts'                  %-Enable/disable SPM design controls
-%=======================================================================
-% dH = marsbar('SPMdesconts', 'off'|'on')
-%-----------------------------------------------------------------------
-
-if nargin > 2
-  on_off = 'off';
-else
-  on_off = varargin{2};
-end
-
-Fmenu = spm_figure('FindWin','Menu');
-if isempty(Fmenu)
-  return
-end
-
-% Check if the required function is still on the path
-if isempty(which('mars_veropts')), return,end % a path problem
-
-% Find statistic buttons in this version of SPM
-DStrs = mars_veropts('stat_buttons');
-dH = [];
-for i = 1:length(DStrs)
-  tmp = findobj(Fmenu,'String', DStrs{i});
-  if ~isempty(tmp), dH = [dH tmp]; end
-end
-if nargin > 1
-  set(dH, 'Enable', varargin{2});
-end
 
 %=======================================================================
 case 'buildroi'                                  %-build and save roi
@@ -608,14 +577,20 @@ if isempty(roi_list), return, end
 if strcmp(etype, 'default')
   marsD = mars_armoire('get','def_design');
   if isempty(marsD), return, end;
-  marsD = add_images(marsD);
+  if ~has_images(marsD),
+    marsD = fill_design(marsD, 'images');
+    mars_armoire('update', 'def_design', marsD);
+  end
   VY = get_images(marsD);
 else  % full options extraction
   % question for design
   marsD = [];
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
     marsD = mars_armoire('get','def_design');
-    marsD = add_images(marsD);
+    if ~has_images(marsD),
+      marsD = fill_design(marsD, 'images');
+      mars_armoire('update', 'def_design', marsD);
+    end
   end
   VY = mars_image_scaling(marsD);
 end
@@ -736,9 +711,9 @@ if isempty(marsRes), return, end
 if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================
-case 'merge_xcon'                                  %-import contrasts
+case 'merge_contrasts'                                %-import contrasts
 %=======================================================================
-% marsbar('merge_xcon')
+% marsbar('merge_contrasts')
 %-----------------------------------------------------------------------
 D = mars_armoire('get', 'est_design');
 if isempty(D), return, end
@@ -748,12 +723,40 @@ filter_spec = {...
     '*x?on.mat','xCon.mat file'};
 [fn pn] = uigetfile(...
     filter_spec, ...
-    'Select design/contrast file...');
+    'Source design/contrast file...');
 if isequal(fn,0) | isequal(pn,0), return, end
 fname = fullfile(pn, fn);
-[D changef] = merge_contrasts(D, load(fname));
+D2 = mardo(load(fname));
+
+% has this got contrasts?
+if ~has_contrasts(D2)
+  error(['Cannot find contrasts in design/contrast file ' fname]);
+end
+  
+% now try to trap case of contrast only file
+if ~is_valid_design(D2)
+  D2 = get_contrasts(D2);
+end
+
+[D changef] = merge_contrasts(D, D2);
 if changef
-  mars_armoire('set', 'est_design', D);
+  mars_armoire('update', 'est_design', D);
+end
+
+%=======================================================================
+case 'add_trial_f'            %-add trial-specific F contrasts to design
+%=======================================================================
+% marsbar('add_trial_f')
+%-----------------------------------------------------------------------
+D = mars_armoire('get', 'est_design');
+if isempty(D), return, end
+if ~strcmp(modality(D), 'fmri')
+  disp('Can only add F contrasts for FMRI designs');
+  return
+end
+[D changef] = add_trial_f(D);
+if changef
+  mars_armoire('update', 'est_design', D);
 end
 
 %=======================================================================
@@ -854,8 +857,12 @@ case 'list_images'                     %-lists image files in SPM design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
-P = get_image_names(marsD);
-strvcat(P{:})
+if has_images(marsD)
+  P = get_image_names(marsD);
+  strvcat(P{:})
+else
+  disp('Design does not contain images');
+end
 
 %=======================================================================
 case 'ana_cd'                      %-changes path to files in SPM design
@@ -1103,10 +1110,3 @@ error('Unknown action string')
 end
 return
 
-% function to add images to default design if not present
-function o = add_images(o)
-if ~has_images(o)
-  o = fill_design(o, 'images');
-  mars_armoire('set', 'def_design', des_struct(o));
-end
-return

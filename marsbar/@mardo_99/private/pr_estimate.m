@@ -118,7 +118,10 @@ spmD.marsY = marsY;
 
 %-Default F-contrasts (in contrast structure) 
 %=======================================================================
-F_iX0 = spmD.F_iX0;
+F_iX0 = [];
+if isfield(spmD, 'F_iX0')
+  F_iX0 = spmD.F_iX0;
+end
 if isempty(F_iX0)
   F_iX0 = struct(	'iX0',		[],...
 			'name',		'all effects');

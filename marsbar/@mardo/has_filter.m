@@ -1,6 +1,10 @@
 function tf = has_filter(o)
 % returns 1 if object contains filter
+%
+% $Id$
+  
 tf = 0;
-if isfield(o.des_struct, 'xX')
-  tf = isfield(o.des_struct.xX, 'K');
+des = des_struct(o);
+if isfield(des, 'xX')
+  tf = isfield(des.xX, 'K');
 end

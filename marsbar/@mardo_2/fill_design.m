@@ -270,19 +270,6 @@ for a = 1:length(actions)
 			  SPM.xsDes,...
 			  xsDes);
   
-   case 'fcontrasts'
-    
-    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
-    
-    %-Generate default trial-specific F-contrasts specified by session?
-    %-----------------------------------------------------------------------
-    bFcon = spm_input('Setup trial-specific F-contrasts?','+1','y/n',[1,0],1);
-
-    % finish GUI
-    spm('Pointer','Arrow')
-    
-    SPM = my_fcons(SPM, bFcon) ;
-    
    otherwise
     error(['Unpredictable: ' actions{a}]);
   end

@@ -15,6 +15,11 @@ if nargin < 3
 end
 if ischar(flags), flags = {flags}; end
 
+% check design is complete
+if is_fmri(marsD) & ~has_filter(marsD)
+  error('This FMRI design needs a filter before estimation');
+end
+
 % get SPM design structure
 SPM = des_struct(marsD);
   

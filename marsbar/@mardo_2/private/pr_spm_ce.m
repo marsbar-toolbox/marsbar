@@ -1,4 +1,4 @@
-function [C] = spm_Ce(v,a)
+function [C] = pr_spm_ce(v,a)
 % return error covariance constraints for serially correlated data
 % FORMAT [C] = spm_Ce(v,a)
 % v  - (1 x l) v(i) = number of obervations for ith block
@@ -40,8 +40,8 @@ if l > 1
 else
 	% dCda
 	%==================================================================
-	C{1}  = spm_Q(a,v);
-	dCda  = spm_diff('spm_Q',a,v,1);
+	C{1}  = pr_spm_q(a,v);
+	dCda  = pr_spm_diff('pr_spm_q',a,v,1);
 	for i = 1:length(a)
 		C{i + 1} = reshape(dCda(:,i),v,v);
 	end

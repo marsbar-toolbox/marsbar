@@ -20,9 +20,6 @@ switch lower(arg)
   varargout = {'img'}; 
  case 'des_conf'     % filter for configured, not estimated SPM designs
   varargout = {'SPMcfg.mat'};
- case 'stat_buttons'
-  varargout = {{'PET/SPECT models', 'fMRI models','Basic models'...
-	 'Explore design', 'Estimate', 'Results'}};
  case 'flip_option'
   varargout = {0};
  case 'design_filter_spec' 
