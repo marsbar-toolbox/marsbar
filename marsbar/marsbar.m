@@ -95,21 +95,31 @@ mars_veropts('defaults');
 
 % set up the ARMOIRE stuff
 % see mars_armoire help for details
-design_filter_spec = mars_veropts('design_filter_spec');
+filter_specs  = {mars_veropts('design_filter_spec'), ...
+		 {'*_mdata.mat','MarsBaR data file (*_mdes.mat)'},...
+		 {'*_mres.mat', 'MarsBaR results (*_mres.mat)'}};
+
+% matlab 5.3 only allows string filter specs
+mlv = version; mlv = str2num(mlv(1:3));
+if mlv < 6
+  for i = 1:length(filter_specs)
+    filter_specs{i} = filter_specs{i}{1};
+  end
+end
+
 mars_armoire('add_if_absent','def_design', ...
 	     struct('default_file_name', 'untitled_mdes.mat',...	  
-		    'filter_spec', {design_filter_spec},...
+		    'filter_spec', {filter_specs{1}},...
 		    'title', 'default design',...
 		    'set_action', 'mars_arm_call(''set_design'',I);'));
 mars_armoire('add_if_absent','roi_data',...
 	     struct('default_file_name', 'untitled_mdata.mat',...
-		    'filter_spec',...
-		    {{'*_mdata.mat','MarsBaR data file (*_mdes.mat)'}},...
+		    'filter_spec', {filter_specs{2}},...
 		    'title', 'ROI data',...
 		    'set_action', 'mars_arm_call(''set_data'',I);'));
 mars_armoire('add_if_absent','est_design',...
 	     struct('default_file_name', 'untitled_mres.mat',...
-		    'filter_spec',{{'*_mres.mat'}},...
+		    'filter_spec', {filter_specs{3}},...
 		    'title', 'MarsBaR estimated design',...
 		    'set_action', 'mars_arm_call(''set_results'',data);'));
 
@@ -250,7 +260,8 @@ funcs = {...
     'marsbar(''check_images'')',...
     'marsbar(''ana_cd'')',...
     'marsbar(''ana_desmooth'')',...
-    'mars_armoire(''set_ui'', ''def_design'');',...
+    ['mars_armoire(''set_ui'', ''def_design'');' ...
+     'marsbar(''design_report'')'],...
     'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
 
 uicontrol(Fmenu,'Style','PopUp',...
@@ -699,6 +710,7 @@ switch lower(des_type)
   SPM = mars_fmri_design;
 end
 mars_armoire('set','def_design', SPM);
+marsbar('design_report');
 
 %=======================================================================
 case 'list_images'                     %-lists image files in SPM design
@@ -808,7 +820,11 @@ case 'design_report'                         %-does explore design thing
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
 spm('FnUIsetup','Explore design', 0);
-ui_report(marsD);
+
+fprintf('%-40s: ','Design reporting');
+ui_report(marsD, 'DesMtx');
+ui_report(marsD, 'DesRepUI');
+fprintf('%30s\n','...done');
 
 %=======================================================================
 case 'extract_data'                       % gets data maybe using design
@@ -1136,6 +1152,7 @@ case 'set_results'          %-sets estimated design into global stucture
 varargout = {0};
 marsRes = mars_armoire('set_ui', 'est_design');
 if isempty(marsRes), return, end
+ui_report(marsRes);
 MARS.WORKSPACE.default_contrast = [];
 varargout = {1};
 return
@@ -1433,38 +1450,6 @@ my_task = spm_input(pstr, '+1', 'm',...
 	      [1:of_end],of_end);
 if my_task == of_end, return, end
 marsbar(optfields{my_task}{:});
-
-%=======================================================================
-case 'get_cvs_version'             %- get cvs version string from mfile
-%=======================================================================
-% str = marsbar('get_cvs_version',filename)
-%-----------------------------------------------------------------------
-
-if nargin < 2
-  error('Need filename to parse');
-end
-filename = [varargin{2} '.m'];
-
-% returned value is string
-varargout = {''};
-
-fid=fopen(filename,'rt');
-if fid == -1, error(['Cannot open file ' filename]);end 
-aLine = '';
-while(isempty(aLine))
-  aLine = fgetl(fid);
-end
-if  ~strcmp(aLine(1:8),'function'), return, end
-aLine = fgetl(fid);
-while ~isempty(findstr(aLine,'%')) & feof(fid)==0; 
-  [cvsno count] = sscanf(aLine, '%%%*[ ]$Id:%*[ _a-zA-Z.,] %f');
-  if count
-    varargout = {num2str(cvsno)};
-    break
-  end
-  aLine = fgetl(fid);
-end % while
-fclose(fid);
 
 %=======================================================================
 otherwise                                        %-Unknown action string
