@@ -49,7 +49,6 @@ if nargout > 1
   [Ainvt posdef] = chol(toeplitz([1 rho]));
   p1 = size(Ainvt,1);
   A  = inv(Ainvt');
-%  Vmhalf = toeplitz([A(p1,p1:-1:1) zeros(1,n-p1)], zeros(1,n)); 
   B  = [A(p1,p1:-1:1) zeros(1,n-p1)];
   Vmhalf = toeplitz(B, [B(1) zeros(1,n-1)]); 
   Vmhalf(1:p1,1:p1) = A;
