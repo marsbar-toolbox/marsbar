@@ -145,7 +145,7 @@ if ~isfield(xVi,'V')
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
 	    'is to run estimation separatly for each ROI'};
-    disp;
+    fprintf('\n\n');
     warning(sprintf('%s\n', wstr{:}));
   end
   q  = diag(sqrt(trRV./ResSS'),0);
