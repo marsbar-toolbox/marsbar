@@ -39,7 +39,7 @@ function varargout = mars_struct(action, varargin)
 %
 % FORMAT [c,d] = mars_struct('ffillsplit', a, b)
 % force fill, followed by split
-% All fields from a, that are also present in b, and not empty, 
+% All fields from a, that are also present in b, and not empty in b, 
 % are replaced with the values in b; the result is returned as c  
 % Any fields present in a, but not present in b, are returned in d
 %
@@ -189,22 +189,24 @@ switch lower(action)
   varargout = {c};
   
  case 'ffillsplit'
-  if isempty(a), varargout = {b,a}; return,  end
-  if isempty(b), varargout = {a,b}; return,  end
-   c = a; d = b;
-   
-   cf = fieldnames(c);
-   for i=1:length(cf)
-     if isfield(d, cf{i})
-       dfc = getfield(d,cf{i});
-       if ~isempty(dfc) 
-	 c = setfield(c, cf{i}, dfc);
-       end
-       d = rmfield(d, cf{i});
-     end
-   end
-   varargout = {c,d};
-   
+  if isempty(a) | isempty(b)
+    % Nothing in common, return unchanged
+    varargout = {a, b}; return
+  end
+  c = a; d = b;
+  
+  cf = fieldnames(c);
+  for i=1:length(cf)
+    if isfield(d, cf{i})
+      dfc = getfield(d,cf{i});
+      if ~isempty(dfc) 
+	c = setfield(c, cf{i}, dfc);
+      end
+      d = rmfield(d, cf{i});
+    end
+  end
+  varargout = {c,d};
+  
  case 'ffillmerge'
   [a b] = mars_struct('ffillsplit', a, b);
   varargout = {mars_struct('merge', a, b)};
