@@ -3,10 +3,22 @@ function SPM = pr_estimate(SPM, marsY)
 % Based on spm_spm from spm2:
 % @(#)spm_spm.m	2.66 Andrew Holmes, Jean-Baptiste Poline, Karl Friston 03/03/27
 %
+% There are some changes in this version
+% 1) The specified Vi field, can contain either
+% a cell array, in which case it is standard SPM covariance components,
+% or a struct array, in which case it can specify other methods of
+% estimating the covariance, in particular, real AR(n) estimation
+% 
+% 2) The design will specify if the covariance should be calculated from
+% the summarized time course(s), or from the component voxels, then
+% averaged. 
+% 
+% 3) Normally, if the W matrix is present, the V matrix should also be
+% present.  Because it is boring to calculate the V matrix and then WVW,
+% if we know WVW is I, V can be present, but empty, in which case WVW is
+% assumed to be I.  It just saves time.
+% 
 % $Id$
-
-% hard coded (for now) flag to use voxel data for whitening filter
-use_all_data_f = 1;
 
 %-Say hello
 %-----------------------------------------------------------------------
@@ -39,17 +51,44 @@ catch
 			'V',	 speye(nScan,nScan));
 end
 
+% Work out what we are going to do
+have_W     = isfield(xX, 'W');
+have_V     = isfield(xVi, 'V');
+
+% Work out type of covariance modelling
+if ~have_V
+  if ~isfield(xVi, 'Vi')
+    error('No covariance specified, and no priors to calculate it');
+  end
+  Vi = xVi.Vi;
+  cov_SPM = 0;
+  if iscell(Vi)
+    cov_type = 'SPM'
+    cov_SPM = strcmp(cov_type, 'SPM');
+  elseif ~isstruct(Vi)
+    error('Vi field should be cell or struct type')
+  elseif ~isfield(Vi, 'type')
+    error('Vi should have field specifying type');
+  else
+    cov_type = Vi.type;
+  end
+  
+  % Covariance calculated on summary or voxel time courses
+  cov_vox = 1;
+  if isfield(xVi, 'cov_calc')
+    cov_vox = strcmp(Vi.cov_calc, 'vox');
+  end
+else cov_vox = 0; end
+    
 
 %-Get non-sphericity V
 %=======================================================================
-try
+if have_V
   %-If xVi.V is specified proceed directly to parameter estimation
   %---------------------------------------------------------------
   V     = xVi.V;
   str   = 'parameter estimation';
-  
-  
-catch
+else
   % otherwise invoke ReML selecting voxels under i.i.d assumptions
   %---------------------------------------------------------------
   V     = speye(nScan,nScan);
@@ -58,13 +97,17 @@ end
 
 %-Get whitening/Weighting matrix: If xX.W exists we will save WLS estimates
 %-----------------------------------------------------------------------
-try
+if have_W
   %-If W is specified, use it
   %-------------------------------------------------------
   W     = xX.W;
-catch
-  if isfield(xVi,'V')
-    
+  if isempty(V)  % V is only inv(W*W')
+    WVW = eye(nScan);
+  else
+    WVW = W*V*W';
+  end
+else
+  if have_V
     % otherwise make W a whitening filter W*W' = inv(V)
     %-------------------------------------------------------
     [u s] = pr_spm_svd(xVi.V);
@@ -72,6 +115,7 @@ catch
     W     = u*s*u';
     W     = W.*(abs(W) > 1e-6);
     xX.W  = sparse(W);
+    WVW   = eye(nScan);
   else
     % unless xVi.V has not been estimated - requiring 2 passes
     %-------------------------------------------------------
@@ -105,8 +149,7 @@ fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 
 % Select whether to work with all voxel data in ROIs, or summary data
 % Using all data only makes sense for intial estimation of whitening
-if ~isfield(xX, 'W') & ...
-      use_all_data_f
+if ~have_W & cov_vox
   Y = region_data(marsY);
   Y = [Y{:}];
 else
@@ -138,7 +181,7 @@ clear KWY				%-Clear to save memory
 
 %-If ReML hyperparameters are needed for xVi.V
 %-------------------------------------------------------
-if ~isfield(xVi,'V')
+if ~have_V
   if n_roi > 1
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
@@ -146,21 +189,23 @@ if ~isfield(xVi,'V')
     fprintf('\n\n');
     warning(sprintf('%s\n', wstr{:}));
   end
-  q  = diag(sqrt(trRV./ResSS'),0);
-  Y  = Y * q;
-  Cy = Y*Y';
-end % (xVi,'V')
+  if cov_SPM
+    q  = diag(sqrt(trRV./ResSS'),0); % spatial whitening
+    Y  = Y * q;
+    Cy = Y*Y';
+  end
+end % have_V
 		
 %-if we are saving the WLS parameters
 %-------------------------------------------------------
-if isfield(xX,'W')
+if have_W
 
   %-sample covariance and mean of Y (all voxels)
   %-----------------------------------------------
   CY         = Y*Y';
   EY         = sum(Y,2);
     
-end % (xX,'W')
+end % have_W
 clear Y				%-Clear to save memory
 
 fprintf('\n')                                                        %-#
@@ -179,55 +224,84 @@ CY          = CY - EY*EY';
 
 %-If not defined, compute non-sphericity V using ReML Hyperparameters
 %=======================================================================
-if ~isfield(xVi,'V')
+if ~have_V
 
-  %-REML estimate of residual correlations through hyperparameters (h)
+  %-Estimate of residual correlations through hyperparameters
   %---------------------------------------------------------------
   str    = 'Temporal non-sphericity (over voxels)';
-  fprintf('%-40s: %30s\n',str,'...REML estimation') %-#
+  fprintf('%-40s: %30s\n',str,'...estimation') %-#
   Cy            = Cy/S;
   
-  % ReML for separable designs and covariance components
+  % Estimate for separable designs and covariance components
   %---------------------------------------------------------------
   if isstruct(xX.K)
-    m     = length(xVi.Vi);
-    h     = zeros(m,1);
+    
+    switch cov_type
+     case 'SPM'
+      m     = length(Vi);
+      h     = zeros(m,1);
+     case 'fmristat'
+      h     = zeros(length(xX.K), Vi.order);
+     otherwise 
+      error(['Did not recognize covariance type: ' cov_type]);
+    end
+    
     V     = sparse(nScan,nScan); 
     for i = 1:length(xX.K)
       
       % extract blocks from bases
       %-----------------------------------------------
       q     = xX.K(i).row;
-      p     = [];
-      Qp    = {};
-      for j = 1:m
-	if nnz(xVi.Vi{j}(q,q))
-	  Qp{end + 1} = xVi.Vi{j}(q,q);
-	  p           = [p j];
-	end
-      end
       
-      % design space for ReML (with confounds in filter)	
+      % design space for estimation (with confounds in filter)	
       %-----------------------------------------------
       Xp         = xX.X(q,:);
       try
 	Xp = [Xp xX.K(i).X0];
       end
       
-      % ReML
-      %-----------------------------------------------
-      fprintf('%-30s- %i\n','  ReML Block',i);
-      [Vp,hp]  = pr_spm_reml(Cy(q,q),Xp,Qp);
-      V(q,q)   = V(q,q) + Vp;
-      h(p)     = hp;
+      switch cov_type
+       case 'SPM'
+	% REML: extract blocks from bases
+	%-----------------------------------------------
+	p     = [];
+	Qp    = {};
+	for j = 1:m
+	  if nnz(xVi.Vi{j}(q,q))
+	    Qp{end + 1} = xVi.Vi{j}(q,q);
+	    p           = [p j];
+	  end
+	end
+
+	% ReML itself
+	%-----------------------------------------------
+	fprintf('%-30s- %i\n','  ReML Block',i);
+	[Vp,hp]  = pr_spm_reml(Cy(q,q),Xp,Qp);
+	V(q,q)   = V(q,q) + Vp;
+	h(p)     = hp;
+       
+       case 'fmristat'
+	% AR estimation
+	[h(i,:) W(q,q)]  = pr_fmristat_ar(res(q,:),Xp,Vi.order);
+
+      end
     end
   else
     [V,h] = pr_spm_reml(Cy,xX.X,xVi.Vi);
   end
   
-  % normalize non-sphericity and save hyperparameters
-  %---------------------------------------------------------------
-  V           = V*nScan/trace(V);
+  switch cov_type
+   case 'SPM'
+    % normalize non-sphericity and save hyperparameters
+    %---------------------------------------------------------------
+    V           = V*nScan/trace(V);
+   case 'fmristat'
+    % Set covariance matrix to empty, we have already calculated W
+    %---------------------------------------------------------------
+    V           = [];
+    SPM.xX.W    = W;
+  end
+  
   xVi.h       = h;
   xVi.V       = V;			% Save non-sphericity xVi.V
   xVi.Cy      = Cy;			%-spatially whitened <Y*Y'>
@@ -235,7 +309,7 @@ if ~isfield(xVi,'V')
   
   % If xX.W is not specified use W*W' = inv(V) to give ML estimators
   %---------------------------------------------------------------
-  if ~isfield(xX,'W')
+  if ~have_W
     % clear everything except SPM, marsY;
     vnames = who;
     vnames = vnames(~ismember(vnames, {'SPM','marsY'}));
@@ -248,7 +322,7 @@ end
 
 %-Use non-sphericity xVi.V to compute [effective] degrees of freedom
 %=======================================================================
-xX.V            = pr_spm_filter(xX.K,pr_spm_filter(xX.K,W*V*W')');	% KWVW'K'
+xX.V            = pr_spm_filter(xX.K,pr_spm_filter(xX.K,WVW)');	% KWVW'K'
 [trRV trRVRV]   = spm_SpUtil('trRV',xX.xKXs,xX.V);		% trRV (for X)
 xX.trRV         = trRV;						% <R'*y'*y*R>
 xX.trRVRV       = trRVRV;					%-Satterthwaite
