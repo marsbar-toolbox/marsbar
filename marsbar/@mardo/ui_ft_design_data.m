@@ -34,7 +34,7 @@ end
 if isempty(e_n), e_n = 'Event'; end
 
 % Get the regressors and data
-X         = x(D);
+X         = design_matrix(D);
 R         = X(:, event_cols(D,e_s));
 Y         = summary_data(mY);
 r         = block_rows(D);
