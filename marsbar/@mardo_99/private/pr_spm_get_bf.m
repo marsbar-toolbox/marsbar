@@ -140,7 +140,7 @@ switch Rov
 
 		% hrf and derivatives
 		%-------------------------------------------------------
-		[bf p] = spm_hrf(dt);
+		[bf p] = pr_spm_hrf(dt);
 
 		% add time derivative
 		%-------------------------------------------------------
@@ -148,7 +148,7 @@ switch Rov
 
 			dp    = 1;
 			p(6)  = p(6) + dp;
-			D     = (bf(:,1) - spm_hrf(dt,p))/dp;
+			D     = (bf(:,1) - pr_spm_hrf(dt,p))/dp;
 			bf    = [bf D(:)];
 			p(6)  = p(6) - dp;
 
@@ -158,7 +158,7 @@ switch Rov
 
 				dp    = 0.01;
 				p(3)  = p(3) + dp;
-				D     = (bf(:,1) - spm_hrf(dt,p))/dp;
+				D     = (bf(:,1) - pr_spm_hrf(dt,p))/dp;
 				bf    = [bf D(:)];
 			end
 		end
@@ -247,7 +247,7 @@ switch Rov
 		% convolve with hemodynamic response function - hrf
 		%-------------------------------------------------------
 		if HRF
-			hrf   = spm_hrf(dt);
+			hrf   = pr_spm_hrf(dt);
 			[p q] = size(bf);
 			D     = [];
 			for j = 1:q

@@ -1,4 +1,4 @@
-function [xBF] = spm_get_bf(xBF)
+function [xBF] = pr_spm_get_bf(xBF)
 % fills in basis function structure
 % FORMAT [xBF] = spm_get_bf(xBF);
 %
@@ -119,7 +119,7 @@ otherwise
 
 	% canonical hemodynaic response function
 	%---------------------------------------------------------------
-	[bf p]         = spm_hrf(dt);
+	[bf p]         = pr_spm_hrf(dt);
 
 	% add time derivative
 	%---------------------------------------------------------------
@@ -127,7 +127,7 @@ otherwise
 
 		dp     = 1;
 		p(6)   = p(6) + dp;
-		D      = (bf(:,1) - spm_hrf(dt,p))/dp;
+		D      = (bf(:,1) - pr_spm_hrf(dt,p))/dp;
 		bf     = [bf D(:)];
 		p(6)   = p(6) - dp;
 
@@ -137,7 +137,7 @@ otherwise
 
 			dp    = 0.01;
 			p(3)  = p(3) + dp;
-			D     = (bf(:,1) - spm_hrf(dt,p))/dp;
+			D     = (bf(:,1) - pr_spm_hrf(dt,p))/dp;
 			bf    = [bf D(:)];
 		end
 	end
