@@ -41,8 +41,7 @@ if ischar(data_imgs)
   data_imgs = spm_vol(data_imgs);
 elseif ~isstruct(data_imgs)
   error('Input data files must be strings or structs')
-end
-if any(flags == 'm')
+elseif any(flags == 'm')
   for i = 1:length(data_imgs)
     data_imgs(i) = spm_vol(data_imgs(i).fname);
   end
