@@ -1,12 +1,14 @@
-function [res,errf,msg] = mars_arm_call(action, varargin)
-% services callbacks from mars_armoire set functions
-% FORMAT [res,errf,msg] = mars_arm_call(action, varargin)
-% See documentation for mars_armoire for more detail
+function [o,errf,msg] = mars_arm_call(action, o, item)
+% services callbacks from marmoire object set functions
+% FORMAT [o,errf,msg] = mars_arm_call(action, o, item)
+% See documentation for marmoire object for more detail
 %
 % action     - action string
+% o          - candidate object for checking etc
+% item       - name of item that has just been set
 % 
 % Returns
-% res        - result (data or whole field for mars_armoire
+% o          - possibly modified object
 % errf       - flag, set if error in processing
 % msg        - message to examplain error
 %
@@ -15,76 +17,74 @@ function [res,errf,msg] = mars_arm_call(action, varargin)
 if nargin < 1
   error('Need action');
 end
-errf = 0; msg = ''; res =[];
+if nargin < 2
+  error('Need object');
+end
+if nargin < 3
+  error('Need item name');
+end
+errf = 0; msg = ''; 
+
+item_struct = get_item_struct(o, item);
 
 switch lower(action)
  case 'set_design'
   % callback for setting design
-  % FORMAT [data errf msg] = mars_arm_call('set_design', I);
-  
+
   % Check for save of current design
-  btn = mars_armoire('save_ui', 'def_design', ...
-		     struct('ync', 1, ...
-			    'prompt_prefix','previous '));
+  [btn o] = save_item_data_ui(o, 'def_design', ...
+			  struct('ync', 1, ...
+				 'prompt_prefix','previous '));
   if btn == -1
     errf = 1; 
     msg = 'Cancelled save of previous design'; 
     return
   end
   
-  % Clear ROI data if design is no longer compatible with data
-
-  I = varargin{1};
-
   % Make design into object, do conversions
-  [I.data errf msg] = sf_check_design(I.data);
-  if errf
-    res = [];
-    return
-  end
+  [item_struct.data errf msg] = sf_check_design(item_struct.data);
+  if errf, o = []; return, end
+  o = set_item_struct(o, item, item_struct);
   
   % Unload roi data if design has been set, and data exists
   % and data is not the same size as design
-  if ~mars_armoire('isempty', 'roi_data')
-    Y = mars_armoire('get', 'roi_data');
-    if n_time_points(Y) ~= n_time_points(I.data)
+  if ~isempty_item_data(o, 'roi_data')
+    [Y o] = get_item_data(o, 'roi_data');
+    if n_time_points(Y) ~= n_time_points(item_struct.data)
       fprintf('Design and data have different numbers of rows\n');
-      btn = mars_armoire('save_ui', 'roi_data', struct('ync', 1));
+      [btn o] = save_item_data_ui(o, 'roi_data', struct('ync', 1));
       if btn == -1, errf = 1; msg = 'ROI save cancelled'; return, end
-      mars_armoire('clear', 'roi_data');
+      o = clear_item_data(o, 'roi_data');
       fprintf('Reset of design, cleared ROI data...\n');
     end
   end
-  res = I;
   
  case 'set_data'
   % callback for setting data
-  % FORMAT [data errf msg] = mars_arm_call('set_data', I);
 
   % Check for save of current data
-  btn = mars_armoire('save_ui', 'roi_data', ...
-  		     struct('ync', 1, ...
-			    'prompt_prefix','previous '));
+  [btn o] = save_item_data_ui(o, 'roi_data', ...
+			      struct('ync', 1, ...
+				     'prompt_prefix','previous '));
   if btn == -1
-    errf = 1; res = [];
+    errf = 1; o = [];
     msg = 'Cancelled save of current data'; 
     return
   end
   
-  I = varargin{1};
-
   % Make data into object, do conversions
-  [I.data errf msg] = sf_check_data(I.data);
-  if errf, res = []; return, end
+  [item_struct.data errf msg] = sf_check_data(item_struct.data);
+  if errf, o = []; return, end
+  o = set_item_struct(o, item, item_struct);  
 
   % Check data matches default design; clear if not
-  if ~mars_armoire('isempty', 'def_design')
-    D = mars_armoire('get', 'def_design');
-    if n_time_points(D) ~= n_time_points(I.data)
+  if ~isempty_item_data(o, 'def_design')
+    [D o] = get_item_data(o, 'def_design');
+    if n_time_points(D) ~= n_time_points(item_struct.data)
       fprintf('Design and data have different numbers of rows\n');
-      btn = mars_armoire('save_ui', 'def_design', struct('ync', 1));
+      [btn o] = save_item_data_ui(o, 'def_design', struct('ync', 1));
       if btn == -1, errf = 1; msg = 'Design save cancelled'; return, end
-      mars_armoire('clear', 'def_design');
+      o = clear_item_data(o, 'def_design');
       fprintf('Reset of ROI data, cleared default design...\n');
     end
   end
@@ -95,30 +95,29 @@ switch lower(action)
     MARS.WORKSPACE.default_region = [];
     fprintf('Reset of data, cleared default region...\n');
   end
-  res = I;
   
  case 'set_results'
   % callback for setting results 
-  % FORMAT [data errf msg] = mars_arm_call('set_results', data);
+
   % Need to set default data from results, and load contrast file
   % if not present (this is so for old MarsBaR results)
 
-  data = varargin{1};
+  data = item_struct.data;
   if isempty(data), return, end
   
   % Check for save of current design
-  btn = mars_armoire('save_ui', 'est_design', ...
-		     struct('ync', 1, ...
-			    'prompt_prefix','previous '));
+  [btn o] = save_item_data_ui(o, 'est_design', ...
+			      struct('ync', 1, ...
+				     'prompt_prefix','previous '));
   if btn == -1
-    errf = 1; res = [];
+    errf = 1;
     msg = 'Cancelled save of current design'; 
     return
   end
 
   % Make design into object, do conversions
   [data errf msg] = sf_check_design(data);
-  if errf, res = []; return, end
+  if errf, return, end
   if ~is_mars_estimated(data)
     error('Design has not been estimated')
   end
@@ -130,18 +129,22 @@ switch lower(action)
     data = set_contrasts(data, tmp);
   end
 
-  % Save and replace data if necessary
-  if ~mars_armoire('isempty','roi_data')
+  % Put data into object
+  item_struct.data = data;
+  o = set_item_struct(o, item, item_struct);
+  
+  % Save and replace ROI data if necessary
+  if ~isempty_item_data(o, 'roi_data')
     Y  = get_data(data);
-    if Y ~= mars_armoire('get', 'roi_data'); 
-      btn = mars_armoire('save_ui', 'roi_data', struct('ync', 1));
+    if Y ~= get_item_data(o, 'roi_data') 
+      [btn o]  = save_item_data_ui(o, 'roi_data', struct('ync', 1));
       if btn == -1
-	errf = 1; res = [];
+	errf = 1;
 	msg = 'Cancelled save ROI data'; 
 	return
       end
-      mars_armoire('set', 'roi_data', Y);
-      mars_armoire('has_changed', 'roi_data', 0);
+      o = set_item_data(o, 'roi_data', Y);
+      o = set_item_param(o, 'roi_data', 'has_changed', 0);
       fprintf('Set ROI data from estimated design...\n');
     end
   end
@@ -153,7 +156,6 @@ switch lower(action)
     fprintf('Reset of estimated design, cleared default contrast...\n');
   end
 
-  res = data;
  otherwise
   error(['Peverse request for ' action]);
 end
