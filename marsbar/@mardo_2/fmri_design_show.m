@@ -4,10 +4,10 @@ function fmri_design_show(D,s,i)
 %
 % Copied with minor edits from:
 % @(#)spm_fMRI_design_show.m	2.22 Karl Friston 03/02/21
-
+%
 % $Id$
 
-SPM = des_struct(D);  
+SPM = des_struct(D);
 Sess  = SPM.Sess;
 
 % Do not proceed unless there are trials specified
@@ -35,7 +35,7 @@ if nargin < 3
 	hC     = uimenu(Finter,'Label','Explore fMRI design',...
 		'Separator','on',...
 		'Tag','DesRepUI',...
-		'UserData',SPM,...
+		'UserData',D,...
 		'HandleVisibility','on');
 	for j = 1:length(Sess)
 		h     = uimenu(hC,'Label',sprintf('Session %.0f ',j),...

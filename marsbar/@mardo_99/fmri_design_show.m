@@ -1,16 +1,19 @@
-function [xX,Sess] = fmri_design_show(D,s,i)
-% method for interactive review of SPM99 fMRI design matrix
-% FORMAT [xX,Sess] = spm_fMRI_design_show(D,s,i)
-% 
-% Copied with tiny edits from:
-% @(#)spm_fMRI_design_show.m	2.17	2.16 Karl Friston 99/09/20
+function fmri_design_show(D,s,i)
+% Interactive review of fMRI design matrix
+% FORMAT fmri_design_show(D,s,i)
 %
+% Copied with minor edits from:
+% @(#)spm_fMRI_design_show.m	2.17	2.16 Karl Friston 99/09/20
+% see that file for comments
+% 
 % $Id$
-  
-% simplify access to design
-SPM   = des_struct(D);
-xX    = SPM.xX;
-Sess  = SPM.Sess;
+
+global BCH; %- batch mode here is for pure completeness, can be 
+            %- removed. In that case, modify spm_bch.man ([MODEL]).
+
+SPM = des_struct(D);
+xX   = SPM.xX;
+Sess = SPM.Sess;
 
 % Do not proceed unless there are trials specified
 %-----------------------------------------------------------------------
@@ -42,7 +45,7 @@ if nargin < 3
 	hC     = uimenu(Finter,'Label','Explore fMRI design',...
 		'Separator','on',...
 		'Tag','DesRepUI',...
-		'UserData',struct('xX',xX,'Sess',{Sess}),...
+		'UserData',D,...
 		'HandleVisibility','on');
 	for j = 1:length(Sess)
 		h     = uimenu(hC,'Label',sprintf('Session %.0f ',j),...
