@@ -28,7 +28,7 @@ end
 if ~isempty(flags)
   if ischar(flags), flags = {flags}; end
   if iscell(flags)
-    flags = cell2struct(repmat([], size(flags)), flags, 1);
+    flags = cell2struct(repmat({''}, size(flags)), flags, 1);
   end
 end
 if ~is_fmri(D)
