@@ -75,7 +75,7 @@ XYZ = mars_utils('e2xyz', tmp, V.dim(1:3));
 
 % make into clusters, find max cluster
 cluster_nos = spm_clusters(XYZ);
-[mx max_index] = max(img(:));
+[mx max_index] = max(img);
 max_cluster = cluster_nos(max_index);
 cluster_XYZ = XYZ(:, cluster_nos == max_cluster);
 
