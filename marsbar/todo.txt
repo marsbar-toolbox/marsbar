@@ -27,12 +27,8 @@ check images function.
 add pairs of get/set functions for mardo 
 
 Remove mars_mm_model, I guess
-Move pre_release, make_contents into 'release' directory
-Script to fish out version, do CVS export, and pack
+Script to fish out version, do CVS export, and pack in release directory
 Test rig with various models for estimation 
-grep out is_there, remove is_there function
-(rgrep -R "*.m' is_there .)
-move mars_get_region into marsbar, remove (only used in marsbar.m)
 add 'mm' as synonym for 'real' in marois, and marsy's
 add add_contrast function to mardo methods
 (should check if contrast is already present, return indices into xCon
@@ -57,8 +53,6 @@ iFc2 = spm_FcUtil('In', contrast, sX, xCon);
      end
    end
 
-remove all traces of spm batch mode (sorry JB). 
-edit make_contents.m
 
 marsy
 add functions as listed

@@ -11,7 +11,7 @@ if nargin < 3
 end
 coords = voxpts(o, sp);
 switch pt_type
- case 'real'
+ case {'real','mm'}
   coords = realpts(o, sp);
  case 'vox'
   coords = voxpts(o, sp);

@@ -11,7 +11,7 @@ if nargin < 3
 end
 pt = centre(o);
 switch pt_type
- case 'real'
+ case {'real','mm'}
  case 'vox'
   if isempty(sp)
     error('Need space to define voxel centre of mass');

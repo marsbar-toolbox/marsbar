@@ -4,10 +4,9 @@ function [o, others] = maroi_pointlist(params, type)
 %  params  - one of
 %            structure containing fields XYZ, mat
 %
-%  type    - one of 'vox', 'real' ['real']
-%            specifies if XYZ matrix is in real or voxel space
-%
-% V 0.2 - relaxed tolerance of rounding errors in integer voxel values
+%  type    - one of 'vox', 'real' or 'mm' ['real']
+%            ('mm' is the same as 'real')
+%            specifies if XYZ matrix is in real (mm) or voxel space
 %
 % $Id$
   
@@ -48,7 +47,7 @@ if size(pparams.XYZ, 1) == 1
   pparams.XYZ = pparams.XYZ';
 end
 
-if strcmp(type, 'real') 
+if strcmp(type, 'real') | strcmp(type, 'mm') 
   % point list is in real space -> convert
   pparams.XYZ = inv(pparams.mat) * ...
       [pparams.XYZ; ones(1, size(pparams.XYZ,2))];
