@@ -138,9 +138,35 @@ case 'off'                             %-Unload marsbar
 % save outstanding information
 mars_armoire('save_ui', 'all', 'y');
 
+% leave if no signs of marsbar
+if isempty(MARS)
+  return
+end
+
 % remove marsbar added directories
 rmpath(MARS.ADDPATHS{:});
 fprintf('MarsBaR analysis functions removed from path\n');
+
+%=======================================================================
+case 'quit'                                      %-Quit MarsBaR window
+%=======================================================================
+% marsbar('Quit')
+%-----------------------------------------------------------------------
+
+% do path stuff, save any pending changes
+marsbar('off');
+
+% leave if no signs of MARSBAR
+if isempty(MARS)
+  return
+end
+
+% reenable SPM controls
+marsbar('SPMdesconts','on');
+
+%-Close any existing 'MarsBaR' 'Tag'ged windows
+delete(spm_figure('FindWin','MarsBaR'))
+fprintf('Au revoir...\n\n')
 
 %=======================================================================
 case 'cfgfile'                             %-file with marsbar cfg
@@ -350,22 +376,6 @@ marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
 marsRes = mars_stat(marsD, marsY);
 mars_armoire('set', 'est_design', marsRes);
-
-%=======================================================================
-case 'quit'                                      %-Quit MarsBaR window
-%=======================================================================
-% marsbar('Quit')
-%-----------------------------------------------------------------------
-
-% reenable SPM controls
-marsbar('SPMdesconts','on');
-
-% do path stuff, save any pending changes
-marsbar('off');
-
-%-Close any existing 'MarsBaR' 'Tag'ged windows
-delete(spm_figure('FindWin','MarsBaR'))
-fprintf('Au revoir...\n\n')
 
 %=======================================================================
 case 'spmdesconts'                  %-Enable/disable SPM design controls
