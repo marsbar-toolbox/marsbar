@@ -167,6 +167,7 @@ end
 % check inputs
 if ischar(params)  % maybe filename
   fname  = deblank(params);
+  fname  = spm_get('CPath', fname);
   params = load(fname);
   params.swd = fileparts(fname);
 else
