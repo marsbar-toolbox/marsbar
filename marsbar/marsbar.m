@@ -774,7 +774,8 @@ marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
 marsD = prefix_images(marsD, 'remove', 's');
 mars_armoire('set', 'def_design', marsD);
-  
+disp('Done');
+
 %=======================================================================
 case 'add_images'                            %-add images to FMRI design
 %=======================================================================
