@@ -4,4 +4,6 @@ function result = subsasgn(this, Struct, rhs)
 %
 % $Id$
 
-result = builtin('subsasgn', des_struct(this), Struct, rhs);
+SPM = des_struct(this);
+SPM = builtin('subsasgn', SPM, Struct, rhs);
+result = des_struct(this, SPM);
