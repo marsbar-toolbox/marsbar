@@ -44,6 +44,9 @@ end
 if isempty(r_nos)
   r_nos = 1:n_cols;
 end
+if ischar(r_nos)
+  error('Second argument should be empty or contain region number(s)');
+end
 if nargin < 3
   plot_types = '';
 end
@@ -99,8 +102,8 @@ switch o_t
 end
  
 % Default string, bin_length for fft plots
-if isfield(info, 'bin_length')
-  bin_length = info.bin_length;
+if mars_struct('isthere', info, 'TR')
+  bin_length = info.TR;
   bin_str = 'Hz';	
 else
   bin_length = 1;
@@ -135,7 +138,7 @@ for c = r_nos
       ty = toeplitz(y, [y(1) zeros(1, lags)]);
       ty([1:lags n_rows+1:end], :) = [];
       C    = corrcoef(ty);
-      n    = n_rows - 2;                     % df for correlation
+      n    = n_rows - 2;                    % df for correlation
       t_th = spm_invTcdf(1-0.025, n);       % t for two tailed p=0.05 
       r_th = sqrt(1/(n/t_th.^2+1));         % r equivalent
       stem(0:lags,C(1,:));
