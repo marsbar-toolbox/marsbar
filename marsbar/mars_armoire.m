@@ -28,10 +28,19 @@ function varargout = mars_armoire(action, item, data, filename)
 % set_ui         - sets data, getting via UI
 % save           - save data for item, if required
 % save_ui        - saves, using GUI to ask for filename
-%                  can pass flags as data arg, none or more of
-%                  f - force save even if not flagged as needed
-%                  w - GUI warn if no data
-%                  y - start save with save y/n dialog
+%                  For save and save_ui, the 'data' argument
+%                  can contain a structure with flags.  
+%                  Fields in flag structure can be
+%                  'force' - force save even if not flagged as needed
+%                  'warn_empty' - GUI warn if no data to save
+%                  'ync' - start save with save y/n/cancel dialog
+%                  'prompt' - prompt for save; 
+%                  'prompt_suffix - suffix for prompt
+%                  'prompt_prefix - prefix for prompt
+%                  'ui' - use UI prompts for save - forced if save_ui
+%                  'no_no_save' - if 'no' is chosen in the save dialog,
+%                     contents are flagged as not needing a save in
+%                     the future (has_changed flag set to 0)  
 % save 'all'     - saves data for all items, if required
 % update         - updates data, sets flag to show change
 % clear          - clears data for item
@@ -72,7 +81,7 @@ function varargout = mars_armoire(action, item, data, filename)
 % file_type       - type of file to load ('mat' or 'ascii')
 % char_is_filename - flag, if set, char data is assumed to be a filename
 % filter_spec     - filter spec for uigetfile (see help uigetfile)
-% prompt          - prompt for spm_get GUI
+% prompt          - prompt for uigetfile
 % verbose         - flag, if set, displays more information during
 %                   processing
 % set_action      - actions to perform when item is set
@@ -128,15 +137,19 @@ if nargin < 4
 end
 
 % certain actions do not require valid item names
-if ~ismember(action, {'add', 'add_if_absent', 'exist', 'dump'})
+if ~ismember(action, ...
+	     {'add', 'add_if_absent', 'exist', 'dump', 'save_all'})
   % the rest do
   flist = i_item_list;
   switch item
    case 'all'
     % If item is 'all', do this action for all items
+    % Watch for save_ui, as we need to look out for cancel
+    s_u_f = strcmp(lower(action), 'save_ui');
     a = {};
     for fn = flist'
       a{end+1} = mars_armoire(action, fn{1}, data, filename);
+      if s_u_f & (a{end} == -1), varargout = {-1}; return, end
     end
     varargout = a;
     return
@@ -201,8 +214,9 @@ switch lower(action)
   end
  case 'save_ui'
   % data is used as flags for save call
-  if ~ischar(data), data = ''; end
-  varargout = {i_save_ui(i_contents, [data 'u'], filename)};
+  if ~isstruct(data), data = []; end
+  data.ui = 1;
+  varargout = {i_save_ui(i_contents, data, filename)};
  case 'need_save'
   varargout = {i_need_save(i_contents)};
  case 'isempty'
@@ -335,32 +349,52 @@ end
 return
 
 function res = i_save_ui(I, flags, filename)
-if ~ischar(flags), flags = ''; end
-if i_isempty(I) & any(flags == 'w') % inform there is no data
+if ~isstruct(flags), flags = []; end
+if i_isempty(I) & isfield(flags, 'warn') 							
   msgbox('Nothing to save', [I.title ' is not set'], 'warn');
-  res = [];
+  res = 0;
   return
 end
-res = i_save(I, [flags 'u'], filename);
+flags.ui = 1;
+res = i_save(I, flags, filename);
 return
 
 function res = i_save(I, flags, filename)
 % data field is treated as flags
-if is_nix(flags) | ischar(flags), flags == ' '; end
-res = 0;
+if is_nix(flags) flags == []; end
 if is_nix(filename), filename = I.file_name; end
 if is_nix(filename), filename = I.default_file_name; end
-if i_need_save(I) | any(flags == 'f') % force flag
+if i_need_save(I) | isfield(flags, 'force') % force flag
   % prompt for filename if UI
-  if any(flags == 'u')
-    if any(flags == 'y')
-      save_yn = questdlg(['Save ' I.title '?'],...
-			 'Save', 'Yes', 'No', 'Yes');
-      if strcmp(save_yn, 'No'), return, end
+  if isfield(flags, 'ui')
+    % Work out prompt
+    if isfield(flags, 'prompt')
+      prompt = flags.prompt;
+    else 
+      prompt = I.title;
     end
-    prompt = ['Filename to save ' I.title]; 
-    [f p] = mars_uifile('put', I.filter_spec, prompt, filename);
-    if all(f==0), return, end
+    if isfield(flags, 'prompt_prefix')
+      prompt = [flags.prompt_prefix prompt];
+    end
+    if isfield(flags, 'prompt_suffix')
+      prompt = [prompt flags.prompt_suffix];
+    end
+    if isfield(flags, 'ync')
+      save_yn = questdlg(['Save ' prompt '?'],...
+			 'Save', 'Yes', 'No', 'Cancel', 'Yes');
+      if strcmp(save_yn, 'Cancel'), res = -1; return, end      
+      if strcmp(save_yn, 'No')
+	if isfield(flags, 'no_no_save')
+	  I.has_changed = 0; 
+	  i_down_dump(I);
+	end
+	res = 0; 
+	return
+      end
+    end
+    pr = ['Filename to save ' prompt]; 
+    [f p] = mars_uifile('put', I.filter_spec, pr, filename);
+    if all(f==0), res = -1, return, end
     filename = fullfile(p, f);
   end
   savestruct(I.data, filename);
@@ -374,8 +408,10 @@ if i_need_save(I) | any(flags == 'f') % force flag
     I.data = [];
   end
   res = 1;
+  i_down_dump(I);
+else
+  res = 0;
 end
-i_down_dump(I);
 return
 
 function res = i_need_save(I)
