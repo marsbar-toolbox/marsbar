@@ -26,16 +26,15 @@ switch lower(action)
   I = varargin{1};
 
   % Make design into object, do conversions
-  I.data = mardo(I.data);
-  if ~is_valid_design(I.data)
-    errf = 1; 
-    msg = 'This does not appear to be a valid design';
+  [I.data errf msg] = sf_check_design(I.data);
+  if errf
     res = [];
     return
   end
   
   % Unload roi data if design has been set, and data exists
   if ~mars_armoire('isempty', 'roi_data')
+    mars_armoire('save_ui', 'roi_data', 'y');
     mars_armoire('clear', 'roi_data');
     fprintf('Reset of design, cleared ROI data...\n');
   end
@@ -46,22 +45,37 @@ switch lower(action)
   % FORMAT [data errf msg] = mars_arm_call('set_results', data);
   % Need to set default data from results, and load contrast file
   % if not present (this is so for old MarsBaR results)
-  
+
   data = varargin{1};
   if isempty(data), return, end
+  
+  % Make design into object, do conversions
+  [data errf msg] = sf_check_design(data);
+  if errf
+    res = [];
+    return
+  end
   if ~is_estimated(data)
     error('Design has not been estimated')
   end
-  mars_armoire('set', 'roi_data', data.marsY);
-  mars_armoire('has_changed', 'roi_data', 0);
-  fprintf('Set ROI data from estimated design...\n');
-  if ~is_there(data, 'xCon'),
-    tmp = load(spm_get(1, 'x?on.mat',...
+  
+  % Deal with case of old MarsBaR designs
+  if ~has_contrasts(data);
+    tmp = load(spm_get(1, '*x?on.mat',...
 		       'Select contrast file')); 
-    data.xCon=tmp.xCon;
+    data = set_contrasts(data, tmp);
   end
   res = data;
  otherwise
   error(['Peverse request for ' action]);
 end
 
+function [d,errf,msg] = sf_check_design(d)
+% Make design into object, do conversions
+errf = 0; msg = {};
+d = mardo(d);
+if ~is_valid(d)
+  errf = 1; 
+  msg = 'This does not appear to be a valid design';
+end
+  

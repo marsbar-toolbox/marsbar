@@ -1,6 +1,6 @@
-function D = fill_design(D, actions)
+function D = fill(D, actions)
 % fills missing entries from SPM FMRI design matrix 
-% FORMAT D = fill_design(D, actions)
+% FORMAT D = fill(D, actions)
 % 
 % D          - mardo object containing spm design
 % actions    - string or cell array of strings with actions:
@@ -37,7 +37,7 @@ end
 try 
   RT     = xX.RT;
 catch
-  RT  = spm_input('Interscan interval {secs}','+1','batch',{},'RT');
+  RT  = spm_input('Interscan interval {secs}','+1');
   spmD.xX.RT = RT;
 end
 
@@ -205,7 +205,7 @@ for a = 1:length(actions)
     %=======================================================================
     spm_input('Temporal autocorrelation options','+1','d',mfilename)
     
-    [K HFstr LFstr] = get_filter(RT, Sess);
+    [K HFstr LFstr] = pr_get_filter(RT, Sess);
     
     % intrinsic autocorrelations (Vi)
     %-----------------------------------------------------------------------

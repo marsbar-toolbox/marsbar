@@ -25,7 +25,7 @@ switch roitype
   func = '';
   if spm_input('Apply function to image', '+1','b',...
 				      ['Yes|No'], [1 0],1);
-    spm_input('img < 30',1,'d','Example function:','batch')
+    spm_input('img < 30',1,'d','Example function:');
     func = spm_input('Function to apply to image', '+1', 's', 'img');
   end
   d = f; l = f;

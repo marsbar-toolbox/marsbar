@@ -1,11 +1,6 @@
 To do list
 ----------
 
-try / catch round load in mars_armoire
-
-Strategy is to use an object to contain MarsBaR / SPM designs
-Not quite worked out yet.
-
 Fields in spmD used by marsbar estimatation
 mars_stat
 spm99/mars      spm2
@@ -29,6 +24,5 @@ xX.nKX         % scaled design matrix for display
 
 check images function.
 
-Don't want to clear ROI data without warnings, when loading a new
-default design.  ?Ask.  Or don't clear, just warn?
-
+move filter ui get into private function in mardo_2
+add pairs of get/set functions for mardo 

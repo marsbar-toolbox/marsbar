@@ -21,17 +21,40 @@ function [o, others] = mardo(params,passf)
 % des_struct - structure containing SPM design
 % 
 % Methods
-% is_valid_design - returns 1 if des_struct contains a valid design
-% has_images   - returns 1 if the design contains images
-% has_filter   - returns 1 if the design contains a filter
-% modality     - returns 'FMRI' for an FMRI design, else 'PET'
-% verbose      - whether reporting is verbose or not
-% design_type  - returns SPM version string corresponding to design type
+% is_valid     - returns 1 if des_struct contains a valid design
 % is_marsed    - returns 1 if design has been processed with MarsBaR
-% is_spm_estimated - returns 1 if design has SPM estimation data
-% is_mars_estimated - returns 1 if design has Mars estimation data
+% is_estimated - returns 1 if design has Mars estimation data
+% has_images   - returns 1 if the design contains images, NaN if not known
+% has_filter   - returns 1 if the design contains a filter, NaN if not known
+% has_contrasts - returns 1 if the design contains contrasts
+% modality     - returns one of 'fmri','pet','unknown'
+% is_fmri      - returns 1 if design is modality 'fmri'
+% verbose      - whether reporting is verbose or not (1 or 0)
+% type         - returns SPM version string corresponding to design type
+% des_struct   - sets or gets design structure
+% block_rows   - returns cell array, one cell per subject or session,
+%                containing indices of design rows for that
+%                subject/session
+%  
+% ui_report    - runs UI design report in SPM graphics window
 % 
-% strip_spm_estimation - returns object without SPM estimation data
+% apply_filter - applies design filter to data
+% 
+% set_contrasts - set contrasts to design
+% get_contrasts - returns contrasts if present
+% merge_contrasts - merges contrasts from another design into this
+% ui_get_contrasts - runs spm_conman to choose contrasts, returns indices
+% 
+% get_images   - gets image vol structs if present
+% get_image_names - gets image names as cell array 
+% cd_images    - changes root directory to design images
+% deprefix_images - removes prefix from images names (e.g. 's')
+% 
+% estimate     - estimates design, given data
+% compute_contrasts - computes contrasts, returns statistics structure
+% stat_table   - return statistic table report and structures for
+%                contrasts
+% mars_spm_graph - runs graph UI, displays in SPM windows
 %
 % $Id$
   
@@ -62,7 +85,6 @@ if isstruct(params)
   end
 end
 
-
 % fill with defaults, parse into fields for this object, children
 [pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
@@ -76,10 +98,10 @@ if passf
 end
 
 % sort out design image flipping
-dt = design_type(o);
+dt = type(o);
 sv = spm('ver');
 if ~is_marsed(o) 
-  if has_images(o) & ~strcmp(dt,sv)
+  if sf_tf(has_images(o)) & ~strcmp(dt,sv)
     flippo = flip_option(o);
     switch flippo
      case 1
@@ -110,12 +132,7 @@ end
 D = o.des_struct;
 if isfield(D, 'ResMS')
   if verbose(o)
-    msg = {'Estimated results from Versions of MarsBaR <=0.23 use a field', ...
-	   'called ResNS to store the ROOT mean square, rather than the',...
-	   'Residual mean square, as is the case for SPM.  Later versions of',...
-	   'MarsBaR use a field called ResidualMS to avoid confusion.',...
-	   'For compatility with this version of MarsBaR, I am sqauring',...
-	   'the values in ResMS, and storing them in ResidualMS'};
+    msg = {'Compatability trivia: processed ResMS to ResidualMS'};
     fprintf('\n%s',sprintf('%s\n',msg{:})); 
   end
   D.ResidualMS = D.ResMS .^ 2;
@@ -123,4 +140,11 @@ if isfield(D, 'ResMS')
   o.des_struct = D;
 end
 
+return
+
+function r = sf_tf(d)
+if isnan(d), r = 0;
+else
+  r = (d~=0);
+end
 return

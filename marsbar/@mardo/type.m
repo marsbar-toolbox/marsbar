@@ -1,3 +1,6 @@
-function str = design_type(o)
+function str = type(o)
 % returns SPM version string corresponding to design type
-str = 'SPM2';
+% 
+% $Id$
+  
+str = 'Unknown';

@@ -1,9 +1,9 @@
-function fmri_design_show(D,s,i)
+function ui_report_fmri(D,s,i)
 % Interactive review of fMRI design matrix
-% FORMAT fmri_design_show(D,s,i)
+% FORMAT ui_report_fmri(D,s,i)
 %
 % Copied with minor edits from:
-% @(#)spm_fMRI_design_show.m	2.22 Karl Friston 03/02/21
+% @(#)spm_ui_report_fmri.m	2.22 Karl Friston 03/02/21
 %
 % $Id$
 
@@ -43,7 +43,7 @@ if nargin < 3
 		for k = 1:length(Sess(j).Fc)
 			cb = ['tmp = get(get(gcbo,''UserData''),',...
 					         '''UserData''); ',...
-				sprintf(['fmri_design_show(',...
+				sprintf(['ui_report_fmri(',...
 					'tmp,%d,%d);'],j,k)];
 			uimenu(h,'Label',Sess(j).Fc(k).name,...
 	     	   	         'CallBack',cb,...

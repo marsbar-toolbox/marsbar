@@ -241,7 +241,7 @@ funcs = {...
     'marsbar(''make_design'', ''pet'');',...
     'marsbar(''make_design'', ''fmri'');',...
     'marsbar(''make_design'', ''basic'');',...
-    'marsbar(''des_rep'')',...
+    'marsbar(''design_report'')',...
     'marsbar(''add_images'')',...
     'marsbar(''edit_filter'')',...
     'mars_armoire(''set_ui'', ''def_design'');',...
@@ -374,7 +374,7 @@ if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
 if is_fmri(marsD) & ~has_filter(marsD)
-  marsD = fill_design(marsD, 'filter');
+  marsD = fill(marsD, 'filter');
   mars_armoire('update', 'def_design', marsD);
 end
 marsRes = estimate(marsD, marsY,{'redo_covar','redo_whitening'});
@@ -504,7 +504,7 @@ if isempty(roilist)
   return
 end
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Combine ROIs');
-spm_input('(r1 & r2) & ~r3',1,'d','Example function:','batch')
+spm_input('(r1 & r2) & ~r3',1,'d','Example function:');
 func = spm_input('Function to combine ROIs', '+1', 's', '');
 if isempty(func), retnrn, end
 rlen = size(roilist,1);
@@ -578,7 +578,7 @@ if strcmp(etype, 'default')
   marsD = mars_armoire('get','def_design');
   if isempty(marsD), return, end;
   if ~has_images(marsD),
-    marsD = fill_design(marsD, 'images');
+    marsD = fill(marsD, 'images');
     mars_armoire('update', 'def_design', marsD);
   end
   VY = get_images(marsD);
@@ -588,7 +588,7 @@ else  % full options extraction
   if spm_input('Use SPM design?', '+1', 'b', 'Yes|No', [1 0], 1)
     marsD = mars_armoire('get','def_design');
     if ~has_images(marsD),
-      marsD = fill_design(marsD, 'images');
+      marsD = fill(marsD, 'images');
       mars_armoire('update', 'def_design', marsD);
     end
   end
@@ -628,6 +628,11 @@ case 'set_results'                                  %-set results
 varargout = {0};
 marsRes = mars_armoire('set_ui', 'est_design');
 if isempty(marsRes), return, end
+mars_armoire('save_ui', 'roi_data', 'y');
+mars_armoire('set', 'roi_data', get_data(marsRes));
+mars_armoire('has_changed', 'roi_data', 0);
+fprintf('Set ROI data from estimated design...\n');
+
 MARS.WORKSPACE.default_contrast = [];
 MARS.WORKSPACE.default_region = [];
 varargout = {1};
@@ -640,7 +645,7 @@ case 'add_images'                            %-add images to FMRI design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
-marsD = fill_design(marsD, {'images'});
+marsD = fill(marsD, {'images'});
 mars_armoire('set', 'def_design', marsD);
 
 %=======================================================================
@@ -650,7 +655,7 @@ case 'edit_filter'                   %-add / edit filter for FMRI design
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end
-marsD = fill_design(marsD, 'filter');
+marsD = fill(marsD, 'filter');
 mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');
 
@@ -706,8 +711,9 @@ case 'stat_table'                                  %-run stat_table
 varargout = {};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[varargout{1} marsRes changef] = ... 
+[strs varargout{1} marsRes changef] = ... 
     stat_table(marsRes);
+disp(char(strs));
 if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================
@@ -734,7 +740,7 @@ if ~has_contrasts(D2)
 end
   
 % now try to trap case of contrast only file
-if ~is_valid_design(D2)
+if ~is_valid(D2)
   D2 = get_contrasts(D2);
 end
 
@@ -750,7 +756,7 @@ case 'add_trial_f'            %-add trial-specific F contrasts to design
 %-----------------------------------------------------------------------
 D = mars_armoire('get', 'est_design');
 if isempty(D), return, end
-if ~strcmp(modality(D), 'fmri')
+if ~is_fmri(D)
   disp('Can only add F contrasts for FMRI designs');
   return
 end
@@ -899,13 +905,13 @@ marsD = deprefix_images(marsD, 's');
 mars_armoire('set', 'def_design', marsD);
   
 %=======================================================================
-case 'des_rep'                %-does explore design thing
+case 'design_report'                %-does explore design thing
 %=======================================================================
-% marsbar('des_rep')
+% marsbar('design_report')
 %-----------------------------------------------------------------------
 marsD = mars_armoire('get','def_design');
 if isempty(marsD), return, end;
-des_rep(marsD);
+ui_report(marsD);
 
 %=======================================================================
 case 'show_volume'           %- shows ROI volume in mm 

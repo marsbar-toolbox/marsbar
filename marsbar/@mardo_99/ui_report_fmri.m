@@ -1,15 +1,12 @@
-function fmri_design_show(D,s,i)
+function ui_report_fmri(D,s,i)
 % Interactive review of fMRI design matrix
-% FORMAT fmri_design_show(D,s,i)
+% FORMAT ui_report_fmri(D,s,i)
 %
 % Copied with minor edits from:
-% @(#)spm_fMRI_design_show.m	2.17	2.16 Karl Friston 99/09/20
+% @(#)spm_ui_report_fmri.m	2.17	2.16 Karl Friston 99/09/20
 % see that file for comments
 % 
 % $Id$
-
-global BCH; %- batch mode here is for pure completeness, can be 
-            %- removed. In that case, modify spm_bch.man ([MODEL]).
 
 SPM = des_struct(D);
 xX   = SPM.xX;
@@ -53,7 +50,7 @@ if nargin < 3
 		for k = 1:length(Sess{j}.name)
 			cb = ['tmp = get(get(gcbo,''UserData''),',...
 					         '''UserData''); ',...
-				sprintf(['fmri_design_show(',...
+				sprintf(['ui_report_fmri(',...
 					'tmp,%d,%d);'],j,k)];
 			uimenu(h,'Label',Sess{j}.name{k},...
 	     	   	         'CallBack',cb,...

@@ -202,7 +202,7 @@ switch lower(action)
  otherwise
   % look in fieldnames
   if ismember(action, fieldnames(i_contents))
-    if is_nan(data) % it's a set
+    if ~is_nan(data) % it's a set
       i_contents = setfield(i_contents, action, data);
       i_down_dump(i_contents);
     end

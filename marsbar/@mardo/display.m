@@ -1,9 +1,9 @@
 function display(obj)
-% display - placeholder display for mardo object
+% display method for mardo objects
 %
 % $Id$
   
-X = struct(obj);
+X = char(summary(obj));
 src = ['[MarsBaR design object]'];
 if isequal(get(0,'FormatSpacing'),'compact')
   disp([inputname(1) ' =']);

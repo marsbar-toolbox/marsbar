@@ -1,8 +1,8 @@
-function varargout = des_rep(D, varargin)
-% mathod for SPM99 design reporting
+function varargout = ui_report(D, varargin)
+% mathod for SPM2 design reporting
 %
 % Copied with minor edits from:  
-% @(#)spm_DesRep.m	2.22 Andrew Holmes 01/03/14
+% @(#)spm_DesRep.m	2.31 Andrew Holmes 03/03/28
 % 
 % See that file for detailed commentary
 %
@@ -41,43 +41,25 @@ switch lower(action)
 case 'desrepui'                                    %-Design reporting UI
 %=======================================================================
 % h = spm_DesRep('DesRepUI')
-% h = spm_DesRep('DesRepUI',D)
-
-%-Table of variable availability
-%-----------------------------------------------------------------------
-%		SPM_fMRIDesMtx.mat	SPMcfg.mat	SPM.mat
-%  .xX		v/			v/		v/
-%  .VY		x			v/		v/
-%  .xM		x			v/		v/
-%  .F_iX0	x			v/		v/
-%  .xC		x / []			v/(p)		v/(p)
-%  .Sess	v/			v/(f)		v/(f)
-%  .xsDes	x			v/		v/
-%
-%  .swd
-%  .SPMid
-%
-%  .cfg
+% h = spm_DesRep('DesRepUI',SPM)
 
 %-Canonicalise data
 %=======================================================================
 %-Work out where design configuration has come from!
 if ~isfield(SPM,'cfg')
-	if isfield(SPM.xX,'V'),				cfg = 'SPM';
-	elseif isfield(SPM,'VY'), 			cfg = 'SPMcfg';
-	elseif isfield(SPM,'Sess') & ~isempty(SPM.Sess),	cfg = 'SPM_fMRIDesMtx';
+	if     isfield(SPM.xX,'V'),		cfg = 'SPMest';
+	elseif isfield(SPM.xY,'VY'), 		cfg = 'SPMdata';
+	elseif isfield(SPM,'Sess'),		cfg = 'SPMcfg';
 	else, error('Can''t fathom origin!')
 	end
 	SPM.cfg = cfg;
 end
 
-%-Set swd - SPM working directory to use if estimating (empty => don't est)
-%-----------------------------------------------------------------------
-if ~isfield(SPM,'swd'), SPM.swd=''; end
-
 %-Add a scaled design matrix to the design data structure
 %-----------------------------------------------------------------------
-if ~isfield(SPM.xX,'nKX'), SPM.xX.nKX = spm_DesMtx('Sca',SPM.xX.X,SPM.xX.Xnames); end
+if ~isfield(SPM.xX,'nKX')
+	SPM.xX.nKX = spm_DesMtx('Sca',SPM.xX.X,SPM.xX.name);
+end
 
 % put back into design object
 D = des_struct(D, SPM);
@@ -98,20 +80,25 @@ hC      = uimenu(Finter,'Label','Design',...
 		'UserData',D,...
 		'HandleVisibility','on');
 
-%-DesMtx (SPM & SPMcfg)
+%-Generic CallBack code
+%-----------------------------------------------------------------------
+cb      = 'tmp = get(get(gcbo,''UserData''),''UserData''); ';
+
+%-DesMtx
 %-----------------------------------------------------------------------
 hDesMtx = uimenu(hC,'Label','Design Matrix','Accelerator','D',...
 		'CallBack',[cb,...
-		'des_rep(tmp, ''DesMtx'')'],...
+		'ui_report(tmp, ''DesMtx'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
-if strcmp(SPM.cfg,'SPM_fMRIDesMtx'), set(hDesMtx,'Enable','off'), end
+
+if strcmp(SPM.cfg,'SPMcfg'), set(hDesMtx,'Enable','off'), end
 
 %-Design matrix orthogonality
 %-----------------------------------------------------------------------
 h = uimenu(hC,'Label','Design orthogonality','Accelerator','O',...
 		'CallBack',[cb,...
-		'des_rep(tmp, ''DesOrth'')'],...
+		'ui_report(tmp, ''DesOrth'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
 
@@ -123,23 +110,23 @@ switch modality(D)
 case 'pet'
 	hFnF = uimenu(hExplore,'Label','Files and factors','Accelerator','F',...
 		'CallBack',[cb,...
-		'des_rep(tmp, ''Files&Factors'')'],...
+		'ui_report(tmp, ''Files&Factors'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
 	hCovs = uimenu(hExplore,'Label','Covariates','Accelerator','C',...
 		'CallBack',[cb,...
-		'des_rep(tmp, ''Covs'')'],...
+		'ui_report(tmp, ''Covs'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
-	if isempty(D.xC), set(hCovs,'Enable','off'), end
+	if isempty(SPM.xC), set(hCovs,'Enable','off'), end
 case 'fmri'
     for j = 1:length(SPM.Sess)
         h = uimenu(hExplore,'Label',sprintf('Session %.0f ',j),...
             'HandleVisibility','off');
-        for k = 1:length(SPM.Sess{j}.name)
-            uimenu(h,'Label',SPM.Sess{j}.name{k},...
+        for k = 1:length(SPM.Sess(j).Fc)
+            uimenu(h,'Label',SPM.Sess(j).Fc(k).name,...
                  'CallBack',[cb,...
-                 sprintf('spm_fMRI_design_show(tmp.xX,tmp.Sess,%d,%d);',j,k)],...
+            sprintf('fmri_design_show(tmp,%d,%d);',j,k)],...
                  'UserData',hC,...
                  'HandleVisibility','off')
         end
@@ -168,12 +155,12 @@ varargout = {hC};
 %=======================================================================
 case 'files&factors'                         %-Summarise files & factors
 %=======================================================================
-% des_rep(D, 'Files&Factors',fnames,I,xC,sF,xs)
-
+% spm_DesRep('Files&Factors',fnames,I,xC,sF,xs)
 fnames  = get_image_names(D);
 if isempty(fnames)
   fnames = cell(size(SPM.xX.X, 1));
 end
+
 I       = SPM.xX.I;
 xC      = SPM.xC;
 sF      = SPM.xX.sF;
@@ -181,7 +168,6 @@ xs      = SPM.xsDes;  %-Structure of description strings
 
 [fnames,CPath] = spm_str_manip(fnames,'c');	%-extract common path component
 nScan          = size(I,1);			%-#images
-nVar           = size(fnames,2);		%-Variates
 bL             = any(diff(I,1),1); 		%-Multiple factor levels?
 
 %-Get graphics window & window scaling
@@ -255,10 +241,8 @@ for i = 1:nScan
 
 	%-Filename tail(s) - could be multivariate
 	x=x+dx2;
-	for j = 1:nVar
-		text(x,y,fnames{i,j})
-		y=y-dy;
-	end
+	text(x,y,fnames{i})
+	y=y-dy;
 
 	%-Paginate if necessary
 	if y<dy
@@ -310,8 +294,8 @@ figure(Fgraph)
 %=======================================================================
 case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 %=======================================================================
-% des_rep(D, 'DesMtx',xX,fnames,xs)
-% des_rep(D, 'DesOrth',xX,fnames)
+% spm_DesRep('DesMtx',xX,fnames,xs)
+% spm_DesRep('DesOrth',xX)
 
 xX      = SPM.xX;
 fnames  = get_image_names(D);
@@ -340,8 +324,8 @@ end
 if isfield(xX,'nKX') & ~isempty(xX.nKX)
 	inX = 1; else, inX = 0; end
 
-if isfield(xX,'Xnames') & ~isempty(xX.Xnames)
-	Xnames = xX.Xnames; else, Xnames = {}; end
+if isfield(xX,'name') & ~isempty(xX.name)
+	Xnames = xX.name; else, Xnames = {}; end
 
 
 %-Compute design orthogonality matrix if DesOrth
@@ -397,8 +381,8 @@ else		%-No scaled DesMtx, no .xKXs, DesMtx in .X
 	hDesMtxIm = image((spm_DesMtx('sca',xX.X,     Xnames) + 1)*32);
 end
 
-STick = des_rep(D, 'ScanTick',nScan,32);
-PTick = des_rep(D, 'ScanTick',nPar,32);
+STick = spm_DesRep('ScanTick',nScan,32);
+PTick = spm_DesRep('ScanTick',nPar,32);
 
 set(hDesMtx,'TickDir','out',...
 	'XTick',PTick,'XTickLabel','',...
@@ -427,7 +411,14 @@ if desmtx & ~isempty(fnames)
 	axes('Position',[.68 .4 .3 .4],'Visible','off',...
 		'DefaultTextFontSize',FS(8),...
 		'YLim',[0,nScan]+0.5,'YDir','Reverse')
-	for i=STick, text(0,i,spm_str_manip(fnames(i,:),'Ca35')), end
+	for i = STick
+		try
+			str  = fnames(i,:);
+		catch
+			str  = fnames{i};
+		end
+		text(0,i,spm_str_manip(str,'Ca35'));
+	end
 end
 
 %-Setup callbacks to allow interrogation of design matrix
@@ -437,7 +428,7 @@ if iX, 	set(hDesMtxIm,'UserData',...
 else, 	set(hDesMtxIm,'UserData',...
 	struct('X',xX.X,     'Xnames',{Xnames},'fnames',{fnames}))
 end
-set(hDesMtxIm,'ButtonDownFcn',[cb 'des_rep(tmp, ''SurfDesMtx_CB'')'])
+set(hDesMtxIm,'ButtonDownFcn',[cb 'ui_report(tmp, ''SurfDesMtx_CB'')'])
 
 
 if desmtx
@@ -457,7 +448,7 @@ if desmtx
 		'(gray \rightarrow \beta not uniquely specified)',...
 		'Interpreter','TeX','FontSize',FS(8))
 	set(hParEstIm,'UserData',struct('est',est,'Xnames',{Xnames}))
-	set(hParEstIm,'ButtonDownFcn',[cb 'des_rep(tmp, ''SurfEstIm_CB'')'])
+	set(hParEstIm,'ButtonDownFcn',[cb 'ui_report(tmp, ''SurfEstIm_CB'')'])
 else
 	%-Design orthogonality
 	%---------------------------------------------------------------
@@ -478,7 +469,7 @@ else
 		'VerticalAlignment','top')
 	set(hDesOIm,...
 		'UserData',struct('O',O,'bC',bC,'Xnames',{Xnames}),...
-		'ButtonDownFcn',[cb 'des_rep(tmp, ''SurfDesO_CB'')'])
+		'ButtonDownFcn',[cb 'ui_report(tmp, ''SurfDesO_CB'')'])
 
 	if ~isempty(Xnames)
 		axes('Position',[.69 .18 0.01 .2],'Visible','off',...
@@ -545,7 +536,7 @@ figure(Fgraph)
 %=======================================================================
 case 'covs'                %-Plot and describe covariates (one per page)
 %=======================================================================
-% des_rep(D, 'Covs',xX,xC)
+% spm_DesRep('Covs',xX,xC)
 
 xX = SPM.xX;
 xC = SPM.xC;
@@ -578,8 +569,8 @@ line('XData',[0.3 0.7],'YData',[0.44 0.44],'LineWidth',3,'Color','r')
 %-Design matrix (as underlay for plots) and parameter names
 %-----------------------------------------------------------------------
 [nScan,nPar]   = size(xX.X);
-if isfield(xX,'Xnames') & ~isempty(xX.Xnames)
-	Xnames = xX.Xnames; else, Xnames = {}; end
+if isfield(xX,'name') & ~isempty(xX.name)
+	Xnames = xX.name; else, Xnames = {}; end
 
 %-Design matrix
 hDesMtx = axes('Position',[.1 .5 .7 .3]);
@@ -713,11 +704,11 @@ figure(Fgraph)
 %=======================================================================
 case 'scantick'
 %=======================================================================
-% des_rep(D, 'ScanTick',nScan,lim)
+% spm_DesRep('ScanTick',nScan,lim)
 % ( Show at most 32, showing every 2nd/3rd/4th/... as necessary to pair )
 % ( down to <32 items. Always show last item so #images is indicated.    )     
-if nargin<4, lim=32; else, lim=varargin{3}; end
-if nargin<3, error('insufficient arguments'), end
+if nargin<3, lim=32; else, lim=varargin{3}; end
+if nargin<2, error('insufficient arguments'), end
 nScan = varargin{2};
 
 p = max(1,ceil(nScan/lim));
@@ -729,9 +720,9 @@ varargout = {s,lim};
 %=======================================================================
 case {'surfdesmtx_cb','surfdesmtxmo_cb','surfdesmtxup_cb'} %-Surf DesMtx
 %=======================================================================
-% des_rep(D, 'SurfDesMtx_CB')
-% des_rep(D, 'SurfDesMtxMo_CB')
-% des_rep(D, 'SurfDesMtxUp_CB')
+% spm_DesRep('SurfDesMtx_CB')
+% spm_DesRep('SurfDesMtxMo_CB')
+% spm_DesRep('SurfDesMtxUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -749,8 +740,8 @@ if strcmp(lower(varargin{1}),'surfdesmtx_cb')
 			'Interpreter',	get(h,'Interpreter'),...
 			'UserData',	get(h,'UserData'));
 	set(h,'UserData',UD)
-	set(gcbf,'WindowButtonMotionFcn',[cb 'des_rep(tmp, ''SurfDesMtxMo_CB'')'],...
-		 'WindowButtonUpFcn',    [cb 'des_rep(tmp, ''SurfDesMtxUp_CB'')'])
+	set(gcbf,'WindowButtonMotionFcn',[cb 'ui_report(tmp, ''SurfDesMtxMo_CB'')'],...
+		 'WindowButtonUpFcn',    [cb 'ui_report(tmp, ''SurfDesMtxUp_CB'')'])
 end
 
 mm  = [get(gca,'YLim')',get(gca,'XLim')']+[.5,.5;-.5,-.5];
@@ -792,9 +783,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfestim_cb','surfestimmo_cb','surfestimup_cb'}  %-Surf ParEstIm
 %=======================================================================
-% des_rep(D, 'SurfEstIm_CB')
-% des_rep(D, 'SurfEstImMo_CB')
-% des_rep(D, 'SurfEstImUp_CB')
+% spm_DesRep('SurfEstIm_CB')
+% spm_DesRep('SurfEstImMo_CB')
+% spm_DesRep('SurfEstImUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -811,8 +802,8 @@ if strcmp(lower(varargin{1}),'surfestim_cb')
 			'Interpreter',	get(h,'Interpreter'),...
 			'UserData',	get(h,'UserData'));
 	set(h,'UserData',UD)
-	set(gcbf,'WindowButtonMotionFcn',[cb 'des_rep(tmp, ''SurfEstImMo_CB'')'],...
-		 'WindowButtonUpFcn',    [cb 'des_rep(tmp, ''SurfEstImUp_CB'')'])
+	set(gcbf,'WindowButtonMotionFcn',[cb 'ui_report(tmp, ''SurfEstImMo_CB'')'],...
+		 'WindowButtonUpFcn',    [cb 'ui_report(tmp, ''SurfEstImUp_CB'')'])
 end
 
 mm  = [get(gca,'XLim')]+[.5,-.5];
@@ -851,9 +842,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfdeso_cb','surfdesomo_cb','surfdesoup_cb'}    %-Surf DesOrthIm
 %=======================================================================
-% des_rep(D, 'SurfDesO_CB')
-% des_rep(D, 'SurfDesOMo_CB')
-% des_rep(D, 'SurfDesOUp_CB')
+% spm_DesRep('SurfDesO_CB')
+% spm_DesRep('SurfDesOMo_CB')
+% spm_DesRep('SurfDesOUp_CB')
 
 h    = get(gca,'Xlabel');
 
@@ -870,8 +861,8 @@ if strcmp(lower(varargin{1}),'surfdeso_cb')
 			'Interpreter',	get(h,'Interpreter'),...
 			'UserData',	get(h,'UserData'));
 	set(h,'UserData',UD)
-	set(gcbf,'WindowButtonMotionFcn',[cb 'des_rep(tmp, ''SurfDesOMo_CB'')'],...
-		 'WindowButtonUpFcn',    [cb 'des_rep(tmp, ''SurfDesOUp_CB'')'])
+	set(gcbf,'WindowButtonMotionFcn',[cb 'ui_report(tmp, ''SurfDesOMo_CB'')'],...
+		 'WindowButtonUpFcn',    [cb 'ui_report(tmp, ''SurfDesOUp_CB'')'])
 end
 
 mm  = [get(gca,'YLim')',get(gca,'XLim')']+[.5,.5;-.5,-.5];
@@ -918,9 +909,9 @@ set(h,'String',str,'Interpreter',istr)
 %=======================================================================
 case {'surfcon_cb','surfconmo_cb','surfconup_cb'}        %-Surf Contrast
 %=======================================================================
-% des_rep(D, 'SurfCon_CB')
-% des_rep(D, 'SurfConOMo_CB')
-% des_rep(D, 'SurfConOUp_CB')
+% spm_DesRep('SurfCon_CB')
+% spm_DesRep('SurfConOMo_CB')
+% spm_DesRep('SurfConOUp_CB')
 
 cUD = get(gco,'UserData');
 if ~isstruct(cUD) | ~isfield(cUD,'h')
@@ -941,8 +932,8 @@ if strcmp(lower(varargin{1}),'surfcon_cb')
 			'Interpreter',	get(h,'Interpreter'),...
 			'UserData',	get(h,'UserData'));
 	set(h,'UserData',UD)
-	set(gcbf,'WindowButtonMotionFcn',[cb 'des_rep(tmp, ''SurfConMo_CB'')'],...
-		 'WindowButtonUpFcn',    [cb 'des_rep(tmp, ''SurfConUp_CB'')'])
+	set(gcbf,'WindowButtonMotionFcn',[cb 'ui_report(tmp, ''SurfConMo_CB'')'],...
+		 'WindowButtonUpFcn',    [cb 'ui_report(tmp, ''SurfConUp_CB'')'])
 end
 
 mm  = [get(gca,'YLim')',get(gca,'XLim')']+[.5,.5;-.5,-.5];
