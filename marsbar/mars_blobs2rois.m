@@ -41,7 +41,7 @@ pre_ones = ones(1, size(xSPM.XYZ,2));
 clusters = spm_clusters(xSPM.XYZ);
 [N Z maxes A] = spm_max(xSPM.Z,xSPM.XYZ);
 
-for c = unique(A)
+for c = unique(A(:)')
   % maximum maximum for this cluster
   tmp = Z; tmp(A~=c) = -Inf; 
   [tmp mi] = max(tmp);
