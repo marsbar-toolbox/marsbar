@@ -32,8 +32,8 @@ switch lower(action)
   elseif length(ic) > 1
     msgbox('Please select a single event type to edit');
   else
-    D = event_types(D, et);
-    [D ic] = ui_et_edit(D, length(et));
+    et = event_types(D);
+    [D ic] = ui_et_edit(D, ic);
     if ~isempty(ic) % not cancelled
       pr_refresh_et(D, ic, F, hList);
     end
