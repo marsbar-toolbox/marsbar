@@ -47,6 +47,7 @@ roi_len = prod(size(roi_list));
 img_data = zeros(roi_space.dim);
 roi_ctr = 1;
 for i = 1:roi_len
+  fprintf('Loading %s\n', roi_list{i});
   roi = maroi('load', roi_list{i});
   % check ROI contains something
   if isempty(roi) 
