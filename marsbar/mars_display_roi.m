@@ -18,8 +18,10 @@ function varargout=mars_display_roi(action_str, varargin)
 global st; % global variable from spm_orthviews
 
 if nargin < 1
-  action_str = 'display';
+  action_str = '';
 end
+if isempty(action_str), action_str = 'display'; end
+
 switch lower(action_str), case 'display'             %-Display ROIs
 if nargin < 2
   roi_obj = spm_get([0 Inf],'roi.mat','Select ROI(s) to view');
