@@ -26,7 +26,8 @@ end
 
 % Process input arguments
 if isempty(roi_list)
-  roi_list = spm_get([0 Inf], '_roi.mat', 'Select ROIs to write to image');
+  roi_list = spm_get([0 Inf], maroi('classdata', 'fileend'), ...
+		     'Select ROIs to write to image');
   if isempty(roi_list), return, end
 end
 if isempty(img_name)
