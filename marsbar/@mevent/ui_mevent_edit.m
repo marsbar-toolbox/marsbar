@@ -3,19 +3,20 @@ function [et, ic] = ui_mevent_edit(et, ic)
 % FORMAT [et, ic] = ui_mevent_edit(et, ic)
 % 
 % et        - event type object
-% ic        - index identifying event 
+% ic        - index identifying event type to edit (or edited)
 % 
 % In this case, the return of an empty ic means that the routine was
 % cancelled, as this makes no sense otherwise.
 % 
-% This is rather a hack, because the passed, and returned object are used
-% only to pull in the object methods for the callback.   The routine
-% works by listing all possible events as strings, allocating the strings
-% to the IN and OUT lists according to the event being edited, and
-% working with these strings entirely until the routine returns.  So,
-% although this is an object method, it uses the object fields only
-% minimally.  
+% The object method idea here is rather a hack, because the passed object is
+% used only to pull in the object methods for the callback.
 %
+% We first collect all the events from the design, and their names.  The
+% event passed, that are IN, get attached to the top (IN) panel, and the
+% rest go to the bottom (OUT) panel.  Event names and definitions
+% (session, event number pairs) are always sorted according to the
+% current sort mode, which is set from the GUI.
+% 
 % $Id$
 
 len_et = prod(size(et.event_types));
@@ -120,7 +121,7 @@ F = figure('IntegerHandle','off',...
 % OK
 hDone = uicontrol(F,...
 		  'Style','Pushbutton','String','OK',...
-		  'ToolTipString','OK - press after selecting selected events types',...
+		  'ToolTipString','OK - press after selecting events',...
 		  'ForegroundColor','k',...
 		  'Tag','Done','UserData',-1,...
 		  'Callback',[cb 'ui_mevent_edit_cb(et, ''OK'')'] ,...
