@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.36.1';  % 7.1th SPM2 development release 
+MBver = '0.37';  % 8th SPM2 development release 
 
 % Various working variables in global variable structure
 global MARS;
@@ -1602,17 +1602,35 @@ if (status==0), return, end
 if (status>1), mars_arm('update', 'est_design', marsRes); end
 if isempty(ic), return, end
 
+et = event_types(marsRes);
+ic_len = length(ic);
+
+d_f = 0; opts = []; 
+for i = 1:ic_len
+  [o d] = event_onsets(marsRes, et(ic(i)).e_spec);
+  if any(diff(d)), d_f = 1; break, end
+end
+if ~d_f
+  if spm_input('FIR type', '+1','m',...
+	       'Flat|Stacked', [1 0], 1)
+    opts.flat = 1;
+  end
+end
+if spm_input('Signal units', '+1','m',...
+	     'Percent|Beta units', [1 0], 1)
+  opts.percent = 1;
+end
+
 bin_length = spm_input('Bin length (secs)', '+1', 'e', tr(marsRes));
 def_bin_no = round(25/bin_length);
 bin_no     = spm_input('No of bins', '+1', 'e', def_bin_no);
 
-et = event_types(marsRes);
-ic_len = length(ic);
 for i = 1:ic_len
   tc{i} = event_fitted_fir(marsRes, ...
 			   et(ic(i)).e_spec, ...
 			   bin_length, ...
-			   bin_no);
+			   bin_no, ...
+			   opts);
 end
 
 if ic_len > 8
