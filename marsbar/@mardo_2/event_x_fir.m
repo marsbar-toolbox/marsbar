@@ -1,6 +1,6 @@
-function [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
+function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % method to return FIR design matrix columns for session
-% FORMAT [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
+% FORMAT Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 % 
 % D          - design object
 % e_spec     - event specification for single event
@@ -16,8 +16,6 @@ function [Xn, rh] = event_x_fir(D, e_spec, bin_length, bin_no, opts)
 %
 % Returns
 % Xn         - columns in design matrix for FIR model
-% rh         - regressor height: value for regressor for one event of
-%              duration dt in design matrix
 %
 % $Id$
 
@@ -50,7 +48,6 @@ xBF.name    = 'Finite Impulse Response';
 xBF.order   = bin_no;
 xBF.length  = xBF.order*bin_length;
 xBF         = pr_spm_get_bf(xBF);
-rh          = xBF.bf(1,1);
 
 U           = SPM.Sess(s).U(e);
 k           = SPM.nscan(s);
