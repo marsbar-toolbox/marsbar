@@ -65,7 +65,7 @@ for i = 1:length(Ic)
     %-Residual (in parameter space) forming mtx
     %-----------------------------------------------------------
     h          = spm_FcUtil('Hsqr',xCon(ic),SPM.xX.xKXs);
-    con(i,:)   = sum((h * betas).^2);
+    con(i,:)   = sum((h * betas).^2, 1);
     stat(i,:)  = con(i,:) ./ Hp / trMV;
     Ps(i,:)    = (1 - spm_Fcdf(stat(i,:),df));
 
@@ -78,5 +78,5 @@ end
 
 % Compute corrected Bonferroni (corrected for number of regions)
 n  = size(betas, 2);
-Pc = 1-(1-Ps).^(1/n);
+Pc = 1-(1-Ps).^n;
 
