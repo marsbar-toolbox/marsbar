@@ -11,7 +11,9 @@ function SPM = pr_estimate(SPM, marsY)
 % 
 % 2) The design will specify if the covariance should be calculated from
 % the summarized time course(s), or from the component voxels, then
-% averaged. 
+% averaged.  Voxel time courses are used by default, and if
+% SPM.xVi.cov_calc is set to 'vox', but summary time
+% courses can be used by setting SPM.xVi.cov_calc to 'summary'. 
 % 
 % 3) Normally, if the W matrix is present, the V matrix should also be
 % present.  Because it is boring to calculate the V matrix and then WVW,
@@ -55,16 +57,17 @@ end
 have_W     = isfield(xX, 'W');
 have_V     = isfield(xVi, 'V');
 
-% Work out type of covariance modelling
+% Work out type of covariance modelling We get Vi, cov_type (as a string),
+% one of 'SPM' or 'fmristat' and cov_vox, which is a flag set to 1 if all
+% the voxel time courses should be used to calculate the resdiduals and
+% covariance.
 if ~have_V
   if ~isfield(xVi, 'Vi')
     error('No covariance specified, and no priors to calculate it');
   end
   Vi = xVi.Vi;
-  cov_SPM = 0;
   if iscell(Vi)
     cov_type = 'SPM'
-    cov_SPM = strcmp(cov_type, 'SPM');
   elseif ~isstruct(Vi)
     error('Vi field should be cell or struct type')
   elseif ~isfield(Vi, 'type')
@@ -76,7 +79,7 @@ if ~have_V
   % Covariance calculated on summary or voxel time courses
   cov_vox = 1;
   if isfield(xVi, 'cov_calc')
-    cov_vox = strcmp(Vi.cov_calc, 'vox');
+    cov_vox = strcmpi(Vi.cov_calc, 'vox');
   end
 else cov_vox = 0; end
     
@@ -95,7 +98,9 @@ else
   str   = '[hyper]parameter estimation';
 end
 
-%-Get whitening/Weighting matrix: If xX.W exists we will save WLS estimates
+%-Get whitening/Weighting matrix: If xX.W exists we will save WLS
+% estimates. Get WVW also, which can be assumed if W is a whitening
+% matrix
 %-----------------------------------------------------------------------
 if have_W
   %-If W is specified, use it
@@ -114,12 +119,12 @@ else
     s     = spdiags(1./sqrt(diag(s)),0,nScan,nScan);
     W     = u*s*u';
     W     = W.*(abs(W) > 1e-6);
-    xX.W  = sparse(W);
+    xX.W  = W;
     WVW   = eye(nScan);
   else
     % unless xVi.V has not been estimated - requiring 2 passes
     %-------------------------------------------------------
-    W     = speye(nScan,nScan);
+    W     = eye(nScan);
     str   = 'hyperparameter estimation (1st pass)';
   end
 end
@@ -186,10 +191,10 @@ if ~have_V
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
 	    'is to run estimation separatly for each ROI'};
-    fprintf('\n\n');
-    warning(sprintf('%s\n', wstr{:}));
+    warning(sprintf('\n%s\n', wstr{:}));
   end
-  if cov_SPM
+  % Cy is whitened covariance matrix; only needed for SPM REML method
+  if strcmp(cov_type, 'SPM')
     q  = diag(sqrt(trRV./ResSS'),0); % spatial whitening
     Y  = Y * q;
     Cy = Y*Y';
@@ -238,9 +243,11 @@ if ~have_V
     
     switch cov_type
      case 'SPM'
+      % Store hyperparameters
       m     = length(Vi);
       h     = zeros(m,1);
      case 'fmristat'
+      % Store AR coefficients
       h     = zeros(length(xX.K), Vi.order);
      otherwise 
       error(['Did not recognize covariance type: ' cov_type]);
