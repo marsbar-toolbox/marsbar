@@ -107,7 +107,8 @@ fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 % Using all data only makes sense for intial estimation of whitening
 if ~isfield(xX, 'W') & ...
       use_all_data_f
-  Y = cell2mat(region_data(marsY));
+  Y = region_data(marsY);
+  Y = [Y{:}];
 else
   Y = summary_data(marsY);
 end
