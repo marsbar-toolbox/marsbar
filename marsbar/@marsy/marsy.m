@@ -100,19 +100,19 @@ function [o,others] = marsy(params, region_info, summary_info)
 % region_data  - gets region sample (voxel) data as cell array; returns
 %                all regions if no region number specificed, or one cell
 %                per region if region numbers are specified
-% region_names - gets cell array of region names as 1 by R cell array 
+% region_name  - gets cell array of region names as 1 by R cell array 
 %                (if no region number is specified) or single cell string
 %                if a single region is specified
-% region_descrip - gets/sets description of specified region
-% region_info  - gets/sets information field of specified region
+% region_descrip - gets cell array of descriptions of specified region
+% region_info  - gets cell array of info field of specified region
 % n_regions    - gets number of regions (R above)
 % n_time_points - gets number of time points (N above)
 % xyz          - gets voxel or mm XYZ coordinates of given region
 % join         - accepts several marsy objects, and merges into one (if
 %                possible)
-% plot         - plot data
 % split        - splits object into array of objects, with one element
 %                for each region 
+% plot         - plot data
 % save_struct  - saves y_struct to disk as structure
 % 
 % Other methods (to avoid)
@@ -129,7 +129,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 % ------
 %  
 % y_struct - structure containing MarsBaR data structure
-% vaerbose - flag for verbose messages while working
+% verbose - flag for verbose messages while working
 % 
 % The MarsBaR data structure
 % --------------------------
@@ -215,9 +215,26 @@ switch class(params)
   error('Unexpected data type for first input');
 end
 
+% get number of regions
+R = NaN;
+st = params.y_struct;
+if isfield(st, 'Y')
+  R = size(st.Y);
+elseif isfield(st, 'regions')
+  R = length(st.regions);
+end
+
 % process further inputs
 if nargin > 1
   % region_info has been specified
+  if ischar(region_info)
+    region_info = {region_info};
+  end
+  if ~isnan(R)
+    if length(region_info) ~= R
+      error('region_info should have one entry per region');
+    end
+  end
   if iscell(region_info) & ischar(region_info{1}) % names only
     tmp = region_info; region_info = cell(size(region_info));
     for i = 1:length(tmp)
@@ -232,6 +249,9 @@ if nargin > 1
   end
 
   % set 
+  if ~isfield(params.y_struct, 'regions')
+    params.y_struct.regions = cell(1, length(region_info));
+  end
   for i = 1:length(region_info)
     params.y_struct.regions{i} = mars_struct('ffillmerge', ...
 					     params.y_struct.regions{i},...
@@ -244,7 +264,7 @@ if nargin > 2
   if ischar(summary_info) % sumfunc only
     summary_info = struct('sumfunc', summary_info);
   end
-  params.y_struct = mars_struct('ffilmerge', ...
+  params.y_struct = mars_struct('ffillmerge', ...
 				params.y_struct, ...
 				summary_info);
 end
@@ -254,6 +274,9 @@ end
 
 % set the marsy object
 o  = class(pparams, myclass);
+
+% calculate summary data if possible
+o = resummarize(o);
 
 return
 
@@ -271,14 +294,15 @@ for r = 1:length(i_st.cols)
       'Y', col.y,...
       'name', col.name,...
       'descrip', col.descrip,...
-      'info', struct('file', cols.file),...
+      'info', struct('file', col.file),...
       'vXYZ', [], ...
       'mat', eye(4));
 end
 o_st = struct('Y', i_st.Y,...
 	      'Yvar', i_st.Yvar,...
-	      'regions', regions,...
-	      'sumfunc', sumfunc,...
+	      'regions', {regions},...
+	      'sumfunc', i_st.sumfunc,...
 	      'descrip', 'Data from MarsBaR <= 0.23',...
 	      'info', []);
 return
+

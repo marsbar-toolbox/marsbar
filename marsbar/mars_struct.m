@@ -182,6 +182,6 @@ switch lower(action)
   [a c] = mars_struct('split', a, b);
   varargout = {mars_struct('merge', a, b) c};
   
- case 'otherwise'
+ otherwise
   error(['Suspicious action was ' action]);
 end % switch

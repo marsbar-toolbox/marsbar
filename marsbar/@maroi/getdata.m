@@ -1,4 +1,4 @@
-function [Y, multv] = getdata(roiobj, data_imgs, flags)
+function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)
 % getdata method - fetches time series data for ROI from images 
 % FORMAT [Y multv] = getdata(roiobj, data_imgs, flags)
 %
@@ -20,6 +20,8 @@ function [Y, multv] = getdata(roiobj, data_imgs, flags)
 % Returns
 % Y        - no of images x no of voxels in ROI data matrix
 % multv    - weighting values from ROI (which have not been applied)
+% vXYZ     - voxel coordinates of ROI from first image in series
+% mat      - voxels -> mm mat file, again from first in series
 %
 % Matthew Brett 8/11/99, 2/8/01 (JBCP)
 %
