@@ -32,7 +32,7 @@ switch lower(action)
  case 'save'
   [varargout{1} o] = save_item_data(o, varargin{:});
  case 'save_ui'
-  [varargout{1} o] = save_item_data(o, varargin{:});
+  [varargout{1} o] = save_item_data_ui(o, varargin{:});
  case 'isempty'
   varargout{1} = isempty_item_data(o, varargin{:});
  otherwise
