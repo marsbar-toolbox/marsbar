@@ -88,7 +88,7 @@ for c = 1:length(Ic)
 				     'mat', V.mat), 'vox');
   Y = get_marsy(mx_roi(c), D, 'mean');
   E = estimate(D, Y, {});
-  [E tmp n_Ic] = add_contrasts(E, D, Ic(c));
+  [E n_Ic] = add_contrasts(E, D, Ic(c));
   marsS = compute_contrast(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
 	  mx(c), marsS.stat(1));
