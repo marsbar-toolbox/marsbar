@@ -1,16 +1,17 @@
-function o = do_set(o, item, flags, data, filename)
+function [o, errf] = do_set(o, item, flags, data, filename)
 % private function to set data into item
-% FORMAT o = do_set(o, item, flags, data, filename)
+% FORMAT [o, errf] = do_set(o, item, flags, data, filename)
 %
 % o           - object
 % item        - name of item to set to
-% flags      -  containing fields:
+% flags       - containing fields:
 %                 action: one of: 'set' 'set_ui' 'get' 'clear' 'update'
 % data        - the data to set into this item
 % filename    - (possibly) filename for these data
 %
 % Returns
-% item_struct - item structure with data set as specified
+% o           - returned object, probably modified
+% errf        - flag set to 1 if error, meaning object was not modified
 %
 % The flags argument at the moment is a bit redundant, as it only
 % contains one field, but allows for future expansion, and is more
@@ -31,8 +32,11 @@ if nargin < 5
   filename = NaN;
 end
 
+% Errf for return#
+errf = 0;
+
 % process flags
-if ~ischar(flags), 
+if ischar(flags)  % can be string, with action
   if ~isempty(flags)
     flags = struct('action', flags);
   end
@@ -41,16 +45,18 @@ if ~isstruct(flags), flags = []; end
 if ~isfield(flags, 'action'), flags.action = 'set'; end
 action = flags.action;
 
+% get item to work on
+item_struct = get_item_struct(o, item);
+
 % get filename for data if set_ui
 if strcmp(action, 'set_ui')
-  [fn pn] = mars_uifile('get', I.filter_spec, ['Select ' I.title '...']);
+  [fn pn] = mars_uifile('get', ...
+			item_struct.filter_spec, ...
+			['Select ' item_struct.title '...']);
   if isequal(fn,0) | isequal(pn,0), return, end
   filename = fullfile(pn, fn);
   data = [];
 end
-
-% get item to work on
-item_struct = get_item_struct(o, item);
 
 % Keep copy of passed filename for set_action call
 passed_filename = filename;
