@@ -200,7 +200,8 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'CallBack','spm(''PopUpCB'',gcbo)',...
 	  'UserData',funcs);
 
-funcs = {'marsbar(''ana_desmooth'')',...
+funcs = {'marsbar(''ana_cd'')',...
+	 'marsbar(''ana_desmooth'')',...
 	 'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_PET''));',...
 	 '[X,Sess] = spm_fmri_spm_ui;',...		    
 	 'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_Stats''));',...
@@ -210,6 +211,7 @@ funcs = {'marsbar(''ana_desmooth'')',...
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Design...'...
+		    '|Change path to images',...
 		    '|Convert to unsmoothed|PET models',...
 		    '|FMRI models|Basic models|Explore|Estimate ROI(s)'...
 		    '|Estimate input data'],...
@@ -838,12 +840,17 @@ case 'get_spmmat'                 %- gets SPM*.mat design structure
   if isempty(spmmat),return,end
  end
  if ischar(spmmat) % assume is SPM.mat file name
-   swd    = spm_str_manip(spmmat,'H');
+   [swd sfn sext] = fileparts(spmmat);
+   sfn = [sfn sext];
    spmmat = load(spmmat);
    spmmat.swd = swd;
+   spmmat.sfn = sfn;
  elseif isstruct(spmmat)
    if isfield(spmmat,'swd')
      swd = spmmat.swd;
+   end
+   if isfield(spmmat,'sfn')
+     swd = spmmat.sfn;
    end
  else
    error('Requires string or struct as input');
@@ -860,7 +867,30 @@ case 'get_spmmat'                 %- gets SPM*.mat design structure
    rmfield(spmmat, 'XYZ');
  end
  
- varargout = {spmmat, swd};
+ varargout = {spmmat, swd, sfn};
+
+%=======================================================================
+case 'ana_cd'                      %-changes path to files in SPM design
+%=======================================================================
+% marsbar('ana_cd')
+%-----------------------------------------------------------------------
+% fetches name of SPM.mat file, saves as new SPM.mat structure
+anamat = spm_get([0 1], 'SPM*.mat', 'Analysis to change paths');
+if isempty(anamat), return, end
+anamat = marsbar('get_spmmat', anamat);
+
+% save over previous analysis
+newspmpath = anamat.swd;
+
+% root path shown in output window
+root_names = spm_str_manip(strvcat(anamat.VY(:).fname), 'H');
+spm_input(deblank(root_names(1,:)),1,'d','Common path is:');
+
+% new root
+newpath = spm_get(-1, '', 'New directory root for files');
+
+% do
+mars_ana_cd(anamat, newpath, newspmpath);
 
 %=======================================================================
 case 'ana_desmooth'           %-makes new SPM design for unsmoothed data
