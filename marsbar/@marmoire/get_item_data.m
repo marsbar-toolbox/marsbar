@@ -1,6 +1,7 @@
-function [res o] = get_item_data(o, item)
+function [res, o] = get_item_data(o, item)
 % get data for item
-% 
+% FORMAT [res o] = get_item_data(o, item);
+%
 % o     - object
 % item  - name of item to get data for
 % 

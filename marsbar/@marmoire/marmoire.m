@@ -1,6 +1,6 @@
 function [o, others] = marmoire(params, varargin)
 % marmoire - class constructor for marmoire container type
-% FORMAT varargout = mars_armoire(action, item, data, filename)
+% FORMAT [o, others] = marmoire(params, varargin)
 %  
 % the marmoire object is to store various bits of stuff
 % (armoire is the French for cupboard).

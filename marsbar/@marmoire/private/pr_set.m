@@ -1,6 +1,7 @@
 function I = pr_set(I, action, data, filename)
 % private function to set data into item
-% 
+% FORMAT I = pr_set(I, action, data, filename)
+%
 % I        - whole item, including parameters
 % action   - one of: set set_ui get clear update
 % data     - the data to set into this item

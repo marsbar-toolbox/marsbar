@@ -1,6 +1,7 @@
 function o = set_item_data(o, item, data, filename)
 % sets data for item
-% 
+% FORMAT o = set_item_data(o, item, data, filename)
+%
 % o        - object
 % item     - name of item to set for
 % data     - data to set 
