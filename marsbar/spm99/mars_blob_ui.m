@@ -22,11 +22,22 @@ errstr = sprintf(['''Cannot find SPM struct in the workspace; '...
 		  'Please (re)run SPM results GUI''']);
 
 switch lower(action)
-  case 'init'
-   % Display SPM results
-   evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
-   % Menu
-   mars_blob_menu;
+ case 'init'
+  try % and find valid SPM results stuff 
+    evalin('base', 'SPM;');
+    evalin('base', 'VOL.M;');
+    hReg = evalin('base', 'hReg;');
+    RD = get(hReg,'UserData');
+    spm_XYZreg('VReg',RD.Reg,0);
+    mars_blob_menu;
+  catch % no good, need a new one
+    mars_blob_ui('reinit');
+  end
+ case 'reinit'
+  % Display SPM results
+  evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
+  % and menu
+  mars_blob_menu;
  case 'save_one'
   xSPM = evalin('base', 'SPM', ['error(' errstr ')']);
   xSPM.M =  evalin('base', 'VOL.M', ['error(' errstr ')']);
