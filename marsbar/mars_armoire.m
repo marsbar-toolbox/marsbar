@@ -246,9 +246,7 @@ res = isempty(I.data) & isempty(I.file_name);
 return
 
 function res = i_set_ui(I)
-[fn pn] = uigetfile(...
-    I.filter_spec, ...
-    ['Select ' I.title '...']);
+[fn pn] = uigetfile(I.filter_spec, ['Select ' I.title '...']);
 if isequal(fn,0) | isequal(pn,0), res = []; return, end
 res = i_set(I, [], fullfile(pn, fn));
 return
@@ -361,7 +359,14 @@ if i_need_save(I) | any(flags == 'f') % force flag
       if strcmp(save_yn, 'No'), return, end
     end
     prompt = ['Filename to save ' I.title]; 
-    [f p] = uiputfile(I.filter_spec, prompt, filename);
+    
+    % matlab 5.3 does not allow pass of third string arg
+    mlv = version; mlv = str2num(mlv(1:3));
+    if mlv < 6
+      [f p] = uiputfile(filename, prompt);
+    else
+      [f p] = uiputfile(I.filter_spec, prompt, filename);
+    end
     if all(f==0), return, end
     filename = fullfile(p, f);
   end
