@@ -25,6 +25,7 @@ Fgraph = spm_figure('GetWin','Graphics');
 spm_results_ui('Clear',Fgraph,0)
 
 [T R] = summary_size(o);
+if ~prod([T R]), warning('No data to plot'), return, end
 Y = summary_data(o);
 N = region_name(o);
 S = sumfunc(o);
