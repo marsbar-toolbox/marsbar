@@ -522,6 +522,8 @@ if nargin < 2 | isempty(varargin{2})
 end
 if nargin < 3
   flags = '';
+else
+  flags = varargin{2};
 end
 if isempty(flags), flags = ' '; end
 o = varargin{2};
