@@ -276,14 +276,14 @@ for a = 1:length(actions)
     % Whether to average covariance estimates over voxels
     SPM.xVi.cov_calc = 'summary';
     if vox_cov_possible
-      if spm_input('Use voxel data for covariance','+1','y/n', [1 0], 2);
+      if spm_input('Use voxel data for covariance','+1','y/n', [1 0], 1);
 	SPM.xVi.cov_calc = 'vox';
       end
     end
     
     % fill into design
     SPM.xVi.form = cVi;
-    xsDes = struct('Intrinsic_correlations', SPM.xVi.form);
+    xsDes = struct('Serial_correlations', SPM.xVi.form);
     SPM.xsDes = mars_struct('ffillmerge', SPM.xsDes, xsDes);
   
    otherwise
