@@ -1,37 +1,5 @@
 To do list
 ----------
 
-Fields in spmD used by marsbar estimatation
-mars_stat
-spm99/mars      spm2
-xX		
-xX.X
-xX.xVi          xVi
-xX.xVi.Vi	xVi.Vi
-xX.K
-xX.Xnames     - xX.name 
-
-Fields added
-xX.V            xVi.V
-xX.xKXs                      %-Filtered design matrix
-xX.pKX     
-xX.pKXV	       %-for contrast variance weight
-xX.Bcov	       %-Variance of est. param.
-xX.trRV        % 
-xX.trRVRV      %-Variance expectations
-xX.nKX         % scaled design matrix for display 
-[xCon]
-
-check images function.
-
-add pairs of get/set functions for mardo 
-
-Remove mars_mm_model, I guess
-Script to fish out version, do CVS export, and pack in release directory
-Test rig with various models for estimation 
-
 Odd EoI + subset contrast error in MV routine.
-Adding of names, label for ROI import.
-
-Test...
 
