@@ -112,6 +112,9 @@ end
 % fill with defaults, parse into fields for this object, children
 [pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
+% add cvs tag
+pparams.cvs_version = mars_cvs_version([myclass filesep myclass]);
+
 % set the mardo object
 o  = class(pparams, myclass);
 
@@ -184,7 +187,6 @@ if ~is_marsed(o)
   end % has_images, design/running SPM version differ
   % Add Mars tag 
   o = mars_tag(o, struct(...
-      'ver', marsbar('ver'),...
       'flipped', flip_option(o)));
 end
 
