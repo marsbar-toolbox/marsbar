@@ -1,12 +1,13 @@
-function [spmD, dtype, changef] = mars_fill_design(spmD, filltype)
-% fills missing entries from SPM FMRI design matrix
-% FORMAT [spmD, dtype, changef] = mars_fill_design(spmD, filltype)
+function [spmD,changef] = mars_fill_design(spmD, fill_flags)
+% fills missing entries from SPM FMRI design matrix (spm2 version)
+% FORMAT [spmD,changef] = mars_fill_design(spmD, fill_flags)
 % 
-% spmD     - structure containing SPM design
-% filltype - whether to fill for image info 'img' or not ('')
+% spmD       - structure containing SPM design
+% fill_flags - string with zero or more character flags from
+%            'i' - fill in with images (if not already present)
+%            'f' - fill in with filter details (even if present)
 %
 % spmD     - returned SPM design
-% dtype    - design type (SPMcfg, SPMcfg_mars)
 % changef  - whether the design has been changed by the function
 %
 % Copied/pasted from spm_fmri_spm_ui
@@ -18,52 +19,39 @@ if nargin < 1
   error('Need SPM design structure');
 end
 if nargin < 2
-  filltype = 'img';
+  fill_flags = '';
+end
+if isempty(fill_flags)
+  fill_flags = ' ';
 end
 changef = 0;
 
-global BCH; %- used as a flag to know if we are in batch mode or not.
+fill_imgs = 0; fill_filt = 0; will_have_imgs = 0;
+if any(fill_flags == 'i'), fill_imgs = 1; will_have_imgs = 1; end
+if any(fill_flags == 'f'), fill_filt = 1; end
 
-% determine fill type
+% refuse to refill images if already present
+% perverse I know, but otherwise can't use SPM2 routines simply
 if isfield(spmD, 'VY')
-  % already have images - return
-  dtype = 'SPMcfg';
-  return
+  disp('Design already contains images...');
+  will_have_imgs = 1; 
+  fill_imgs = 0; 
 end
 
-% determine fill options
-if strcmp(filltype, 'img')
-  % fill images, img related opts
-  fill_imgs = 1;
-else
-  fill_imgs = 0;
-end
-if isfield(spmD.xX, 'K') % mars design -> cfg design
-  if ~fill_imgs
-    dtype = 'SPMcfg_mars';  
-    return
-  end
-  dtype = 'SPMcfg';  
-  fill_opts = 0;
-else % fMRI design -> mars design, or cfg design
-  fill_opts = 1;
-  if fill_imgs % -> cfg design
-    dtype = 'SPMcfg';
-  else % -> mars design
-    dtype = 'SPMcfg_mars';
-  end
+% Maybe nothing to do
+if ~(fill_imgs | fill_filt), return, end
+
+% Assume need both images and filter, use SPM2 interface
+if SPM2
+  if fill_imgs, spmD = spm_fmri_spm_ui(spmD); return, end
 end
 
-% OK, I guess we will have to do some work
+% Off we go
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
 changef = 1;
 
 % get SPMid 
-if strcmp(dtype, 'SPMcfg');
-  SPMid = spm('FnBanner',mfilename,'2.31');
-else
-  SPMid = 'MarsBar no image design';
-end
+SPMid = ['MarsBar filled design: version ' marsbar('ver')];
 
 % unpack fields to variables
 xX = spmD.xX;
@@ -126,7 +114,7 @@ if fill_imgs
   end
 end % img options
 
-if fill_opts
+if fill_filt
   % Temporal filtering
   %=======================================================================
   spm_input('Temporal autocorrelation options','+1','d',mfilename,'batch')
@@ -157,7 +145,7 @@ spm_clf(Finter);
 spm('FigName','Configuring, please wait...',Finter,CmdLine);
 spm('Pointer','Watch');
 
-if fill_opts
+if fill_filt
   % Construct K and Vi structs
   %=======================================================================
   K       = spm_filter('set',K);
@@ -175,7 +163,7 @@ if fill_opts
   end
 end
 
-if fill_opts & ~fill_imgs
+if fill_filt & ~will_have_imgs
   % set up empty global and masking structures
   xM = [];
   xGX = [];
@@ -234,7 +222,7 @@ if fill_imgs
 		      'xs',	struct('Masking','analysis threshold'));
 end
 
-if fill_opts
+if fill_filt
   %-Complete design matrix (xX)
   %=======================================================================
   xX.K   = K;
@@ -295,7 +283,7 @@ xsDes    = struct(	'Design',			DSstr,...
 			'Grand_mean_scaling',		sGMsca,...
 			'Global_normalisation',		Global);
 
-if fill_opts
+if fill_filt
   xsDes.High_pass_Filter = LFstr;
   xsDes.Low_pass_Filter  = HFstr;
 end
@@ -316,12 +304,11 @@ end
 spmD.xX = xX;
 spmD.Sess = Sess;
 spmD.xsDes = xsDes;
-spmD.cfg = dtype;
 spmD.xGX = xGX;
 spmD.xM = xM;
 spmD.SPMid = SPMid;
 
-if fill_opts 
+if fill_filt 
   spmD.F_iX0 = F_iX0;
 end
 

@@ -3,5 +3,31 @@ To do list
 
 try / catch round load in mars_armoire
 
-move mars_fill_design to version directories
-force edit of filter in mars_fill_design
+delete mars_extract_data, add mars_image_scaling
+
+add @mardo, @mardo_2, @mardo_99
+add mars_arm_call
+
+Strategy is to use an object to contain MarsBaR / SPM designs
+Not quite worked out yet.
+
+Fields in spmD used by marsbar estimatation
+mars_stat
+xX
+xX.X
+xX.xVi
+xX.xVi.Vi
+xX.K
+xX.Xnames
+
+Fields added
+xX.V
+xX.xKXs     %-Filtered design matrix
+xX.pKX     
+xX.pKXV	       %-for contrast variance weight
+xX.Bcov	       %-Variance of est. param.
+xX.trRV        % 
+xX.trRVRV      %-Variance expectations
+xX.nKX         % scaled design matrix for display 
+[xCon]
+
