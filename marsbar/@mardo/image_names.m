@@ -4,7 +4,7 @@ function P = image_names(D)
 %
 % $Id$
   
-P = {''};
+P = {};
 if has_images(D)
   VY = get_images(D);
   P = reshape({VY.fname},size(VY));
