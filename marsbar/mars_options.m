@@ -90,7 +90,7 @@ switch lower(optstr)
   mars.roidefs.spm_hold = 1;
   
   % default summary function for ROI data
-  mars.statistics.sumfunc = 'ask';
+  mars.statistics.sumfunc = 'mean';
   
   % flag to indicate voxel data should be used to calculate filter
   mars.statistics.voxfilter = 0;
