@@ -194,6 +194,8 @@ elseif strcmp(action,'SavePos');
 
   s = struct('XYZ',pPos','mat',Pos_mat);
   roi_o = maroi_pointlist(s,'vox');
+  [pn fn ext] = fileparts(Volume(NumVol).Vol.fname);
+  roi_o = descrip(roi_o, ['ROI drawn on ' fn]);
   marsbar('saveroi',roi_o);
   realy_refresh = 1;
 
