@@ -43,18 +43,6 @@ case 'desrepui'                                    %-Design reporting UI
 % h = spm_DesRep('DesRepUI')
 % h = spm_DesRep('DesRepUI',SPM)
 
-%-Canonicalise data
-%=======================================================================
-%-Work out where design configuration has come from!
-if ~isfield(SPM,'cfg')
-	if     isfield(SPM.xX,'V'),		cfg = 'SPMest';
-	elseif isfield(SPM.xY,'VY'), 		cfg = 'SPMdata';
-	elseif isfield(SPM,'Sess'),		cfg = 'SPMcfg';
-	else, error('Can''t fathom origin!')
-	end
-	SPM.cfg = cfg;
-end
-
 %-Add a scaled design matrix to the design data structure
 %-----------------------------------------------------------------------
 if ~isfield(SPM.xX,'nKX')
@@ -75,14 +63,10 @@ delete(findobj(get(Finter,'Children'),'flat','Tag','DesRepUI'))
 %-Draw top level menu
 %-----------------------------------------------------------------------
 hC      = uimenu(Finter,'Label','Design',...
-		'Separator','on',...
-		'Tag','DesRepUI',...
-		'UserData',D,...
-		'HandleVisibility','on');
-
-%-Generic CallBack code
-%-----------------------------------------------------------------------
-cb      = 'tmp = get(get(gcbo,''UserData''),''UserData''); ';
+		 'Separator','on',...		
+		 'Tag','DesRepUI',...
+		 'UserData',D,...
+		 'HandleVisibility','on');
 
 %-DesMtx
 %-----------------------------------------------------------------------
@@ -91,8 +75,6 @@ hDesMtx = uimenu(hC,'Label','Design Matrix','Accelerator','D',...
 		'ui_report(tmp, ''DesMtx'')'],...
 		'UserData',hC,...
 		'HandleVisibility','off');
-
-if strcmp(SPM.cfg,'SPMcfg'), set(hDesMtx,'Enable','off'), end
 
 %-Design matrix orthogonality
 %-----------------------------------------------------------------------
@@ -158,7 +140,7 @@ case 'files&factors'                         %-Summarise files & factors
 % spm_DesRep('Files&Factors',fnames,I,xC,sF,xs)
 fnames  = image_names(D);
 if isempty(fnames)
-  fnames = cell(size(SPM.xX.X, 1));
+  fnames = cell(size(SPM.xX.X, 1), 1);
 end
 
 I       = SPM.xX.I;
@@ -299,10 +281,6 @@ case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 
 xX      = SPM.xX;
 fnames  = image_names(D);
-if isempty(fnames)
-  fnames = cell(size(SPM.xX.X, 1));
-end
-
 xs      = SPM.xsDes;  %-Structure of description strings
 
 desmtx = strcmp(lower(varargin{1}),'desmtx');
