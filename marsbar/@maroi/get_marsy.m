@@ -43,12 +43,7 @@ else
   flags = varargin{r+2};
 end
 if isempty(flags), flags = ' '; end
-if any(flags == 'v')
-  vf = 1; 
-  fprintf('\n\n');
-else 
-  vf = 0; 
-end
+vf = any(flags == 'v');
 
 % images can come from a design
 xsDes = 'None';
@@ -62,25 +57,27 @@ end
 
 % or be filenames
 if ischar(VY)
-  if vf, fprintf('\n%-40s: %30s','Mapping files',' ');end
+  if vf, fprintf('%-40s: ','Mapping files');  end
   VY = spm_vol(VY);
-  if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done');end
+  if vf, fprintf('%30s\n','...done'); end
 end
 
-if vf, fprintf('Fetching data...'); end
+if vf, fprintf('%-40s: %30s','Fetching data',' '); end
 rlen = length(roi_array);
 rno = 0;
 for r = 1:rlen
   if vf
-    fprintf('%s%30s',sprintf('\b')*ones(1,30),sprintf('%4d/%-4d',r,rlen))
+    fprintf('%s%30s',...
+	    sprintf('\b')*ones(1,30),...
+	    sprintf('%4d/%-4d',r, rlen));
   end
   o = roi_array{r};
   [y vals vXYZ mat]  = getdata(o, VY);
   [ny nvals] = size(y);
   if isempty(y)
-    if vf, fprintf('\n');end
+    if vf, fprintf('\n'); end
     warning(sprintf('No valid data for roi %d (%s)', r, label(o)));
-    if vf & r < rlen, fprintf('%-40s: %30s','Fetching data',' '); end
+    if vf & (r < rlen), fprintf('%-40s: %30s','Fetching data',' '); end
   else
     rno = rno + 1;
     
@@ -103,5 +100,5 @@ marsY = marsy(r_data, r_info, struct(...
     'descrip', ['Data extracted from ' label(o)],...
     'info', struct('VY', VY)));
 
-if vf, fprintf('...done\n'); end
+if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
 
