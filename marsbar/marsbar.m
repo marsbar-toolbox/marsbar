@@ -508,14 +508,13 @@ roilist = spm_get(Inf,'_roi.mat','Select ROI(s) to combine');
 if isempty(roilist)
   return
 end
+roilist = maroi('load_cell', roilist);
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Combine ROIs');
 spm_input('(r1 & r2) & ~r3',1,'d','Example function:');
 func = spm_input('Function to combine ROIs', '+1', 's', '');
 if isempty(func), retnrn, end
-rlen = size(roilist,1);
-for i = 1:rlen
-  o = maroi('load', deblank(roilist(i,:))); 
-  eval(['r' num2str(i) '=o;']);
+for i = 1:length(roilist)
+  eval(sprintf('r%d = roilist{%d};', i, i));
 end
 try
   eval(['o=' func ';']);
@@ -551,7 +550,7 @@ if isempty(roilist)
   return
 end
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Flip ROI L<->R');
-o = maroi('load', deblank(roilist)); 
+o = maroi('load', roilist);
 o = flip_lr(o);
 
 % save ROI
@@ -608,9 +607,7 @@ end
 sumfunc = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
 
 % ROI names to objects
-for i = 1:size(roi_list, 1)
-  o{i} = maroi('load', deblank(roi_list(i,:)));
-end
+o = maroi('load_cell', roi_list);
 
 % Do data extraction
 marsY = get_marsy(o{:}, VY, sumfunc, 'v');
@@ -1250,16 +1247,15 @@ end
 disp(['Saved error log as ' fname]);
 
 %=======================================================================
-case 'show_volume'           %- shows ROI volume in mm 
+case 'show_volume'                   %- shows ROI volume in mm to conole 
 %=======================================================================
 % marsbar('show_volume')
 %-----------------------------------------------------------------------
-roi = spm_get([0 Inf], 'roi.mat', 'Select ROIs tp get volume');
-if isempty(roi),return,end
-for i = 1:size(roi, 1)
-  n = deblank(roi(i,:));
-  r = maroi('load', n);
-  fprintf('Volume of %s: %6.2f\n', n, volume(r));
+roi_names = spm_get([0 Inf], 'roi.mat', 'Select ROIs tp get volume');
+if isempty(roi_names),return,end
+rois = maroi('load_cell', roi_names);
+for i = 1:size(rois, 1)
+  fprintf('Volume of %s: %6.2f\n', source(rois{i}), volume(rois{i}));
 end
 return
 
