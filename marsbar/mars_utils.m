@@ -27,6 +27,13 @@ function varargout=mars_utils(varargin)
 %    with optional title (char) title_string.  Can also set to display to
 %    other figure window (string or figure handle).
 %
+% mars_utils('spm_version', [check_global])
+%    Gets SPM version string.  Robust version to allow there to be
+%    versions of the spm.m file to not have Contents.m files in the same
+%    directory.  If optional flag check_global is zero, does _not_ check
+%    global SPM_VER variable for version, and tries to get directly from
+%    spm.m / Contents.m pairs.
+% 
 % $Id$
 
 if nargin < 1
@@ -179,6 +186,34 @@ for i = 1:prod(size(S))
   y = y - dy;
 end
  
+%=======================================================================
+case 'spm_version'                   % Robust get for SPM version string
+%=======================================================================
+
+if nargin < 2
+  check_global = 1;
+else
+  check_global = varargin{2};
+end
+
+if check_global
+  % Try global first
+  v_s = spm('GetGlobal', 'SPM_VER');
+  if isfield(v_s, 'v')
+    if ~strcmp(v_s.v, 'SPM'), varargout = {v_s.v}; return; end
+  end
+end
+
+% Next try all versions of spm.m on path
+ver = 'SPM';
+spm_ms = which('spm.m', '-all');  
+for s = 1:length(spm_ms)
+  ver = spm('ver', spm_ms{s}, 1, 1);
+  if ~strcmp(ver, 'SPM'),  break, end
+end
+
+varargout = {ver};
+
 otherwise
   error('Beyond my range');
 end

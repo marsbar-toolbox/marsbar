@@ -82,7 +82,7 @@ case 'on'                                           %-Initialise MarsBaR
 
 % promote spm replacement directory, affichevol directories
 mbpath = fileparts(which('marsbar.m'));
-spmV = spm('ver');
+spmV = mars_utils('spm_version');
 MARS.ADDPATHS = {fullfile(mbpath, ['spm' spmV(4:end)]),...
 		 fullfile(mbpath, 'fonct'),...
 		 fullfile(mbpath, 'init')};

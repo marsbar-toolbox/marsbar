@@ -239,7 +239,7 @@ end
 
 % sort out design image flipping
 dt = type(o);
-sv = spm('ver');
+sv = mars_utils('spm_version');
 if ~is_marsed(o) 
   if sf_tf(has_images(o)) & ~strcmp(dt,sv)
     flippo = flip_option(o);
