@@ -21,6 +21,8 @@ if ~mars_utils('isabspath', fname)
     error('No path passed, and none in design');
   end
   fname = fullfile(swd, fname);
+else
+  SPM.swd = fileparts(fname);
 end
 
 try 
