@@ -72,11 +72,11 @@ switch GLM_resol
 		end
 		% else assume that the filter is xX.K
 	
-		KVi    = spm_filter('apply', xX.K, xX.xVi.Vi); 
-		V      = spm_filter('apply', xX.K, KVi'); 
-		Y      = spm_filter('apply', xX.K, Y);
+		KVi    = mars_filter('apply', xX.K, xX.xVi.Vi); 
+		V      = mars_filter('apply', xX.K, KVi'); 
+		Y      = mars_filter('apply', xX.K, Y);
 		fprintf('Setting filter...');
-		KXs    = spm_sp('Set', spm_filter('apply', xX.K, xX.X));
+		KXs    = spm_sp('Set', mars_filter('apply', xX.K, xX.X));
 		fprintf('Done.\n');
 		clear KVi;
 

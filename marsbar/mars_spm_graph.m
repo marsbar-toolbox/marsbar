@@ -94,7 +94,7 @@ beta  = mRes.betas(:, rno);
 
 %-Compute residuals
 %-----------------------------------------------------------------------
-R   = spm_sp('r',xX.xKXs,spm_filter('apply',xX.K,y));
+R   = spm_sp('r',xX.xKXs,mars_filter('apply',xX.K,y));
 
 %-Residual mean square: ResMS = sum(R.^2)/xX.trRV;
 %-----------------------------------------------------------------------
@@ -333,7 +333,7 @@ case 'Event/epoch-related responses'
 
 			% fitted responses with standard error
 			%----------------------------------------------
-			KX       = spm_filter('apply',K,X);
+			KX       = mars_filter('apply',K,X);
 			Y(q,s)   = KX*B;
 			se(:,s)  = sqrt(diag(X*xX.Bcov(j,j)*X')*ResMS);
 		end
@@ -454,7 +454,7 @@ case 'Plots of parametric responses'
 				'row',		q,...
 				'RT',		xX.dt);
 
-	KX    = spm_filter('apply',K,X);
+	KX    = mars_filter('apply',K,X);
 	p     = size(SF,2);
 	b     = [];
 	for i = 1:size(KX,2)

@@ -21,6 +21,8 @@ switch lower(arg)
  case 'stat_buttons'
   varargout = {{'PET/SPECT models', 'fMRI models','Basic models'...
 	 'Explore design', 'Estimate', 'Results'}};
+ case 'flip_option'
+  varargout = {0};
  otherwise
   error(['You asked for ' arg ', which is strange']);
 end

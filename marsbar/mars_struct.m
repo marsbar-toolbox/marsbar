@@ -1,6 +1,13 @@
 function varargout = mars_struct(action, varargin)
 % multifunction function for manipulating structures
 %
+% To help the exposition a bit: 
+% 'fill' in a name, means that values empty or missing 
+% in one structure are fetched from another
+% 
+% 'merge' means simply that missing fields are added, with
+% values, from a second structure (but not filled if empty)
+%
 % FORMAT c = mars_struct('fillafromb', a, b, fieldns, flags)
 % fills structure fields empty or missing in a from those present in b
 % a, b are structures
@@ -23,12 +30,17 @@ function varargout = mars_struct(action, varargin)
 % merges structure a and b (fields present in b added to a)
 %
 % FORMAT [c,d] = mars_struct('fillsplit', a, b)
-% fills fields in a from those present in b, returns a, remaining b
+% fills fields in a from those present in b, returns as c, remaining d
 % a, b are structures
 % c, d are returned structure
 %
-% FORMAT [c,d] = mars_struct('fillmerge', a, b)
+% FORMAT c = mars_struct('fillmerge', a, b)
 % performs 'fillsplit' on a and b, then merges a and b
+% This is very similar to, but simpler than, fillafromb
+%
+% FORMAT [c d] = mars_struct('splitmerge', a, b)
+% performs 'split' on a and b, creating c and d
+% d is returned, c is merged with b to give returned c
 %
 % $Id$
 
@@ -159,6 +171,10 @@ switch lower(action)
  case 'fillmerge'
   [a b] = mars_struct('fillsplit', a, b);
   varargout = {mars_struct('merge', a, b)};
+  
+ case 'splitmerge'
+  [a c] = mars_struct('split', a, b);
+  varargout = {mars_struct('merge', a, b) c};
   
  case 'otherwise'
   error(['Suspicious action was ' action]);

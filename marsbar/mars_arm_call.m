@@ -25,8 +25,14 @@ switch lower(action)
 
   I = varargin{1};
 
-  % Do any required processing of design
-  [I.data I.has_changed] = mars_process_design(I.data);
+  % Make design into object, do conversions
+  I.data = mardo(I.data);
+  if ~is_valid_design(I.data)
+    errf = 1; 
+    msg = 'This does not appear to be a valid design';
+    res = [];
+    return
+  end
   
   % Unload roi data if design has been set, and data exists
   if ~mars_armoire('isempty', 'roi_data')

@@ -1,8 +1,8 @@
-function [K, LFstr, HFstr]= mars_get_filter(RT, row)
+function [K, LFstr, HFstr]= get_filter(RT, row)
 % gets filter using spm_fmri_spm_ui routines
-% FORMAT [K, LFstr, HFstr]= mars_get_filter(RT, row)
+% FORMAT [K, LFstr, HFstr]= get_filter(RT, row)
 % or
-% FORMAT [K, LFstr, HFstr]= mars_get_filter(RT, Sess)
+% FORMAT [K, LFstr, HFstr]= get_filter(RT, Sess)
 %
 % $Id$
   

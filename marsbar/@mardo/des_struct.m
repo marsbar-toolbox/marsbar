@@ -1,6 +1,8 @@
-function result = des_struct(obj, Struct)
+function res = des_struct(obj, Struct)
 % get/set method for des_struct field
 if nargin > 1
   obj.des_struct = Struct;
+  res = obj;
+else
+  res = obj.des_struct;
 end
-result = obj.des_struct;

@@ -1,12 +1,40 @@
 function [o, others] = mardo(params)
 % mardo - class constructor for MarsBaR design object
 % inputs [defaults]
-% params  - structure, containing SPM/MarsBaR design
+% params  - structure, either:
+%             containing SPM/MarsBaR design or
+%             containing fields for mardo object, which should include
+%             'des_struct', containing design structure
+%
+% outputs
+% o       - mardo object
+% others  - any unrecognized fields from params, for processing by
+%           children
+%
+% mardo is a simple object to contain SPM designs. It allows us to
+% deal with different design formats by overloading functions in 
+% child objects, here for harmonizing between SPM2 and SPM99 designs
+% 
+% Fields 
+% des_struct - structure containing SPM design
+% 
+% Methods
+% is_valid_design - returns 1 if des_struct contains a valid design
+% has_images   - returns 1 if the design contains images
+% has_filter   - returns 1 if the design contains a filter
+% modality     - returns 'FMRI' for an FMRI design, else 'PET'
+% design_type  - returns SPM version string corresponding to design type
+% is_marsed    - returns 1 if design has been processed with MarsBaR
+% is_spm_estimated - returns 1 if design has SPM estimation data
+% is_mars_estimated - returns 1 if design has Mars estimation data
+% 
+% strip_spm_estimation - returns object without SPM estimation data
 %
 % $Id$
   
 myclass = 'mardo';
-defstruct = struct('des_struct', [], 'verbose', 1);
+defstruct = struct('des_struct', [],...
+		   'flip_option', 0);
 
 if nargin < 1
   params = [];
@@ -17,12 +45,11 @@ if isa(params, myclass)
 end
 
 % check inputs
-if ~isstruct(params)
-  error('Need structure as input to constructor function');
-end
-if ~isfield(params, 'des_struct')
-  % Appears to be an SPM design
-  params.des_struct = params;
+if isstruct(params)
+  if ~isfield(params, 'des_struct')
+    % Appears to be an SPM design
+    params.des_struct = params;
+  end
 end
 
 % fill with defaults, parse into fields for this object, children
@@ -32,7 +59,30 @@ end
 o  = class(pparams, myclass);
 
 % offer as food to children
-o = mardo_99(o, others);
 o = mardo_2(o, others);
+% note that the returned object might not be child object
 
+% sort out flipping
+dt = design_type(o);
+sv = spm('ver');
+if ~is_marsed(o) & has_images(o) & ~strcmp(dt,sv)
+  fprintf('This a design from %s, but you are currently using %s\n',...
+	  dt, sv);
+  fprintf(['Results may be flipped when estimating ' ...
+	  'in different SPM versions\n']);
+  flip_option = flip_option(o);
+  switch flip_option
+   case 1
+    o = flip_images(o);
+    add_str = '';
+   case 0
+    add_str = 'not ';
+   otherwise
+    error(['Do not recognize flip option ' o.flip_option]);
+  end
+  fprintf('Images have %sbeen flipped in design\n', add_str);
+  o = mars_tag(o, struct(...
+      'ver', marsbar('ver'),...
+      'flipped', flip_option));
+end
 return

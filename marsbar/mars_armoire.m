@@ -31,6 +31,7 @@ function varargout = mars_armoire(action, item, data, filename)
 %                  can pass flags as data arg, none or more of
 %                  f - force save even if not flagged as needed
 %                  w - GUI warn if no data
+%                  y - start save with save y/n dialog
 % save 'all'     - saves data for all items, if required
 % update         - updates data, sets flag to show change
 % clear          - clears data for item
@@ -127,7 +128,7 @@ if ~ismember(action, {'add', 'add_if_absent', 'exist'})
     % If item is 'all', do this action for all items
     a = {};
     for fn = flist'
-      a{end+1} = mars_armoire(action, fn{1}, data);
+      a{end+1} = mars_armoire(action, fn{1}, data, filename);
     end
     varargout = a;
     return
@@ -339,8 +340,11 @@ if is_nix(filename), filename = I.default_file_name; end
 if i_need_save(I) | any(flags == 'f') % force flag
   % prompt for filename if UI
   if any(flags == 'u')
-    save_yn = questdlg(['Save ' I.title '?'],'Save', 'Yes', 'No', 'Yes');
-    if strcmp(save_yn, 'No'), return, end
+    if any(flags == 'y')
+      save_yn = questdlg(['Save ' I.title '?'],...
+			 'Save', 'Yes', 'No', 'Yes');
+      if strcmp(save_yn, 'No'), return, end
+    end
     prompt = ['Filename to save ' I.title]; 
     [f p] = uiputfile(filename, prompt);
     if all(f==0), return, end
