@@ -1,11 +1,14 @@
-function res = test_rig(design_paths, flags)
+function res = test_rig(design_paths, params)
 % runs tests on MarsBaR using specified designs
-% FORMAT res = test(design_paths, flags)
+% FORMAT res = test(design_paths, params)
 % 
 % Inputs
-% design_paths     - paths to SPM design files
-% flags            - cell array of flags; none or more of
-%                    'redo_covar', 'redo_whitening'
+% design_paths     - path(s) to SPM design files
+% params           - structure giving params to pass to estimate method,
+%                    see help for do_estimate methods for details
+%                    Default is
+%                    params = struct('redo_covar', 0, ...
+%                      		  'redo_whitening', 0);
 % 
 % Outputs
 % res              - 1 if all tests passed, 0 otherwise
@@ -26,19 +29,19 @@ if nargin < 1
   design_paths = spm_get([0 Inf], 'SPM*.mat', 'Select SPM designs');
 end
 if nargin < 2
-  flags = {};
+  params = struct('redo_covar', 0, ...
+		  'redo_whitening', 0);
 end
-if ~iscell(flags), flags = {flags}; end
 
 n_designs = size(design_paths, 1);
 res = zeros(n_designs, 1);
 for d = 1:n_designs
   d_path = deblank(design_paths(d,:));
-  res(d) = sf_test_design(d_path, flags);
+  res(d) = sf_test_design(d_path, params);
 end
 return
 
-function res = sf_test_design(d_path, flags)
+function res = sf_test_design(d_path, params)
 % tests one design
   
 % Check for SPM estimated design, with estimated contrasts
@@ -83,7 +86,7 @@ for c = 1:length(Ic)
   mx_roi(c) = maroi_pointlist(struct('XYZ', xyz(:, c), ...
 				     'mat', V.mat), 'vox');
   Y = get_marsy(mx_roi(c), D, 'mean');
-  E = estimate(D, Y, flags);
+  E = estimate(D, Y, params);
   [E n_Ic] = add_contrasts(E, D, Ic(c));
   marsS = compute_contrasts(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
