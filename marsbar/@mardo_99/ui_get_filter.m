@@ -21,7 +21,7 @@ SPM.xsDes.High_pass_Filter = Lf;
 SPM.xsDes.Low_pass_Filter  = Hf;
 
 % return args
-D = des_struct(SPM);
+D = des_struct(D, SPM);
 
 descrip = {['High_pass_Filter:\t%s', Lf],...
 	   ['Low_pass_Filter: \t%s', Hf]};

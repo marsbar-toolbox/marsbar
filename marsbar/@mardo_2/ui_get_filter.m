@@ -19,5 +19,5 @@ end
 SPM.xsDes.High_pass_Filter = str;
 
 % return args
-D = des_struct(SPM);
+D = des_struct(D, SPM);
 descrip = {str};
