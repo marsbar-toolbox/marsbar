@@ -111,7 +111,7 @@ if fill_imgs
     end
   end
 
-  % Assemble other deisgn parameters
+  % Assemble other design parameters
   %=======================================================================
   spm_help('!ContextHelp',mfilename)
   spm_input('Global intensity normalisation...',1,'d',mfilename,'batch')
