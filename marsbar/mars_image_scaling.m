@@ -1,5 +1,6 @@
-function VY = mars_image_scaling(marsD)
+function [VY,row] = mars_image_scaling(marsD)
 % get image scaling data for images, maybe via SPM design
+% FORMAT [VY,row] = mars_image_scaling(marsD)
 %-----------------------------------------------------------------------
 %
 % Inputs
@@ -7,6 +8,8 @@ function VY = mars_image_scaling(marsD)
 % 
 % Returns
 % VY         - SPM vol structs with selected scaling
+% row        - cell array, one per subject/session giving corresponding
+%              rows in for VY array
 %
 % $Id$
 
@@ -126,8 +129,8 @@ q      = length(VY);
 g      = zeros(q,1);
 fprintf('%-40s: %30s','Calculating globals',' ')                     %-#
 for i  = 1:q
-	fprintf('%s%30s',sprintf('\b')*ones(1,30),sprintf('%4d/%-4d',i,q)) %-#
-	g(i) = spm_global(VY(i));
+  fprintf('%s%30s',sprintf('\b')*ones(1,30),sprintf('%4d/%-4d',i,q)) %-#
+  g(i) = spm_global(VY(i));
 end
 fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
 
@@ -140,10 +143,10 @@ end
 %-----------------------------------------------------------------------
 gSF     = GM./g;
 if strcmp(Global,'None')
-	for i = 1:nsess
-		j      = row{i};
-		gSF(j) = GM./mean(g(j));
-	end
+  for i = 1:nsess
+    j      = row{i};
+    gSF(j) = GM./mean(g(j));
+  end
 end
 
 %-Apply gSF to memory-mapped scalefactors to implement scaling
