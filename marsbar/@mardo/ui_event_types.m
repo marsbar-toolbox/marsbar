@@ -8,7 +8,9 @@ function [D, ic, status] = ui_event_types(D)
 % Returns  
 % D          - possibly modified design object
 % ic         - indices of selected event types (empty for none)
-% status     - 0 for Cancel or window quit, 1 for OK
+% status     - 0 for Cancel or window quit
+%              1 for OK, but no edits to event types
+%              2 for OK, with edits to event types
 % 
 % The routine sets up the event type window, and waits until that window
 % is done, then returns with the modified values.
@@ -16,7 +18,7 @@ function [D, ic, status] = ui_event_types(D)
 % $Id$
   
 % Put up window and initialize callbacks
-[F hDone hList] = sf_start_window(D);
+[F hDone hList hEdit] = sf_start_window(D);
 
 % Wait for OK, Cancel, figure cleared.
 waitfor(hDone,'UserData')
@@ -28,6 +30,8 @@ if ~ishandle(hDone)
 else
   status = get(hDone, 'UserData');
   if status
+    % Edit control contains info as to whether edits done
+    status = status + get(hEdit, 'UserData');
     D = get(F, 'UserData');
     if ~isempty(event_types(D))
       ic = get(hList, 'Value');
@@ -38,7 +42,7 @@ end
 
 return
 
-function [F, hDone, hList] = sf_start_window(D)
+function [F, hDone, hList, hEdit] = sf_start_window(D)
 % Put up window and set up callbacks
   
 %-Generic CallBack code to get embedded object 
@@ -124,14 +128,14 @@ uicontrol(F,...
 	  'Position',[button_x buttons_y(3) button_sz].*WS);
 
 % Edit
-uicontrol(F,...
-	  'Style','Pushbutton','String','Edit',...
-	  'ToolTipString','Edit - press after selecting an event type',...
-	  'ForegroundColor','k',...
-	  'Tag','Edit','UserData',-1,...
-	  'Callback',[cb 'ui_event_types_cb(cbD, ''Edit'')'] ,...
-	  'Interruptible','off','BusyAction','Cancel',...
-	  'Position',[button_x buttons_y(4) button_sz].*WS);
+hEdit = uicontrol(F,...
+		  'Style','Pushbutton','String','Edit',...
+		  'ToolTipString','Edit - press after selecting an event type',...
+		  'ForegroundColor','k',...
+		  'Tag','eEdit','UserData',0,...
+		  'Callback',[cb 'ui_event_types_cb(cbD, ''Edit'')'] ,...
+		  'Interruptible','off','BusyAction','Cancel',...
+		  'Position',[button_x buttons_y(4) button_sz].*WS);
 
 % New
 uicontrol(F,...
@@ -144,7 +148,7 @@ uicontrol(F,...
 	  'Position',[button_x buttons_y(5) button_sz].*WS);
 
 % Event type list
-et = event_types(cbD);
+et = event_types(D);
 if isfield(et, 'name')
   eNames = {et(:).name};
 else
