@@ -48,10 +48,12 @@ for i_no = 1:n_items
   item = item_list{i_no};
   I = get_item_struct(o, item);
   tmp_flags = flags;
+  
+  % If there is no valid filename, do UI save
   if pr_is_nix(filename) & ...
 	isempty(I.file_name)
     tmp_flags.ui = 1;
   end
-  [saved_f I] = pr_save(I, tmp_flags, filename);
-  o.items = setfield(o.items, item, I);
+  
+  [saved_f o] = do_save(o, item, tmp_flags, filename);
 end

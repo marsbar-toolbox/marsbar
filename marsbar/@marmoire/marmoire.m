@@ -94,9 +94,10 @@ function [o, others] = marmoire(params, varargin)
 % item_struct     - proposed whole item field contents
 % data            - proposed data to be inserted 
 % passed_filename - filename passed to function
+% o               - the whole object
 % 
 % and anything else you can see in context, for the line containing the
-% 'eval' statement in the file private/pr_set.m
+% 'eval' statement in the do_set method
   
 myclass = 'marmoire';
 defstruct = struct('items', []);

@@ -14,6 +14,4 @@ if nargin < 2
   error('Need item to clear data');
 end
 
-I = get_item_struct(o, item);
-I = pr_set(I, 'clear', [], '');
-o.items = setfield(o.items, item, I);
+o = do_set(o, item, 'clear', [], '');

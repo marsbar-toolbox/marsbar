@@ -22,7 +22,4 @@ if nargin < 4
   filename = NaN;
 end
 
-I = get_item_struct(o, item);
-I = pr_set(I, 'update', data, filename);
-I.has_changed = 1;
-o.items = setfield(o.items, item, I);
+o = do_set(o, item, 'update', data, filename);

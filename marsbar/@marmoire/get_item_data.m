@@ -16,11 +16,10 @@ function [res, o] = get_item_data(o, item)
 if nargin < 2
   error('Need item');
 end
-I = get_item_struct(o, item);
-if pr_isempty(I)
-  I = pr_set_ui(I);
-  o.items = setfield(o.items, item, I);
+if isempty_item_data(o, item)
+  o = do_set(o, item, 'set_ui');
 end
+I = get_item_struct(o, item);
 res = I.data;
 if isempty(res) & ~isempty(I.file_name)
   res = load(I.file_name, ['-' I.file_type]);

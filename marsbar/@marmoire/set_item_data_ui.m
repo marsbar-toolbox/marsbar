@@ -13,6 +13,5 @@ function o = set_item_data_ui(o, item)
 if nargin < 2
   error('Need item to set to');
 end
-I = get_item_struct(o, item);
-I = pr_set_ui(I);
-o.items = setfield(o.items, item, I);
+
+o = do_set(o, item, 'set_ui');

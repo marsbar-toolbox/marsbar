@@ -24,11 +24,9 @@ if nargin < 4
   filename = NaN;
 end
 
-I = get_item_struct(o, item);
-
 if pr_is_nan(data) & pr_is_nan(filename)
-  I = pr_set_ui(I);
+  action = 'set_ui';
 else
-  I = pr_set(I, 'set', data, filename);
+  action = 'set';
 end
-o.items = setfield(o.items, item, I);
+o = do_set(o, item, action, data, filename);
