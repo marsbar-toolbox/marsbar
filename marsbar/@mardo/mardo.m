@@ -129,6 +129,7 @@ function [o, others] = mardo(params, others, passf)
 % $Id$
   
 myclass = 'mardo';
+cvs_v   = mars_cvs_version(myclass);
 
 % Default object structure; see also paramfields.m
 defstruct = struct('des_struct', [],...
@@ -136,7 +137,10 @@ defstruct = struct('des_struct', [],...
 		   'verbose', 1);
 
 if nargin < 1
-  params = [];
+  defstruct.cvs_version = cvs_v;
+  o = class(defstruct, myclass);
+  others = [];
+  return
 end
 if nargin < 2
   others = [];
@@ -144,8 +148,21 @@ end
 if nargin < 3
   passf = 1;
 end
+
+% Deal with passed objects of this (or child) class
 if isa(params, myclass)
-  o = params;
+  if ~isempty(others)
+    if isfield(others, 'des_struct')
+      error(['Cannot set des_struct field into object via constructor;\n' ...
+	     'Pleas use des_struct method']);
+    end
+    % fill any relevant object fields with passed parameters and return
+    [params, others] = mars_struct('ffillsplit', struct(params), others);
+    params.cvs_version = cvs_v;
+    o = class(params, myclass);
+  else
+    o = params;
+  end
   return
 end
 
@@ -168,9 +185,6 @@ end
 % children
 params = mars_struct('ffillmerge', params, others);
 [params, others] = mars_struct('ffillsplit', defstruct, params);
-
-% add cvs tag
-params.cvs_version = mars_cvs_version(myclass);
 
 % set the mardo object
 o  = class(params, myclass);

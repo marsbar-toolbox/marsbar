@@ -29,6 +29,8 @@ if nargin < 2
 end
 
 if isa(params, myclass)
+  % fill any relevant object fields with passed parameters and return
+  [params, others] = mars_struct('ffillsplit', params, others);
   o = params;
   return
 end
