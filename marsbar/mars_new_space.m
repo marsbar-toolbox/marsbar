@@ -36,7 +36,7 @@ if isempty(vox)
   % reassign original dimensions to best matching
   % of new dimensions
   [t o] = sort(vxsz);
-  vox2 = vox(o);
+  vox2(o) = sort(vox);
 else
   vox2 = vox;
 end
