@@ -81,6 +81,8 @@ if isempty(MARS) | ~isfield(MARS, 'ARMOIRE')
   MARS.ARMOIRE = [];
 end
 
+% NaN for an argument signals it has not been passed
+% empty means that it was passed, but was empty
 if nargin < 1 % no action
   error('Need action!');
   return
@@ -90,10 +92,10 @@ if nargin < 2  % no item
   return
 end
 if nargin < 3
-  data = [];
+  data = NaN;
 end
 if nargin < 4
-  filename = '';
+  filename = NaN;
 end
 
 % certain actions do not require valid item names
@@ -140,7 +142,7 @@ switch lower(action)
  case 'default_item'
   varargout = {i_def};
  case 'set'
-  if isempty(data) & isempty(filename)
+  if is_nan(data) & is_nan(filename)
     varargout = {i_set_ui(i_contents)};
   else
     varargout = {i_set(i_contents, data, filename)};
@@ -155,12 +157,14 @@ switch lower(action)
   varargout = {i_set_ui(i_contents)};
  case 'update'
   varargout = {i_set(i_contents, data, filename)};
+  i_contents = getfield(MARS.ARMOIRE, item);
   i_contents.has_changed = 1;
   i_dump(i_contents);
  case 'clear'
   varargout = {i_set(i_contents, [], '')}; 
  case 'save'
-  if isempty(filename) & isempty(i_contents.file_name)
+  if is_nix(filename) & ...
+	isempty(i_contents.file_name)
     varargout = {i_save_ui(i_contents, data, filename)};
   else
     varargout = {i_save(i_contents, data, filename)};
@@ -176,7 +180,7 @@ switch lower(action)
  otherwise
   % look in fieldnames
   if ismember(action, fieldnames(i_contents))
-    if ~isempty(data) % it's a set
+    if is_nan(data) % it's a set
       i_contents = setfield(i_contents, action, data);
       i_dump(i_contents);
     end
@@ -222,7 +226,7 @@ function res = i_set(I, data, filename)
 % optionally, treat char data as filename
 % but passed filename overrides char data
 if I.char_is_filename & ischar(data)
-  if ~isempty(filename)
+  if ~is_nix(filename)
     warning(sprintf(...
 	'Passed filename %s overrides data filename %s\n',...
 	filename, data));
@@ -232,7 +236,7 @@ if I.char_is_filename & ischar(data)
   data = [];
 end
 
-if isempty(filename) % may need to save if no associated filename
+if is_nix(filename) % may need to save if no associated filename
   I.has_changed = 1;
 else % don't need to save, but may need to load from file
   I.has_changed = 0;
@@ -241,6 +245,16 @@ else % don't need to save, but may need to load from file
   end
 end
 I.data = data;
+
+% If no filename passed:
+% if new set, filename is empty
+% if an update, filename stays
+is_update = strcmp(I.last_action, 'update');
+if is_nan(filename)
+  if ~is_update
+    filename = '';
+  end
+end  
 I.file_name = filename;
 
 % If this was a clear, don't flag for save
@@ -248,8 +262,7 @@ if i_isempty(I), I.has_changed = 0; end
 
 % and here is where we do the rules stuff
 if ~isempty(I.set_action) & ...
-	      ~(strcmp(I.last_action, 'update') & ...
-		     ~I.set_action_if_update)
+      (~is_update | I.set_action_if_update)
   eval(I.set_action)
 end
 
@@ -279,10 +292,10 @@ return
 
 function res = i_save(I, flags, filename)
 % data field is treated as flags
-if isempty(flags) | ischar(flags), flags == ' '; end
+if is_nix(flags) | ischar(flags), flags == ' '; end
 res = 0;
-if isempty(filename), filename = I.file_name; end
-if isempty(filename), filename = I.default_file_name; end
+if is_nix(filename), filename = I.file_name; end
+if is_nix(filename), filename = I.default_file_name; end
 if i_need_save(I) | any(flags == 'f') % force flag
   % prompt for filename if UI
   if any(flags == 'u')
@@ -297,7 +310,12 @@ if i_need_save(I) | any(flags == 'f') % force flag
   if I.verbose
     fprintf('%s saved to %s\n', I.title, filename);
   end
+  I.file_name = filename;
   I.has_changed = 0;
+  if ~I.load_on_set
+    % maintain only on file
+    I.data = [];
+  end
   res = 1;
 end
 i_dump(I);
@@ -305,6 +323,21 @@ return
 
 function res = i_need_save(I)
 res = ~i_isempty(I) & I.has_changed & I.can_change & I.save_if_changed;
+return
+
+function res = is_nix(v)
+res = isempty(v) | is_nan(v);
+return
+
+function res = is_nan(v)
+res = 1;
+if isstruct(v)
+  res = 0;
+elseif isempty(v)
+  res = 0;
+else
+  res = isnan(v);
+end
 return
 
 function value = i_dump(I)
