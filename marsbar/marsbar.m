@@ -94,7 +94,11 @@ mars_veropts('defaults');
 
 % set up the ARMOIRE stuff
 % see marmoire help for details
-o = marmoire;
+if isfield(MARS, 'ARMOIRE')
+  o = MARS.ARMOIRE; 
+else
+  o = marmoire;
+end
 
 spm_design_filter = mars_veropts('design_filter_spec');
 filter_specs  = {[spm_design_filter(1,:);...
@@ -148,8 +152,8 @@ varargout = {0};
 if ~marsbar('is_started'), return, end
 
 % save outstanding information
-btn = mars_arm('save_ui', 'all', struct('ync', 1));
-if any(btn == -1), varargout = {-1}; return, end % cancel
+btn = mars_arm('save_ui', 'all', struct('ync', 1, 'no_no_save', 1));
+if btn == -1, varargout = {-1}; return, end % cancel
 
 % remove marsbar added directories
 rmpath(MARS.ADDPATHS{:});
