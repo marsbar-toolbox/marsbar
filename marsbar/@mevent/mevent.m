@@ -2,7 +2,7 @@ function [o, others] = mevent(params, varargin)
 % marmoire - class constructor for mevent container type
 % FORMAT [o, others] = mevent(params, varargin)
 %  
-% $id$
+% $Id$
   
 myclass = 'mevent';
 defstruct = struct('event_types', []);
