@@ -1,6 +1,6 @@
-function [mars, msgstr] = mars_options(varargin)
+function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)
 % options utility routines
-% FORMAT [mars msgstr] = mars_options(opstr, mars, cfg_fname)
+% FORMAT [mars msgstr] = mars_options(optstr, mars, cfg_fname)
 %
 % Input [default]
 % optstr            - option string: one of
@@ -17,9 +17,16 @@ function [mars, msgstr] = mars_options(varargin)
 %
 % $Id$
   
-[optstr mars cfg_fname] = mars_argfill(varargin, 0, ...
-				       {'load', ...
-		    getfield(spm('getglobal','MARS'), 'OPTIONS'),''});
+if nargin < 1
+  optstr = 'load';
+end
+if nargin < 2
+  mars = getfield(spm('getglobal','MARS'), 'OPTIONS');
+end
+if nargin < 3
+  cfg_fname = '';
+end
+
 msgstr = '';
 
 % editable fields, and descriptions of fields, in mars options structure
