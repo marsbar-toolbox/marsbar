@@ -98,12 +98,12 @@ addpath(fullfile(mbpath, 'spmrep'), '-begin');
 addpath(fullfile(mbpath, 'fonct'), '-begin');
 addpath(fullfile(mbpath, 'init'), '-begin');
 
-fprintf('MarsBar analysis function prepended to path\n');
+fprintf('MarsBaR analysis function prepended to path\n');
 
 % read any necessary defaults
 [mbdefs sourcestr] = mars_options('Defaults');
 if isempty(MARSBAR)
-  fprintf('MarsBar defaults loaded from %s\n',sourcestr);
+  fprintf('MarsBaR defaults loaded from %s\n',sourcestr);
 end
 MARSBAR = mars_options('fill',MARSBAR, mbdefs);
 mars_options('put');
@@ -121,7 +121,7 @@ mbpath = fileparts(which('marsbar.m'));
 rmpath(fullfile(mbpath, 'spmrep'));
 rmpath(fullfile(mbpath, 'fonct'));
 rmpath(fullfile(mbpath, 'init'));
-fprintf('MarsBar analysis functions removed from path\n');
+fprintf('MarsBaR analysis functions removed from path\n');
 
 %=======================================================================
 case 'cfgfile'                             %-file with marsbar cfg
@@ -136,8 +136,8 @@ case 'createmenuwin'                              %-Draw marsbar menu window
 % Fmenu = marsbar('CreateMenuWin',Vis)
 if nargin<2, Vis='on'; else, Vis=varargin{2}; end
 
-%-Close any existing 'MarsBar' 'Tag'ged windows
-delete(spm_figure('FindWin','MarsBar'))
+%-Close any existing 'MarsBaR' 'Tag'ged windows
+delete(spm_figure('FindWin','MarsBaR'))
 
 % Version etc info
 [MBver,MBc] = marsbar('Ver');
@@ -158,7 +158,7 @@ bw = Rect(3)*0.8;
 Fmenu = figure('IntegerHandle','off',...
 	'Name',sprintf('%s',MBc),...
 	'NumberTitle','off',...
-	'Tag','MarsBar',...
+	'Tag','MarsBaR',...
 	'Position',Rect.*WS,...
 	'Resize','off',...
 	'Color',[1 1 1]*.8,...
@@ -172,17 +172,15 @@ Fmenu = figure('IntegerHandle','off',...
 	'Renderer','zbuffer',...
 	'Visible','off');
 
-%-Objects with Callbacks - main MarsBar routines
+%-Objects with Callbacks - main MarsBaR routines
 %=======================================================================
 
 funcs = {'mars_display_roi(''display'');',...
 	 'affichevol',...
 	 'marsbar(''buildroi'');',...
-	 'marsbar(''combinerois'');',...
-	 'marsbar(''flip_lr'');',...
-	 'marsbar(''show_volume'');',...
-	 'marsbar(''roi_as_image'')',...
-	 'marsbar(''saveallblobs'')',...
+	 'marsbar(''transform'');',...
+	 'marsbar(''import'');',...
+	 'marsbar(''export'');',...
 	 'evalin(''base'', ''Y = mars_extract_data(''''pet'''')'');',...
 	 'evalin(''base'', ''Y = mars_extract_data(''''fmri'''')'');',...
 	};
@@ -192,11 +190,9 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|View...'...
 		    '|Draw...'...
 		    '|Build...',...
-		    '|Combine...',...
-		    '|Flip L<->R...',...
-		    '|Show volume...',...
-		    '|Write to image',...
-		    '|All clusters to ROIs',...
+		    '|Transform...',...
+		    '|Import...',...
+		    '|Export...',...
 		    '|Extract data (PET)',...
 		    '|Extract data (FMRI)'],...
 	  'Position',[bx by(1) bw bh].*WS,...
@@ -236,7 +232,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Set current results',...
 		    '|Import contrasts',...
 		    '|Set default region',...
-		    '|MarsBar SPM graph',...
+		    '|MarsBaR SPM graph',...
 		    '|Statistic table'],...
 	  'Position',[bx by(3) bw bh].*WS,...
 	  'ToolTipString','Write/display contrasts...',...
@@ -266,11 +262,11 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Restore defaults'...
 		    '|Base defaults'],...
 	  'Position',[bx by(4) bw bh].*WS,...
-	  'ToolTipString','Load/save/edit MarsBar options',...
+	  'ToolTipString','Load/save/edit MarsBaR options',...
 	  'CallBack','spm(''PopUpCB'',gcbo)',...
 	  'UserData',funcs);
 uicontrol(Fmenu,'String','Quit',	'Position',[bx by(5) bw bh].*WS,...
-	'ToolTipString','exit MarsBar',...
+	'ToolTipString','exit MarsBaR',...
 	'ForeGroundColor','r',		'Interruptible','off',...
 	'CallBack','marsbar(''Quit'')');
 
@@ -280,11 +276,11 @@ set(Fmenu,'Visible',Vis)
 varargout = {Fmenu};
 
 %=======================================================================
-case 'ver'                                      %-Return MarsBar version
+case 'ver'                                      %-Return MarsBaR version
 %=======================================================================
 % marsbar('Ver')
 %-----------------------------------------------------------------------
-varargout = {MBver, 'MarsBar - Marseille ROI toolbox'};
+varargout = {MBver, 'MarsBaR - Marseille ROI toolbox'};
 
 %=======================================================================
 case 'estimate'                                 %-Estimate callback
@@ -312,7 +308,7 @@ if tmp
 end
 
 %=======================================================================
-case 'quit'                                      %-Quit MarsBar window
+case 'quit'                                      %-Quit MarsBaR window
 %=======================================================================
 % marsbar('Quit')
 %-----------------------------------------------------------------------
@@ -326,8 +322,8 @@ marsbar('SPMdesconts','on');
 % do path stuff
 marsbar('off');
 
-%-Close any existing 'MarsBar' 'Tag'ged windows
-delete(spm_figure('FindWin','MarsBar'))
+%-Close any existing 'MarsBaR' 'Tag'ged windows
+delete(spm_figure('FindWin','MarsBaR'))
 fprintf('Au revoir...\n\n')
 
 %=======================================================================
@@ -360,6 +356,65 @@ o = mars_build_roi;
 if ~isempty(o)
   varargout = {marsbar('saveroi', o)};
 end
+
+%=======================================================================
+case 'transform'                                  %-transform rois
+%=======================================================================
+% marsbar('transform')
+%-----------------------------------------------------------------------
+marsbar('mars_menu', 'Transform ROI', 'Transform:', ...
+	{'combinerois','flip_lr'},...
+	{'Combine ROIs','Flip L/R'});
+
+%=======================================================================
+case 'import'                                     %-import rois
+%=======================================================================
+% marsbar('import')
+%-----------------------------------------------------------------------
+
+marsbar('mars_menu', 'Import ROIs', 'Import ROIs from:',...
+	{'saveallblobs','img2rois','img2rois'},...
+	{'all SPM results clusters','cluster image',...
+	 'number labelled ROI image'},...
+	{'','c','i'});
+
+%=======================================================================
+case 'export'                                     %-export rois
+%=======================================================================
+% marsbar('export')
+%-----------------------------------------------------------------------
+
+marsbar('mars_menu', 'Export ROI(s)', 'Export ROI(s) to:',...
+	{'roi_as_image','rois2img', 'rois2img'},...
+	{'image', 'cluster image',...
+	'number labelled ROI image'},...
+	{'','c','i'});
+
+%=======================================================================
+case 'img2rois'                                        %-import ROI image
+%=======================================================================
+%  marsbar('img2rois', roi_type)
+%-----------------------------------------------------------------------
+
+if nargin < 2
+  roi_type = 'c'; % default is cluster image
+else
+  roi_type = varargin{2};
+end
+mars_img2rois('','','',roi_type);
+
+%=======================================================================
+case 'rois2img'                                       %-export ROI image
+%=======================================================================
+%  marsbar('roi2img', roi_type)
+%-----------------------------------------------------------------------
+
+if nargin < 2
+  roi_type = 'c'; % default is cluster image
+else
+  roi_type = varargin{2};
+end
+mars_rois2img('','','',roi_type);
 
 %=======================================================================
 case 'saveallblobs'                          %- save all blobs to ROIs
@@ -707,7 +762,7 @@ case 'splash'                           %-show splash screen
  h = figure('visible','off',...
 	    'menubar','none',...
 	    'numbertitle','off',...
-	    'name','Welcome to MarsBar',...
+	    'name','Welcome to MarsBaR',...
 	    'pos',srect);
  im = image(X);
  colormap(map);
@@ -921,20 +976,8 @@ else
   f2 = fn;
 end
 
-fdir = spm_get(-1, '', 'Directory to save image');
-fname = spm_input('Image filename', '+1', 's', f2);
-
-% set img extension and make absolute path
-[pn fn ext] = fileparts(fname);
-fname = fullfile(fdir, [fn '.img']);
-fname = spm_get('cpath', fname);
-
-if exist(fname, 'file')
-  if ~spm_input(['Overwrite ' fn], '+1', ...
-		'b','Yes|No',[1 0], 1)
-    return
-  end
-end
+fname = marsbar('get_img_name', f2);
+if isempty(fname), return, end
 save_as_image(roi, fname, sp);
 fprintf('Saved ROI as %s\n',fname);
 
@@ -979,6 +1022,68 @@ for i = 1:size(rois, 1)
 	  n, V.fname)
 end
 return
+
+%=======================================================================
+ case 'get_img_name'          %-gets name of image, checks for overwrite
+%=======================================================================
+% P = marsbar('get_img_name', fname, flags);
+%-----------------------------------------------------------------------
+if nargin < 2
+  fname = '';
+else
+  fname = varargin{2};
+end
+if nargin < 3
+  flags = '';
+else 
+  flags = varargin{3};
+end
+if isempty(flags)
+  flags = 'k';
+end
+
+varargout = {};
+
+fdir = spm_get(-1, '', 'Directory to save image');
+fname = spm_input('Image filename', '+1', 's', fname);
+
+if isempty(fname), return, end
+
+% set img extension and make absolute path
+[pn fn ext] = fileparts(fname);
+fname = fullfile(fdir, [fn '.img']);
+fname = spm_get('cpath', fname);
+
+if any(flags == 'k') & exist(fname, 'file')
+  if ~spm_input(['Overwrite ' fn], '+1', ...
+		'b','Yes|No',[1 0], 1)
+    return
+  end
+end
+varargout = {fname};
+
+%=======================================================================
+ case 'mars_menu'                    %-menu selection of marsbar actions 
+%=======================================================================
+% marsbar('mars_menu',tstr,pstr,tasks_str,tasks)
+%-----------------------------------------------------------------------
+
+[tstr pstr optfields optlabs] = deal(varargin{2:5}); 
+if nargin < 6
+  optargs = cell(1, length(optfields));
+else
+  optargs = varargin{6};
+end
+
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup',tstr);
+
+my_task = char(...
+    spm_input(pstr, '+1', 'm',...
+	      {optlabs{:} 'Quit'},...
+	      {optfields{:} 'quit'},length(optfields)+1));
+if strcmp(my_task, 'quit'), return, end
+task_no = find(strcmp(my_task, optfields));
+marsbar(my_task, optlabs{task_no});
 
 %=======================================================================
 otherwise                                        %-Unknown action string
