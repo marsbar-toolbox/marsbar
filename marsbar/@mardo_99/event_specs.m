@@ -1,6 +1,6 @@
 function [e_specs, e_names] = event_specs(D)
 % method to return event specifications for all event in model
-% FORMAT [e_specs, e_names] = event_specs(D)
+% FORMAT [e_specs e_names] = event_specs(D)
 %
 % D          - design object
 % 
