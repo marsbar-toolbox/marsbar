@@ -3,7 +3,7 @@ function tf = has_filter(o)
 %
 % $Id$
   
-tf = NaN;
+tf = 0;
 des = des_struct(o);
 if isfield(des, 'xX')
   tf = isfield(des.xX, 'K');
