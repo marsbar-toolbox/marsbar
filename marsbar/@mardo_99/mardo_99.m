@@ -13,13 +13,13 @@ function [o, others] = mardo_99(params, others)
 % $Id$
   
 myclass = 'mardo_99';
-defstruct = struct([]);
+defstruct = [];
 
 if nargin < 1
   params = [];
 end
 if nargin < 2
-  others = struct([]);
+  others = [];
 end
 
 if isa(params, myclass)
@@ -33,7 +33,7 @@ if isa(params, 'mardo')
   des = des_struct(params);
   if ~my_design(des), o = params; return, end
   uo = params;
-  params = struct([]);
+  params = [];
 else
   uo = [];
 end
@@ -50,6 +50,9 @@ end
 
 % reparse parameters into those for this object, children
 [params, others] = mars_struct('split', params, defstruct);
+
+% add cvs tag
+params.cvs_version = mars_cvs_version(mfilename);
 
 % set the mardo object
 o  = class(params, myclass, uo);
