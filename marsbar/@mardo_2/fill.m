@@ -201,30 +201,8 @@ for a = 1:length(actions)
     % specify low frequnecy confounds
     %---------------------------------------------------------------
     spm_input('Temporal autocorrelation options','+1','d',mfilename)
-    switch spm_input('High-pass filter?','+1','b','none|specify');
-      
-     case 'specify'  
-      % default 128 seconds
-      %-------------------------------------------------------
-      HParam = 128*ones(1,nsess);
-      str    = 'cutoff period (secs)';
-      HParam = spm_input(str,'+1','e',HParam,[1 nsess]);
-      
-     case 'none'     
-      % Inf seconds (i.e. constant term only)
-      %-------------------------------------------------------
-      HParam = Inf*ones(1,nsess);
-      
-    end
-
-    % create and set filter struct
-    %---------------------------------------------------------------
-    for  i = 1:nsess
-      K(i) = struct(	'HParam',	HParam(i),...
-			'row',		SPM.Sess(i).row,...
-			'RT',		SPM.xY.RT);
-    end
-    SPM.xX.K = pr_spm_filter(K);
+    [K f_str] = pr_get_filter(SPM.xY.RT, SPM.Sess);
+    SPM.xX.K = K;
     
     % intrinsic autocorrelations (Vi)
     %-----------------------------------------------------------------------
@@ -263,8 +241,7 @@ for a = 1:length(actions)
     % fill into design
     xsDes = struct(...
 	'Intrinsic_correlations',	SPM.xVi.form,...
-	'High_pass_Filter',             sprintf('Cutoff: %d {s}', ...
-						SPM.xX.K(1).HParam));
+	'High_pass_Filter',             str);
     
     SPM.xsDes = mars_struct('ffillmerge',...
 			  SPM.xsDes,...

@@ -24,5 +24,4 @@ xX.nKX         % scaled design matrix for display
 
 check images function.
 
-move filter ui get into private function in mardo_2
 add pairs of get/set functions for mardo 

@@ -216,10 +216,6 @@ for a = 1:length(actions)
     % finish GUI
     spm('Pointer','Arrow')
     
-    % Construct K and Vi structs
-    %=======================================================================
-    K       = spm_filter('set',K);
-        
     % create Vi struct
     %-----------------------------------------------------------------------
     Vi      = speye(sum(nscan));
