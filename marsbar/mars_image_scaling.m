@@ -43,23 +43,9 @@ if spmf
     warning('Design structure does not specify images');
     return
   end
-  VY = marsD.VY;
-  if strcmp(modality(marsD), 'FMRI')
-    nsess = length(marsD.Sess);
-    for s = 1:nsess
-      row{s} = marsD.Sess{s}.row;
-    end
-  else % PET I guess
-    if ~isfield(marsD.xX, 'I') | ~isfield(marsD.xX, 'sF')
-      error('Expecting I and sF fields in SPM design');
-    end
-    scol = marsD.xX.I(:, find(strcmp('subject', marsD.xX.sF)));
-    subjnos = unique(scol);
-    nsess = length(subjnos);
-    for s = 1:nsess
-      row{s} = find(scol == subjnos(s));
-    end
-  end
+  VY = get_images(marsD);
+  row = block_rows(marsD);
+  nsess = length(row);
 end
 
 if isempty(VY)  % need to know about images

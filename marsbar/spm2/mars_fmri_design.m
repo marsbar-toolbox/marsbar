@@ -1,9 +1,10 @@
 function [SPM] = mars_fmri_design(SPM)
 % MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies
 % FORMAT [SPM] = mars_fmri_design(SPM)
-% See SPM2 version of spm_fMRI_design for comments etc
+%
 % This file is a hardly edited version of:
 % @(#)spm_fMRI_design.m	2.34 Karl Friston 03/01/30
+% See that (SPM2) version for comments etc
 %
 % $Id$
   

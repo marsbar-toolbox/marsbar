@@ -1,10 +1,13 @@
 function [SPM] = mars_fmri_design(SPM)
 % MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies
 % FORMAT [SPM] = mars_fmri_design(SPM)
-% See SPM99 version of spm_fMRI_design for comments etc
+%
 % This file is a hardly edited version of:
 % @(#)spm_fMRI_design.m	2.27   Karl Friston 99/09/29
-
+% See that (SPM99) version for comments etc
+%
+% $Id$ 
+  
 %-GUI setup
 %-----------------------------------------------------------------------
 CVSid    = marsbar('get_cvs_version', mfilename('fullpath'));

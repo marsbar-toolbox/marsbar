@@ -23,6 +23,18 @@ cb = 'tmp = get(findobj(''Tag'', ''DesRepUI''),''UserData''); ';
 % simplify access to design
 SPM = des_struct(D);
 
+% Add empty fields where necessary
+try
+  SPM.xC;
+catch
+  SPM.xC = {};
+end
+try
+  SPM.xsDes;
+catch
+  SPM.xsDes = [];
+end
+
 switch lower(action)
 
 %=======================================================================
@@ -58,14 +70,6 @@ if ~isfield(SPM,'cfg')
 	end
 	SPM.cfg = cfg;
 end
-
-%-Work out what modality this is!
-%-----------------------------------------------------------------------
-if isfield(SPM,'Sess') & ~isempty(SPM.Sess),	modality = 'fMRI';
-elseif isfield(SPM,'xC'),				modality = 'PET';
-else, error('Can''t fathom modality')
-end
-SPM.modality = modality;
 
 %-Set swd - SPM working directory to use if estimating (empty => don't est)
 %-----------------------------------------------------------------------
@@ -115,7 +119,7 @@ h = uimenu(hC,'Label','Design orthogonality','Accelerator','O',...
 %-----------------------------------------------------------------------
 hExplore = uimenu(hC,'Label','Explore','HandleVisibility','off');
 
-switch modality
+switch modality(D)
 case 'PET'
 	hFnF = uimenu(hExplore,'Label','Files and factors','Accelerator','F',...
 		'CallBack',[cb,...
@@ -175,11 +179,14 @@ case 'files&factors'                         %-Summarise files & factors
 %=======================================================================
 % des_rep(D, 'Files&Factors',fnames,I,xC,sF,xs)
 
-fnames  = reshape({SPM.VY.fname},size(SPM.VY));
+fnames  = get_image_names(D);
+if isempty(fnames)
+  fnames = cell(size(SPM.xX.X, 1));
+end
 I       = SPM.xX.I;
-xC      = SPM.xX.xC;
+xC      = SPM.xC;
 sF      = SPM.xX.sF;
-xs      = SPM.xsDes;  		%-Structure of description strings
+xs      = SPM.xsDes;  %-Structure of description strings
 
 [fnames,CPath] = spm_str_manip(fnames,'c');	%-extract common path component
 nScan          = size(I,1);			%-#images
@@ -316,8 +323,12 @@ case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 % des_rep(D, 'DesOrth',xX,fnames)
 
 xX      = SPM.xX;
-fnames  = reshape({SPM.VY.fname},size(SPM.VY));
-xs      = SPM.xsDes;  		%-Structure of description strings
+fnames  = get_image_names(D);
+if isempty(fnames)
+  fnames = cell(size(SPM.xX.X, 1));
+end
+
+xs      = SPM.xsDes;  %-Structure of description strings
 
 desmtx = strcmp(lower(varargin{1}),'desmtx');
 

@@ -5,7 +5,7 @@ function mod_str = modality(D)
   
 SPM = des_struct(D);
 try
-  SPM.Sess{1};
+  SPM.Sess(1);
   mod_str = 'fmri';
 catch
   mod_str = 'pet';

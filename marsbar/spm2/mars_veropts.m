@@ -2,7 +2,7 @@ function varargout = mars_veropts(arg, varargin)
 % returns SPM version specific parameters
 % FORMAT varargout = mars_veropts(arg, varargin)
 %  
-% This the SPM 2 version
+% This is the SPM 2 version
 %
 % $Id$
   
