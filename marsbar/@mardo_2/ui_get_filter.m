@@ -15,7 +15,7 @@ SPM = des_struct(D);
 [SPM.xX.K str] = pr_get_filter(SPM.xY.RT, SPM.Sess);
 SPM.xX.K = K;
 if ~isfield(SPM, 'xsDes')
-  SPM.xsDes = struct([]);
+  SPM.xsDes = [];
 end
 SPM.xsDes.High_pass_Filter = str;
 
