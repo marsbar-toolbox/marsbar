@@ -123,7 +123,7 @@ if ischar(params)
    case 'classdata'
     o = my_classdata(varargin{:});
    case 'load'
-    o = my_loadroi(varargin{:});
+    o = my_loadroi(varargin{1});
    case 'load_cell'
     params = varargin{1};
     if ischar(params), params = cellstr(params); 
