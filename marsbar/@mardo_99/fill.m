@@ -7,6 +7,8 @@ function D = fill(D, actions)
 %            'defaults' - fills empty parts of design with defaults
 %            (in fact this is always done)
 %            'filter'  - asks for and fills filter, autocorrelation 
+%            'for_estimation - fills ready for estimation -> 'filter'
+%                  if there is no filter
 %            'images'  - asks for and fills with images, mask, scaling
 %
 % Returns
@@ -23,6 +25,15 @@ end
 if ~is_fmri(D), return, end
 if isempty(actions), actions = {'defaults'}; end
 if ischar(actions), actions = {actions}; end
+fe = find(ismember(actions, 'for_estimation'));
+if ~isempty(fe)
+  A = [];
+  if is_fmri(D)
+    if ~has_filter(D), A = {'filter'}; end
+  end
+  actions(fe) = [];
+  actions = [actions(1:fe(1)-1) A actions(fe(1):end)];
+end
 actions = [{'defaults'}, actions];
 actions = unique(actions);
 
@@ -48,11 +59,6 @@ end
 for a = 1:length(actions)
   switch lower(actions{a})
    case 'defaults'
-    % TR if not set (it should be) 
-    if ~isfield(xX, 'RT')
-      [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Fill FMRI design',0);
-      spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
-    end
 
     % prepare various default settings, offer to design
     xM = [];             % masking 
@@ -76,7 +82,6 @@ for a = 1:length(actions)
     end
     
     xsDes = struct( 'Design',			DSstr,...
-		    'Interscan_interval',	sprintf('%0.2f',spmD.xX.RT),...
 		    'Basis_functions',		BFstr,...
 		    'Number_of_sessions',	sprintf('%d',nsess),...
 		    'Conditions_per_session',	sprintf('%-3d',ntr),...
@@ -196,13 +201,20 @@ for a = 1:length(actions)
    case 'filter'
     % Get filter and autocorrelation options
     if ~have_sess, return, end
+
     [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Set FMRI filter',0);
-    RT = spmD.xX.RT;
+    
+    % TR if not set (it should be) 
+    if ~isfield(xX, 'RT')
+          spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+    
     spm_input('High and low pass filter','+1','d',mfilename)
     [spmD.xX.K HFstr LFstr] = pr_get_filter(RT, Sess);
     xsDes = struct(...
-	'High_pass_Filter',             LFstr,...
-	'Low_pass_Filter',              HFstr);
+	'Interscan_interval',	sprintf('%0.2f',spmD.xX.RT),...
+	'High_pass_Filter',     LFstr,...
+	'Low_pass_Filter',      HFstr);
     spmD.xsDes = mars_struct('ffillmerge',...
 			     spmD.xsDes,...
 			     xsDes);

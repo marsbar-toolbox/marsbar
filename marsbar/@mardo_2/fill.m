@@ -6,7 +6,9 @@ function D = fill(D, actions)
 % actions    - string or cell array of strings with actions:
 %            'defaults' - fills empty parts of design with defaults
 %            (in fact this is always done)
-%            'filter'  - asks for and fills filter, autocorrelation 
+%            'filter'  - asks for and fills filter
+%            'autocorr' - asks for and fills autocorrelation 
+%            'for_estimation' fill filter &| autocorr if not present
 %            'images'  - asks for and fills with images, mask, scaling
 %
 % Returns
@@ -23,6 +25,16 @@ end
 if ~is_fmri(D), return, end
 if isempty(actions), actions = {'defaults'}; end
 if ischar(actions), actions = {actions}; end
+fe = find(ismember(actions, 'for_estimation'));
+if ~isempty(fe)
+  A = [];
+  if is_fmri(D)
+    if ~has_filter(D), A = {'filter'}; end
+    if ~has_autocorr(D), A = [A {'autocorr'}]; end
+  end
+  actions(fe) = [];
+  actions = [actions(1:fe(1)-1) A actions(fe(1):end)];
+end
 actions = [{'defaults'}, actions];
 actions = unique(actions);
 
@@ -46,12 +58,6 @@ for a = 1:length(actions)
   switch lower(actions{a})
    case 'defaults'
     
-    % TR if not set (it should be) 
-    if ~mars_struct('isthere', SPM, 'xY', 'RT')
-      [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Fill FMRI design',0);
-      SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
-    end
-
     % prepare various default settings, offer to design
     xM = [];             % masking 
     xGX = [];            % globals
@@ -68,7 +74,6 @@ for a = 1:length(actions)
     
     xsDes = struct(...
 	'Basis_functions',	BFstr,...
-	'Interscan_interval',	sprintf('%0.2f {s}',spmD.xX.RT),...
 	'Number_of_sessions',	sprintf('%d',nsess),...
 	'Trials_per_session',	sprintf('%-3d',ntr),...
 	'Global_calculation',	sGXcalc,...
@@ -188,7 +193,15 @@ for a = 1:length(actions)
    case 'filter'
     % Get filter 
     if ~have_sess, return, end
-    [Finter,Fgraph,CmdLine] = spm('FnUIsetup','FMRI model filter',0);
+
+    [Finter,Fgraph,CmdLine] = spm('FnUIsetup', 'FMRI model filter', 0);
+
+    % TR if not set (it should be) 
+    if ~mars_struct('isthere', SPM, 'xY', 'RT')
+      SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
+    end
+    SPM.xsDes.Interscan_interval = sprintf('%0.2f {s}',spmD.xX.RT);
+
     spm_input('High pass filter','+1','d',mfilename)
     [SPM.xX.K f SPM.xsDes.High_pass_Filter] = ...
 	pr_get_filter(SPM.xY.RT, SPM.Sess);
@@ -200,7 +213,7 @@ for a = 1:length(actions)
     % Contruct Vi structure for non-sphericity ReML estimation
     %===============================================================
     str   = 'Correct for serial correlations?';
-    cVi   = {'none','SPM AR(0,2)','SPM AR specify', 'fmristat AR(n)'};
+    cVi   = {'none','SPM AR(0,2)','SPM AR (specify)', 'fmristat AR(n)'};
     cVi   = spm_input(str,'+1','b',cVi);
     
     % create Vi struct
