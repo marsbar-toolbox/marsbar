@@ -1,12 +1,31 @@
 function [marsS] = compute_contrasts(marsDe, Ic)
-% compute and return stats
+% compute and return results of contrast statistics
 % FORMAT marsS = compute_contrasts(marsDe, Ic)
 % 
-% marsDe     - Mars design structure
+% marsDe     - design object
 % Ic         - indices into contrast structure
 %
 % Output
-% marsS      - Mars statistic result structure
+% marsS      - statistic result structure
+%
+% The statistics results structure has fields
+% 'con'      - contrast value (numerator of t statistic, or ESS for F)
+% 'stat'     - t or F statistic value
+% 'P'        - uncorrected P value
+% 'Pc'       - P values corrected for number of ROIs
+% 'MVres'    - multivariate results structure with fields
+%              'y_pre'    - predicted temporal response
+%              'y_obs'    - observerd temporal response
+%              'Pf'       - probabability for last (rank of subspace)
+%                           eigenvalues  
+%              'u'        - principle components
+%              'ds'       - component weights (diag(S))
+%              'df'       - degrees of freedom for Pf              
+% 'columns'  - names of regions
+% 'rows'     - cell array of structs, one per contrast calculated,
+%              with fields:
+%              'name'  - contrast name
+%              'stat'  - statistic type (T|F)
 %
 % $Id$
 
