@@ -51,4 +51,4 @@ else % Sessions are not repeated
   end
 end
 
-[D changef] = merge_contrasts(D, xCon, 'all');
+[D Ic changef] = add_contrasts(D, xCon);

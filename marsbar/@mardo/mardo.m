@@ -31,11 +31,11 @@ function [o, others] = mardo(params,passf)
 % modality     - returns one of 'fmri','pet','unknown'
 % is_fmri      - returns 1 if design is modality 'fmri'
 % verbose      - whether reporting is verbose or not (1 or 0)
-% type         - returns SPM version string corresponding to design type
-% des_struct   - sets or gets design structure
+% type         - returns SPM version string 'SPM2' or 'SPM99'
 % block_rows   - returns cell array, one cell per subject or session,
 %                containing indices of design rows for that
 %                subject/session
+% des_struct   - sets or gets design structure
 %  
 % ui_report    - runs UI design report in SPM graphics window
 % 
@@ -43,7 +43,7 @@ function [o, others] = mardo(params,passf)
 % 
 % set_contrasts - set contrasts to design
 % get_contrasts - returns contrasts if present
-% merge_contrasts - merges contrasts from another design into this
+% add_contrasts - adds contrasts from a design, xCon struct or passed values
 % ui_get_contrasts - runs spm_conman to choose contrasts, returns indices
 % 
 % get_images   - gets image vol structs if present

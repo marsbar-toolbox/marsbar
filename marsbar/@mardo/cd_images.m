@@ -1,10 +1,11 @@
 function D = cd_images(D, newpath, byteswap)
 % method for changing path to image files in design
-% FORMAT D = cd_imgs(D, newpath, byteswap)
+% FORMAT D = cd_imgs(D, newpath [, byteswap])
 %
 % D          - mardo design
 % newpath    - path to replace common path of files in analysis [GUI]
-% byteswap   - whether to indicate byte swapping in vol structs [0]
+% byteswap   - whether to indicate byte swapping in vol structs 
+%              [determined from images by default]
 %             
 % $Id$
   
@@ -12,7 +13,7 @@ if nargin < 2
   newpath = spm_get(-1, '', 'New directory root for files');
 end
 if nargin < 3
-  byteswap=0;
+  byteswap=[];
 end
 
 % get images
@@ -21,6 +22,13 @@ if ~has_images(D)
   return
 end
 VY = get_images(D);
+
+% check for byteswap
+if isempty(byteswap)
+  V1 = VY(1);
+  V2 = spm_vol(V1.fname);
+  byteswap = V2.dim(4) ~= V1.dim(4);
+end
 
 % now change directory
 if filesep == '\',sepchar='/';else sepchar='\';end
@@ -38,12 +46,12 @@ nfnames = cellstr(...
 
 % do byteswap as necessary
 if byteswap
-  scf = 256;
-  if (VY(1).dim(4) / 256)>=1;
-    scf = 1/scf;
-  end
+  if VY(1).dim(4) < 256, scf = 256; else scf = 1/256; end
   for i = 1:n
     VY(i).dim(4) = VY(i).dim(4) * scf;
+  end
+  if verbose(D)
+    disp('Images vols byteswapped');
   end
 end    
 

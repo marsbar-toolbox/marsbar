@@ -1026,7 +1026,7 @@ if ~is_valid(D2)
   D2 = get_contrasts(D2);
 end
 
-[D changef] = merge_contrasts(D, D2);
+[D Ic changef] = add_contrasts(D, D2, 'ui');
 if changef
   mars_armoire('update', 'est_design', D);
 end

@@ -33,4 +33,4 @@ if isfield(SPM,'Sess')
     end
   end
 end
-[D changef] = merge_contrasts(D, xCon, 'all');
+[D Ic changef] = add_contrasts(D, xCon);

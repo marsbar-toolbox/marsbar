@@ -1,6 +1,24 @@
-function [D,Ic] = add_contrasts(D, varargin)
+function [D,Ic,changef] = add_contrasts(D, C, varargin)
 % method to add contrast definitions to design
-% FORMAT [D Ic] = add_contrasts(D, stat_struct)
+% 
+% The function has many different formats
+% 
+% FORMAT [D Ic changef] = add_contrasts(D, D2 [,Ic])
+% where D2 is a design; all contraasts are added from D2
+% If third argument (Ic) is passed, specifies 
+% which contrasts in D2 to add. If Ic passed, and empty
+% contrasts numbers are fetched using the GUI
+%
+% OR
+% FORMAT [D Ic changef] = add_contrasts(D, xCon)
+% where xCon is a structure in SPM contrast format
+% containing contrasts to add
+% If third argument (Ic) is passed, specifies 
+% which contrasts in xCon to add. If Ic is passed, and empty
+% contrasts numbers are fetched using the GUI
+% 
+% OR
+% FORMAT [D Ic changef] = add_contrasts(D, stat_struct)
 % where stat_struct has fields 
 %      'names',       string, or cell array of strings
 %      'types',       string ('T' or 'F'), or cell array
@@ -10,14 +28,20 @@ function [D,Ic] = add_contrasts(D, varargin)
 %      'values',      matrix of values 
 %
 % OR
-% [D Ic] = add_contrasts(D, names, types, values)
+% FORMAT [D Ic changef] = add_contrasts(D, names, types, values)
+% where names, types, values are cell arrays of values, or values
+% (defined as above)
+% 
 % OR
-% [D Ic] = add_contrasts(D, names, types, set_actions, values)
+% FORMAT [D Ic  changef] = add_contrasts(D, names, types, set_actions, values)
+% where names, types, set_actions, values are cell arrays of values, or
+% values (defined as above)
 %
 % Returns
-% D      - possibly modified SPM design 
-% Ic     - indices of specified contrasts
-% 
+% D       - possibly modified SPM design 
+% Ic      - indices of specified contrasts as stored in D
+% changef - 1 if D has changed during call else 0 
+%   
 % Contrast will not be added if it is already present, but the correct
 % index will be returned in Ic
 % 
@@ -27,71 +51,97 @@ if nargin < 2
   error('Need contrasts to add');
 end
 
-% default set_action
-set_actions = 'c';
-
-if nargin < 3 % structure form of call
-  if ~isstruct(varargin{1})
-    error('If only one argument, must be a structure');
-  end
-  con_struct = varargin{1};
-else % cell array form of call
-  if nargin < 4
-    error('Need at least names, statistic types and values');
-  end
-  names = varargin{1};
-  types = varargin{2};
-  if nargin < 5 % values call
-    values = varargin{3};
-  else % contrast types, values call
-    set_actions = varargin{3};
-    values = varargin{4};
-  end
-  con_struct = struct(...
-      'names', names,...
-      'types', types,...
-      'values', values);
-end
-
-% set the set action, if not set already
-if ~isfield(con_struct, 'set_actions') 
-  [con_struct.set_actions] = deal(set_actions);
-end
-
-SPM = des_struct(D);
-sX = SPM.xX.xKXs;
-n_e = size(sX.X, 2);
+% Get parameters from current design
+SPM  = des_struct(D);
+sX   = SPM.xX.xKXs;
 xCon = SPM.xCon;
+v_f  = verbose(D);
 
-xC_e = length(xCon);
-Ic = [];
-for c = 1:length(con_struct)
-  con = con_struct(c);
-  if size(con.values, 2) == n_e
-    con.values = con.values';
-  end
-  contrast = spm_FcUtil('Set',...
-			con.names,...
-			con.types,...
-			con.set_actions,...
-			con.values,...
-			sX);
-  if isempty(xCon)
-    xCon = contrast; 
-    xC_e = 1;
-  else
-    iFc2 = spm_FcUtil('In', contrast, sX, xCon);
-    if ~iFc2, 
-      xC_e = xC_e + 1;
-      xCon(xC_e) = contrast;
-      Ic(c) = xC_e;
-    else 
-      fprintf('\ncontrast %s (type %s) already in design', ...
-	      con.names, con.types);
-      Ic(c) = iFc2;
+% process inputs
+if isa(C, 'mardo')        % design
+  C = des_struct(C);
+end
+if isfield(C, 'xCon')     % design structure
+  C = C.xCon;
+end
+if isfield(C, 'STAT')     % xCon structure
+  % parse Ic input
+  if nargin > 2 
+    Ic = varargin{1};
+    if isempty(Ic) | strcmp(Ic,'ui')
+      D2 = set_contrasts(D, C);
+      Ic = ui_get_contrast(D2,'T&F',Inf,...
+			   'Select contrasts to merge','',1);
     end
+    C = C(Ic);
+  end
+else                      % contrast setting structure or values or cells
+  if ~isstruct(C)
+    C = sf_cell_to_conset(C, varargin{:});
+  end
+  % make xCon structure
+  C = sf_conset_to_xcon(C, sX);
+end
+
+xc_len = length(xCon);
+old_xc_len = xc_len;
+for i=1:length(C)
+  Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
+  if ~Ic(i)
+    xc_len = xc_len+1;
+    xCon(xc_len) = C(i);
+    Ic(i) = xc_len;
+  elseif v_f 
+    fprintf('\ncontrast %s (type %s) already in xCon\n', ...
+	    C(i).name, C(i).STAT);
   end
 end
-SPM.xCon = xCon;
-D = des_struct(D, SPM);
+changef =  xc_len ~= old_xc_len;
+if changef
+  SPM.xCon = xCon;
+  D = des_struct(D, SPM);
+end
+return
 
+function C = sf_cell_to_conset(names, types, varargin)
+% makes contrast setting structure from cell input
+if nargin < 3
+  error('Need at least names, statistic types and values');
+end
+C = struct(...
+    'names', names,...
+    'types', types);
+if nargin < 4 % values call
+  values = varargin{1};
+  set_actions = 'c';
+else % contrast types, values call
+  set_actions = deal(varargin{1});
+  values      = deal(varargin{2});
+end
+C = struct(...
+    'names', names,...
+    'types', types,...
+    'set_actions', set_actions,...
+    'values', values);
+return
+
+function C = sf_conset_to_xcon(con_set, sX)
+% make xCon structure from cell or struct setting parameters
+if ~isfield(con_set, 'set_actions')
+  [con_set.set_actions] = deal('c');
+end
+n_e = size(sX.X, 2);
+for c = 1:length(con_set)
+  c1 = con_set(c);
+  if size(c1.values, 1) ~= n_e & ... 
+	size(c1.values, 2) == n_e
+    c1.values = c1.values';
+  end
+  C(c) = spm_FcUtil('Set',...
+		    c1.names,...
+		    c1.types,...
+		    c1.set_actions,...
+		    c1.values,...
+		    sX);
+end
+return
