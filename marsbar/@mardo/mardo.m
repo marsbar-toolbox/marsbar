@@ -110,6 +110,8 @@ function [o, others] = mardo(params, others, passf)
 % $Id$
   
 myclass = 'mardo';
+
+% Default object structure; see also paramfields.m
 defstruct = struct('des_struct', [],...
 		   'flip_option', 0,...
 		   'verbose', 1);
