@@ -19,7 +19,7 @@ end
 xCon = mars_struct('getifthere', SPM, 'xCon');
 conlen = length(xCon);
 [I xCon] = spm_conman(xX,xCon,varargin{:});
-if length(SPM.xCon) == conlen
+if length(xCon) == conlen
   changef = 0;
 else
   changef = 1;
