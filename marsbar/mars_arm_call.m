@@ -21,7 +21,7 @@ switch lower(action)
  case 'set_design'
   % callback for setting design
   % FORMAT [data errf msg] = mars_arm_call('set_design', I);
-  % Clear ROI data if design has changed
+  % Clear ROI data if design is no longer compatible with data
 
   I = varargin{1};
 
@@ -33,10 +33,15 @@ switch lower(action)
   end
   
   % Unload roi data if design has been set, and data exists
+  % and data is not the same size as design
   if ~mars_armoire('isempty', 'roi_data')
-    mars_armoire('save_ui', 'roi_data', 'y');
-    mars_armoire('clear', 'roi_data');
-    fprintf('Reset of design, cleared ROI data...\n');
+    Y = mars_armoire('get', 'roi_data');
+    if n_time_points(Y) ~= n_time_points(I.data)
+      fprintf('Design and data have different numbers of rows\n');
+      mars_armoire('save_ui', 'roi_data', 'y');
+      mars_armoire('clear', 'roi_data');
+      fprintf('Reset of design, cleared ROI data...\n');
+    end
   end
   res = I;
   
