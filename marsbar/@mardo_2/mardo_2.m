@@ -56,7 +56,7 @@ end
 [params, others] = mars_struct('split', params, defstruct);
 
 % add cvs tag
-params.cvs_version = mars_cvs_version([myclass filesep myclass]);
+params.cvs_version = mars_cvs_version(myclass);
 
 % set the mardo object
 o  = class(params, myclass, uo);
