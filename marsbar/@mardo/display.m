@@ -2,8 +2,8 @@ function display(obj)
 % display method for mardo objects
 %
 % $Id$
-  
-src = '[MarsBaR design object]';
+
+src = ['[' class(obj) ' design object]'];
 if length(obj) > 1 % array of objects
   sz = size(obj);
   src = sprintf('%d by %d array of %s', sz(1), sz(2), src);
