@@ -18,4 +18,5 @@ if isempty(img)
   error(errstr);
 end
 
-o = matrixdata(o, img);
+% set using maroi_matrix object to avoid object conversion 
+o.maroi_matrix = matrixdata(o.maroi_matrix,img); 

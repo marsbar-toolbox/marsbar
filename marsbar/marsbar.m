@@ -452,7 +452,8 @@ for c = unique(A)
     % file name and labels
     d = sprintf('%s cluster at [%0.1f %0.1f %0.1f]', rootn, maxmm);
     l = sprintf('%s_%0.0f_%0.0f_%0.0f', rootn, maxmm);
-    fname = maroi('filename', fullfile(roipath, l));
+    fn = marsbar('str2fname', l);
+    fname = maroi('filename', fullfile(roipath, fn));
     o = maroi_pointlist(struct('XYZ',XYZ,'mat',M,'descrip',d, 'label', ...
 			       l), 'vox');
     fprintf('\nSaving %s as %s...', d, fname);

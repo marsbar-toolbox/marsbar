@@ -4,7 +4,7 @@ function o = mars_build_roi
 % $Id$
 
 o = [];  
-[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Build ROI');
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Build ROI', 0);
 
 % get ROI type
 optfields = {'blob','image','sphere','box'};

@@ -3,4 +3,5 @@ function o = saveobj(o)
 %
 % $Id$
 
-o = matrixdata(o, []);
+% set using maroi_matrix object to avoid object conversion 
+o.maroi_matrix = matrixdata(o.maroi_matrix, []);
