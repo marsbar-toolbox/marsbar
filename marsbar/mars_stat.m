@@ -1,5 +1,5 @@
 function mars_stat(spmD, marsY)
-% compute and save statistics for timecourses
+% compute and store statistics for timecourses
 % FORMAT mars_stat(spmD, marsY)
 % See spm_spm for details on the design specification, which are here
 % passed as a structure spmD.  marsY contains the data to be analyzed
@@ -105,9 +105,6 @@ xX.nKX   = spm_DesMtx('sca',xX.xKXs.X,xX.Xnames);% scaled design matrix for disp
 spmD.xX = xX;
 spmD.marsY = marsY;
 
-%- save to results file
-savestruct('mars_estimated', spmD);
-
 %-Default F-contrasts (in contrast structure) 
 %=======================================================================
 F_iX0 = spmD.F_iX0;
@@ -126,10 +123,10 @@ for i = 2:length(F_iX0)
 	xcon = spm_FcUtil('Set',F_iX0(i).name,'F','iX0',F_iX0(i).iX0,xX.xKXs);
 	xCon = [xCon xcon];
 end
-save('mars_xCon.mat','xCon')
+spmD.xCon = xCon;
 
 % set as default results
-marsbar('set_results', 'mars_estimated.mat');
+mars_armoire('set', 'est_design', spmD);
 fprintf('Results loaded into MarsBar default results\n');
 
 %=======================================================================

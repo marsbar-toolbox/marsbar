@@ -29,11 +29,12 @@ end
 if isempty(roi_obj), return, end
 
 if nargin < 3
-  mb = spm('getglobal', 'MARSBAR');
+  mb = spm('getglobal', 'MARS');
   if ~isempty(mb)
-    structv = mb.structural.fname;
+    structv = mb.OPTIONS.structural.fname;
   else
-    structv = fullfile(spm('dir'), 'canonical', 'avg152T1.img');
+    structv = fullfile(spm('dir'), 'canonical', ...
+		       ['avg152T1' mars_veropts('template_ext')]);
   end
 else
   structv = varargin{2};

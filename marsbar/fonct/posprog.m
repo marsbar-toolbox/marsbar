@@ -194,11 +194,8 @@ elseif strcmp(action,'SavePos');
 
   s = struct('XYZ',pPos','mat',Pos_mat);
   roi_o = maroi_pointlist(s,'vox');
-  l = spm_input('Label for ROI', '+1', 's', '');
-  roi_o = label(roi_o,l);
-
-   marsbar('saveroi',roi_o);
-   realy_refresh = 1;
+  marsbar('saveroi',roi_o);
+  realy_refresh = 1;
 
 elseif strcmp(action,'buildROI');
 

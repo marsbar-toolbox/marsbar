@@ -1,6 +1,16 @@
-function [marsS, xCon] = mars_stat_table(marsDe, xCon, Ic, xConN)
+function [marsS, xCon, changef] = mars_stat_table(marsDe, xCon, Ic)
 % gets Mars statistics and displays to a table on the matlab console  
-% FORMAT [marsS, xCon] = mars_stat_table(marsDe, xCon, Ic, xConN)
+% FORMAT [marsS, xCon, changef] = mars_stat_table(marsDe, xCon, Ic)
+%
+% Inputs
+% marsDe               - MarsBaR design structure
+% xCon                 - contrast structure
+% Ic                   - indices for contrasts to be displayed
+% 
+% Outputs
+% marsS                - MarsBaR statistics structure
+% xCon                 - contrast structure (which might have changed)
+% changef              - flag to indicate if xCon has changed
 %
 % $Id$
   
@@ -9,7 +19,8 @@ if nargin < 1
   marsDe = [];
 end
 if isempty(marsDe)
-  marsDe = spm_get(1,'mars_estimated.mat','Select Mars results');
+  marsDe = spm_get(1,'mres.mat',...
+		   'Select MarsBaR estimated results');
 end
 if ischar(marsDe)
   marsDe = load(marsDe);
@@ -17,30 +28,23 @@ end
 if nargin < 2
   xCon = [];
 end
-if isempty(xCon)
-  xCon = spm_get(1,'mars_xcon.mat','Select Mars contrasts');
+if isempty(xCon) & ~is_there(marsDe, 'xCon')
+  xCon = spm_get(1,'x?on.mat','Select contrast file');
 end
 if ischar(xCon)
-  xConN = xCon;
   load(xCon);
 end
 if nargin < 3
   Ic = [];
 end
+changef = 0;
 if isempty(Ic)
-  [Ic,xCon] = spm_conman(marsDe.xX,xCon,'T|F',Inf,...
+  [Ic,xCon, changef] = mars_conman(marsDe.xX,xCon,'T|F',Inf,...
 			 'Select contrasts ','',1);
 end
-if nargin < 4 
-  xConN = '';
-end
 
+% Do statistics work
 [marsS] = mars_stat_struct(marsDe, xCon, Ic);
-
-% save xCon in case it has been changed
-if ~isempty(xConN)
-  save(xConN, 'xCon');
-end
 
 % output to text table
 if isempty(marsS), return, end

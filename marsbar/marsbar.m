@@ -23,18 +23,16 @@ function varargout=marsbar(varargin)
 % If you find that it actively hinders your work, do send an
 % elderly sardine to the same address.
 %
-% The logo was made by Brian Cox
-%
 % Please visit our friends at The Visible Mars Bar project:
 % http://totl.net/VisibleMars
 %
 % $Id$
 
 % Marsbar version
-MBver = '0.23';  % Stable release
+MBver = '0.24';  % SPM2 development release 
 
-% Marsbar defaults in global variable structure
-global MARSBAR;
+% Various working variables in global variable structure
+global MARS;
 
 %-Format arguments
 %-----------------------------------------------------------------------
@@ -48,7 +46,7 @@ switch lower(Action), case 'startup'             %-Start marsbar
 warning backtrace
 
 % splash screen once per session
-splashf = isempty(MARSBAR);
+splashf = isempty(MARS);
 
 % promote spm directory to top of path, read defaults
 marsbar('on');
@@ -81,37 +79,72 @@ case 'on'                              %-Initialise marsbar
 %=======================================================================
 
 % check paths 
-% mars_setpath
 
-% promote spm_spm directory, affichevol directories
+% promote spm replacement directory, affichevol directories
 mbpath = fileparts(which('marsbar.m'));
-addpath(fullfile(mbpath, 'spmrep'), '-begin');
-addpath(fullfile(mbpath, 'fonct'), '-begin');
-addpath(fullfile(mbpath, 'init'), '-begin');
-
+spmV = spm('ver');
+MARS.ADDPATHS = {fullfile(mbpath, ['spm' spmV(4:end)]),...
+		 fullfile(mbpath, 'spm_common'),...
+		 fullfile(mbpath, 'fonct'),...
+		 fullfile(mbpath, 'init')};
+addpath(MARS.ADDPATHS{:}, '-begin');
 fprintf('MarsBaR analysis function prepended to path\n');
 
+% set up the ARMOIRE stuff
+% see help for mars_armoire for details
+cb = ['mars_armoire(''clear'', ''roi_data'');'...
+      'disp(''Reset of design, cleared ROI data...'');'];
+mars_armoire('add_if_absent','def_design', ...
+	     struct('filter', mars_veropts('des_conf'),...
+		    'title', 'default design',...
+		    'set_action', cb));
+mars_armoire('add_if_absent','roi_data',...
+	     struct('filter','_mdata.mat',...
+		    'title', 'ROI data'));
+cb = ['if ~i_isempty(I),'...
+      'if isempty(data), data = load(filename); end,'...
+      'mars_armoire(''set'', ''roi_data'', data.marsY);'...
+      'disp(''Set ROI data from estimated design...'');'...
+      'if ~is_there(data, ''xCon''),'...
+      'tmp = load(spm_get(1, ''x?on.mat'','...
+      '''Select contrast file'')); data.xCon=tmp.xCon;'...
+      'I.data = data;'...
+      'end,'...
+      'end'];
+mars_armoire('add_if_absent','est_design',...
+	     struct('filter','_mres.mat',...
+		    'title', 'MarsBaR estimated design',...
+		    'set_action', cb,...
+		    'can_change', 1,...
+		    'save_if_changed', 1));
+
+% and workspace
+if ~isfield(MARS, 'WORKSPACE'), MARS.WORKSPACE = []; end
+
 % read any necessary defaults
-[mbdefs sourcestr] = mars_options('Defaults');
-if isempty(MARSBAR)
-  fprintf('MarsBaR defaults loaded from %s\n',sourcestr);
+if ~is_there(MARS, 'OPTIONS')
+  loadf = 1;
+  MARS.OPTIONS = [];
+else
+  loadf = 0;
 end
-MARSBAR = mars_options('fill',MARSBAR, mbdefs);
+[mbdefs sourcestr] = mars_options('Defaults');
+MARS.OPTIONS = mars_options('fill',MARS.OPTIONS, mbdefs);
 mars_options('put');
+if loadf
+  fprintf('Loaded MarsBaR defaults from %s\n',sourcestr);
+end
 
 %=======================================================================
 case 'off'                             %-Unload marsbar 
 %=======================================================================
 % marsbar('Off')
 %-----------------------------------------------------------------------
-% save outstanding xCon
-marsbar('save_xcon');
+% save outstanding information
+mars_armoire('save_ui', 'all');
 
 % remove marsbar added directories
-mbpath = fileparts(which('marsbar.m'));
-rmpath(fullfile(mbpath, 'spmrep'));
-rmpath(fullfile(mbpath, 'fonct'));
-rmpath(fullfile(mbpath, 'init'));
+rmpath(MARS.ADDPATHS{:});
 fprintf('MarsBaR analysis functions removed from path\n');
 
 %=======================================================================
@@ -168,6 +201,7 @@ Fmenu = figure('IntegerHandle','off',...
 
 funcs = {'mars_display_roi(''display'');',...
 	 'affichevol',...
+	 'mars_blob_ui;',...
 	 'marsbar(''buildroi'');',...
 	 'marsbar(''transform'');',...
 	 'marsbar(''import'');',...
@@ -180,6 +214,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['ROI definition',...
 		    '|View...'...
 		    '|Draw...'...
+		    '|Get SPM cluster(s)...'...
 		    '|Build...',...
 		    '|Transform...',...
 		    '|Import...',...
@@ -232,17 +267,17 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'CallBack','spm(''PopUpCB'',gcbo)',...
 	  'UserData',funcs);
 
-funcs = {['global MARSBAR; '...
-	 'MARSBAR=mars_options(''load'');mars_options(''put'');'],...
+funcs = {['global MARS; '...
+	 'MARS.OPTIONS=mars_options(''load'');mars_options(''put'');'],...
 	 'mars_options(''save'');',...
-	 ['global MARSBAR; '...
-	 'MARSBAR=mars_options(''edit'');mars_options(''put'');'],...
-	 ['global MARSBAR; '...
-	  '[MARSBAR str]=mars_options(''defaults'');' ...
+	 ['global MARS; '...
+	 'MARS.OPTIONS=mars_options(''edit'');mars_options(''put'');'],...
+	 ['global MARS; '...
+	  '[MARS.OPTIONS str]=mars_options(''defaults'');' ...
 	  'mars_options(''put''); '...
 	  'fprintf(''Defaults loaded from %s\n'', str)'],...
-	 ['global MARSBAR; '...
-	  '[MARSBAR str]=mars_options(''basedefaults'');' ...
+	 ['global MARS; '...
+	  '[MARS.OPTIONS str]=mars_options(''basedefaults'');' ...
 	  'mars_options(''put''); '...
 	  'fprintf(''Defaults loaded from %s\n'', str)']...
 	};
@@ -280,24 +315,13 @@ case 'estimate'                                 %-Estimate callback
 %=======================================================================
 % marsbar('estimate')
 %-----------------------------------------------------------------------
-if exist(fullfile('.','mars_estimated.mat'),'file') & ...
-      spm_input({'Current directory contains existing SPM stats files:',...
-		 ['(pwd = ',pwd,')'],' ',...
-		 'Continuing will overwrite existing results!'},1,'bd',...
-		'stop|continue',[1,0],1)
-  tmp=0; 
-else
-  tmp=1; 
-end
-if tmp
-  tmp = load(spm_get(1,'SPMcfg.mat','Select SPMcfg.mat...'));
-  if isfield(tmp,'Sess') & ~isempty(tmp.Sess)
-    Sess=tmp.Sess; xsDes=tmp.xsDes; % because spm_spm uses inputname
-    spm_spm(tmp.VY,tmp.xX,tmp.xM,tmp.F_iX0,Sess,xsDes);
-  elseif isfield(tmp,'xC')
-    xC=tmp.xC; xsDes=tmp.xsDes; % because spm_spm uses inputname
-    spm_spm(tmp.VY,tmp.xX,tmp.xM,tmp.F_iX0,xC,xsDes);
-  end
+tmp = load(spm_get(1,'SPMcfg.mat','Select SPMcfg.mat...'));
+if isfield(tmp,'Sess') & ~isempty(tmp.Sess)
+  Sess=tmp.Sess; xsDes=tmp.xsDes; % because spm_spm uses inputname
+  spm_spm(tmp.VY,tmp.xX,tmp.xM,tmp.F_iX0,Sess,xsDes);
+elseif isfield(tmp,'xC')
+  xC=tmp.xC; xsDes=tmp.xsDes; % because spm_spm uses inputname
+  spm_spm(tmp.VY,tmp.xX,tmp.xM,tmp.F_iX0,xC,xsDes);
 end
 
 %=======================================================================
@@ -306,13 +330,10 @@ case 'quit'                                      %-Quit MarsBaR window
 % marsbar('Quit')
 %-----------------------------------------------------------------------
 
-% save any pending contrasts
-marsbar('save_xcon');
-
 % reenable SPM controls
 marsbar('SPMdesconts','on');
 
-% do path stuff
+% do path stuff, save any pending changes
 marsbar('off');
 
 %-Close any existing 'MarsBaR' 'Tag'ged windows
@@ -328,11 +349,16 @@ Fmenu = spm_figure('FindWin','Menu');
 if isempty(Fmenu)
   return
 end
-DStrs = {'PET/SPECT models', 'fMRI models','Basic models'...
-	 'Explore design', 'Estimate', 'Results'};
+
+% Check if the required function is still on the path
+if isempty(which('mars_veropts')), return,end % a path problem
+
+% Find statistic buttons in this version of SPM
+DStrs = mars_veropts('stat_buttons');
 dH = [];
 for i = 1:length(DStrs)
-  dH = [dH findobj(Fmenu,'String', DStrs{i})];
+  tmp = findobj(Fmenu,'String', DStrs{i});
+  if ~isempty(tmp), dH = [dH tmp]; end
 end
 if nargin > 1
   set(dH, 'Enable', varargin{2});
@@ -366,10 +392,9 @@ case 'import'                                     %-import rois
 %-----------------------------------------------------------------------
 
 marsbar('mars_menu', 'Import ROIs', 'Import ROIs from:',...
-	{{'saveallblobs'},...
-	 {'img2rois','c'},...
+	{{'img2rois','c'},...
 	 {'img2rois','i'}},...
-	{'all SPM results clusters','cluster image',...
+	{'cluster image',...
 	 'number labelled ROI image'});
 
 %=======================================================================
@@ -412,66 +437,37 @@ end
 mars_rois2img('','','',roi_type);
 
 %=======================================================================
-case 'saveallblobs'                          %- save all blobs to ROIs
-%=======================================================================
-% marsbar('saveallblobs')
-%-----------------------------------------------------------------------
-evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
-errstr = sprintf(['''Cannot find SPM/VOL structs in the workspace; '...
-		  'Please run SPM results GUI''']);
-SPM = evalin('base', 'SPM', ['error(' errstr ')']);
-M = evalin('base', 'VOL.M', ['error(' errstr ')']);
-roipath = spm_get([-1 0], '', 'Directory to save ROIs');
-if isempty(roipath)
-  return
-end
-rootn = marsbar('str2fname', SPM.title);
-rootn = spm_input('Root name for clusters', '+1', 's', rootn);
-
-pre_ones = ones(1, size(SPM.XYZ,2));
-clusters = spm_clusters(SPM.XYZ);
-[N Z maxes A] = spm_max(SPM.Z,SPM.XYZ);
-for c = unique(A)
-  % maximum maximum for this cluster
-  tmp = Z; tmp(A~=c) = -Inf; 
-  [tmp mi] = max(tmp);
-  % voxel coordinate of max
-  vco = maxes(:, mi);
-  % in mm
-  maxmm = M * [vco; 1];
-  maxmm = maxmm(1:3);
-  % corresponding cluster in spm_clusters, XYZ for cluster
-  my_c = clusters(all(SPM.XYZ == vco * pre_ones));
-  XYZ = SPM.XYZ(:, clusters == my_c(1));
-  if ~isempty(XYZ)
-    % file name and labels
-    d = sprintf('%s cluster at [%0.1f %0.1f %0.1f]', rootn, maxmm);
-    l = sprintf('%s_%0.0f_%0.0f_%0.0f', rootn, maxmm);
-    fn = marsbar('str2fname', l);
-    fname = maroi('filename', fullfile(roipath, fn));
-    o = maroi_pointlist(struct('XYZ',XYZ,'mat',M,'descrip',d, 'label', ...
-			       l), 'vox');
-    fprintf('\nSaving %s as %s...', d, fname);
-    saveroi(o, fname);
-  end
-end
-fprintf('\nDone...\n');
-
-%=======================================================================
 case 'saveroi'                                  %-save roi
 %=======================================================================
-% o = marsbar('saveroi', obj)
+% o = marsbar('saveroi', obj, flags)
 %-----------------------------------------------------------------------
+% flags will usually be empty, or one or more characters from
+% 'n'   do not ask for label or description
+% 'l'   use label to make filename, rather than source field
+
 if nargin < 2 | isempty(varargin{2})
   return
 end
-
+if nargin < 3
+  flags = '';
+end
+if isempty(flags), flags = ' '; end
 o = varargin{2};
 varargout = {[]};
+
+% Label, description
+if ~any(flags=='n')
+  d = spm_input('Description of ROI', '+1', 's', descrip(o));
+  o = descrip(o,d);
+  l = spm_input('Label for ROI', '+1', 's', label(o));
+  o = label(o,l);
+end
+
 fn = source(o);
-if isempty(fn)
+if isempty(fn) | any(flags=='l')
   fn = maroi('filename', marsbar('str2fname', label(o)));
 end
+
 [f p] = uiputfile(fn, 'File name for ROI');
 if any(f~=0)
   roi_fname = maroi('filename', fullfile(p, f));
@@ -517,10 +513,7 @@ end
 
 % save ROI
 if isa(o, 'maroi')
-  d = spm_input('Description of ROI', '+1', 's', descrip(o));
-  o = descrip(o,d);
-  l = spm_input('Label for ROI', '+1', 's', func);
-  o = label(o,l);
+  o = label(o, func);
   o = marsbar('saveroi', o); 
   fprintf('\nSaved ROI as %s\n', source(o));
 else
@@ -541,104 +534,20 @@ o = maroi('load', deblank(roilist));
 o = flip_lr(o);
 
 % save ROI
-d = spm_input('Description of ROI', '+1', 's', ['LR flip - ' descrip(o)]);
-o = descrip(o,d);
-l = spm_input('Label for ROI', '+1', 's', ['flip_lr_' label(o)]);
-o = label(o,l);
-o = marsbar('saveroi', o); 
+o = marsbar('saveroi', o, 'l'); 
 fprintf('\nSaved ROI as %s\n', source(o));
 
 %=======================================================================
 case 'set_results'                                  %-set results
 %=======================================================================
-% donef = marsbar('set_results', spm_name, xcon_name)
+% donef = marsbar('set_results')
 %-----------------------------------------------------------------------
-if nargin < 2 
-  spm_name = spm_get([0 1], 'mars_estimated.mat', 'Select results file');
-else
-  spm_name = varargin{2};
-end
-if nargin < 3
-  xcon_name = '';
-else
-  xcon_name = varargin{3};
-end
-
 varargout = {0};
-if isempty(spm_name),return,end
-if ~exist(spm_name, 'file')
-  error(['Results file ' spm_name ' does not appear to exist']);
-end
-MARSBAR.estim = load(spm_name);
-MARSBAR.estim.swd = fileparts(spm_name);
-MARSBAR.estim.file = spm_name;
-
-% get default xcon file name
-if isempty(xcon_name)
-  pn = fileparts(spm_name);
-  xcon_name = fullfile(pn, 'mars_xCon.mat');
-  if ~exist(xcon_name, 'file')
-    warning(['Default xCon file ' xcon_name ' does not exist']);
-    xcon_name = '';
-  end
-end
-
-marsbar('set_contrasts', xcon_name);
-
-MARSBAR_RESULTS.region = [];
+marsRes = mars_armoire('set', 'est_design');
+if isempty(marsRes), return, end
+MARS.WORKSPACE.default_contrast = [];
+MARS.WORKSPACE.default_region = [];
 varargout = {1};
-return
-
-%=======================================================================
-case 'set_contrasts'                                  %-set contrasts
-%=======================================================================
-% donef = marsbar('set_contrasts', xcon_name)
-%-----------------------------------------------------------------------
-if nargin < 2 
-  xcon_name = '';
-else
-  xcon_name = varargin{2};
-end
-varargout = {0};
-if isempty(xcon_name)
-  xcon_name = spm_get([0 1], 'xCon.mat', 'Select contrast file');
-  if isempty(xcon_name), return, end
-end
-
-% save and wipe any previous xCons
-marsbar('save_xcon');
-MARSBAR.contrasts = [];
-
-% get new contrasts
-load(xcon_name);
-MARSBAR.contrasts.xCon = xCon;
-MARSBAR.contrasts.startlength = length(xCon);
-
-% can write to this directory?
-donef = 0;
-while ~donef
-  try
-    save(xcon_name, 'xCon')
-    donef = 1;
-  catch
-    spm('alert*', 'Cannot save contrast file in directory', ['Contrasts' ...
-		    ' cannot be saved']);
-    [pn fn ext] = fileparts(xcon_name);
-    newdir = spm_get([0 -1], 'x*on.mat', 'New directory (Done for none)');
-    if isempty(newdir)
-      xcon_name = '';
-      spm('alert*', 'New contrasts will not be saved', ['No writeable' ...
-		    ' directory']);
-      donef = 1;
-    else
-      xcon_name = fullfile(newdir, [fn ext]);
-    end
-  end
-end
-MARSBAR.contrasts.file = xcon_name;
-
-MARSBAR.region = [];
-varargout = {donef};
 return
 
 %=======================================================================
@@ -647,17 +556,13 @@ case 'set_defcon'                                  %-set default contrast
 % donef = marsbar('set_defcon')
 %-----------------------------------------------------------------------
 varargout = {0};
-if isempty(MARSBAR.estim)
-  if ~marsbar('set_results'), return, end
-end
-if isempty(MARSBAR.contrasts)
-  if ~marsbar('set_contrasts'), return, end
-end
-[defcon xCon] = spm_conman(MARSBAR.estim.xX,...
-			   MARSBAR.contrasts.xCon,'T|F',1,...
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+[defcon xCon changef] = mars_conman(marsRes.xX,...
+			   marsRes.xCon,'T|F',1,...
 			 'Select default contrast','',1);
-MARSBAR.contrasts.defcon = defcon;
-MARSBAR.contrasts.xCon = xCon;
+if changef, mars_armoire('update', 'est_design', marsRes); end
+MARS.WORKSPACE.default_contrast = defcon;
 varargout = {1};
 
 %=======================================================================
@@ -666,59 +571,29 @@ case 'set_defregion'                                  %-set default region
 % donef = marsbar('set_defregion')
 %-----------------------------------------------------------------------
 varargout = {0};
-if isempty(MARSBAR.estim)
-  if ~marsbar('set_results'), return, end
-end
-MARSBAR.region = mars_get_region(MARSBAR.estim.marsY.cols);
-varargout = {1};
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+marsY = mars_armoire('get', 'roi_data');
+if isempty(marsY), return, end
 
-%=======================================================================
-case 'save_xcon'                                  %-save xcon file
-%=======================================================================
-% marsbar('save_xcon')
-%-----------------------------------------------------------------------
-if is_there(MARSBAR, 'contrasts', 'xCon') &  ...
-      is_there(MARSBAR.contrasts, 'startlength') & ...
-      is_there(MARSBAR.contrasts, 'file') & ...
-      length(MARSBAR.contrasts.xCon) > MARSBAR.contrasts.startlength
-  
-  xCon = MARSBAR.contrasts.xCon;
-  try
-    save(MARSBAR.contrasts.file, 'xCon');
-    MARSBAR.contrasts.startlength = length(MARSBAR.contrasts.xCon);
-    fprintf('New contrasts saved to file %s\n', MARSBAR.contrasts.file);
-  catch
-    warning(['Failed to save xCon matrix to ' ...
-	    MARSBAR.contrasts.file]);
-  end
-end
-
-%=======================================================================
-case 'set_defregion'                                  %-set default region
-%=======================================================================
-% donef = marsbar('set_defregion')
-%-----------------------------------------------------------------------
-varargout = {0};
-if isempty(MARSBAR.estim)
-  if ~marsbar('set_results'), return, end
-end
-MARSBAR.region = mars_get_region(MARSBAR.estim.marsY.cols);
+MARS.WORKSPACE.default_region = mars_get_region(marsY.cols);
 varargout = {1};
 
 %=======================================================================
 case 'spm_graph'                                  %-run spm_graph
 %=======================================================================
-% [Y,y,beta,SE] =  marsbar('spm_graph')
+% [Y,y,beta,SE,cbeta] =  marsbar('spm_graph')
 %-----------------------------------------------------------------------
 varargout = {};
-if ~is_there(MARSBAR, 'estim')
-  if ~marsbar('set_results'), return, end
-end
-if ~is_there(MARSBAR, 'region')
+if ~is_there(MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
-[Y,y,beta,SE,cbeta] = mars_spm_graph(MARSBAR.estim, MARSBAR.contrasts.xCon, ...
-		       MARSBAR.region);
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+[Y,y,beta,SE,cbeta] = mars_spm_graph(...
+    marsRes, ...
+    marsRes.xCon, ...
+    MARS.WORKSPACE.default_region);
 varargout = {Y, y, beta, SE, cbeta};
 
 %=======================================================================
@@ -727,22 +602,21 @@ case 'stat_table'                                  %-run stat_table
 % marsS =  marsbar('stat_table')
 %-----------------------------------------------------------------------
 varargout = {};
-if ~is_there(MARSBAR, 'estim')
-  if ~marsbar('set_results'), return, end
-end
-[varargout{1} MARSBAR.contrasts.xCon] = ... 
-    mars_stat_table(MARSBAR.estim, MARSBAR.contrasts.xCon);
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+[varargout{1} marsRes.xCon changef] = ... 
+    mars_stat_table(marsRes, marsRes.xCon);
+if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================
 case 'merge_xcon'                                  %-import contrasts
 %=======================================================================
 % marsbar('merge_xcon')
 %-----------------------------------------------------------------------
-if ~is_there(MARSBAR, 'estim')
-  if ~marsbar('set_results'), return, end
-end
-MARSBAR.contrasts.xCon = mars_merge_xcon(...
-    MARSBAR.estim.xX, MARSBAR.contrasts.xCon);
+marsRes = mars_armuire('get', 'est_design');
+if isempty(marsRes), return, end
+marsRes.xCon = mars_merge_xcon(...
+    marsRes.xX, marsRes.xCon);
 
 %=======================================================================
 case 'splash'                           %-show splash screen

@@ -93,7 +93,7 @@ if fill_imgs
     for i = 1:nsess
       str = sprintf('select scans for session %0.0f',i);
       if isempty(BCH)
-	q = spm_get(Inf,'.img',str);
+	q = spm_get(Inf,mars_veropts('get_img_ext'),str);
       else
 	q = sf_bch_get_q(i);
       end %- 
@@ -102,7 +102,7 @@ if fill_imgs
   else
     str   = sprintf('select scans for this study');
     if isempty(BCH)
-      P     = spm_get(sum(nscan),'.img',str);
+      P     = spm_get(sum(nscan),mars_veropts('get_img_ext'),str);
     else
       for i = 1:nsess
 	q = sf_bch_get_q(i);

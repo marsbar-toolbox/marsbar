@@ -19,7 +19,7 @@ switch lower(modality)
   sess_str = 'Session';
 end
   
-mars = spm('GetGlobal', 'MARSBAR');
+mars_opts = spm('GetGlobal', 'MARS.OPTIONS');
 Y = [];
 K = [];
 VY = [];
@@ -196,7 +196,7 @@ for  i = 1:q, VY(i).pinfo(1:2,:) = VY(i).pinfo(1:2,:)*gSF(i); end
 end
 
 % Now get data
-marsY = mars_roidata(roilist, VY, mars.statistics.sumfunc, 'v');
+marsY = mars_roidata(roilist, VY, mars_opts.statistics.sumfunc, 'v');
 Y = marsY.Y;
 
 % Filter

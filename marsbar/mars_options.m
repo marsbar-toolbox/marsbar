@@ -4,13 +4,13 @@ function [mars, msgstr] = mars_options(varargin)
 %
 % Input [default]
 % optstr            - option string: one of
-%                     'put','load','save','edit','defaults','basedefaults','fill'
-%                     [load]  
-% mars              - marsbar options structure [MARSBAR]
+%                     'put','load','save','edit','defaults',
+%                     'basedefaults','fill' [load]  
+% mars              - marsbar options structure [MARS.OPTIONS]
 % cfg_fname         - filename for configuration file [GUI]
 % 
 % Output
-% mars              - possible modified marsbar structure
+% mars              - possible modified MARS.OPTIONS structure
 % msgstr            - any relevant messages
 %
 % Matthew Brett 20/10/00,2/6/01
@@ -18,11 +18,9 @@ function [mars, msgstr] = mars_options(varargin)
 % $Id$
   
 [optstr mars cfg_fname] = mars_argfill(varargin, 0, ...
-				       {'load', spm('getglobal','MARSBAR'),''});
+				       {'load', ...
+		    getfield(spm('getglobal','MARS'), 'OPTIONS'),''});
 msgstr = '';
-
-% results fields in mars options structure
-resfields = {'estim', 'contrasts', 'results'};
 
 % editable fields, and descriptions of fields, in mars options structure
 optfields = {'spacebase','structural','statistics'}; 
@@ -61,15 +59,11 @@ switch lower(optstr)
     cfg_fname = fullfile(p, f);
   end
   if ~isempty(cfg_fname)
-    % don't save the default contrasts etc
-    [mars_results, mars] = splitstruct(mars, resfields);
     try
       save(cfg_fname, 'mars');
     catch
       warning(['Error saving config to file ' cfg_fname])
     end
-    % restore the results stuff
-    mars = fillafromb(mars, mars_results);    
   end
   
   % --------------------------------------------------
@@ -78,10 +72,12 @@ switch lower(optstr)
   msgstr = 'base defaults';
 
   % default structural image for display
-  mars.structural.fname = fullfile(spm('Dir'), 'canonical', 'avg152T1.img');
+  mars.structural.fname = fullfile(spm('Dir'), 'canonical', ...
+				   ['avg152T1' mars_veropts('template_ext')]);
   
   % default image specifying base space for ROIs
-  mars.spacebase.fname = fullfile(spm('Dir'), 'templates', 'T1.img');
+  mars.spacebase.fname = fullfile(spm('Dir'), 'templates', ...
+				  ['T1' mars_veropts('template_ext')]);
   
   % ROI defaults
   mars.roidefs.spm_hold = 1;
@@ -122,8 +118,9 @@ switch lower(optstr)
    
     % display stuff - default structural scan
    case 'structural'
-    mars.structural.fname = spm_get(1, 'img', 'Default structural image', ...
-			       fileparts(mars.structural.fname));
+    mars.structural.fname = spm_get(1, mars_veropts('get_img_ext'),...
+				    'Default structural image', ...
+				    fileparts(mars.structural.fname));
 
     % default ROI base space
    case 'roidefs'
@@ -136,8 +133,9 @@ switch lower(optstr)
     
    % default ROI base space
    case 'spacebase'
-    mars.spacebase.fname = spm_get(1, 'img', 'Default ROI image space', ...
-			       fileparts(mars.spacebase.fname));
+    mars.spacebase.fname = spm_get(1, mars_veropts('get_img_ext'),...
+				   'Default ROI image space', ...
+				   fileparts(mars.spacebase.fname));
     
    % statistics 
    case 'statistics'

@@ -7,8 +7,8 @@ o = [];
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Build ROI', 0);
 
 % get ROI type
-optfields = {'blob','image','sphere','box_cw', 'box_lims'};
-optlabs =  {'Activation cluster','Image','Sphere',...
+optfields = {'image','sphere','box_cw', 'box_lims'};
+optlabs =  {'Image','Sphere',...
 	    'Box (centre,widths)','Box (ranges XYZ)'};
 
 roitype = char(...
@@ -39,12 +39,6 @@ switch roitype
   end
   o = maroi_image(struct('vol', spm_vol(imgname), 'binarize',binf,...
 			 'func', func));
- case 'blob'
-  [XYZ tmp mat pt str] = mars_get_cluster;
-  if isempty(XYZ), return, end
-  d = sprintf('%s cluster at [%0.1f %0.1f %0.1f]', str, pt);
-  l = sprintf('%s_%0.0f_%0.0f_%0.0f', str, pt);
-  o = maroi_pointlist(struct('XYZ',XYZ, 'mat', mat));
  case 'sphere'
   c = spm_input('Centre of sphere (mm)', '+1', 'e', [], 3); 
   r = spm_input('Sphere radius (mm)', '+1', 'r', 10, 1);
@@ -73,8 +67,5 @@ switch roitype
  otherwise
   error(['Strange ROI type: ' roitype]);
 end
-
-d = spm_input('Description of ROI', '+1', 's', d);
 o = descrip(o,d);
-l = spm_input('Label for ROI', '+1', 's', l);
 o = label(o,l);

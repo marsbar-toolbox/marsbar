@@ -84,7 +84,7 @@ if nnnargin == 0
      else,       Num_vol = length(Volume)+1;end
   
      if ~exist('P'),
-       P = spm_get([Inf],'.img',{['select images']},data_path);
+       P = spm_get([Inf],mars_veropts('get_img_ext'),{['select images']},data_path);
      end
 
      Vol = spm_vol(P);

@@ -1,7 +1,7 @@
 function [o, others] = maroi_image(params)
 % maroi_image - class constructor
 % inputs [defaults]
-%  params  - filename ending in .img, defining ROI
+%  params  - filename, for image defining ROI
 %            or spm vol struct (see spm_vol)
 %
 % This ROI type is a child of the maroi_matrix type.  maroi_image ROIs are

@@ -3,15 +3,6 @@ function mars_model_data_ui;
 %
 % $Id$
 
-% check for existing model
-if exist(fullfile('.','mars_estimated.mat'),'file') & ...
-      spm_input({'Current directory contains existing SPM stats files:',...
-		 ['(pwd = ',pwd,')'],' ',...
-		 'Continuing will overwrite existing results!'},1,'bd',...
-		'stop|continue',[1,0],1)
-  return; 
-end
-
 %-Say hello
 %-----------------------------------------------------------------------
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','MarsBar input data and model',0);
