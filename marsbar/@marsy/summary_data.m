@@ -37,6 +37,9 @@ if nargin > 1 | ...              % sumfunc passed
       [Y(:,i) Yvar(:,i)] = pr_sum_func(Ys{i}, s_f, Ws{i});
     end
   end
+  if verbose(o)
+    fprintf(['Summarizing data with summary function: %s\n', s_f);
+  end
   if nargout > 2
     st.Y = Y;
     st.Yvar = Yvar;
