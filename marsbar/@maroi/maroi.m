@@ -6,6 +6,8 @@ function [o, others] = maroi(params, varargin)
 %  
 % or to load objects of this (or child) type)
 % o = maroi('load', fname);
+% or
+% o = maroi(fname);
 % 
 % or to access class data
 % res = maroi('classdata', p1, p2); (see classdata method)
@@ -116,7 +118,11 @@ if ischar(params)
    case 'filename'
     o = my_roifname(varargin{:});
    otherwise
-    error(['Don''t recognize maroi action string: ' params ]);
+    if exist(params, 'file')
+      o = maroi('load', params);
+    else
+      error(['Don''t recognize maroi action string: ' params ]);
+    end
    end
   return
 end
