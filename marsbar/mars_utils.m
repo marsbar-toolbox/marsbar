@@ -13,7 +13,18 @@ function varargout=mars_utils(varargin)
 %    gets name of image, if image exists, checks for overwrite  
 %    returns filename, or empty string if overwrite not wanted
 %
+% XYZ = mars_utils('e2xyz', els, dims);
+%    takes element numbers in an image (e.g. find(img>5)) and the
+%    dimensions of the image [X Y Z] and returns the 3xN voxel
+%    coordinates corresponding to the N elements
+%
 % $Id$
+
+if nargin < 1
+  error('Need action');
+end
+
+switch(lower(varargin{1}))
   
 %=======================================================================
 case 'str2fname'                                   %-string to file name
@@ -84,3 +95,28 @@ if any(flags == 'k') & exist(fname, 'file')
 end
 varargout = {fname};
 
+%=======================================================================
+case 'e2xyz'         %-returns XYZ voxel coordinates for element numbers
+%=======================================================================
+if nargin < 2
+  error('Need element numbers');
+end
+if nargin < 3
+  error('Need image dimensions');
+end
+els = varargin{2};
+dim = varargin{3};
+if size(els, 2) == 1, els = els'; end
+nz = els-1;
+pl_sz = dim(1)*dim(2);
+Z = floor(nz / pl_sz);
+nz = nz - Z*pl_sz;
+Y = floor(nz / dim(1));
+X = nz - Y*dim(1);
+XYZ = [X; Y; Z] +1;
+varargout = {XYZ};
+return
+
+otherwise
+  error('Beyond my range');
+end

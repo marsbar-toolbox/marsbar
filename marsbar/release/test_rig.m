@@ -79,7 +79,7 @@ for c = 1:length(Ic)
   V = spm_vol(fnames{c});
   img = spm_read_vols(V);
   [mx(c) i] = max(img(:));
-  xyz(:, c) = sf_e2xyz(i, V.dim(1:3));
+  xyz(:, c) = mars_utils('e2xyz', i, V.dim(1:3));
   mx_roi(c) = maroi_pointlist(struct('XYZ', xyz(:, c), ...
 				     'mat', V.mat), 'vox');
   Y = get_marsy(mx_roi(c), D, 'mean');
@@ -95,12 +95,3 @@ for c = 1:length(Ic)
 end
 return
 
-function XYZ = sf_e2xyz(els, dim)
-nz = els-1;
-pl_sz = dim(1)*dim(2);
-Z = floor(nz / pl_sz);
-nz = nz - Z*pl_sz;
-Y = floor(nz / dim(1));
-X = nz - Y*dim(1);
-XYZ = [X; Y;Z] +1;
-return
