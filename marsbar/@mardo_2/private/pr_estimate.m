@@ -80,7 +80,7 @@ if ~have_V
   % Covariance calculated on summary or voxel time courses
   cov_vox = 1;
   if isfield(xVi, 'cov_calc')
-    cov_vox = strcmpi(Vi.cov_calc, 'vox');
+    cov_vox = strcmpi(xVi.cov_calc, 'vox');
   end
 else cov_vox = 0; end
     
@@ -192,7 +192,8 @@ if ~have_V
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
 	    'is to run estimation separatly for each ROI'};
-    warning(sprintf('\n%s\n', wstr{:}));
+    fprintf('\n');
+    warning(sprintf('%s\n', wstr{:}));
   end
   % Cy is whitened covariance matrix; only needed for SPM REML method
   if strcmp(cov_type, 'SPM')
