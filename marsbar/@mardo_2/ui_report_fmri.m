@@ -3,7 +3,7 @@ function ui_report_fmri(D,s,i)
 % FORMAT ui_report_fmri(D,s,i)
 %
 % Copied with minor edits from:
-% @(#)spm_ui_report_fmri.m	2.22 Karl Friston 03/02/21
+% @(#)spm_fMRI_design_show.m	2.22 Karl Friston 03/02/21
 %
 % $Id$
 
