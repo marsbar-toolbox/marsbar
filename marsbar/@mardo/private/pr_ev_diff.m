@@ -20,23 +20,26 @@ if isempty(diff_func)
   diff_func = 'max';
 end
 
+[m n] = size(ev_tc);
+d = zeros(1, n);
 switch lower(diff_func)
  case 'max'
-  d = max(ev_tc);
+  d = max(ev_tc, [], 1);
  case 'max-min'
-  d = max(ev_tc) - min(ev_tc);
+  d = max(ev_tc, [], 1) - min(ev_tc, [], 1);
  case 'abs max'
-  [d i] = max((abs(ev_tc)));
-  d = ev_tc(i);
+  [d i] = max(abs(ev_tc), [], 1);
+  for s = 1:n, d(s) = ev_tc(i(s), s); end
  case 'abs max-min'
-  mx = max(ev_tc);
-  mn = min(ev_tc);
-  if abs(mx) > abs(mn), d = mx-mn;
-  else d = mn-mx; end
+  mx = max(ev_tc, [], 1);
+  mn = min(ev_tc, [], 1);
+  i  = abs(mx) > abs(mn);
+  d(i)  = mx(i)-mn(i);
+  d(~i) = mn(~i)-mx(~i);
  case 'window'
   if nargin < 4, error('Need window and dt'); end
   w = round(varargin{1} / varargin{2}) + 1;
-  d = mean(ev_tc(w(1):w(2)));
+  d = mean(ev_tc(w(1):w(2), :), 1);
  otherwise
   error(sprintf('What is this difference function: %s?', diff_func));
 end
