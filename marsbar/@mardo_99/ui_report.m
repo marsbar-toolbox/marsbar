@@ -54,7 +54,6 @@ case 'desrepui'                                    %-Design reporting UI
 %  .Sess	v/			v/(f)		v/(f)
 %  .xsDes	x			v/		v/
 %
-%  .swd
 %  .SPMid
 %
 %  .cfg
@@ -70,10 +69,6 @@ if ~isfield(SPM,'cfg')
 	end
 	SPM.cfg = cfg;
 end
-
-%-Set swd - SPM working directory to use if estimating (empty => don't est)
-%-----------------------------------------------------------------------
-if ~isfield(SPM,'swd'), SPM.swd=''; end
 
 %-Add a scaled design matrix to the design data structure
 %-----------------------------------------------------------------------
