@@ -86,13 +86,14 @@ end
 xc_len = length(xCon);
 old_xc_len = xc_len;
 for i=1:length(C)
+  if ~xc_len, xCon = C(i); Ic(i) = 1; xc_len = 1; break, end
   Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
   if ~Ic(i)
     xc_len = xc_len+1;
     xCon(xc_len) = C(i);
     Ic(i) = xc_len;
   elseif v_f 
-    fprintf('\ncontrast %s (type %s) already in xCon\n', ...
+    fprintf('\nContrast %s (type %s) already in xCon\n', ...
 	    C(i).name, C(i).STAT);
   end
 end
