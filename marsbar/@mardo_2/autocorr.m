@@ -12,7 +12,7 @@ function D = autocorr(D, autocorr_type, varargin)
 %                   varargin{1} should be vector with estimated AR
 %                      coefficients (default is [0.2])
 %                   varargin{2} is optional, and is flag; non-zero value
-%                   specifies voxel-wise covariance estimates (default 0)
+%                   specifies voxel-wise covariance estimates (default 1)
 %                 If autocorr type is 'fmristat'
 %                   varargin{1} is scalar value for order of fmristat
 %                   model (default is 1);
