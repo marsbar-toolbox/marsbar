@@ -59,7 +59,7 @@ switch Action
 
 			case 'hrf'
 			%---------------------------------------------------
-			h       = spm_hrf(K{s}.RT);
+			h       = pr_spm_hrf(K{s}.RT);
 			h       = [h; zeros(size(h))];
 			g       = abs(fft(h));
 			h       = real(ifft(g));
@@ -125,7 +125,7 @@ switch Action
 		% ensure requisite feild are present
 		%-----------------------------------------------------------
 		if ~isfield(K{1},'KL')
-			K = spm_filter('set',K);
+			K = pr_spm_filter('set',K);
 		end
 
 		for s = 1:length(K)
