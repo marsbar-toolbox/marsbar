@@ -19,8 +19,8 @@ if ischar(flags), flags = {flags}; end
 marsY = marsy(marsY);
 
 % check design is complete
-if is_fmri(marsD) & ~has_filter(marsD)
-  error('This FMRI design needs a filter before estimation');
+if ~can_mars_estimate(D)
+  error('This design needs more information before it can be estimate');
 end
 
 % Check data and design dimensions
