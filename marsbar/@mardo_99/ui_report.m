@@ -170,7 +170,7 @@ case 'files&factors'                         %-Summarise files & factors
 %=======================================================================
 % ui_report(D, 'Files&Factors',fnames,I,xC,sF,xs)
 
-fnames  = get_image_names(D);
+fnames  = image_names(D);
 if isempty(fnames)
   fnames = cell(size(SPM.xX.X, 1));
 end
@@ -314,7 +314,7 @@ case {'desmtx','desorth'} %-Display design matrix / design orthogonality
 % ui_report(D, 'DesOrth',xX,fnames)
 
 xX      = SPM.xX;
-fnames  = get_image_names(D);
+fnames  = image_names(D);
 if isempty(fnames)
   fnames = cell(size(SPM.xX.X, 1));
 end
