@@ -93,7 +93,7 @@ end
 
 %- compute GLM 
 fprintf('Computing estimates...');
-if ~spm_sp('isspc',X), Xs = spm_sp('set',X); else Xs = X; clear X, end
+if ~spm_sp('isspc',KXs), Xs = spm_sp('set',KXs); else Xs = KXs;  end
 
 [trRV trRVRV] = spm_SpUtil('trRV',Xs,V); 
 spmD.betas    = spm_sp('x-', Xs, Y);                 %-Parameter estimates
@@ -101,7 +101,6 @@ res           = spm_sp('r', Xs, Y);                  %-Residuals
 spmD.ResMS    = sqrt(sum(res.^2)./trRV);             %-Res variance estimation
 xX.erdf      = trRV^2/trRVRV;
 
-[spmD.betas spmD.ResMS xX.erdf] = mars_glm_estim(KXs, Y, V); 
 fprintf('Done.\n');
 
 % fill up design related stuff

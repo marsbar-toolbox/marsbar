@@ -32,7 +32,6 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 % $Id$
 
 % make values ready for return 
-Bcov = xX.Bcov; 
 cbeta = [];
 
 % get stuff from object
@@ -70,6 +69,7 @@ R   = spm_sp('r',xX.xKXs,spm_filter('apply',xX.K,y));
 %-Residual mean square: ResMS = sum(R.^2)/xX.trRV;
 %-----------------------------------------------------------------------
 ResMS = mRes.ResMS(rno);
+Bcov  = xX.Bcov;
 SE    = sqrt(ResMS*diag(Bcov));
 COL   = ['r','b','g','c','y','m','r','b','g','c','y','m'];
 

@@ -17,18 +17,22 @@ if ischar(flags), flags = {flags}; end
 
 % get SPM design structure
 SPM = des_struct(marsD);
-  
+
 % process flags
-if ismember(flags, 'redo_covar')
-  SPM.xVi = rmfield(SPM.xVi, 'V');
-  if verbose(marsD)
-    disp('Re-estimating covariance');
+if strmatch('redo_covar', flags)
+  if isfield(SPM.xVi, 'V')
+    SPM.xVi = rmfield(SPM.xVi, 'V');
+    if verbose(marsD)
+      disp('Re-estimating covariance');
+    end
   end
 end
-if ismember(flags, 'redo_whitening')
-  SPM.xX = rmfield(SPM.xX, 'W');
-  if verbose(marsD)
-    disp('Re-estimating whitening filter');
+if strmatch('redo_whitening', flags)
+  if isfield(SPM.xX, 'W')
+    SPM.xX = rmfield(SPM.xX, 'W');
+    if verbose(marsD)
+      disp('Re-estimating whitening filter');
+    end
   end
 end
 

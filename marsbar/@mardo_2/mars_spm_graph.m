@@ -29,6 +29,9 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %
 % $Id$
 
+% for return
+cbeta = [];
+
 % get stuff from object
 SPM = des_struct(marsD);
 xCon = SPM.xCon;
@@ -42,6 +45,7 @@ xX = SPM.xX;
 % Label for region
 XYZstr = SPM.marsY.cols{rno}.name;
 
+
 %-Get parameter estimates, ResMS, (compute) fitted data & residuals
 %=======================================================================
 
@@ -51,9 +55,8 @@ beta  = SPM.betas(:, rno);
 
 %-Residual mean square: ResMS = sum(R.^2)/xX.trRV;
 %-----------------------------------------------------------------------
-ResMS = mRes.ResMS(rno);
+ResMS = SPM.ResMS(rno);
 Bcov  = ResMS*SPM.xX.Bcov;
-SE    = sqrt(ResMS*diag(Bcov));
 
 %-Get Graphics figure handle
 %-----------------------------------------------------------------------
@@ -85,7 +88,8 @@ end
 %-Residual mean square: ResMS = sum(R.^2)/xX.trRV
 %---------------------------------------------------------------
 
-CI    = 1.6449;					% = spm_invNcdf(1 - 0.05);
+P05_Z = 1.6449;					% = spm_invNcdf(1 - 0.05);
+CI    = P05_Z;
 
 %-Colour specifications and index;
 %-----------------------------------------------------------------------
@@ -546,3 +550,10 @@ end
 %-call Plot UI
 %----------------------------------------------------------------------
 spm_results_ui('PlotUi',gca)
+
+% Return SE for compatibility with SPM99
+if CI ~= P05_Z
+  SE = CI / P05_Z;
+else
+  SE = sqrt(ResMS*diag(Bcov));
+end
