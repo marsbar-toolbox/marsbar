@@ -12,14 +12,26 @@ F  = gcbf;
 action = lower(action);
 switch action
  case 'ok'
-  % Check name is set, events not empty
-  new_name = get(findobj(F, 'Tag', 'ui_et_name'), 'String');
+  % Deblank name, and check name is not empty
+  hName = findobj(F, 'Tag', 'ui_et_name');
+  new_name = get(hName, 'String');
+  new_name = deblank(fliplr(deblank(fliplr(new_name))));
   if isempty(new_name) | strcmp(new_name, 'New event')
     msgbox('Need a name for this event type'); return
   end
+  % Check name has not been used
+  ets = event_types(D);
+  if ~isempty(ets)
+    if ismember(new_name, {ets(:).name})
+      msgbox(['Event type ' new_name ' already exists']); return
+    end    
+  end
+  % Check events not empty
   if isempty(get(findobj(F, 'Tag', 'ui_et_IN'), 'String'))
     msgbox('Need events for this event type'); return
   end
+  % Put (deblanked) string back, and set Done flag
+  set(hName, 'String', new_name);
   set(findobj(F,'Tag','ui_et_done'),'UserData',1);
  case 'cancel'
   set(findobj(F,'Tag','ui_et_done'),'UserData',0);
