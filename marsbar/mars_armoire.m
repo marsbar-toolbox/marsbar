@@ -28,6 +28,9 @@ function varargout = mars_armoire(action, item, data, filename)
 % set_ui         - sets data, getting via UI
 % save           - save data for item, if required
 % save_ui        - saves, using GUI to ask for filename
+%                  can pass flags as data arg, none or more of
+%                  f - force save even if not flagged as needed
+%                  w - GUI warn if no data
 % save 'all'     - saves data for all items, if required
 % update         - updates data, sets flag to show change
 % clear          - clears data for item
@@ -56,6 +59,8 @@ function varargout = mars_armoire(action, item, data, filename)
 %                   If data is empty, and file_name is not, 
 %                   an attempt to 'get' data will load contents of
 %                   file_name
+% default_file_name - default filename offered for save 
+% file_type       - type of file to load ('mat' or 'ascii')
 % char_is_filename - flag, if set, char data is assumed to be a filename
 % filter          - filter for GUI to suggest new file_name
 % prompt          - prompt for spm_get GUI
@@ -186,10 +191,12 @@ function I = i_def
 % returns default item
 I = struct('data', [],...
 	   'file_name', '',...
+	   'default_file_name','',...
 	   'can_change', 0, ...
 	   'has_changed',0,...
 	   'load_on_set', 1,...
 	   'save_if_changed', 0,...
+	   'file_type', 'mat',...
 	   'char_is_filename',1,...
 	   'set_action_if_update', 0 ,...
 	   'verbose', 1,...
@@ -230,7 +237,7 @@ if isempty(filename) % may need to save if no associated filename
 else % don't need to save, but may need to load from file
   I.has_changed = 0;
   if I.load_on_set & isempty(data)
-    data = load(filename);
+    data = load(filename, ['-' I.file_type]);
   end
 end
 I.data = data;
@@ -256,12 +263,17 @@ return
 function res = i_get(I)
 res = I.data;
 if isempty(res) & ~isempty(I.file_name)
-  res = load(I.file_name);
+  res = load(I.file_name, ['-' I.file_type]);
 end
 return
 
 function res = i_save_ui(I, flags, filename)
 if ~ischar(flags), flags = ''; end
+if i_isempty(I) & any(flags == 'w') % inform there is no data
+  msgbox('Nothing to save', [I.title ' is not set'], 'warn');
+  res = [];
+  return
+end
 res = i_save(I, [flags 'u'], filename);
 return
 
@@ -270,9 +282,12 @@ function res = i_save(I, flags, filename)
 if isempty(flags) | ischar(flags), flags == ' '; end
 res = 0;
 if isempty(filename), filename = I.file_name; end
+if isempty(filename), filename = I.default_file_name; end
 if i_need_save(I) | any(flags == 'f') % force flag
   % prompt for filename if UI
   if any(flags == 'u')
+    save_yn = questdlg(['Save ' I.title '?'],'Save', 'Yes', 'No', 'Yes');
+    if strcmp(save_yn, 'No'), return, end
     prompt = ['Filename to save ' I.title]; 
     [f p] = uiputfile(filename, prompt);
     if all(f==0), return, end
