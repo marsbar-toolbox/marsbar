@@ -19,19 +19,30 @@ function [o, others] = mardo_2(params, others)
 % $Id$
   
 myclass = 'mardo_2';
+cvs_v   = mars_cvs_version(myclass);
+
+% Default object structure
 defstruct = [];
 
 if nargin < 1
-  params = [];
+  defstruct.cvs_version = cvs_v;
+  o = class(defstruct, myclass);
+  others = [];
+  return
 end
 if nargin < 2
   others = [];
 end
 
+% Deal with passed objects of this (or child) class
 if isa(params, myclass)
-  % fill any relevant object fields with passed parameters and return
-  [params, others] = mars_struct('ffillsplit', params, others);
   o = params;
+  % Check for simple form of call
+  if isempty(others), return, end
+
+  % Otherwise, we are being asked to set fields of object
+  % (Moot at the moment, as there are no fields specific for this object)
+  [p others] = mars_struct('split', others, defstruct);
   return
 end
 
@@ -63,7 +74,7 @@ end
 [params, others] = mars_struct('ffillsplit', defstruct, params);
 
 % add cvs tag
-params.cvs_version = mars_cvs_version(myclass);
+params.cvs_version = cvs_v;
 
 % set the mardo object
 o  = class(params, myclass, uo);

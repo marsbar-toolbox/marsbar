@@ -13,8 +13,7 @@ function [o, others] = mardo(params, others, passf)
 %
 % outputs
 % o       - mardo object
-% others  - any unrecognized fields from params, for processing by
-%           children
+% others  - any unrecognized fields from params, others
 %
 % Synopsis
 % --------
@@ -151,18 +150,17 @@ end
 
 % Deal with passed objects of this (or child) class
 if isa(params, myclass)
-  if ~isempty(others)
-    if isfield(others, 'des_struct')
-      error(['Cannot set des_struct field into object via constructor;\n' ...
-	     'Pleas use des_struct method']);
-    end
-    % fill any relevant object fields with passed parameters and return
-    [params, others] = mars_struct('ffillsplit', struct(params), others);
-    params.cvs_version = cvs_v;
-    o = class(params, myclass);
-  else
-    o = params;
+  o = params;
+  % Check for simple form of call
+  if isempty(others), return, end
+
+  % Otherwise, we are being asked to set fields of object
+  [p others] = mars_struct('split', others, defstruct);
+  if isfield(p, 'des_struct')
+    error('Please set des_struct using des_struct method');
   end
+  if isfield(p, 'verbose'), o.verbose = p.verbose; end
+  if isfield(p, 'flip_option'), o.flip_option = p.flip_option; end
   return
 end
 
@@ -185,6 +183,9 @@ end
 % children
 params = mars_struct('ffillmerge', params, others);
 [params, others] = mars_struct('ffillsplit', defstruct, params);
+
+% cvs version
+params.cvs_version = cvs_v;
 
 % set the mardo object
 o  = class(params, myclass);
