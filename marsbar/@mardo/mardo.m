@@ -99,6 +99,7 @@ end
 if ischar(params)  % maybe filename
   fname  = deblank(params);
   params = load(fname);
+  params.swd = fileparts(fname);
 else
   fname = '';
 end
@@ -113,7 +114,7 @@ end
 [pparams, others] = mars_struct('ffillsplit', defstruct, params);
 
 % add cvs tag
-pparams.cvs_version = mars_cvs_version([myclass filesep myclass]);
+pparams.cvs_version = mars_cvs_version(myclass);
 
 % set the mardo object
 o  = class(pparams, myclass);
@@ -121,7 +122,9 @@ o  = class(pparams, myclass);
 % If requested, pass to child objects to request ownership
 if passf
   o = mardo_99(o, others);
-  o = mardo_2(o, others);
+  if strcmp(class(o), myclass)
+    o = mardo_2(o, others);
+  end
 end
 
 % convert data field to object
