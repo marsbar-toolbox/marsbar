@@ -12,10 +12,12 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % bin_no      - number of time bins [24 seconds / TR]
 % opts       - structure, containing fields with options
 %                'flat' - if field present, gives flat FIR 
-%                 This option removes any duration information, and
-%                 returns a simple per onset FIR model, where 1s in the
-%                 design matrix corresponds to 1 event at the given
-%                 offset.  
+%                  This option removes any duration information, and
+%                  returns a simple per onset FIR model, where 1s in the
+%                  design matrix corresponds to 1 event at the given
+%                  offset.  
+%                'percent' - if field present, gives results as percent
+%                  of block means
 % 
 % Returns
 % tc         - fitted event time course, averaged over events
@@ -101,6 +103,7 @@ y           = summary_data(data(D));
 y           = apply_filter(D, y);
 n_rois      = size(y, 2);
 tc          = zeros(bin_no, n_rois);
+blk_mns     = block_means(D);
 
 % for each session
 for s = 1:length(blk_rows)
@@ -109,11 +112,13 @@ for s = 1:length(blk_rows)
   iX_out      = [];
   X           = [];
   n_s_e       = length(sess_events);
+  if isempty(n_s_e), break, end
+  
   for ei = 1:n_s_e
     e           = sess_events(ei);
     
     % New design bit for FIR model for this trial type
-    [Xn rh]     = event_x_fir(D, [s e]', bin_length, bin_no, opts);
+    Xn          = event_x_fir(D, [s e]', bin_length, bin_no, opts);
     
     % Columns from original design that need to be removed
     iX_out      = [iX_out event_cols(D, [s e])];
@@ -137,14 +142,16 @@ for s = 1:length(blk_rows)
   pX          = spm_sp('x-',xX);
   betas       = pX*y(brX,:);
   tc_s        = betas(1:size(X,2), :);
-
-  % Multiply by regressor height to adjust for the fact that SPM99 models
-  % do not have 1's in their FIR regressors (per dt).
-  tc_s        = tc_s * rh;
-    
+  
   % Sum over events  
   tc_s        = reshape(tc_s, bin_no, n_s_e, n_rois);
-  tc          = tc + squeeze(sum(tc_s, 2));  
+  tc_s        = squeeze(sum(tc_s, 2));  
+  
+  % Do percent if necessary
+  if isfield(opts, 'percent'), tc_s = tc_s / blk_mns(s) * 100; end
+  
+  % Sum over sessions
+  tc            = tc + tc_s;
   
 end
 tc = tc / e_s_l;
