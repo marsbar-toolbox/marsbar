@@ -91,7 +91,7 @@ for a = 1:length(actions)
 		    'Grand_mean_scaling',	sGMsca,...
 		    'Global_normalisation',	Global);
 
-    if isfield(spmD, xsDes)
+    if isfield(spmD, 'xsDes')
       xsDes = mars_struct('fillafromb', spmD.xsDes, xsDes);
     end
     
