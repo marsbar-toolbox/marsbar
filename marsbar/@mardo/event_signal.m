@@ -13,7 +13,8 @@ function s = event_signal(D, event_spec, dur, diff_func, varargin)
 % varargin   - any needed arguments for diff_func
 % 
 % Returns
-% d          - average % signal change over the events
+% s          - average % signal change over the events
+%              1 by n_regions vector
 %
 % $Id$ 
 
@@ -21,7 +22,7 @@ if nargin < 2
   error('Need event specification');
 end
 if nargin < 3
-  error('Need duration in seconds');
+  dur = 0;
 end
 if nargin < 4
   diff_func = '';
@@ -41,11 +42,12 @@ end
 e_s_l = size(event_spec, 2);
 s     = 0;
 s_mus = block_means(D);
+SPM   = des_struct(D);
 for e_i = 1:e_s_l
-  ss    = event_spec(1, e_i);
-  en    = event_spec(2, e_i);
-  ev_tc = canonical_event(D, ss, en, dur);
-  d     = pr_ev_diff(ev_tc, diff_func, varargin{:});
+  es    = event_spec(:, e_i);
+  ss    = es(1);
+  Yh    = event_fitted(D, es, dur);
+  d     = pr_ev_diff(Yh, diff_func, varargin{:});
   s     = s + d/s_mus(ss);
 end
 s = s / e_s_l * 100;
