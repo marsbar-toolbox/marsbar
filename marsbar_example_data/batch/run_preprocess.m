@@ -20,6 +20,9 @@ if ~isempty(which('marsbar'))
   marsbar('quit'); 
 end
 
+% Make sure SPM modality-specific defaults are set
+spm('defaults', 'fmri');
+
 % Run statistics, contrasts
 subjroot = spm_get('CPath', '..'); % from batch directory
 sesses = {'sess1','sess2','sess3'};

@@ -31,6 +31,12 @@ else
   conf_design_name = 'SPM.mat';
 end
 
+% Set up the SPM defaults, just in case
+spm('defaults', 'fmri');
+
+% Subdirectory for reconfigured design
+mars_sdir = 'Mars_ana';
+
 % Directory containing session directories
 root_dir = spm_get('CPath', '..');
 
@@ -131,7 +137,7 @@ for roi_no = 1:length(roi_array)
     % We only need to do this for the first ROI, because we reuse the
     % design for each ROI
     if roi_no == 1
-      model_file{ss} = configure_er_model(root_dir, sesses{ss}, sdirname);
+      model_file{ss} = configure_er_model(root_dir, sesses{ss}, mars_sdir);
     end
     
     D = mardo(model_file{ss});
