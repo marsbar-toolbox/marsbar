@@ -6,11 +6,28 @@ function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)
 % fmrilm.m in fmristat package for code, and
 % Worsley, K.J., Liao, C., Aston, J., Petre, V., Duncan, G.H., Morales,
 % F., Evans, A.C. (2002). A general statistical analysis for fMRI
-% data. NeuroImage, 15:1-15
-% for description of the algorithm
+% data. NeuroImage, 15:1-15 - for description of the algorithm
 %  
 % $Id$
 
+% This is the copyright notice from fmrilm:
+%############################################################################
+% COPYRIGHT:   Copyright 2002 K.J. Worsley
+%              Department of Mathematics and Statistics,
+%              McConnell Brain Imaging Center, 
+%              Montreal Neurological Institute,
+%              McGill University, Montreal, Quebec, Canada. 
+%              worsley@math.mcgill.ca, liao@math.mcgill.ca
+%
+%              Permission to use, copy, modify, and distribute this
+%              software and its documentation for any purpose and without
+%              fee is hereby granted, provided that the above copyright
+%              notice appear in all copies.  The author and McGill University
+%              make no representations about the suitability of this
+%              software for any purpose.  It is provided "as is" without
+%              express or implied warranty.
+%############################################################################
+  
 if nargin < 2
   error('Need covariance and design');
 end
@@ -46,12 +63,14 @@ rho  = mean(rho,2)';
 
 if nargout > 1
   % Whitening matrix; Appendix A3 Worsley et al (2002)
+  % Modified according to fmrilm code
   [Ainvt posdef] = chol(toeplitz([1 rho]));
-  p1 = size(Ainvt,1);
-  A  = inv(Ainvt');
-  B  = [A(p1,p1:-1:1) zeros(1,n-p1)];
-  Vmhalf = toeplitz(B, [B(1) zeros(1,n-1)]); 
-  Vmhalf(1:p1,1:p1) = A;
+  nl=size(Ainvt,1);
+  A=inv(Ainvt');
+  Vmhalf = zeros(n,n);
+  B=ones(n-nl,1)*A(nl,:);
+  Vmhalf(nl+1:end,:) = spdiags(B,1:nl,n-nl,n);
+  Vmhalf(1:nl,1:nl)  = A;
 end
 
 if nargout > 2
