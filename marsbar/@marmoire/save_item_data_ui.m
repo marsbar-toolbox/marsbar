@@ -8,7 +8,10 @@ function [saved_f, o] = save_item_data_ui(o, item, flags, filename)
 % filename - filename for save
 % 
 % Returns
-% saved_f  - flag set to 1 if save done
+% saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel
+%            Note that, if saving with more than one item, then the value
+%            is from the last value saved/not saved.  Cancel aborts the
+%            attempt to save.
 % o        - possibly modified object (changed filename, maybe data is
 %            left as a file, and data field made empty) 
 % 
