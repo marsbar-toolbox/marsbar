@@ -7,9 +7,9 @@ o = [];
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Build ROI', 0);
 
 % get ROI type
-optfields = {'image','sphere','box_cw', 'box_lims'};
-optlabs =  {'Image','Sphere',...
-	    'Box (centre,widths)','Box (ranges XYZ)'};
+optfields = {'image','voxel', 'sphere', 'box_cw', 'box_lims'};
+optlabs =  {'Image', 'Voxel', 'Sphere',...
+	    'Box (centre,widths)', 'Box (ranges XYZ)'};
 
 roitype = char(...
     spm_input('Type of ROI', '+1', 'm',{optlabs{:} 'Quit'},...
@@ -43,6 +43,35 @@ switch roitype
   % convert to matrix format to avoid delicacies of image format
   o = maroi_matrix(o);
   
+ case 'voxel'
+  not_donef = 1;
+  while not_donef
+    XYZ = spm_input('Coordinate(s)', '+1', 'e', []);
+    if size(XYZ,1) == 1, XYZ = XYZ'; end
+    if size(XYZ,1) ~= 3, warning('Need 3xN or Nx3 matrix'); 
+    else not_donef = 0; end
+  end
+  v = char(spm_input('Coordinate(s) in','+1','b','mm|voxels',{'mm','vox'}, 1));
+  spopts = {'spacebase','image'};
+  splabs =  {'Base space for ROIs','From image'};
+  spo  = spm_input('Space for voxel ROI', '+1', 'm',splabs,...
+		   spopts, 1);
+  switch char(spo)
+   case 'spacebase'
+    sp = maroi('classdata', 'spacebase');
+   case 'image'
+    img = spm_get([0 1], 'img', 'Image defining space');
+    if isempty(img),return,end
+    sp = mars_space(img);
+  end
+  o = maroi_pointlist(struct('XYZ', XYZ, 'mat', sp.mat), v);
+  if size(XYZ, 2) > 1
+    pos = c_o_m(o); coord_lbl = 'C.o.M.';
+  else
+    pos = XYZ; coord_lbl = 'coordinate';
+  end
+  d = sprintf('points; %s (%s) [%0.1f %0.1f %0.1f]',coord_lbl,v,pos);
+  l = sprintf('points_%s_%s_%0.0f_%0.0f_%0.0f',coord_lbl,v,pos);
  case 'sphere'
   c = spm_input('Centre of sphere (mm)', '+1', 'e', [], 3); 
   r = spm_input('Sphere radius (mm)', '+1', 'r', 10, 1);
