@@ -219,7 +219,9 @@ switch lower(action)
   
  case 'celldisp'
   af = fieldnames(a);
-  c = {};
+  c  = {};
+  pad_len = size(char(af), 2) + 4;
+  pad_str = ['%' num2str(pad_len) 's: %s'];
   for f = 1:length(af)
     d     = getfield(a, af{f});
     cls   = class(d);
@@ -233,7 +235,7 @@ switch lower(action)
      otherwise
       d = sprintf('[%s %s]', szstr, cls);
     end
-    c{f} = sprintf('%40s: %s', af{f}, d);
+    c{f} = sprintf(pad_str, af{f}, d);
   end
   varargout = {c};
   
