@@ -23,6 +23,8 @@ switch lower(action)
   [varargout{1} o varargout{2}] = get_item_data(o, varargin{:});
  case 'set'
   [o varargout{1}] = set_item_data(o, varargin{:});
+ case 'clear'
+  [o varargout{1}] = clear_item_data(o, varargin{:});
  case 'set_ui'
   [o varargout{1}] = set_item_data_ui(o, varargin{:});  
  case 'update'
