@@ -27,7 +27,7 @@ if isa(params, myclass)
   o = params;
   return
 end
-
+    
 % normal call is via mardo constructor
 if isa(params, 'mardo')
   % Check to see if this is a suitable design, return if not
