@@ -31,6 +31,8 @@ bO.label = label(obj);
 bO.source = source(obj);
 bO.binarize = binarize(obj);
 bO.roithresh = roithresh(obj);
+bO.spm_hold = spm_hold(obj);
+
 n =  descrip(obj);
 if isempty(n), n = '(no descrip)';end
 src = ['[' class(obj) ' - ' n ']'];
