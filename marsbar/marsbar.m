@@ -252,6 +252,7 @@ funcs = {...
     'marsbar(''check_images'')',...
     'marsbar(''ana_cd'')',...
     'marsbar(''ana_desmooth'')',...
+    'marsbar(''def_from_est'')',...
     ['mars_armoire(''set_ui'', ''def_design'');' ...
      'marsbar(''design_report'')'],...
     'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
@@ -267,6 +268,7 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Check image names in design',...
 		    '|Change design path to images',...
 		    '|Convert to unsmoothed',...
+		    '|Set design from estimated',...
 		    '|Set design from file',...
 		    '|Save design to file'],...
 	  'Position',[bx by(2) bw bh].*WS,...
@@ -278,7 +280,8 @@ uicontrol(Fmenu,'Style','PopUp',...
 funcs = {'marsbar(''extract_data'', ''default'');',...
 	 'marsbar(''extract_data'', ''full'');',...
 	 'marsbar(''set_defregion'');',...
-	 'marsbar(''plot_data'');',...
+	 'marsbar(''plot_data'', ''raw'');',...
+	 'marsbar(''plot_data'', ''full'');',...
 	 'marsbar(''import_data'');',...
 	 'marsbar(''export_data'');',...
 	 'marsbar(''split_data'');',...
@@ -290,8 +293,9 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Data...'...
 		    '|Extract ROI (default)',...
 		    '|Extract ROIs (full options)',...
-		    '|Set default region',...
-		    '|Plot data',...
+		    '|Default region...',...
+		    '|Plot data (simple)',...
+		    '|Plot data (full)',...		    
 		    '|Import data',...
 		    '|Export data',...
 		    '|Split regions into files',...
@@ -308,6 +312,9 @@ funcs = {...
     'marsbar(''estimate'');',...
     'marsbar(''merge_contrasts'');',...
     'marsbar(''add_trial_f'');',...
+    'marsbar(''set_defcon'');',...
+    'marsbar(''set_defregion'');',...
+    'marsbar(''plot_residuals'');',...
     'marsbar(''spm_graph'');',...
     'marsbar(''stat_table'');',...
     'marsbar(''signal_change'');',...
@@ -319,6 +326,9 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Estimate results',...
 		    '|Import contrasts',...
 		    '|Add trial-specific F',...
+		    '|Default contrast...',...
+		    '|Default region...',...
+		    '|Plot residuals',...
 		    '|MarsBaR SPM graph',...
 		    '|Statistic table',...
 		    '|% signal change',...
@@ -799,6 +809,16 @@ mars_armoire('update', 'def_design', marsD);
 mars_armoire('file_name', 'def_design', '');
 
 %=======================================================================
+case 'def_from_est'          %-sets default design from estimated design
+%=======================================================================
+% marsbar('def_from_est')
+%-----------------------------------------------------------------------
+marsE = mars_armoire('get','est_design');
+if isempty(marsE), return, end;
+mars_armoire('set', 'def_design', marsE);
+marsbar('design_report');
+
+%=======================================================================
 case 'design_report'                         %-does explore design thing
 %=======================================================================
 % marsbar('design_report')
@@ -843,7 +863,8 @@ if strcmp(etype, 'default')
     marsD = fill(marsD, 'images');
     mars_armoire('update', 'def_design', marsD);
   end
-  VY = get_images(marsD);
+  VY = marsD;
+  row = block_rows(marsD);
 else  % full options extraction
   % question for design
   
@@ -855,7 +876,7 @@ else  % full options extraction
       mars_armoire('update', 'def_design', marsD);
     end
   end
-  VY = mars_image_scaling(marsD);
+  [VY row] = mars_image_scaling(marsD);
 end
 
 % Summary function
@@ -866,6 +887,7 @@ o = maroi('load_cell', roi_list);
 
 % Do data extraction
 marsY = get_marsy(o{:}, VY, sumfunc, 'v');
+marsY = block_rows(marsY, row);
 if ~n_regions(marsY)
   msgbox('No data returned','Data extraction', 'warn');
   return
@@ -881,7 +903,8 @@ case 'plot_data'                                       %- it plots data!
 %=======================================================================
 % marsbar('plot_data', p_type)
 %-----------------------------------------------------------------------
-% p_type     - plot type: currently only 'basic' is implemented
+% p_type     - plot type: one of 'raw','acf','fft','all' or 'full'
+% where 'full' results in a options to filter and choice of plot
 
 if nargin < 2
   p_type = [];
@@ -889,13 +912,36 @@ else
   p_type = varargin{2};
 end
 if isempty(p_type)
-  p_type = 'raw';
+  p_type = 'full';
 end
-
 marsY = mars_armoire('get','roi_data');
 if isempty(marsY), return, end
 
-ui_plot(marsY, [], p_type);
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Plot data', 0);
+if strcmp(p_type, 'full')
+  if ~mars_armoire('isempty', 'def_design')
+    if spm_input('Use design filter?', '+1', 'y/n', [1 0], 1)
+      D = mars_armoire('get', 'def_design');
+      flags = {};
+      if has_whitener(D) 
+	if ~spm_input('Use whitening filter?', '+1', 'y/n', [1 0], 1)
+	  flags = 'no_whitening';
+	end
+      end
+      marsY = apply_filter(D, marsY, flags);
+    end
+  end
+  p_type = char(spm_input('Type of plot', '+1', 'm', ...
+			 'All|Time course|FFT|ACF', ...
+			 {'all','raw','fft','acf'}));
+end
+
+ns  = region_name(marsY);
+rno = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_region');
+if ~isempty(rno)
+  fprintf('Using default region: %s\n', ns{rno});
+end
+ui_plot(marsY, struct('types', p_type, 'r_nos', rno));
 
 %=======================================================================
 case 'import_data'                                    %- it imports data
@@ -1143,42 +1189,90 @@ fprintf('%-40s: ','Design reporting');
 ui_report(marsRes, 'DesMtx');
 ui_report(marsRes, 'DesRepUI');
 fprintf('%30s\n','...done');
-MARS.WORKSPACE.default_contrast = [];
 varargout = {1};
 return
 
 %=======================================================================
-case 'set_defcon'                                 %-set default contrast
+case 'plot_residuals'                  %-plots residuals from estimation
 %=======================================================================
-% donef = marsbar('set_defcon')
+% marsbar('plot_residuals')
 %-----------------------------------------------------------------------
-varargout = {0};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[defcon marsRes changef] = ui_get_contrasts(marsRes, 'T|F',1,...
+Y = residuals(marsRes);
+ns  = region_name(Y);
+rno = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_region');
+if ~isempty(rno)
+  fprintf('Using default region: %s\n', ns{rno});
+end
+ui_plot(Y, struct('types', 'all', 'r_nos', rno));
+
+%=======================================================================
+case 'set_defcon'                                 %-set default contrast
+%=======================================================================
+% Ic = marsbar('set_defcon')
+%-----------------------------------------------------------------------
+varargout = {[]};
+marsRes = mars_armoire('get', 'est_design');
+if isempty(marsRes), return, end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Default contrast', 0);
+Ic = mars_struct('getifthere',MARS, 'WORKSPACE', 'default_contrast');
+if isempty(Ic)
+  cname = '[Not set]';
+else 
+  xCon = get_contrasts(marsRes);
+  cname = xCon(Ic).name; 
+end
+spm_input(cname, 1, 'd', 'Default contrast');
+opts = {'Quit', 'Set new default'};
+if ~isempty(Ic), opts = [opts {'Clear default contrast'}]; end
+switch spm_input('What to do?', '+1', 'm', opts, [1:length(opts)], 1);
+ case 1
+ case 2
+  [Ic marsRes changef] = ui_get_contrasts(marsRes, 'T|F',1,...
 			 'Select default contrast','',1);
-if changef, mars_armoire('update', 'est_design', marsRes); end
-MARS.WORKSPACE.default_contrast = defcon;
-varargout = {1};
+  if changef, mars_armoire('update', 'est_design', marsRes); end
+ case 3
+  Ic = [];
+end
+MARS.WORKSPACE.default_contrast = Ic;
+varargout = {Ic};
 
 %=======================================================================
 case 'set_defregion'                                %-set default region
 %=======================================================================
-% donef = marsbar('set_defregion')
+% rno = marsbar('set_defregion')
 %-----------------------------------------------------------------------
-varargout = {0};
+varargout = {[]};
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
 ns = region_name(marsY);
 if length(ns) == 1
   disp('Only one region in data');
-  rno = 1;
-else
+  MARS.WORKSPACE.default_region = 1;
+  varargout = {1};
+  return
+end
+
+% Setup input window
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Default region', 0);
+rno = mars_struct('getifthere',MARS, 'WORKSPACE', 'default_region');
+if isempty(rno), rname = '[Not set]'; else rname = ns{rno}; end
+spm_input(rname, 1, 'd', 'Default region:');
+opts = {'Quit', 'Set new default'};
+if ~isempty(rno), opts = [opts {'Clear default region'}]; end
+switch spm_input('What to do?', '+1', 'm', opts, [1:length(opts)], 1);
+ case 1
+ case 2
   rno = marsbar('get_region', ns);
+  disp(['Default region set to: ' ns{rno}]); 
+ case 3
+  rno = [];
 end
 MARS.WORKSPACE.default_region = rno;
-disp(['Default region set to: ' ns{rno}]); 
-varargout = {1};
+varargout = {rno};
 
 %=======================================================================
 case 'get_region'                                  %-ui to select region
@@ -1199,14 +1293,21 @@ if nargin < 3
 else
   prompt = varargin{3};
 end
+
 % maximum no of items in list box
 maxlist = 200;
 if length(names) > maxlist
   % text input, maybe
   error('Too many regions');
 end
-% listbox
-rno = spm_input(prompt, '+1', 'm', names);  
+if length(names) == 1
+  rno = 1;
+elseif isempty(names)
+  rno = []
+else
+  % listbox
+  rno = spm_input(prompt, '+1', 'm', names);  
+end
 varargout = {rno};
 
 %=======================================================================
@@ -1218,23 +1319,34 @@ marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
 
 % Setup input window
-[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Mars SPM graph', 0);
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Mars SPM graph', 1);
 
-if ~mars_struct('isthere', MARS.WORKSPACE, 'default_region')
-  if ~marsbar('set_defregion'), return, end
+ns  = region_name(get_data(marsRes));
+rno = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_region');
+if ~isempty(rno)
+  fprintf('Using default region: %s\n', ns{rno});
+else
+  rno = marsbar('get_region', ns, 'Select region to plot');
+end
+
+Ic = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_contrast');
+if ~isempty(Ic)
+  xCon = get_contrasts(marsRes);
+  fprintf('Using default contrast: %s\n', xCon(Ic).name);
 end
 
 % Variables returned in field names to allow differences
 % in return variables between versions of spm_graph
-r_st = mars_spm_graph(...
-    marsRes, ...
-    MARS.WORKSPACE.default_region);
+[r_st marsRes changef] = mars_spm_graph(marsRes, rno, Ic);
 
 % Dump field names to global workspace as variables
 fns = fieldnames(r_st);
 for f = 1:length(fns)
   assignin('base', fns{f}, getfield(r_st, fns{f}));
 end
+
+% Store if changed
+if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================
 case 'stat_table'                                       %-run stat_table
@@ -1243,8 +1355,13 @@ case 'stat_table'                                       %-run stat_table
 %-----------------------------------------------------------------------
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
+Ic = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_contrast');
+if ~isempty(Ic)
+  xCon = get_contrasts(marsRes);
+  fprintf('Using default contrast: %s\n', xCon(Ic).name);
+end
 [strs marsS marsRes changef] = ... 
-    stat_table(marsRes);
+    stat_table(marsRes, Ic);
 disp(char(strs));
 assignin('base', 'marsS', marsS);
 if changef, mars_armoire('update', 'est_design', marsRes); end
