@@ -1480,10 +1480,26 @@ if (status>1), mars_arm('update', 'est_design', marsRes); end
 if isempty(ic), return, end
 
 dur       = spm_input('Event duration', '+1', 'e', 0);
+
+% Choose event difference function
+diff_func = mars_struct('getifthere', MARS, 'OPTIONS', ...
+			'events', 'diff_func');
+if isempty(diff_func), diff_func = 'max abs'; 
+elseif strcmp(diff_func, 'window')
+  spm_input('Event signal change window...', '+1','d', mfilename);
+  times = spm_input('Mean signal between times', ...
+		    '+1', 'r', [4 6], 2, [0 dur+32]);
+  other_args = {times, bf_dt(marsRes)};
+else
+  other_args = {};
+end
+
 ic_len    = length(ic);
 et = event_types(marsRes);
 for i = 1:ic_len
-  pc(i,:) = event_signal(marsRes, et(ic(i)).e_spec, dur, 'max');
+  pc(i,:) = event_signal(marsRes, et(ic(i)).e_spec, dur,  ...
+			 diff_func, ...
+			 other_args{:});
 end
 rns       = region_name(get_data(marsRes));
 disp('Sort-of % signal change');
