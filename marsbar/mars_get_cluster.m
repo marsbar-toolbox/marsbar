@@ -13,12 +13,8 @@ function [cXYZ, Z, M, pt, str] = mars_get_cluster
   
 [cXYZ Z M pt str] = deal([]);
 
-% Accept results already present, or load new ones
-try 
-  SPM = evalin('base', 'SPM');
-catch
-  evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
-end
+% load new results
+evalin('base','[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;');
 
 cXYZ = []; M = [];
 spm_input('Select cluster, then Yes to continue',1,'d');
