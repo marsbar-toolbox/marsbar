@@ -1,5 +1,5 @@
 function [rs,r_nos] = region(o, r_nos, new_data, fieldname)
-% gets /sets data for region or regions 
+% gets / sets data for region or regions 
 % FORMAT [rs r_nos] = region(o, r_nos) (set) OR
 % FORMAT [rs r_nos]= region(o, r_nos, new_data, fieldname) (get)
 % 
@@ -114,6 +114,7 @@ for i = 1:r_len
   end
   st.regions{r} = mars_struct('ffillmerge', st.regions{r}, n_st);
 end
+
 if re_sum_f
   st = mars_struct('strip', st, {'Y','Yvar'});
   rs = resummarize(y_struct(o, st)); 
