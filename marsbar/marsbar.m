@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.31';  % Second SPM2 development release 
+MBver = '0.32';  % Third SPM2 development release 
 
 % Various working variables in global variable structure
 global MARS;
@@ -1227,7 +1227,11 @@ rno = mars_struct('getifthere', MARS, 'WORKSPACE', 'default_region');
 if ~isempty(rno)
   fprintf('Using default region: %s\n', ns{rno});
 end
-ui_plot(Y, struct('types', 'all', 'r_nos', rno));
+[Finter,Fgraph,CmdLine] = spm('FnUIsetup','Plot residuals', 1);
+p_type = char(spm_input('Type of plot', '+1', 'm', ...
+			'All|Time course|FFT|ACF', ...
+			{'all','raw','fft','acf'}));
+ui_plot(Y, struct('types', p_type, 'r_nos', rno));
 
 %=======================================================================
 case 'set_defcon'                                 %-set default contrast
