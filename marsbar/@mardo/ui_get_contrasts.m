@@ -174,6 +174,9 @@ function varargout=ui_get_contrasts(D, varargin)
 % .hNew      - handle of "Define new contrast" pushbutton
 %_______________________________________________________________________
 %
+%
+% MarsBaR edits
+% -------------
 % The contrasts are stored in a stripped down mardo design structure, to
 % allow this function to be called using object methods.  We need to return
 % a flag (changef) to tell us if the contrasts have been changed by the GUI.
@@ -181,11 +184,9 @@ function varargout=ui_get_contrasts(D, varargin)
 % reset button).
 %
 % Edited from @(#)spm_conman.m	2.18 Andrew Holmes 02/09/10
-
-%-Generic CallBack code
-%-----------------------------------------------------------------------
-cb = 'conD = get(findobj(''Tag'', ''mConMan''),''UserData''); ';
-
+% 
+% $Id$
+  
 % simplify access to design
 xCon = get_contrasts(D);
 
@@ -1085,6 +1086,10 @@ case 'createfig'
 % Handle Structure - H.{hConList,hDesMtxAx,hPrompt,hSTATmode,hStatLin,hNew}
 
 cF = get(0,'CurrentFigure');		%-Save current figure
+
+%-Generic callBack code.  Fetches object for method calls in callbacks
+%-----------------------------------------------------------------------
+cb = 'conD = get(findobj(''Tag'', ''mConMan''),''UserData''); ';
 
 %-Create window, compute scaling for screen size
 %-----------------------------------------------------------------------
