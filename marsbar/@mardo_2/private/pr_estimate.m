@@ -77,7 +77,7 @@ if ~have_V
   end
   Vi = xVi.Vi;
   if iscell(Vi)
-    cov_type = 'SPM'
+    cov_type = 'SPM';
   elseif ~isstruct(Vi)
     error('Vi field should be cell or struct type')
   elseif ~isfield(Vi, 'type')
@@ -171,6 +171,12 @@ else
   str = 'pooled';
   Y = summary_data(marsY);
 end
+
+% Eliminate columns with zero variance
+in_cols = any(diff(Y));
+if ~any(in_cols), error('No variance to estimate model'); end
+Y = Y(:, in_cols);
+
 fprintf('%-40s: %30s\n','Covariance estimate',['...' str])               %-#
 fprintf('%-40s: %30s','Model','...start')    %-#
 
@@ -372,9 +378,10 @@ xX.nKX        = spm_DesMtx('sca',xX.xKXs.X,xX.name);
 
 %-place fields in SPM
 %-----------------------------------------------------------------------
-
-SPM.betas      = beta;	
-SPM.ResidualMS = ResMS;	
+SPM.betas                = ones(nBeta, n_roi) + NaN;
+SPM.betas(:, in_cols)    = beta;	
+SPM.ResidualMS           = ones(1, n_roi) + NaN;
+SPM.ResidualMS(in_cols)  = ResMS;	
 
 SPM.xVi        = xVi;				% non-sphericity structure
 SPM.xVi.CY     = CY;				%-<(Y - <Y>)*(Y - <Y>)'> 

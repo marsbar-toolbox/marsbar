@@ -14,7 +14,7 @@ function SPM = pr_estimate(SPM, marsY)
 
 %-Say hello
 %-----------------------------------------------------------------------
-Finter   = spm('FigName','Stats: estimation...'); spm('Pointer','Watch')
+Finter   = spm('FigName','Stats: estimation...'); spm('Pointer','Watch');
     
 %-------------------------------------------------------------------------
 %- set the methods
@@ -32,8 +32,13 @@ end
 
 % allow matrix or object to be passed as input data
 marsY = marsy(marsY);
-Y = summary_data(marsY);
-nROI = size(Y,2);  %- Y is a time by nROI matrix
+Y     = summary_data(marsY);
+n_roi = size(Y,2);  %- Y is a time by n_roi matrix
+
+% Remove columns with no variance
+in_cols = any(diff(Y));
+if ~any(in_cols), error('No variance to estimate model'); end
+Y = Y(:, in_cols);
 
 % We are going to ignore AR(1) options
 if mars_struct('isthere', xX, 'xVi', 'Form')
@@ -103,24 +108,31 @@ fprintf('Computing estimates...');
 if ~spm_sp('isspc',KXs), Xs = spm_sp('set',KXs); else Xs = KXs;  end
 
 [trRV trRVRV] = spm_SpUtil('trRV',Xs,V); 
-SPM.betas    = spm_sp('x-', Xs, Y);                 %-Parameter estimates
+beta          = spm_sp('x-', Xs, Y);                 %-Parameter estimates
 res           = spm_sp('r', Xs, Y);                  %-Residuals
-SPM.ResidualMS = sum(res.^2)./trRV;             %-Res variance estimation
-xX.erdf      = trRV^2/trRVRV;
+ResMS         = sum(res.^2)./trRV;                   %-Res variance estimation
+xX.erdf       = trRV^2/trRVRV;
 
 fprintf('Done.\n');
 
 % fill up design related stuff
 xX.V     = V; 	                                %-V matrix
-xX.xKXs       = KXs;                            %-Filtered design matrix
-xX.pKX        = spm_sp('x-',xX.xKXs);
+xX.xKXs  = KXs;                            %-Filtered design matrix
+xX.pKX   = spm_sp('x-',xX.xKXs);
 xX.pKXV  = xX.pKX*xX.V;				%-for contrast variance weight
 xX.Bcov  = xX.pKXV*xX.pKX';			%-Variance of est. param.
 [xX.trRV,xX.trRVRV] ...				%-Variance expectations
          = spm_SpUtil('trRV',xX.xKXs,xX.V);
 xX.nKX   = spm_DesMtx('sca',xX.xKXs.X,xX.Xnames);% scaled design matrix for display 
 
-SPM.xX = xX;
+% Put back into design
+nBeta                    = size(xX.X, 2);
+SPM.betas                = ones(nBeta, n_roi) + NaN;
+SPM.betas(:, in_cols)    = beta;	
+SPM.ResidualMS           = ones(1, n_roi) + NaN;
+SPM.ResidualMS(in_cols)  = ResMS;	
+
+SPM.xX    = xX;
 SPM.marsY = marsY;
 
 %-Default F-contrasts (in contrast structure) 
