@@ -1,4 +1,4 @@
-function [o others] = marsy(params, names, sumfunc)
+function [o,others] = marsy(params, names, sumfunc)
 % Class constructor for marsy object
 % inputs [defaults]
 % params  - can be: structure, either:
@@ -72,10 +72,9 @@ function [o others] = marsy(params, names, sumfunc)
 % summary_info - gets/sets information field of object
 % resummarize  - recalculates summary data
 % sumfunc      - gets/sets summary function to summarize data
-% region_data  - gets region sample (voxel) data as concatenated N by
-%                sum(S1..SN) matrix, (if no region number is specified)
-%                or as 2D N by Sr matrix if a single region r is
-%                specified
+% region_data  - gets region sample (voxel) data as cell array; returns
+%                all regions if no region number specificed, or one cell
+%                per region if region numbers are specified
 % region_names - gets cell array of region names as 1 by R cell array 
 %                (if no region number is specified) or single cell string
 %                if a single region is specified
@@ -122,9 +121,11 @@ function [o others] = marsy(params, names, sumfunc)
 %   info    - a structure defining any other interesting information
 %             about where the data came from
 % 
-%   regions - structure array, with one element per region (and therefore one
-%             element per column in the Y field). 
-%             Each structure in the array has fields 
+%   regions - cell array of structures, with one element per region (and
+%             therefore one element per column in the Y field).
+%             Regions is a cell array to allow different fields to be
+%             filled for each region
+%             Each structure in the cell array has fields 
 %             Y       - matrix of samples (voxel data) for this region, size
 %                       N by S1 for region 1, N by S2 for region 2 etc.
 %             name    - string identifying region
@@ -148,11 +149,16 @@ if isa(params, myclass)
   return
 end
 
-% check inputs
+% check first input
 if ischar(params)  % maybe filename
   params = load(params);
 end
-if isstruct(params)
+switch class(params)
+ case 'marsy'
+  % pass quietly through 
+  o = params;
+  return
+ case 'struct'
   if ~isfield(params, 'y_struct')
     % Appears to be an MarsBaR data structure
     params = struct('y_struct',params);
@@ -162,6 +168,38 @@ if isstruct(params)
   if isfield(params.y_struct, 'cols')
     params.y_struct = sf_convert_0p23(params.y_struct);
   end
+ case {'double','float'}
+  % direct set of summary data call
+  params = struct('y_struct', ...
+		  struct('Y', ...
+			 params, 'Yvar', ...
+			 params * Inf, ...
+			 'sumfunc', 'unknown'));
+ case 'cell'
+  % specifying region data
+  n = size(params{1}, 1);
+  for i = 1:length(params)
+    n2 = size(params{i}, 1);
+    if any(n - n2)
+      error('All regions must have the same number of time points');
+    end
+    regions{i} = struct('Y', params{i});
+  end
+  params = struct('y_struct', struct('regions', {regions}));
+ otherwise
+  error('Unexpected first input');
+end
+
+% process further inputs
+if nargin > 1
+  % names have been specified
+  for i = 1:length(names)
+    params.y_struct.regions{i}.name = names{i};
+  end
+end
+if nargin > 2
+  % sumfunc has been specified
+  params.y_struct.sumfunc = sumfunc;
 end
 
 % fill with defaults, parse into fields for this object, children
@@ -182,7 +220,7 @@ if ~isfield(i_st, 'cols')
 end
 for r = 1:length(i_st.cols)
   col = i_st.cols{r};
-  regions(r) = struct(...
+  regions{r} = struct(...
       'Y', col.y,...
       'name', col.name,...
       'descrip', col.descrip,...
