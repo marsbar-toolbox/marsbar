@@ -1,6 +1,16 @@
-function X = event_regressor(D, e_spec, dur)
+function [X, dt] = event_regressor(D, e_spec, dur)
 % method gets estimated regressor for single event 
+% FORMAT [X dt] = event_regressor(D, e_spec, dur)
+%
+% D          - design object
+% e_spec     - event specification (see event_fitted for details)
+% dur        - event duration in seconds (default = 0)
 % 
+% Returns
+% X          - event regressor for single event 
+%              (one column per basis function used to model event)
+% dt         - time units (seconds per row in X)
+%
 % $Id$
   
 if nargin < 2
