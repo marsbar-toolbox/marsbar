@@ -662,7 +662,7 @@ else
   f2 = fn;
 end
 
-fname = mars_struct('get_img_name', f2);
+fname = mars_utils('get_img_name', f2);
 if isempty(fname), return, end
 save_as_image(roi, fname, sp);
 fprintf('Saved ROI as %s\n',fname);
