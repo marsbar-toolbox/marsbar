@@ -39,6 +39,10 @@ switch roitype
   end
   o = maroi_image(struct('vol', spm_vol(imgname), 'binarize',binf,...
 			 'func', func));
+  
+  % convert to matrix format to avoid delicacies of image format
+  o = maroi_matrix(o);
+  
  case 'sphere'
   c = spm_input('Centre of sphere (mm)', '+1', 'e', [], 3); 
   r = spm_input('Sphere radius (mm)', '+1', 'r', 10, 1);
