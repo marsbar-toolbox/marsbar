@@ -2,4 +2,4 @@ To do list
 ----------
 
 Odd EoI + subset contrast error in MV routine.
-
+Check initialize for marsbar example data 
