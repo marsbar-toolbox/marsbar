@@ -1,24 +1,29 @@
-function [C, Ic] = get_contrast_by_name(D, con_name)
-% get named contrast from design object
-% FORMAT [C, Ic] = get_named_con(D, con_name)
-%
-% D        - mardo design object
-% con_name - contrast name
-%
+function [xc, ic] = get_contrast_by_name(D, cname)
+% get named contrast(s) from design contrast structure
+% FORMAT [xc, ic] = get_contrast_by_name(D, cname)
+% 
+% D      - design object
+% cname  - contrast name(s) (string or cell array)
+% 
 % Returns
-% C        - xCon structure containing only named contrast
-% Ic       - index of found contrast, within design
+% xc     - xCon structure containing only named contrast
+% ic     - index of contrast in design contrast structure
+%
+% e.g. [con ic] = get_named_contrasts(D, 'effects of interest');
 %
 % $Id$
 
 if nargin < 2
-  error('Need contrast name');
+  error('Need contrast name(s)');
 end
-Ic = [];
-C = get_contrasts(D);
-if isempty(C), return, end
+if ischar(cname)
+  cname = cellstr(cname);
+end
 
-c_len = length(C);
-[c_ns{1:c_len}] = deal(C.name);
-Ic = strmatch(con_name, c_ns, 'exact');
-C = C(Ic);
+xc = get_contrasts(D); 
+if isempty(xc)
+  ic = [];
+else
+  ic = find(ismember({xc(:).name}, cname));
+end
+xc = xc(ic);
