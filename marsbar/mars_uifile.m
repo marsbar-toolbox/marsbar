@@ -48,7 +48,7 @@ end
 switch lower(action)
  case 'get'
   [fn pn fi] = uigetfile(arglist{:});
- case 'set'
+ case 'put'
   [fn pn fi] = uiputfile(arglist{:});
  otherwise 
    error(['Strange desire for ' action]);
