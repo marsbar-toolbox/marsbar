@@ -24,3 +24,6 @@
 
 # JPEGs are binary
 *.jpg -k 'b'
+
+# as are .mat files
+*.mat -k 'b'
