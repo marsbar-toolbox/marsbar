@@ -1,5 +1,5 @@
 function o = le(o1, o2)
-% overloaded xor function 
+% overloaded le (less than or equal to) function 
 %
 % $Id$
 

@@ -1,5 +1,5 @@
 function o = minus(o1, o2)
-% overloaded xor function 
+% overloaded minus function 
 %
 % $Id$
 

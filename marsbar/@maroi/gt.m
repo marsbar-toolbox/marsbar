@@ -1,5 +1,5 @@
 function o = gt(o1, o2)
-% overloaded xor function 
+% overloaded gt (greater than) function 
 %
 % $Id$
 

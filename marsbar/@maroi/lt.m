@@ -1,5 +1,5 @@
 function o = lt(o1, o2)
-% overloaded xor function 
+% overloaded lt (less than) function 
 %
 % $Id$
 
