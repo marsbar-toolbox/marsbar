@@ -51,7 +51,7 @@ switch lower(Action), case 'startup'                     %-Start marsbar
 warning backtrace
 
 % splash screen once per session
-splashf = isempty(MARS);
+splashf = ~marsbar('is_started');
 
 % promote spm directory to top of path, read defaults
 marsbar('on');
@@ -93,26 +93,29 @@ fprintf('MarsBaR analysis functions prepended to path\n');
 mars_veropts('defaults');
 
 % set up the ARMOIRE stuff
-% see mars_armoire help for details
+% see marmoire help for details
+o = marmoire;
+
 filter_specs  = {mars_veropts('design_filter_spec'), ...
 		 {'*_mdata.mat','MarsBaR data file (*_mdata.mat)'},...
 		 {'*_mres.mat', 'MarsBaR results (*_mres.mat)'}};
 
-mars_armoire('add_if_absent','def_design', ...
-	     struct('default_file_name', 'untitled_mdes.mat',...	  
-		    'filter_spec', {filter_specs{1}},...
-		    'title', 'default design',...
-		    'set_action', 'mars_arm_call(''set_design'',I)'));
-mars_armoire('add_if_absent','roi_data',...
-	     struct('default_file_name', 'untitled_mdata.mat',...
-		    'filter_spec', {filter_specs{2}},...
-		    'title', 'ROI data',...
-		    'set_action', 'mars_arm_call(''set_data'',I)'));
-mars_armoire('add_if_absent','est_design',...
-	     struct('default_file_name', 'untitled_mres.mat',...
-		    'filter_spec', {filter_specs{3}},...
-		    'title', 'MarsBaR estimated design',...
-		    'set_action', 'mars_arm_call(''set_results'',data)'));
+o = add_if_absent(o, 'def_design', ...
+		  struct('default_file_name', 'untitled_mdes.mat',...	  
+			 'filter_spec', {filter_specs{1}},...
+			 'title', 'default design',...
+			 'set_action','mars_arm_call(''set_design'',o,item)'));
+o = add_if_absent(o, 'roi_data',...
+		  struct('default_file_name', 'untitled_mdata.mat',...
+			 'filter_spec', {filter_specs{2}},...
+			 'title', 'ROI data',...
+			 'set_action','mars_arm_call(''set_data'',o,item)'));
+o = add_if_absent(o, 'est_design',...
+		  struct('default_file_name', 'untitled_mres.mat',...
+			 'filter_spec', {filter_specs{3}},...
+			 'title', 'MarsBaR estimated design',...
+			 'set_action', 'mars_arm_call(''set_results'',o.item)'));
+MARS.ARMOIRE = o;
 
 % and workspace
 if ~isfield(MARS, 'WORKSPACE'), MARS.WORKSPACE = []; end
@@ -136,14 +139,17 @@ case 'off'                                              %-Unload MarsBaR
 %=======================================================================
 % res = marsbar('Off')
 %-----------------------------------------------------------------------
-% save outstanding information
-varargout{1} = mars_armoire('save_ui', 'all', struct('ync', 1));
-if varargout{1} == -1, return, end % cancel
+varargout = {0};
 
 % leave if no signs of marsbar
-if isempty(MARS)
-  return
-end
+if isempty(MARS), return, end
+if ~isfield(MARS, 'ARMOIRE'), return, end
+  
+
+% save outstanding information
+[btn MARS.ARMOIRE] = save_item_data_ui(MARS.ARMOIRE, 'all', ...
+					 struct('ync', 1));
+if any(btn == -1), varargout = {-1}; return, end % cancel
 
 % remove marsbar added directories
 rmpath(MARS.ADDPATHS{:});
@@ -166,6 +172,15 @@ end
 %-Close any existing 'MarsBaR' 'Tag'ged windows
 delete(spm_figure('FindWin','MarsBaR'))
 fprintf('Au revoir...\n\n')
+
+%=======================================================================
+case 'is_started'        %-returns 1 if MarsBaR GUI has been initialized
+%=======================================================================
+% tf  = marsbar('is_started')
+varargout = {0};
+if isempty(MARS), return, end
+if ~isfield(MARS, 'ARMOIRE'), return, end
+varargout = {~isempty(MARS.ARMOIRE)};
 
 %=======================================================================
 case 'cfgfile'                                  %-finds MarsBaR cfg file
