@@ -1,5 +1,20 @@
 function [o,others] = marsy(params, region_stuff, summary_stuff)
 % Class constructor for marsy: the MarsBaR data object
+% FORMAT [o,others] = marsy(params, region_stuff, summary_stuff)
+%
+% Synopsis:
+% % Some example data
+% Y = rand(100, 10);
+% 
+% % Use data as time courese from 10 regions
+% m_Y = marsy(Y);
+% 
+% % Use data as 10 samples (voxels from one region)
+% m_Y = marsy({Y}, 'region_1', 'mean');
+%
+% % Extract data for ROI 'my_roi', from list (string array) of images P
+% m_Y = get_marsy(my_roi, P, 'mean');  % method for maroi (region) object
+%
 % Inputs
 % params  - can be: structure, either:
 %             containing MarsBaR data structure or
