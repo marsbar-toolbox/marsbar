@@ -62,6 +62,10 @@ function varargout = mars_struct(action, varargin)
 % Thus with structure s = struct('one', struct('two', 3))
 % mars_struct('isthere', s, 'one', 'two') returns 1
 %   
+% FORMAT z = mars_struct('getifthere', a, b [, c [, d ...])
+% returns value of field named in b from a or [] if absent
+% Call is recursive, like 'isthere' above.
+%
 % FORMAT strs = mars_struct('celldisp', a)
 % returns output like disp(a) as a cell array
 % Useful for printing text description of structure
@@ -210,16 +214,21 @@ switch lower(action)
   
  case 'isthere'
   if isempty(a), varargout = {0}; return, end
-  if isempty(b), varargout = {0}; return, end
+  c = mars_struct('getifthere', varargin{:});
+  varargout = {~isempty(c)};
+  
+ case 'getifthere'
+  if isempty(a), varargout = {[]}; return, end
+  if isempty(b), varargout = {[]}; return, end
   for v = 2:nargin-1
     b = varargin{v};
     if ~isfield(a, b)
-      varargout = {0};
+      varargout = {[]};
       return
     end
     a = getfield(a, b);
   end
-  varargout = {~isempty(a)};
+  varargout = {a};
   
  case 'celldisp'
   if isempty(a), varargout = {{}}; return, end
