@@ -1,5 +1,5 @@
 function o = my_loadroi(fname)
-% my_loadroi function - loads ROI(s) from file, sets source field
+% my_loadroi function - loads ROI from file, sets source field
 %
 % $Id$
 
