@@ -167,7 +167,7 @@ switch Rov
 
 	% Orthogonalize and fill in basis function structure
 	%---------------------------------------------------------------
-	bf    =  spm_orth(bf);
+	bf    =  pr_spm_orth(bf);
 	for i = 1:n
 		BF{i}  =  bf;
 	end
@@ -264,7 +264,7 @@ switch Rov
 
 		% Orthogonalize and fill in Sess structure
 		%-------------------------------------------------------
-		BF{i}         =  spm_orth(bf);
+		BF{i}         =  pr_spm_orth(bf);
 	end
 
 
@@ -272,7 +272,7 @@ switch Rov
 	%===============================================================
 	case 'mixed'
 	for i = 1:n
-		BF(i)  = spm_get_bf(name(i),T,dt,'',n_s,i);
+		BF(i)  = pr_spm_get_bf(name(i),T,dt,'',n_s,i);
 	end
 	BFstr = 'mixed';
 end
@@ -282,21 +282,6 @@ end
 %=======================================================================
 %- S U B - F U N C T I O N S
 %=======================================================================
-
-
-function bf = spm_orth(BF)
-% recursive orthogonalization of basis functions
-% FORMAT bf = spm_orth(bf)
-%_______________________________________________________________________
-bf    = BF(:,1);
-bf    = bf/sqrt(mean(bf.^2));
-for i = 2:size(BF,2)
-	D     = BF(:,i);
-	D     = D - bf*(pinv(bf)*D);
-	if any(D)
-		bf = [bf D/sqrt(mean(D.^2))];
-	end
-end
 
 
 % compute Gamma functions functions
