@@ -374,7 +374,8 @@ marsD = mars_armoire('get', 'def_design');
 if isempty(marsD), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
-marsRes = mars_stat(marsD, marsY);
+%marsRes = mars_stat(marsD, marsY);
+marsRes = estimate(marsD, marsY);
 mars_armoire('set', 'est_design', marsRes);
 
 %=======================================================================
@@ -599,7 +600,7 @@ if strcmp(etype, 'default')
   marsD = mars_armoire('get','def_design');
   if isempty(marsD), return, end;
   marsD = add_images(marsD);
-  VY = marsD.VY;
+  VY = get_images(marsD);
 else  % full options extraction
   % question for design
   marsD = [];
@@ -1091,6 +1092,38 @@ my_task = spm_input(pstr, '+1', 'm',...
 	      [1:of_end],of_end);
 if my_task == of_end, return, end
 marsbar(optfields{my_task}{:});
+
+%=======================================================================
+case 'get_cvs_version'             %- get cvs version string from mfile
+%=======================================================================
+% str = marsbar('get_cvs_version',filename)
+%-----------------------------------------------------------------------
+
+if nargin < 2
+  error('Need filename to parse');
+end
+filename = [varargin{2} '.m'];
+
+% returned value is string
+varargout = {''};
+
+fid=fopen(filename,'rt');
+if fid == -1, error(['Cannot open file ' filename]);end 
+aLine = '';
+while(isempty(aLine))
+  aLine = fgetl(fid);
+end
+if  ~strcmp(aLine(1:8),'function'), return, end
+aLine = fgetl(fid);
+while ~isempty(findstr(aLine,'%')) & feof(fid)==0; 
+  [cvsno count] = sscanf(aLine, '%%%*[ ]$Id:%*[ a-zA-Z.,] %f');
+  if count
+    varargout = {num2str(cvsno)};
+    break
+  end
+  aLine = fgetl(fid);
+end % while
+fclose(fid);
 
 %=======================================================================
 otherwise                                        %-Unknown action string

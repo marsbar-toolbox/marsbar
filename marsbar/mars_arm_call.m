@@ -26,7 +26,7 @@ switch lower(action)
   I = varargin{1};
 
   % Make design into object, do conversions
-  I.data = mardo_99(mardo(I.data));
+  I.data = mardo(I.data);
   if ~is_valid_design(I.data)
     errf = 1; 
     msg = 'This does not appear to be a valid design';
