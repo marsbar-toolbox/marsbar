@@ -34,7 +34,11 @@ SPM = des_struct(marsD);
 % do estimation
 SPM       = pr_estimate(SPM, marsY);
 SPM.marsY = marsY;
-SPM.SPMid = marsD.cvs_version;
+
+% We must set SPMid to contain SPM99 string in order for the mardo_99 to
+% recognize this as an SPM99 design
+SPM.SPMid  = sprintf('SPM99: MarsBaR estimation. mardo_99 version %s', ...
+		     marsD.cvs_version);
 
 % return modified structure
 marsD = des_struct(marsD, SPM);

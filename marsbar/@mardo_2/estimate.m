@@ -53,7 +53,8 @@ end
 
 SPM        = pr_estimate(SPM, marsY);
 SPM.marsY  = marsY;
-SPM.SPMid  = marsD.cvs_version;
+SPM.SPMid  = sprintf('SPM2: MarsBaR estimation. mardo_2 version %s', ...
+		     marsD.cvs_version);
 
 % return modified structure
 marsD = des_struct(marsD, SPM);
