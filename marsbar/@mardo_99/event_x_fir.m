@@ -56,8 +56,7 @@ end
 
 bf          = kron(eye(bin_no),ones(round(bin_length/dt),1));
 BF{1}       = pr_spm_orth(bf);
-sf          = Sess.sf{e};
-SF{1}       = sf(:, 1);  
+SF{1}       = Sess.sf{e};
 k           = length(Sess.row);
 
 Xn          = pr_spm_volterra(SF,BF,{'FIR'},1);
