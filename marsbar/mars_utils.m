@@ -1,5 +1,5 @@
 function varargout=mars_utils(varargin)
-% collection of useful utility functions for marsbar 
+% collection of useful utility functions for MarsBaR etc
 % 
 % fname = mars_utils('str2fname', str)
 %    accepts string, attempts return of string for valid filename
@@ -17,6 +17,10 @@ function varargout=mars_utils(varargin)
 %    takes element numbers in an image (e.g. find(img>5)) and the
 %    dimensions of the image [X Y Z] and returns the 3xN voxel
 %    coordinates corresponding to the N elements
+%
+% absf = mars_utils('isabspath', path);
+%    Takes path name, and returns flag, 1 if path is absolute on this
+%    system, 0 if relative or empty
 %
 % $Id$
 
@@ -115,7 +119,23 @@ Y = floor(nz / dim(1));
 X = nz - Y*dim(1);
 XYZ = [X; Y; Z] +1;
 varargout = {XYZ};
-return
+
+%=======================================================================
+case 'isabspath' % Returns 1 for absolute path, 0 if relative (or empty)
+%=======================================================================
+if nargin < 2
+  error('Need path to test');
+end
+pn = varargin{2};
+switch (spm_platform('filesys'))
+ case 'unx'
+  if (~isempty(pn) & pn(1)=='/'), absf=1; else, absf=0; end
+ case 'win'
+  if (length(pn)>1 & pn(2)==':'), absf=1; else, absf=0; end
+ otherwise
+  error('isabspath not coded for this filesystem');
+end
+varargout = {absf};
 
 otherwise
   error('Beyond my range');
