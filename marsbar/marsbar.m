@@ -111,7 +111,7 @@ mars_armoire('add_if_absent','est_design',...
 if ~isfield(MARS, 'WORKSPACE'), MARS.WORKSPACE = []; end
 
 % read any necessary defaults
-if ~is_there(MARS, 'OPTIONS')
+if ~sf_is_there(MARS, 'OPTIONS')
   loadf = 1;
   MARS.OPTIONS = [];
 else
@@ -684,8 +684,42 @@ if isempty(marsRes), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
 
-MARS.WORKSPACE.default_region = mars_get_region(marsY.cols);
+MARS.WORKSPACE.default_region = marsbar('get_region',...
+					region_names(marsY));
 varargout = {1};
+
+%=======================================================================
+case 'get_region'                                  %-ui to select region
+%=======================================================================
+% select region from list box / input
+% rno = marsbar('get_region', names, prompt)
+% names is cell array of strings identifying regions
+% prompt is prompt string
+%-----------------------------------------------------------------------
+
+if nargin < 2
+  error('Need region names to select from');
+else
+  names = varargin{1};
+end
+if nargin < 3
+  prompt = 'Select region';
+else
+  prompt = varargin{2};
+end
+
+% maximum no of items in list box
+maxlist = 200;
+
+if length(names) > maxlist
+  % text input, maybe
+  error('Too many regions');
+end
+
+% listbox
+rno = spm_input(prompt, '+1', 'm', char(names));  
+
+varargout = {rno};
 
 %=======================================================================
 case 'spm_graph'                                  %-run spm_graph
@@ -693,7 +727,7 @@ case 'spm_graph'                                  %-run spm_graph
 % [Y,y,beta,SE,cbeta] =  marsbar('spm_graph')
 %-----------------------------------------------------------------------
 varargout = {};
-if ~is_there(MARS.WORKSPACE, 'default_region')
+if ~sf_is_there(MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
 marsRes = mars_armoire('get', 'est_design');
@@ -1115,4 +1149,26 @@ error('Unknown action string')
 %=======================================================================
 end
 return
+
+% Subfunctions 
+
+function tf = sf_is_there(st, varargin)
+% determines if field specified by string input is present and not empty
+% FORMAT tf = sf_is_there(st, varargin)
+  
+tf = 0;
+if nargin < 2
+  return
+end
+res = [];
+tmp = st;
+for i = 1:length(varargin)
+  if isfield(tmp, varargin{i})
+    tmp = getfield(tmp, varargin{i});
+  else
+    return
+  end
+end
+tf = ~isempty(tmp);
+
 
