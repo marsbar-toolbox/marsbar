@@ -1,10 +1,10 @@
-function [tc, dt] = event_fitted_fir(D, event_spec, bin_length, bin_no)
+function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no)
 % method to compute fitted event time courses using FIR
-% FORMAT [tc, dt] = event_fitted_fir(D, event_spec, bin_length, bin_no)
+% FORMAT [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no)
 % 
 % (defaults are in [])
 % D          - design
-% event_spec - 2 by N array specifying events to combine
+% e_spec     - 2 by N array specifying events to combine
 %                 with row 1 giving session number
 %                 and row 2 giving event number in session
 %                 This may in due course become an object type
@@ -26,7 +26,7 @@ end
 if nargin < 4
   bin_no = [];
 end
-if ~is_fmri(D) | isempty(event_spec)
+if ~is_fmri(D) | isempty(e_spec)
   tc = []; dt = [];
   return
 end
@@ -34,9 +34,9 @@ if ~is_mars_estimated(D)
   error('Need a MarsBaR estimated design');
 end
 
-if size(event_spec, 1) == 1, event_spec = event_spec'; end
+if size(e_spec, 1) == 1, e_spec = e_spec'; end
 [SN EN] = deal(1, 2);
-e_s_l = size(event_spec, 2);
+e_s_l = size(e_spec, 2);
 SPM   = des_struct(D);
 
 if isempty(bin_length)
@@ -60,7 +60,7 @@ tc          = zeros(bin_no, n_rois);
 
 % for each session
 for s = 1:length(blk_rows)
-  sess_events = event_spec(EN, event_spec(SN, :) == s);
+  sess_events = e_spec(EN, e_spec(SN, :) == s);
   jX          = blk_rows{s};
   iX          = [];
   X           = [];

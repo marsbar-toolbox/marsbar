@@ -1,9 +1,9 @@
-function s = event_signal(D, event_spec, dur, diff_func, varargin)
+function s = event_signal(D, e_spec, dur, diff_func, varargin)
 % method to compute % signal change from fMRI events
-% FORMAT s = event_signal(D, event_spec, dur, diff_func, varargin)
+% FORMAT s = event_signal(D, e_spec, dur, diff_func, varargin)
 % 
 % D          - design
-% event_spec - 2 by N array specifying events to combine
+% e_spec     - 2 by N array specifying events to combine
 %                 with row 1 giving session number
 %                 and row 2 giving event number in session
 %                 This may in due course become an object type
@@ -31,21 +31,21 @@ if isempty(diff_func)
   diff_func = 'max';
 end
 
-if ~is_fmri(D) | isempty(event_spec)
+if ~is_fmri(D) | isempty(e_spec)
   s = [];
   return
 end
 if ~is_mars_estimated(D)
   error('Need a MarsBaR estimated design');
 end
-if size(event_spec, 1) == 1, event_spec = event_spec'; end
+if size(e_spec, 1) == 1, e_spec = e_spec'; end
 
-e_s_l = size(event_spec, 2);
+e_s_l = size(e_spec, 2);
 s     = 0;
 s_mus = block_means(D);
 SPM   = des_struct(D);
 for e_i = 1:e_s_l
-  es    = event_spec(:, e_i);
+  es    = e_spec(:, e_i);
   ss    = es(1);
   Yh    = event_fitted(D, es, dur);
   d     = pr_ev_diff(Yh, diff_func, varargin{:});

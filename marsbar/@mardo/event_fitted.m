@@ -1,9 +1,9 @@
-function [tc, dt] = event_fitted(D, event_spec, dur)
+function [tc, dt] = event_fitted(D, e_spec, dur)
 % method to compute fitted event time course
-% FORMAT [tc dt]  = event_fitted(D, event_spec, dur)
+% FORMAT [tc dt]  = event_fitted(D, e_spec, dur)
 % 
 % D          - design
-% event_spec - 2 by N array specifying events to combine
+% e_spec     - 2 by N array specifying events to combine
 %                 with row 1 giving session number
 %                 and row 2 giving event number in session
 %                 This may in due course become an object type
@@ -22,21 +22,21 @@ if nargin < 3
   dur = 0;
 end
 
-if ~is_fmri(D) | isempty(event_spec)
+if ~is_fmri(D) | isempty(e_spec)
   tc = [];
   return
 end
 if ~is_mars_estimated(D)
   error('Need a MarsBaR estimated design');
 end
-if size(event_spec, 1) == 1, event_spec = event_spec'; end
+if size(e_spec, 1) == 1, e_spec = e_spec'; end
 
-e_s_l = size(event_spec, 2);
+e_s_l = size(e_spec, 2);
 SPM   = des_struct(D);
 betas = SPM.betas;
 tc    = zeros(1, size(betas, 2));
 for e_i = 1:e_s_l
-  es    = event_spec(:, e_i);
+  es    = e_spec(:, e_i);
   ss    = es(1);
   [X dt]= event_regressor(D, es, dur);
   B     = betas(event_cols(D, es), :);
