@@ -20,7 +20,7 @@ if nargin<2, D = []; else, D = varargin{2}; end
 
 %-GUI setup
 %-----------------------------------------------------------------------
-CVSid    = marsbar('get_cvs_version', mfilename('fullpath'));
+CVSid    = mars_cvs_version(mfilename);
 SPMid    = spm('SFnBanner',mfilename,CVSid);
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Stats: Setup analysis',0);
 spm_help('!ContextHelp',mfilename)
@@ -238,7 +238,8 @@ for i=1:2			% 1:covariates of interest, 2:nuisance variables
 	%-Construct description string for covariate
 	str = {sprintf('%s: %s',str,rcname)};
 	if size(rc,2)>1, str = {sprintf('%s (block of %d covariates)',...
-		str{:},size(rc,2))}; end
+		str{:},size(rc,2))}; 
+	end
 	if iCC<8, str=[str;{['used centered ',sCC{iCC}]}]; end
 	if iCFI>1, str=[str;{['fitted as interaction ',sCFI{iCFI}]}]; end
 
@@ -629,7 +630,7 @@ if any(iGloNorm==[1:7])
 	
 		G = [G,f]; Gnames = [Gnames; gname];
 		if isempty(xC), xC = tmp; else, xC = [xC,tmp]; end
-	
+		
 	end
 
 elseif iGloNorm==8 | iGXcalc>1
@@ -737,26 +738,14 @@ SPM = struct('xX',    xX,...
 	     'F_iX0', F_iX0,...
 	     'xC',    xC,...
 	     'xsDes', xsDes,...
-	     'swd',   pwd,...
 	     'SPMid', SPMid,...
 	     'cfg',   'SPMcfg');
 varargout = {SPM};
 
-%-Display Design reports
-%=======================================================================
-fprintf('%-40s: ','Design reporting')                                %-#
-spm_DesRep('DesMtx',xX,reshape({VY.fname},size(VY)),xsDes)
-fprintf('%30s\n','...done')                                          %-#
-
-
-%-End; display design
+%-End
 %=======================================================================
 spm('Pointer','Arrow')
 fprintf('%-40s: %30s\n','Completed',spm('time'))                     %-#
-
-spm('FigName','Stats: configured',Finter,CmdLine);
-spm('Pointer','Arrow')
-spm_DesRep('DesRepUI',SPM);
 fprintf('\n\n')
 
 case 'files&indices'
@@ -1339,3 +1328,4 @@ function str = sf_estrrep(str,srstr)
 for i = 1:size(srstr,1)
 	str = strrep(str,srstr{i,1},srstr{i,2});
 end
+return
