@@ -11,10 +11,8 @@ if is_summarized(Y1)
   y1 = summary_data(Y1);
   y2 = summary_data(Y2);
 else
-  y1 = region_data(Y1);
-  y2 = region_data(Y2);
-  y1 = [y1{:}];
-  y2 = [y2{:}];
+  y1 = cell2mat(region_data(Y1));
+  y2 = cell2mat(region_data(Y2));
 end
 tf = all(all(y1 == y2));
 
