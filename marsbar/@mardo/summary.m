@@ -15,7 +15,7 @@ strs{4} = sprintf('Has images?:       \t%s',  ...
 		  sf_recode(has_images(D)));
 strs{5} = sprintf('MarsBaR estimated?:\t%s', ...
 		  sf_recode(is_mars_estimated(D)));
-
+strs = [strs {'Description:'}, descrip(D)];
 
 return
 
