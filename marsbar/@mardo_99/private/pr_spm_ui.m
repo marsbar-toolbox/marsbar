@@ -539,11 +539,11 @@ case 3
 			else
 				str = sprintf('%3d/%-3d',i,nScan);
 			end
-			fprintf('%s%30s',sprintf('\b')*ones(1,30),str)%-#
+			fprintf('%s%30s',repmat(sprintf('\b'),1,30),str)%-#
 			g(i,j) = spm_global(VY(i,j));
 		end
 	end
-	fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')       %-#
+	fprintf('%s%30s\n',repmat(sprintf('\b'),1,30),'...done')       %-#
 otherwise
 	error('illegal iGXcalc')
 end

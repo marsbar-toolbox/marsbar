@@ -69,7 +69,7 @@ rno = 0;
 for r = 1:rlen
   if vf
     fprintf('%s%30s',...
-	    sprintf('\b')*ones(1,30),...
+	    repmat(sprintf('\b'),1,30),...
 	    sprintf('%4d/%-4d',r, rlen));
   end
   o = roi_array{r};
@@ -97,7 +97,7 @@ for r = 1:rlen
     if rno < 2,  lbl = label(o); else lbl = [lbl ' & ' label(o)]; end
   end
 end
-if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
+if vf, fprintf('%s%30s\n',repmat(sprintf('\b'),1,30),'...done'); end
 
 if rno == 0
   marsY = [];

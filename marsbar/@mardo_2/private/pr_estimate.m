@@ -155,7 +155,7 @@ if ~isfield(xVi,'V')
   trMV   = spm_SpUtil('trMV',X1o);
 end
 
-fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
+fprintf('%s%30s\n',repmat(sprintf('\b'),1,30),'...done')               %-#
 
 %=======================================================================
 % - F I T   M O D E L   &   W R I T E   P A R A M E T E R    I M A G E S
@@ -190,13 +190,13 @@ CY    = 0;					    % <Y*Y'> for ReML
 EY    = 0;					    % <Y>    for ReML
 %-Whiten/Weight data and remove filter confounds
 %-------------------------------------------------------
-fprintf('%s%30s',sprintf('\b')*ones(1,30),'filtering')	%-#
+fprintf('%s%30s',repmat(sprintf('\b'),1,30),'filtering')	%-#
 
 KWY   = pr_spm_filter(xX.K,W*Y);
 
 %-General linear model: Weighted least squares estimation
 %------------------------------------------------------
-fprintf('%s%30s',sprintf('\b')*ones(1,30),'estimation') %-#
+fprintf('%s%30s',repmat(sprintf('\b'),1,30),'estimation') %-#
 
 beta  = xX.pKX*KWY;			%-Parameter estimates
 res   = spm_sp('r',xX.xKXs,KWY);	%-Residuals
@@ -393,7 +393,7 @@ SPM.xCon       = xCon;				%-contrast structure
 %=======================================================================
 %- E N D: Cleanup GUI
 %=======================================================================
-fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done')               %-#
+fprintf('%s%30s\n',repmat(sprintf('\b'),1,30),'...done')               %-#
 spm('FigName','Stats: done',Finter); spm('Pointer','Arrow')
 fprintf('%-40s: %30s\n','Completed',spm('time'))                     %-#
 fprintf('...use the results section for assessment\n\n')             %-#
