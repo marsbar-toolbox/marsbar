@@ -48,8 +48,8 @@ else
   cmap = varargin{3};
 end
 
-if ischar(roi_obj), roi_obj = cellstr(roi_obj); end
-if ~iscell(roi_obj), roi_obj = {roi_obj};end
+% Process filenames to roi objects
+roi_obj = maroi('load_cell', roi_obj);
 
 olen = prod(size(roi_obj));
 if olen > 1
@@ -67,7 +67,8 @@ sp = mars_space(structv);
 mo = [];
 roi_ctr = 1;
 for i = 1:olen
-  roi = maroi('load', roi_obj{i});
+  roi = roi_obj{i};
+  
   % check ROI contains something
   if isempty(roi) 
     warning(sprintf('ROI %d is missing', i));
@@ -94,8 +95,10 @@ for i = 1:olen
       % Information for display
       XYZ = realpts(roi,nsp);
       mx = max(XYZ, [], 2); mn = min(XYZ, [], 2);
+      lbl = label(roi);
+      if isempty(lbl), lbl = '[No label]'; end
       roi_info(roi_ctr) = struct(...
-	  'label', label(roi),...
+	  'label', lbl,...
 	  'num', i,...
 	  'c_o_m', c_o_m(mo, nsp, 'real'),...
 	  'volume', volume(mo),...
