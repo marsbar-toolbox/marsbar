@@ -3,6 +3,7 @@ function spm_spm(VY,xX,xM,F_iX0,varargin)
 %
 % $Id$
 
+global BCH
 mars = spm('getglobal', 'MARSBAR');
 
 % Make SPM design structure
@@ -21,7 +22,14 @@ if nargin > 4
 end
 	      
 % get ROIs + data
-roilist = spm_get(Inf,'roi.mat','Select ROI(s) to analyze data for');
+if isempty(BCH)
+  roilist = spm_get(Inf,'roi.mat','Select ROI(s) to analyze data for');
+  sumfunc = mars.statistics.sumfunc;
+else
+  % in batch mode
+  roilist = spm_input('batch',{},'roilist'); 
+  sumfunc = spm_input('batch', {}, 'sumfunc');
+end
 if isempty(roilist)
   return
 end
