@@ -207,17 +207,18 @@ for a = 1:length(actions)
     % Contruct Vi structure for non-sphericity ReML estimation
     %===============================================================
     str   = 'Correct for serial correlations?';
-    cVi   = {'none','AR(1)'};
+    cVi   = {'none','AR(1)','specify'};
     cVi   = spm_input(str,'+1','b',cVi);
     
     % create Vi struct
     %-----------------------------------------------------------------------
     switch cVi
 
-     case ~ischar(cVi)	
-      % AR coeficient[s] specified
+     case 'specify'
+      % AR coefficient(s) to be specified
       %---------------------------------------------------------------
-      SPM.xVi.Vi = pr_spm_ce(nscan,cVi(1:3));
+      cVi = spm_input('AR rho parameter(s)', '+1', 'e', 0.2);
+      SPM.xVi.Vi = pr_spm_ce(nscan,cVi);
       cVi        = sprintf('AR(%0.1f)',cVi(1));
       f2cl       = 'V'; 
       
