@@ -1,4 +1,4 @@
-function [o, others] = mardo(params,passf)
+function [o, others] = mardo(params, others, passf)
 % mardo - class constructor for MarsBaR design object
 % inputs [defaults]
 % params  -  one of:
@@ -7,6 +7,7 @@ function [o, others] = mardo(params,passf)
 %               contain SPM/MarsBaR design or
 %               contain fields for mardo object, which should include
 %               'des_struct', containing design structure
+% others  - any other fields for mardo object (or children)
 % passf   - if 1, or not passed, will try children objects to see if
 %           they would like to own this design
 %
@@ -117,6 +118,9 @@ if nargin < 1
   params = [];
 end
 if nargin < 2
+  others = [];
+end
+if nargin < 3
   passf = 1;
 end
 if isa(params, myclass)
@@ -139,20 +143,22 @@ if isstruct(params)
   end
 end
 
-% fill with defaults, parse into fields for this object, children
-[pparams, others] = mars_struct('ffillsplit', defstruct, params);
+% fill with pther params, defaults, parse into fields for this object,
+% children
+params = mars_struct('ffillmerge', params, others);
+[params, others] = mars_struct('ffillsplit', defstruct, params);
 
 % add cvs tag
-pparams.cvs_version = mars_cvs_version(myclass);
+params.cvs_version = mars_cvs_version(myclass);
 
 % set the mardo object
-o  = class(pparams, myclass);
+o  = class(params, myclass);
 
 % If requested, pass to child objects to request ownership
 if passf
-  o = mardo_99(o, others);
+  [o others] = mardo_99(o, others);
   if strcmp(class(o), myclass)
-    o = mardo_2(o, others);
+    [o others] = mardo_2(o, others);
   end
 end
 
@@ -213,7 +219,7 @@ if ~is_marsed(o)
 	'This a design from %s, but you are currently using %s\n',...
 	'Data may be extracted from different sides in X (L/R)\n',...
 	'when using this design with %s compared to %s.\n',...
-	'NB MarsBaR has %sflipped the images for this design\n'],...
+	'NB mardo object has %sflipped the images for this design\n'],...
 		  dt, sv, dt, sv, add_str);
     end
   end % has_images, design/running SPM version differ
