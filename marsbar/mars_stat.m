@@ -128,10 +128,6 @@ for i = 2:length(F_iX0)
 end
 spmD.xCon = xCon;
 
-% set as default results
-mars_armoire('set', 'est_design', spmD);
-fprintf('Results loaded into MarsBar default results\n');
-
 %=======================================================================
 %- E N D: Cleanup GUI
 %=======================================================================
