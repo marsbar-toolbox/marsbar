@@ -1,18 +1,19 @@
-function pre_release(rname)
+function pre_release(rname, outdir)
 % Runs pre-release export, cleanup
 if nargin < 1
   rname = '';
 end
+if nargin < 2
+  outdir = pwd;
+end
 
+% MarsBaR version
 V = marsbar('ver');
-disp(['MarsBaR version: ' V]);
 
 % export from CVS
-usename = 'matthewbrett';
-host    = 'cvs.sourceforge.net';
 proj    = 'marsbar';
-cmd = sprintf('cvs -d:ext:%s@%s:/cvsroot/%s export -D tomorrow %s',...
-	      usename, host, proj, proj);
+cmd = sprintf('cvs export -D tomorrow %s',...
+	      proj);
 unix(cmd);
 
 % make contents file
