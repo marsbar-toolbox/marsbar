@@ -16,11 +16,13 @@ elseif isfield(xX, 'Xnames')
   xX.name = xX.Xnames;
 end
 
-conlen = length(SPM.xCon);
-[I SPM.xCon] = spm_conman(xX,SPM.xCon,varargin{:});
+xCon = mars_struct('getifthere', SPM, 'xCon');
+conlen = length(xCon);
+[I xCon] = spm_conman(xX,xCon,varargin{:});
 if length(SPM.xCon) == conlen
   changef = 0;
 else
   changef = 1;
+  SPM.xCon = xCon;
   D = des_struct(D, SPM);
 end

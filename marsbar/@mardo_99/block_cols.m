@@ -11,4 +11,7 @@ if ~is_fmri(D)
 end
 
 SPM   = des_struct(D);
-cols  = {SPM.Sess{:}.col}; 
+Sess  = SPM.Sess;
+for i = 1:length(Sess)
+  cols{i} = Sess{i}.col;
+end
