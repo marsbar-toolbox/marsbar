@@ -32,21 +32,21 @@ end
 SPM = des_struct(marsD);
 
 % process flags
-for flag = flags
-  switch flag{1}
-    case 'redo_covar'
-     if isfield(SPM.xVi, 'V')
-       SPM.xVi = rmfield(SPM.xVi, 'V');
-       if verbose(marsD)
-	 disp('Re-estimating covariance');
-       end
-     end
-   case 'redo_whitening'
-    if isfield(SPM.xX, 'W')
-      SPM.xX = rmfield(SPM.xX, 'W');
+if ismember('redo_covar', flags)
+  if isfield(SPM, 'xVi') 
+    if isfield(SPM.xVi, 'V') & isfield(SPM.xVi, 'Vi')
+      SPM.xVi = rmfield(SPM.xVi, 'V');
       if verbose(marsD)
-	disp('Re-estimating whitening filter');
+	disp('Re-estimating covariance');
       end
+    end
+  end
+end
+if ismember('redo_whitening', flags)
+  if isfield(SPM.xX, 'W')
+    SPM.xX = rmfield(SPM.xX, 'W');
+    if verbose(marsD)
+      disp('Re-estimating whitening filter');
     end
   end
 end
