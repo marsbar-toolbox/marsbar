@@ -42,11 +42,11 @@ end
 
 vhat = invM*a;
 rho  = vhat(2:end,:) ./ (ones(nlags, 1) * vhat(1,:));
-rho  = mean(rho,2)
+rho  = mean(rho,2)';
 
 if nargout > 1
   % Whitening matrix; Appendix A3 Worsley et al (2002)
-  [Ainvt posdef] = chol(toeplitz([1 rho']));
+  [Ainvt posdef] = chol(toeplitz([1 rho]));
   p1 = size(Ainvt,1);
   A  = inv(Ainvt');
 %  Vmhalf = toeplitz([A(p1,p1:-1:1) zeros(1,n-p1)], zeros(1,n)); 
