@@ -237,7 +237,7 @@ for c = plot_spec.r_nos
 	q     = 2:fix(q/2);
 	P     = [P gX(q)'];
 	St(s) = length(H)+1;
-	H     = [H Hz(q)'];
+	H     = [H; Hz(q)'];
       end
       plot(P)
       hold on
