@@ -99,6 +99,11 @@ for r = 1:rlen
 end
 if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end             
 
+if rno == 0
+  marsY = [];
+  return;
+end
+
 s_info = struct(...
     'sumfunc', sumfunc, ...
     'descrip', ['Data from ' lbl],...
@@ -112,5 +117,4 @@ if ~isempty(D)
 end
 
 marsY = marsy(r_data, r_info, s_info);
-
 
