@@ -82,7 +82,7 @@ for a = 1:length(actions)
 	'Grand_mean_scaling',	sGMsca,...
 	'Global_normalisation',	Global);
 
-    if isfield(SPM, xsDes)
+    if isfield(SPM, 'xsDes')
       xsDes = mars_struct('fillafromb', SPM.xsDes, xsDes);
     end
     
