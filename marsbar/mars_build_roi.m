@@ -7,8 +7,9 @@ o = [];
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Build ROI', 0);
 
 % get ROI type
-optfields = {'blob','image','sphere','box'};
-optlabs =  {'Activation cluster','Image','Sphere', 'Box'};
+optfields = {'blob','image','sphere','box_cw', 'box_lims'};
+optlabs =  {'Activation cluster','Image','Sphere',...
+	    'Box (centre,widths)','Box (ranges XYZ)'};
 
 roitype = char(...
     spm_input('Type of ROI', '+1', 'm',{optlabs{:} 'Quit'},...
@@ -50,15 +51,27 @@ switch roitype
   d = sprintf('%0.1fmm radius sphere at [%0.1f %0.1f %0.1f]',r,c);
   l = sprintf('sphere_%0.0f-%0.0f_%0.0f_%0.0f',r,c);
   o = maroi_sphere(struct('centre',c,'radius',r));
- case 'box'
+ case 'box_cw'
   c = spm_input('Centre of box (mm)', '+1', 'e', [], 3); 
   w = spm_input('Widths in XYZ (mm)', '+1', 'e', [], 3);
   d = sprintf('[%0.1f %0.1f %0.1f] box at [%0.1f %0.1f %0.1f]',w,c);
   l = sprintf('box_w-%0.0f_%0.0f_%0.0f-%0.0f_%0.0f_%0.0f',w,c);
   o = maroi_box(struct('centre',c,'widths',w));
+ case 'box_lims'
+  X = sort(spm_input('Range in X (mm)', '+1', 'e', [], 2)); 
+  Y = sort(spm_input('Range in Y (mm)', '+1', 'e', [], 2)); 
+  Z = sort(spm_input('Range in Z (mm)', '+1', 'e', [], 2));
+  A = [X Y Z];
+  c = mean(A);
+  w = diff(A);
+  d = sprintf('box at %0.1f>X<%0.1f %0.1f>Y<%0.1f %0.1f>Z<%0.1f',A);
+  l = sprintf('box_x_%0.0f:%0.0f_y_%0.0f:%0.0f_z_%0.0f:%0.0f',A);
+  o = maroi_box(struct('centre',c,'widths',w));
  case 'quit'
   o = [];
   return
+ otherwise
+  error(['Strange ROI type: ' roitype]);
 end
 
 d = spm_input('Description of ROI', '+1', 's', d);
