@@ -1,4 +1,4 @@
-function r = betas(o, Y)
+function r = betas(o)
 % method to get estimated betas
 % 
 % $Id$
@@ -6,4 +6,5 @@ function r = betas(o, Y)
 if ~is_mars_estimated(o)
   error('No betas, model not estimated');
 end
-r = o.betas;
+SPM = des_struct(o);
+r   = SPM.betas;
