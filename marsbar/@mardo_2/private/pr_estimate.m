@@ -5,7 +5,7 @@ function SPM = pr_estimate(SPM, marsY)
 %
 % $Id$
 
-global MARS;
+% hard coded (for now) flag to use voxel data for whitening filter
 use_all_data = 1;
 
 %-Say hello
@@ -117,7 +117,7 @@ n_roi = size(marsY.Y, 2);
 
 %-Intialise variables used in the loop 
 %=======================================================================
-[n S] = size(Y,2);                                  % no of time courses
+[n S] = size(Y);                                    % no of time courses
 Cy    = 0;					    % <Y*Y'> spatially whitened
 CY    = 0;					    % <Y*Y'> for ReML
 EY    = 0;					    % <Y>    for ReML
@@ -144,10 +144,10 @@ if ~isfield(xVi,'V')
     wstr = {'Pooling covariance estimate across ROIs',...
 	    'This is unlikely to be valid; A better approach',...
 	    'is to run estimation separatly for each ROI'}
-    warning(sprintf('%s\n', wstr);
+    warning(sprintf('%s\n', wstr));
   end
   q  = diag(sqrt(trRV./ResSS'),0);
-  Y  = Y(:,j)*q;
+  Y  = Y * q;
   Cy = Y*Y';
 end % (xVi,'V')
 		
@@ -236,11 +236,11 @@ if ~isfield(xVi,'V')
   % If xX.W is not specified use W*W' = inv(V) to give ML estimators
   %---------------------------------------------------------------
   if ~isfield(xX,'W')
-    MARS.WORKSPACE.SPM = SPM;
-    MARS.WORKSPACE.marsY = marsY;
-    clear
-    SPM = pr_estimate(MARS.WORKSPACE.SPM, ...
-		       MARS.WORKSPACE.marsY);
+    % clear everything except SPM, marsY;
+    vnames = who;
+    vnames = vnames(~ismember(vnames, {'SPM','marsY'}));
+    clear(vnames{:});
+    SPM = pr_estimate(SPM,marsY);
     return
   end
 end
@@ -304,7 +304,6 @@ SPM.xVi        = xVi;				% non-sphericity structure
 SPM.xVi.CY     = CY;				%-<(Y - <Y>)*(Y - <Y>)'> 
 
 SPM.xX         = xX;				%-design structure
-SPM.xM         = xM;				%-mask structure
 
 SPM.xCon       = xCon;				%-contrast structure
 

@@ -243,19 +243,22 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'UserData',funcs);
 
 % Design menu
-funcs = {'marsbar(''ana_cd'')',...
-	 'marsbar(''ana_desmooth'')',...
-	 'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_PET''));',...
-	 'spm_fmri_spm_ui;',...		    
-	 'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_Stats''));',...
-	 'spm pointer watch, spm_DesRep; spm pointer arrow',...
-	 'marsbar(''add_images'')',...
-	 'marsbar(''edit_filter'')',...
-	 'mars_armoire(''set_ui'', ''def_design'');',...
-	 'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
+funcs = {...
+    'marsbar(''list_images'')',...
+    'marsbar(''ana_cd'')',...
+    'marsbar(''ana_desmooth'')',...
+    'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_PET''));',...
+    'spm_fmri_spm_ui;',...		    
+    'spm_spm_ui(''cfg'',spm_spm_ui(''DesDefs_Stats''));',...
+    'spm pointer watch, spm_DesRep; spm pointer arrow',...
+    'marsbar(''add_images'')',...
+    'marsbar(''edit_filter'')',...
+    'mars_armoire(''set_ui'', ''def_design'');',...
+    'mars_armoire(''save_ui'', ''def_design'', ''fw'');'};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Design...'...
+		    '|List image names to console',...
 		    '|Change design path to images',...
 		    '|Convert to unsmoothed|PET models',...
 		    '|FMRI models|Basic models|Explore',...
@@ -801,136 +804,47 @@ catch
 end
  
 %=======================================================================
-case 'get_spmmat'                 %- gets SPM*.mat design structure
+case 'list_images'                     %-lists image files in SPM design
 %=======================================================================
-% S = marsbar('get_spmmat', [spmfilename])
+% marsbar('list_images')
 %-----------------------------------------------------------------------
-% accepts or fetches name of SPM.mat file, returns SPM.mat structure
- if nargin < 2
-   spmmat = [];
- else
-   spmmat = varargin{2};
- end
- swd = [];
- if isempty(spmmat)
-  spmmat = spm_get(1, 'SPM.mat', 'Select analysis');
-  if isempty(spmmat),return,end
- end
- if ischar(spmmat) % assume is SPM.mat file name
-   [swd sfn sext] = fileparts(spmmat);
-   sfn = [sfn sext];
-   spmmat = load(spmmat);
-   spmmat.swd = swd;
-   spmmat.sfn = sfn;
- elseif isstruct(spmmat)
-   if isfield(spmmat,'swd')
-     swd = spmmat.swd;
-   end
-   if isfield(spmmat,'sfn')
-     swd = spmmat.sfn;
-   end
- else
-   error('Requires string or struct as input');
- end
-
- % check the structure
- if ~isfield(spmmat,'SPMid')
-   %-SPM.mat pre SPM99
-   error('Incompatible SPM.mat - old SPM results format!?')
- end
-
- % remove large and unused field
- if isfield(spmmat, 'XYZ')
-   rmfield(spmmat, 'XYZ');
- end
- 
- varargout = {spmmat, swd, sfn};
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
+get_image_names(marsD)
 
 %=======================================================================
 case 'ana_cd'                      %-changes path to files in SPM design
 %=======================================================================
 % marsbar('ana_cd')
 %-----------------------------------------------------------------------
-% fetches name of SPM.mat file, saves as new SPM.mat structure
-anamat = spm_get([0 1], 'SPM*.mat', 'Analysis to change paths');
-if isempty(anamat), return, end
-anamat = marsbar('get_spmmat', anamat);
-
-% save over previous analysis
-newspmpath = anamat.swd;
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
 
 % root path shown in output window
-root_names = spm_str_manip(strvcat(anamat.VY(:).fname), 'H');
+P = get_image_names(marsD);
+root_names = spm_str_manip(P, 'H');
 spm_input(deblank(root_names(1,:)),1,'d','Common path is:');
 
 % new root
-newpath = spm_get(-1, '', 'New directory root for files');
+newpath = spm_get([-1 0], '', 'New directory root for files');
+if isempty(newpath), return, end
 
 % do
-mars_ana_cd(anamat, newpath, newspmpath);
+marsD = cd_images(marsD, newpath);
+mars_armoire('set', 'def_design', marsD);
 
 %=======================================================================
 case 'ana_desmooth'           %-makes new SPM design for unsmoothed data
 %=======================================================================
 % marsbar('ana_desmooth')
 %-----------------------------------------------------------------------
-% fetches name of SPM.mat file, saves as new SPM.mat structure
-anamat = spm_get([0 1], 'SPM*.mat', 'Analysis -> unsmoothed');
-if ~isempty(anamat)
-  newdir = spm_get(-1, '', 'Directory to save analysis');
-  [pn fname ext] = fileparts(anamat); 
-  newname = fullfile(newdir, [fname '_unsmoothed' ext]);
-  marsbar('ana_deprefix', anamat, newname, 's');
-end
-  
-%=======================================================================
-case 'ana_deprefix' %-makes new SPM design with removed image file prefix
-%=======================================================================
-% marsbar('ana_deprefix', [oldSPMmat, [newname [prefix]]])
-%-----------------------------------------------------------------------
-% gets, uses SPM structure, saves as new SPM.mat structure
-if nargin < 2
-  anamat = spm_get(1, 'SPM*.mat', 'Analysis to deprefix');
-else
-  anamat = varargin{2};
-end
-if nargin < 3
-  newdir = spm_get(-1, '', 'Directory to save analysis');
-  [pn fname ext] = fileparts(anamat); 
-  newname = fullfile(newdir, [fname '_depref_' prefix ext]);
-else
-  newname = varargin{3};
-end
-if nargin < 4
-  prefix = 's';
-else
-  prefix = varargin{4};
-end
- 
-ana = load(anamat);
-if ~isfield(ana, 'VY')
-  error('No VY vols in this mat file')
-end
-if ~isfield(ana.VY, 'fname')
-  error('VY does not contain fname field')
-end
-files = strvcat(ana.VY(:).fname);
-fpaths = spm_str_manip(files, 'h');
-fns = spm_str_manip(files, 't');
-if all(fns(:,1) == prefix)
-  fns(:,1) = [];
-  newfns = cellstr(strcat(fpaths, filesep, fns));
-  [ana.VY(:).fname] = deal(newfns{:});
-  if exist(newname, 'file')
-    spm_unlink(newname);
-  end
-  savestruct(newname,ana);
-  fprintf('Done...\n');
-else
-  warning(['Analysis files not all prefixed with ''' prefix ''', no new' ...
-		    ' file saved'])
-end
+marsD = mars_armoire('get','def_design');
+if isempty(marsD), return, end;
 
+% do
+marsD = deprefix_images(marsD, 's');
+mars_armoire('set', 'def_design', marsD);
+  
 %=======================================================================
 case 'show_volume'           %- shows ROI volume in mm 
 %=======================================================================
