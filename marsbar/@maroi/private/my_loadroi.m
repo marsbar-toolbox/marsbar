@@ -7,19 +7,13 @@ if isa(fname, 'maroi')  % already loaded
   o = fname;
   return
 end
-if isempty(fname)
-  o = [];
-  return
-end
 
-if ischar(fname), fname = cellstr(fname);end
-for f = 1:length(fname)
-  F = load(deblank(fname{f}));
-  if isfield(F, 'roi') & isa(F.roi, 'maroi')
-    o(f) = F.roi;
-    o(f).source = fname{f};
-  end
-end
+o = [];
+if iscell(fname), fname = char(fname); end
+if size(fname, 1) > 1, error('Can only load one ROI at a time'); end
+if isempty(fname), warning('Empty filename'), return, end
+F = load(fname);
+if isfield(F, 'roi') & isa(F.roi, 'maroi')
   o = F.roi;
   o = source(o, fname);
 else
