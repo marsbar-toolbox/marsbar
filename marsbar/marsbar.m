@@ -1004,6 +1004,9 @@ case 'import_data'                                    %- it imports data
 % marsbar('import_data')
 %-----------------------------------------------------------------------
 
+% Check for save of current dataa
+if sf_prev_save('roi_data') == -1, return, end
+
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Import data', 0);
 
 r_f = spm_input('Import what?', '+1', 'm', ...
@@ -1204,6 +1207,9 @@ case 'join_data'                %- joins many data files into one object
 %=======================================================================
 % marsbar('join_data')
 %-----------------------------------------------------------------------
+
+% Ckeck save of current data first
+if sf_prev_save('roi_data') == -1, return, end
 
 P = spm_get([0 Inf], '*_mdata.mat', 'Select data files to join');
 
@@ -1583,6 +1589,12 @@ global MARS
     obj_name, ...
     struct('ync', 1, ...
 	   'no_no_save', 1, ...
-	   'prompt_prefix', 'previous ')); 
+	   'prompt_prefix', 'previous '));
+% If answer is 'No', then flag that we don't need to save
+if btn == 0
+  MARS.ARMOIRE = set_item_param(MARS.ARMOIRE, ...
+				obj_name, ...
+				'has_changed', 0);
+end
 return
 
