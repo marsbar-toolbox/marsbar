@@ -74,28 +74,38 @@ function [o, others] = marmoire(params, varargin)
 %                   well as 'set'
 % set_action_if_clear - flag, if set, applied set_action for 'clear' as
 %                   well as 'set'
-% 
+%
 % $Id$
   
 % Programmers' notes
 % ------------------
 % set_action callbacks
-% callbacks should be one of the following two formats;
+% callbacks should in the following formats;
 %
-% [data errf msg] = my_function(args)  or
-% [item_field errf msg] = my_function(args) 
+% [o errf msg] = my_function(args) 
 %
-% The first form just returns the data desired to be set, the second returns
-% the whole item field, where the data is contained in the field 'data'.  if
+%  The return argument 'o' is the modified whole object. If
 % 'errf' is set, the routine warns, and aborts the set action with the
 % 'msg'.
 %
+% The preferred args will give a format of are:
+% [o errf msg] = my_function(o, item, old_o)
+% 
+% where o is the object after the data has been set, item is the name of
+% the item which has just been set, and old_o is the object before the
+% data was set.
+% 
 % The available args are:
+% o               - the whole object with new data set
+% item            - the name of the item which has been set
+% old_o           - the object before the data was set.
+% 
+% as well as:
+%
 % item_struct     - proposed whole item field contents
 % data            - proposed data to be inserted 
 % passed_filename - filename passed to function
-% o               - the whole object
-% 
+%
 % and anything else you can see in context, for the line containing the
 % 'eval' statement in the do_set method
   
