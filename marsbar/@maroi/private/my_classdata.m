@@ -1,7 +1,7 @@
 function cdata = my_classdata(fieldname, value)
 % my_classdata method - sets/gets class data
 % maroi class data is implemented with a persistent variable
-% - CLASSDATA.  This is a structure containing fields
+% CLASSDATA  This is a structure containing fields
 %
 % spacebase  - space in which to do ROI combination 
 % fileend    - filename end with extension for ROI files
@@ -15,7 +15,7 @@ function cdata = my_classdata(fieldname, value)
 % Field values can be set with the call
 % maroi('classdata', fieldname, value) OR
 % maroi('classdata', struct) where struct contains fields matching those
-% in CLASSDAYA
+% in CLASSDATA
 %
 % The same functionality results from 
 % classdata(maroi_obj, fieldname) etc.
