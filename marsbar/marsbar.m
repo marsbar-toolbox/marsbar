@@ -217,8 +217,8 @@ funcs = {'mars_display_roi(''display'');',...
 	 'mars_blob_ui;',...
 	 'marsbar(''buildroi'');',...
 	 'marsbar(''transform'');',...
-	 'marsbar(''import'');',...
-	 'marsbar(''export'');'};
+	 'marsbar(''import_rois'');',...
+	 'marsbar(''export_rois'');'};
 
 uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['ROI definition',...
@@ -269,8 +269,12 @@ uicontrol(Fmenu,'Style','PopUp',...
 % Data menu
 funcs = {'marsbar(''extract_data'', ''default'');',...
 	 'marsbar(''extract_data'', ''full'');',...
-	 'disp(''Import'');',...
-	 'disp(''Export'');',...
+	 'marsbar(''set_defregion'');',...
+	 'marsbar(''plot_data'');',...
+	 'marsbar(''import_data'');',...
+	 'marsbar(''export_data'');',...
+	 'marsbar(''split_data'');',...
+	 'marsbar(''join_data'');',...
 	 'mars_armoire(''set_ui'', ''roi_data'');',...
 	 'mars_armoire(''save_ui'', ''roi_data'', ''fw'');'};
 
@@ -278,8 +282,12 @@ uicontrol(Fmenu,'Style','PopUp',...
 	  'String',['Data...'...
 		    '|Extract ROI (default)',...
 		    '|Extract ROIs (full options)',...
+		    '|Set default region',...
+		    '|Plot data',...
 		    '|Import data',...
 		    '|Export data',...
+		    '|Split regions into files',...
+		    '|Merge data files',...
 		    '|Set data from file',...
 		    '|Save data to file'],...
 	  'Position',[bx by(3) bw bh].*WS,...
@@ -292,11 +300,8 @@ funcs = {...
     'marsbar(''estimate'');',...
     'marsbar(''merge_contrasts'');',...
     'marsbar(''add_trial_f'');',...
-    'marsbar(''set_defregion'');',...
-    ['evalin(''base'', ',...
-     '''[Y y beta SE cbeta] = marsbar(''''spm_graph'''');'');'],...
-    ['evalin(''base'', ',...
-     '''marsS = marsbar(''''stat_table'''');'');'],...
+    'marsbar(''spm_graph'');',...
+    'marsbar(''stat_table'');',...
     'marsbar(''set_results'');',...
     'mars_armoire(''save_ui'', ''est_design'', ''fw'');'};
 
@@ -305,7 +310,6 @@ uicontrol(Fmenu,'Style','PopUp',...
 		    '|Estimate results',...
 		    '|Import contrasts',...
 		    '|Add trial-specific F',...
-		    '|Set default region',...
 		    '|MarsBaR SPM graph',...
 		    '|Statistic table',...
 		    '|Set results from file',...
@@ -403,9 +407,9 @@ marsbar('mars_menu', 'Transform ROI', 'Transform:', ...
 	{'Combine ROIs','Flip L/R'});
 
 %=======================================================================
-case 'import'                                     %-import rois
+case 'import_rois'                                  %- er... import rois
 %=======================================================================
-% marsbar('import')
+% marsbar('import_rois')
 %-----------------------------------------------------------------------
 
 marsbar('mars_menu', 'Import ROIs', 'Import ROIs from:',...
@@ -415,9 +419,9 @@ marsbar('mars_menu', 'Import ROIs', 'Import ROIs from:',...
 	 'number labelled ROI image'});
 
 %=======================================================================
-case 'export'                                     %-export rois
+case 'export_rois'                                         %-export rois
 %=======================================================================
-% marsbar('export')
+% marsbar('export_rois')
 %-----------------------------------------------------------------------
 
 marsbar('mars_menu', 'Export ROI(s)', 'Export ROI(s) to:',...
@@ -597,12 +601,7 @@ else  % full options extraction
 end
 
 % Summary function
-sumfunc = MARS.OPTIONS.statistics.sumfunc;
-if strcmp(sumfunc, 'ask')
-  sumfunc = char(spm_input('Summary function', '+1','m',...
-			   'Mean|Weighted mean|Median|1st eigenvector',...
-			   {'mean','wtmean','median','eigen1'}, 1));
-end
+sumfunc = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
 
 % ROI names to objects
 for i = 1:size(roi_list, 1)
@@ -622,6 +621,177 @@ mars_armoire('set', 'roi_data', marsY);
 varargout = {marsY};
 
 %=======================================================================
+case 'plot_data'                                   %- guess what it does
+%=======================================================================
+% marsbar('plot_data', p_type)
+%-----------------------------------------------------------------------
+% p_type     - plot type: currently only 'basic' is implemented
+
+if nargin < 2
+  p_type = [];
+else
+  p_type = varargin{2};
+end
+if isempty(p_type)
+  p_type = 'basic';
+end
+
+marsY = mars_armoire('get','roi_data');
+if isempty(marsY), return, end
+
+ui_plot(marsY, p_type);
+
+%=======================================================================
+case 'import_data'                                    %- it imports data
+%=======================================================================
+% marsbar('import_data')
+%-----------------------------------------------------------------------
+
+r_f = spm_input('Import what?', '+1', 'm', ...
+		['Sample time courses for one region'...
+		 '|Summary time course(s) for region(s)'],...
+		[1 0], 2);
+src = spm_input('Import fron?', '+1', 'm', ...
+		['Matlab workspace' ...
+		 '|Text file',...
+		 '|Lotus spreadsheet',...
+		 '|Excel spreadsheet'], ...
+		{'matlab','txt','wk1','xls'}, 1);
+
+switch src{1}
+ case 'matlab'
+  Y = spm_input('Matlab expression', '+1', 'e');
+  fn = 'Matlab input data';
+ case 'txt'
+  [fn, pn] = uigetfile( ...
+      {'*.txt;*.dat;*.csv', 'Text files (*.txt, *.dat, *.csv)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Select a text file');
+  if isequal(fn,0), return, end
+  Y = spm_load(fullfile(pn, fn));
+ case 'wk1'
+  [fn, pn] = uigetfile( ...
+      {'*.wk1', 'Lotus spreadsheet files (*.wk1)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Select a Lotus file');
+  if isequal(fn,0), return, end
+  Y = wk1read(fullfile(pn,fn));
+ case 'xls'
+  [fn, pn] = uigetfile( ...
+      {'*.xls', 'Excel spreadsheet files (*.xls)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Select an Excel file');
+  if isequal(fn,0), return, end
+  Y = xlsread(fullfile(pn,fn));
+ otherwise
+  error('Strange source');
+end
+s_s = struct('descrip', fn);
+if r_f
+  % consider asking to input name
+  s_s.sumfunc = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
+  marsY = marsy({Y},'', s_s);
+else
+  % consider asking to input names
+  marsY = marsy(Y);
+end
+mars_armoire('set', 'roi_data', marsY);
+  
+%=======================================================================
+case 'export_data'                                             %- exports
+%=======================================================================
+% marsbar('export_data')
+%-----------------------------------------------------------------------
+marsY = mars_armoire('get','roi_data');
+if isempty(marsY), return, end
+
+r_f = spm_input('Export what?', '+1', 'm', ...
+		['Sample time courses for one region'...
+		 '|Summary time course(s) for region(s)'],...
+		[1 0], 2);
+src = spm_input('Export to?', '+1', 'm', ...
+		['Matlab workspace' ...
+		 '|Text file',...
+		 '|Lotus spreadsheet'], ...
+		{'matlab','txt','wk1'}, 1);
+
+if r_f
+  rno = marsbar('get_region', region_name(marsY));
+  Y = region_data(marsY, rno);
+  Y = Y{1};
+else
+  Y = summary_data(marsY);
+end
+
+switch src{1}
+ case 'matlab'
+  str = '';
+  while ~marsbar('is_valid_varname', str)
+    str = spm_input('Matlab variable name', '+1', 's');
+  end
+  assignin('base', str, Y);
+ case 'txt'
+  [fn, pn] = uiputfile( ...
+      {'*.txt;*.dat;*.csv', 'Text files (*.txt, *.dat, *.csv)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Text file name');
+  if isequal(fn,0), return, end
+  save(fullfile(pn,fn), 'Y', '-ascii');
+ case 'wk1'
+  [fn, pn] = uiputfile( ...
+      {'*.wk1', 'Lotus spreadsheet files (*.wk1)'; ...
+       '*.*',                   'All Files (*.*)'}, ...
+      'Lotus spreadsheet file');
+  if isequal(fn,0), return, end
+  wk1write(fullfile(pn,fn), Y);
+ otherwise
+  error('Strange source');
+end
+
+%=======================================================================
+case 'split_data'                %- splits data into one file per region 
+%=======================================================================
+% marsbar('split_data')
+%-----------------------------------------------------------------------
+marsY = mars_armoire('get','roi_data');
+if isempty(marsY), return, end
+if n_regions(marsY) == 1
+  disp('Only one region in ROI data');
+  return
+end
+
+d = spm_get([-1 0], '', 'New directory root for files');
+if isempty(d), return, end
+
+def_f = summary_descrip(marsY);
+if ~isempty(def_f)
+  def_f = marsbar('str2fname', def_f);
+end
+f = spm_input('Root filename for regions', '+1', 's', def_f);
+f = marsbar('str2fname', f);
+mYarr = split(marsY);
+for i = 1:length(mYarr)
+  fname = fullfile(d, sprintf('%s_region_%d_mdata.mat', f, i));
+  savestruct(mYarr(i), fname);
+  fprintf('Saved region %d as %s\n', i, fname);
+end
+
+%=======================================================================
+case 'join_data'                %- joins many data files into one object 
+%=======================================================================
+% marsbar('join_data')
+%-----------------------------------------------------------------------
+P = spm_get([0 Inf], '*_mdata.mat', 'Select data files to join');
+if isempty(P), return, end
+for i = 1:size(P,1)
+  d_o{i} = marsy(deblank(P(i,:)));
+end
+marsY = join(d_o{:});
+mars_armoire('set', 'roi_data', marsY);
+disp(P)
+disp('Files merged and set as current data')
+
+%=======================================================================
 case 'set_results'                                  %-set results
 %=======================================================================
 % donef = marsbar('set_results')
@@ -635,7 +805,6 @@ mars_armoire('has_changed', 'roi_data', 0);
 fprintf('Set ROI data from estimated design...\n');
 
 MARS.WORKSPACE.default_contrast = [];
-MARS.WORKSPACE.default_region = [];
 varargout = {1};
 return
 
@@ -680,13 +849,17 @@ case 'set_defregion'                                %-set default region
 % donef = marsbar('set_defregion')
 %-----------------------------------------------------------------------
 varargout = {0};
-marsRes = mars_armoire('get', 'est_design');
-if isempty(marsRes), return, end
 marsY = mars_armoire('get', 'roi_data');
 if isempty(marsY), return, end
-
-MARS.WORKSPACE.default_region = marsbar('get_region',...
-					region_name(marsY));
+ns = region_name(marsY);
+if length(ns) == 1
+  disp('Only one region in data');
+  rno = 1;
+else
+  rno = marsbar('get_region', ns);
+end
+MARS.WORKSPACE.default_region = rno;
+disp(['Default region set to: ' ns{rno}]); 
 varargout = {1};
 
 %=======================================================================
@@ -701,54 +874,57 @@ case 'get_region'                                  %-ui to select region
 if nargin < 2
   error('Need region names to select from');
 else
-  names = varargin{1};
+  names = varargin{2};
 end
 if nargin < 3
   prompt = 'Select region';
 else
-  prompt = varargin{2};
+  prompt = varargin{3};
 end
-
 % maximum no of items in list box
 maxlist = 200;
-
 if length(names) > maxlist
   % text input, maybe
   error('Too many regions');
 end
-
 % listbox
-rno = spm_input(prompt, '+1', 'm', char(names));  
-
+rno = spm_input(prompt, '+1', 'm', names);  
 varargout = {rno};
 
 %=======================================================================
-case 'spm_graph'                                  %-run spm_graph
+case 'spm_graph'                                         %-run spm_graph
 %=======================================================================
-% [Y,y,beta,SE,cbeta] =  marsbar('spm_graph')
+% marsbar('spm_graph')
 %-----------------------------------------------------------------------
-varargout = {};
 if ~mars_struct('isthere', MARS.WORKSPACE, 'default_region')
   if ~marsbar('set_defregion'), return, end
 end
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(...
+
+% Variables returned in field names to allow differences
+% in return variables between versions of spm_graph
+r_st = mars_spm_graph(...
     marsRes, ...
     MARS.WORKSPACE.default_region);
-varargout = {Y, y, beta, Bcov, SE, cbeta};
+
+% Dump field names to global workspace as variables
+fns = fieldnames(r_st);
+for f = 1:length(fns)
+  assignin('base', fns{f}, getfield(r_st, fns{f}));
+end
 
 %=======================================================================
-case 'stat_table'                                  %-run stat_table
+case 'stat_table'                                       %-run stat_table
 %=======================================================================
-% marsS =  marsbar('stat_table')
+% marsbar('stat_table')
 %-----------------------------------------------------------------------
-varargout = {};
 marsRes = mars_armoire('get', 'est_design');
 if isempty(marsRes), return, end
-[strs varargout{1} marsRes changef] = ... 
+[strs marsS marsRes changef] = ... 
     stat_table(marsRes);
 disp(char(strs));
+assignin('base', 'marsS', marsS);
 if changef, mars_armoire('update', 'est_design', marsRes); end
 
 %=======================================================================
@@ -1151,6 +1327,12 @@ error('Unknown action string')
 end
 return
 
-
-
+% subfunctions
+function sum_func = sf_get_sumfunc(sum_func)
+if strcmp(sum_func, 'ask')
+  sum_func = char(spm_input('Summary function', '+1','m',...
+			   'Mean|Weighted mean|Median|1st eigenvector',...
+			   {'mean','wtmean','median','eigen1'}, 1));
+end
+return
 

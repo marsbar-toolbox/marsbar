@@ -13,7 +13,7 @@ if ~s_f
   strs{end+1} = sprintf('Can be summarized?:    \t%s', ...
 		    sf_recode(can_summarize(M)));
 end
-ns = region_name(M, [], '');
+ns = region_name(M, [], [], '');
 if isempty(strvcat(ns))
   strs{end+1} = sprintf('Region names:          \t%s', ...
       'not specified');

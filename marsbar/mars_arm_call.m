@@ -52,6 +52,17 @@ switch lower(action)
     res = [];
     return
   end
+
+  % Clear default region if data has changed
+  global MARS;
+  if isfield(MARS, 'WORKSPACE')
+    if isfield(MARS.WORKSPACE, 'default_region')
+      if ~isempty(MARS.WORKSPACE.default_region)
+	MARS.WORKSPACE.default_region = [];
+	fprintf('Reset of data, cleared default region...\n');
+      end
+    end
+  end
   res = I;
   
  case 'set_results'
@@ -79,6 +90,7 @@ switch lower(action)
 		       'Select contrast file')); 
     data = set_contrasts(data, tmp);
   end
+    
   res = data;
  otherwise
   error(['Peverse request for ' action]);
@@ -92,7 +104,8 @@ if ~is_valid(d)
   errf = 1; 
   msg = 'This does not appear to be a valid design';
 end
-  
+return
+
 function [d,errf,msg] = sf_check_data(d)
 % Make data structure into object, do conversions
 errf = 0; msg = {};
@@ -101,3 +114,4 @@ if ~is_valid(d)
   errf = 1; 
   msg = 'This does not appear to be a valid data structure';
 end
+return

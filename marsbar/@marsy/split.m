@@ -11,7 +11,7 @@ if is_s
   Yvar = st.Yvar;
 else
   % remove any rogue Y or Yvar fields
-  [tmp st] = mars_struct('split', st, {'Y','Yvar'});
+  st = mars_struct('strip', st, {'Y','Yvar'});
 end
 for i = 1:length(r)
   r_st = st;

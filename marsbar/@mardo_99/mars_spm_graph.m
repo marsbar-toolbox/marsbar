@@ -1,6 +1,6 @@
-function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
+function r_st = mars_spm_graph(marsD,rno)
 % Graphical display of adjusted data
-% FORMAT [Y y beta Bcov SE cbeta] = mars_spm_graph(marsD,xCon,rno)
+% FORMAT r_st = mars_spm_graph(marsD, rno)
 %
 % marsD    - SPM design object
 %        required fields in des_struct are:
@@ -16,12 +16,13 @@ function [Y,y,beta,Bcov,SE,cbeta] = mars_spm_graph(marsD,rno)
 %
 % rno    - region number (index for marsD.marsY)
 %
-% Y      - fitted   data for the selected voxel
-% y      - adjusted data for the selected voxel
-% beta   - parameter estimates
-% Bcov   - covariance of parameter estimates
-% SE     - standard error of parameter estimates
-% cbeta  = betas multiplied by contrast
+% Returns
+% r_st   - return structure, with fields
+%          Y      - fitted   data for the selected voxel
+%          y      - adjusted data for the selected voxel
+%          beta   - parameter estimates
+%          SE     - standard error of parameter estimates
+%          cbeta  = betas multiplied by contrast
 %
 % see spm99 version of spm_graph for details
 %_______________________________________________________________________
@@ -36,6 +37,12 @@ if nargin < 2
 end
 
 % make values ready for return 
+def_r_st = struct(...
+    'Y', [],...
+    'y', [],...
+    'beta', [],...
+    'SE', [],...
+    'cbeta',[]);
 cbeta = [];
 
 % get stuff from object
@@ -418,8 +425,6 @@ case 'Plots of parametric responses'
 	end
 	if isempty(Vname)
 	  warning('No parametric responses specified');
-	  [Y y SE beta] = deal([]);
-	  return
 	end
 	t     = j(spm_input('which effect','+1','m',Vname));
 
@@ -533,3 +538,7 @@ ylabel(YLAB,'FontSize',10)
 title(TITLE,'FontSize',16)
 
 spm_results_ui('PlotUi',gca)
+
+% Complete return values
+r_st = mars_struct('fillafromb', def_r_st, struct(...
+    'Y', Y, 'y', y, 'beta', beta, 'SE', SE, 'cbeta', cbeta));

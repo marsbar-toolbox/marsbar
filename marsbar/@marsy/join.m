@@ -60,7 +60,7 @@ if want_sum_f
   st.Yvar = Yvar;
   st.sumfunc = sum_func;
 else
-  [tmp st] = mars_struct('split', st, {'Y','Yvar','sumfunc'});
+  st = mars_struct('strip', st, {'Y','Yvar','sumfunc'});
 end
 st.regions = regions;
 o = y_struct(o, st);

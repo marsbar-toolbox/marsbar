@@ -1,21 +1,12 @@
-function rd = region_descrip(o, r_nos)
-% gets region descrips as cell array
-% FORMAT rd = region_descrip(o, r_nos)
+function res = region_descrip(varargin)
+% method gets or sets descrip for region(s) as cell array
+% FORMAT res = region_descrip(o, r_nos) (get) OR 
+% FORMAT res = region_descrip(o, r_nos, new_data) (set)
 % 
-% Inputs
-% o              - marsy object
-% r_nos          - region number 
-%                  or array of region numbers
-%                  or empty - giving all regions
-% 
-% Returns
-% rd             - cell array of region description strings
-% 
+% See region_field for details
+%  
 % $Id$
 
-if nargin < 2
-  r_nos = [];
-end
-rs = region(o, r_nos);
-rs = [rs{:}];
-[rd{1:length(rs)}] = deal(rs.descrip);
+res = region_field('descrip', varargin{:});
+  
+  

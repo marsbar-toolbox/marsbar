@@ -1,4 +1,4 @@
-function [o,others] = marsy(params, region_info, summary_info)
+function [o,others] = marsy(params, region_stuff, summary_stuff)
 % Class constructor for marsy object
 % inputs [defaults]
 % params  - can be: structure, either:
@@ -9,7 +9,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 %           OR: 2D matrix, containing summary data (Y) only (see below)
 %           OR: cell array of 2D matrices, one per region 
 % 
-% region_info  - (optional) cell array of names for regions 
+% region_stuff  - (optional) cell array of names for regions 
 %                or array of structures containing information for
 %                   regions
 %                or cell array of structures with information 
@@ -29,7 +29,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 %                mat     - a 4x4 transformation matrix giving coordinates
 %                          in mm from voxel coordinates in vXYZ
 %
-% summary_info - (optional) summary function to summarize data (string)
+% summary_stuff - (optional) summary function to summarize data (string)
 %                or structure containing information for summary data
 %                Structure can have fields;
 %                sumfunc - the summary function used to summarize the
@@ -40,7 +40,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 %                info    - a structure with fields defining any other
 %                          interesting information about the region
 %
-% Any data in region_info, summary info will overwrite region or summary
+% Any data in region_stuff, summary info will overwrite region or summary
 % information passed in the first argument
 % 
 % Outputs
@@ -100,7 +100,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 % verbose      - get/set whether reporting is verbose or not (1 or 0)
 % summary_data - gets (N by R) summary matrix Y
 % summary_descrip - gets/sets description of object
-% summary_info - gets/sets information field of object
+% summary_stuff - gets/sets information field of object
 % resummarize  - recalculates summary data if possible
 % is_summarized - returns 1 if data has been summarized already
 % can_summarize - returns 1 if data can be suumarized without error
@@ -114,7 +114,7 @@ function [o,others] = marsy(params, region_info, summary_info)
 %                (if no region number is specified) or single cell string
 %                if a single region is specified
 % region_descrip - gets cell array of descriptions of specified region
-% region_info  - gets cell array of info field of specified region
+% region_stuff  - gets cell array of info field of specified region
 % n_regions    - gets number of regions (R above)
 % n_time_points - gets number of time points (N above)
 % xyz          - gets voxel or mm XYZ coordinates of given region
@@ -242,47 +242,47 @@ end
 
 % process further inputs
 if nargin > 1
-  % region_info has been specified
-  if ischar(region_info)
-    region_info = {region_info};
+  % region_stuff has been specified
+  if ischar(region_stuff)
+    region_stuff = {region_stuff};
   end
   if ~isnan(R)
-    if length(region_info) ~= R
-      error('region_info should have one entry per region');
+    if length(region_stuff) ~= R
+      error('region_stuff should have one entry per region');
     end
   end
-  if iscell(region_info) & ischar(region_info{1}) % names only
-    tmp = region_info; region_info = cell(size(region_info));
+  if iscell(region_stuff) & ischar(region_stuff{1}) % names only
+    tmp = region_stuff; region_stuff = cell(size(region_stuff));
     for i = 1:length(tmp)
-      region_info{i}.name = tmp{i};
+      region_stuff{i}.name = tmp{i};
     end
   end
-  if isstruct(region_info) % need a cell array
-    tmp = region_info; region_info = cell(size(region_info));
+  if isstruct(region_stuff) % need a cell array
+    tmp = region_stuff; region_stuff = cell(size(region_stuff));
     for i = 1:length(tmp)
-      region_info{i} = tmp(i);
+      region_stuff{i} = tmp(i);
     end
   end
 
   % set 
   if ~isfield(params.y_struct, 'regions')
-    params.y_struct.regions = cell(1, length(region_info));
+    params.y_struct.regions = cell(1, length(region_stuff));
   end
-  for i = 1:length(region_info)
+  for i = 1:length(region_stuff)
     params.y_struct.regions{i} = mars_struct('ffillmerge', ...
 					     params.y_struct.regions{i},...
-					     region_info{i});
+					     region_stuff{i});
   end
 end
 
 if nargin > 2
-  % summary_info has been specified
-  if ischar(summary_info) % sumfunc only
-    summary_info = struct('sumfunc', summary_info);
+  % summary_stuff has been specified
+  if ischar(summary_stuff) % sumfunc only
+    summary_stuff = struct('sumfunc', summary_stuff);
   end
   params.y_struct = mars_struct('ffillmerge', ...
 				params.y_struct, ...
-				summary_info);
+				summary_stuff);
 end
 
 % fill with defaults, parse into fields for this object, children

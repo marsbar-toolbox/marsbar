@@ -26,6 +26,12 @@ function varargout = mars_struct(action, varargin)
 % in a that are not present in b.  b can be a structure
 % or a cell array of fieldnames
 %
+% FORMAT [d] = mars_struct('strip', a, b)
+% strips all fields present in b from those in a, 
+% returning denuded structure as d. b can be a structure
+% or a cell array of fieldnames.  'strip' is just 'split'
+% but returning only the second argument
+%
 % FORMAT c = mars_struct('merge', a, b)
 % merges structure a and b (fields present in b added to a)
 %
@@ -149,6 +155,10 @@ switch lower(action)
   end  
   varargout = {c, d};
   
+ case 'strip'
+  [c d] = mars_struct('split', a, b);
+  varargout = {d};
+ 
  case 'merge'
   if isempty(a), varargout = {b}; return, end
   if isempty(b), varargout = {a}; return, end

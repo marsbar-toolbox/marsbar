@@ -6,7 +6,9 @@ function rows = block_rows(D)
 SPM = des_struct(D);
 if strcmp(modality(D), 'fmri')
   Sess = SPM.Sess;
-  rows = {Sess{:}.row};
+  for i = 1:length(Sess)
+    rows{i} = Sess{i}.row;
+  end
 else % PET I guess
   xX = SPM.xX;
   if ~isfield(xX, 'I')

@@ -1,22 +1,12 @@
-function ri = region_info(o, r_nos)
-% gets region info fields as cell array
-% FORMAT ri = region_info(o, r_nos)
+function res = region_info(varargin)
+% method gets or sets info for region(s) as cell array
+% FORMAT res = region_info(o, r_nos) (get) OR 
+% FORMAT res = region_info(o, r_nos, new_data) (set)
 % 
-% Inputs
-% o              - marsy object
-% r_nos          - region number 
-%                  or array of region numbers
-%                  or empty - giving all regions
-% 
-% Returns
-% ri             - cell array of region info structures
-% 
+% See region_field for details
+%  
 % $Id$
 
-if nargin < 2
-  r_nos = [];
-end
-rs = region(o, r_nos);
-rs = [rs{:}];
-[ri{1:length(rs)}] = deal(rs.info);
-
+res = region_field('info', varargin{:});
+  
+  

@@ -1,24 +1,12 @@
-function rw = region_weights(o, r_nos)
-% method returns weights for region(s) as cell array
-% FORMAT rw = region_weights(o, r_nos)
+function res = region_weights(varargin)
+% method gets or sets weights for region(s) as cell array
+% FORMAT res = region_weights(o, r_nos) (get) OR 
+% FORMAT res = region_weights(o, r_nos, new_data) (set)
 % 
-% Inputs
-% o              - marsy object
-% r_nos          - region number 
-%                  or array of region numbers
-%                  or empty - giving all regions
-% 
-% Returns
-% rd             - cell array of region weight vectors
+% See region_field for details
 %  
 % $Id$
 
-if nargin < 2
-  r_nos = [];
-end
-rs = region(o, r_nos);
-rs = [rs{:}];
-[rw{1:length(rs)}] = deal(rs.weights);
-  
+res = region_field('weights', varargin{:});
   
   

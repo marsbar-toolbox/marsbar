@@ -1,12 +1,15 @@
-function rn = region_name(o, r_nos, default_prefix)
-% gets region names as cell array
-% FORMAT rn = region_name(o, r_nos, default_prefix)
+function res = region_name(o, r_nos, new_data, default_prefix)
+% method gets or sets data for region name
+% FORMAT res = region_name(o, r_nos) (get) OR
+% FORMAT res = region_name(o, r_nos, [], default_prefix) (get) OR  
+% FORMAT res = region_name(o, r_nos, new_data) (set)
 % 
 % Inputs
 % o              - marsy object
 % r_nos          - region number 
 %                  or array of region numbers
 %                  or empty - giving all regions
+% new_data       - cell array, containing new names to set
 % default_prefix - default prefix to make default name for 
 %                  regions with undefined names
 %                  if empty, undefined region names are empty
@@ -16,7 +19,10 @@ function rn = region_name(o, r_nos, default_prefix)
 %                  'region_1', 'region_2' etc
 % 
 % Returns
-% rn             - cell array of region names
+% (get call)
+% res             - cell array of region names OR
+% (set call)
+% res             - object with new field names set
 % 
 % $Id$
 
@@ -24,16 +30,27 @@ if nargin < 2
   r_nos = [];
 end
 if nargin < 3
+  new_data = [];
+end
+if nargin < 4
   default_prefix = 'region_';
 end
-[rs r_nos] = region(o, r_nos);
-for i = 1:length(rs)
-  rn{i} = '';
-  if mars_struct('isthere', rs{i}, 'name') 
-    rn{i} = rs{i}.name;
-  else
-    if ~isempty(default_prefix)
-      rn{i} = sprintf('%s%d', default_prefix, r_nos(i));
+
+if ~isempty(new_data)  % set call
+  res = region(o, r_nos, new_data, 'name');
+else                    % get call
+  [rs r_nos] = region(o, r_nos);
+  if isempty(rs), res = rs; return, end
+  for i = 1:length(rs)
+    if mars_struct('isthere', rs{i}, 'name') 
+      res{i} = rs{i}.name;
+    elseif ~isempty(default_prefix)
+      res{i} = sprintf('%s%d', default_prefix, r_nos(i));
+    else
+      res{i} = '';    
     end
   end
 end
+
+
+  

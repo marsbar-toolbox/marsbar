@@ -83,10 +83,6 @@ if isstruct(params)
     % Appears to be an SPM design
     params = struct('des_struct',params);
   end
-  % convert data field to object
-  if isfield(params.des_struct, 'marsY')
-    params.des_struct.marsY = marsy(params.des_struct.marsY);
-  end
 end
 
 % fill with defaults, parse into fields for this object, children
@@ -99,6 +95,11 @@ o  = class(pparams, myclass);
 if passf
   o = mardo_99(o, others);
   o = mardo_2(o, others);
+end
+
+% convert data field to object
+if isfield(o.des_struct, 'marsY')
+  o.des_struct.marsY = marsy(o.des_struct.marsY);
 end
 
 % sort out design image flipping
@@ -133,10 +134,11 @@ end
 
 % resolve confusing field name in marsbar <= 0.23
 % ResMS was in fact the _Root_ Mean Square
+% The statistics routines treated the field correctly
 D = o.des_struct;
 if isfield(D, 'ResMS')
   if verbose(o)
-    msg = {'Compatability trivia: processed ResMS to ResidualMS'};
+    msg = {'Compatibility trivia: processed ResMS to ResidualMS'};
     fprintf('\n%s',sprintf('%s\n',msg{:})); 
   end
   D.ResidualMS = D.ResMS .^ 2;
