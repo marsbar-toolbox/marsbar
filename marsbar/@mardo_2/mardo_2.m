@@ -1,6 +1,6 @@
-function [o, others] = mardo_2(params, others)
+function [o, others] = mardo_2(params, others, varargin)
 % class constructor for SPM2 MarsBaR design object
-% FORMAT [o, others] = mardo_2(params, others)
+% FORMAT [o, others] = mardo_2(params, others, varargin)
 % Inputs
 % params  - structure,containing fields, or SPM/MarsBaR design
 % others  - structure, containing other fields to define
@@ -16,8 +16,12 @@ function [o, others] = mardo_2(params, others)
 % the object unchanged if not.  If it is an SPM2
 % design, it claims ownership of the passed object.
 %
+% The constructor can also be called to give class functions, where the
+% name of the class function is a character string which is one of:
+%    'spm_filter' - applies spm_filter routine to passed args
+% 
 % $Id$
-  
+
 myclass = 'mardo_2';
 cvs_v   = mars_cvs_version(myclass);
 
@@ -34,6 +38,21 @@ if nargin < 2
   others = [];
 end
 
+% parse out string action calls (class functions)
+if ischar(params)
+  switch params
+   case 'spm_filter'
+    if nargin < 2
+      error('Need filter');
+    elseif nargin < 3
+      o = pr_spm_filter(others);
+    else
+      o = pr_spm_filter(others, varargin{1});
+    end
+    return
+  end
+end
+    
 % Deal with passed objects of this (or child) class
 if isa(params, myclass)
   o = params;
