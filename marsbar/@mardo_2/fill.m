@@ -36,7 +36,6 @@ if ~isempty(fe)
   actions = [actions(1:fe(1)-1) A actions(fe(1):end)];
 end
 actions = [{'defaults'}, actions];
-actions = unique(actions);
 
 % Get design, put into some useful variables
 v_f = verbose(D);
@@ -54,7 +53,10 @@ for  i = 1:nsess
   nscan(i) = length(row{i});
 end
 
+done_list = {};
 for a = 1:length(actions)
+  if ismember(actions{a}, done_list), continue, end
+  done_list = [actions(a) done_list];
   switch lower(actions{a})
    case 'defaults'
     
@@ -200,10 +202,10 @@ for a = 1:length(actions)
     if ~mars_struct('isthere', SPM, 'xY', 'RT')
       SPM.xY.RT  = spm_input('Interscan interval {secs}','+1');
     end
-    SPM.xsDes.Interscan_interval = sprintf('%0.2f {s}',spmD.xX.RT);
+    SPM.xsDes.Interscan_interval = sprintf('%0.2f {s}',SPM.xY.RT);
 
     spm_input('High pass filter','+1','d',mfilename)
-    [SPM.xX.K f SPM.xsDes.High_pass_Filter] = ...
+    [SPM.xX.K SPM.xsDes.High_pass_Filter] = ...
 	pr_get_filter(SPM.xY.RT, SPM.Sess);
     
    case 'autocorr'
@@ -213,12 +215,12 @@ for a = 1:length(actions)
     % Contruct Vi structure for non-sphericity ReML estimation
     %===============================================================
     str   = 'Correct for serial correlations?';
-    cVi   = {'none','SPM AR(0,2)','SPM AR (specify)', 'fmristat AR(n)'};
-    cVi   = spm_input(str,'+1','b',cVi);
+    cVi   = {'none', 'SPM AR(0.2)','SPM AR (specify)', 'fmristat AR(n)'};
+    cVi   = spm_input(str,'+1','m',cVi, cVi);
     
     % create Vi struct
     %-----------------------------------------------------------------------
-    switch lower(cVi)
+    switch lower(cVi{1})
 
      case 'fmristat ar(n)'
       % Fit fmristat model AR(n)
@@ -228,7 +230,7 @@ for a = 1:length(actions)
       cVi        = sprintf('fmristat AR(%0.1f)',cVi);
       f2cl       = 'V'; 
       
-     case 'spm ar specify'
+     case 'spm ar (specify)'
       % SPM AR coefficient(s) to be specified
       %---------------------------------------------------------------
       cVi = spm_input('AR rho parameter(s)', '+1', 'e', 0.2);
@@ -252,8 +254,8 @@ for a = 1:length(actions)
       
     end
 
-    % If we've set V, need to clear Vi, because
-    % esimate method takes the presence of Vi to mean that
+    % If we've set V, need to clear Vi, because the
+    % estimate method takes the presence of Vi to mean that
     % V can be cleared, with 'redo_covar' flag
     % Conversely V needs to be cleared if Vi was estimated
     if isfield(SPM.xVi, f2cl)
