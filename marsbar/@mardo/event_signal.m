@@ -28,7 +28,7 @@ if nargin < 4
   diff_func = '';
 end
 if isempty(diff_func)
-  diff_func = 'max';
+  diff_func = 'abs max';
 end
 
 if ~is_fmri(D) | isempty(e_spec)
