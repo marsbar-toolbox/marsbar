@@ -1,4 +1,4 @@
-function [o,errf,msg] = mars_arm_call(action, o, item)
+function [o,errf,msg] = mars_arm_call(action, o, item, old_o)
 % services callbacks from marmoire object set functions
 % FORMAT [o,errf,msg] = mars_arm_call(action, o, item)
 % See documentation for marmoire object for more detail
@@ -6,7 +6,8 @@ function [o,errf,msg] = mars_arm_call(action, o, item)
 % action     - action string
 % o          - candidate object for checking etc
 % item       - name of item that has just been set
-% 
+% old_o      - object before set
+%
 % Returns
 % o          - possibly modified object
 % errf       - flag, set if error in processing
@@ -23,6 +24,10 @@ end
 if nargin < 3
   error('Need item name');
 end
+if nargin < 4
+  error('Need old object');
+end
+
 errf = 0; msg = ''; 
 
 item_struct = get_item_struct(o, item);
@@ -32,9 +37,9 @@ switch lower(action)
   % callback for setting design
 
   % Check for save of current design
-  [btn o] = save_item_data_ui(o, 'def_design', ...
-			  struct('ync', 1, ...
-				 'prompt_prefix','previous '));
+  [btn o] = save_item_data_ui(old_o, 'def_design', ...
+			      struct('ync', 1, ...
+				     'prompt_prefix','previous '));
   if btn == -1
     errf = 1; 
     msg = 'Cancelled save of previous design'; 
@@ -63,7 +68,7 @@ switch lower(action)
   % callback for setting data
 
   % Check for save of current data
-  [btn o] = save_item_data_ui(o, 'roi_data', ...
+  [btn o] = save_item_data_ui(old_o, 'roi_data', ...
 			      struct('ync', 1, ...
 				     'prompt_prefix','previous '));
   if btn == -1
@@ -106,7 +111,7 @@ switch lower(action)
   if isempty(data), return, end
   
   % Check for save of current design
-  [btn o] = save_item_data_ui(o, 'est_design', ...
+  [btn o] = save_item_data_ui(old_o, 'est_design', ...
 			      struct('ync', 1, ...
 				     'prompt_prefix','previous '));
   if btn == -1
