@@ -661,40 +661,58 @@ src = spm_input('Import fron?', '+1', 'm', ...
 switch src{1}
  case 'matlab'
   Y = spm_input('Matlab expression', '+1', 'e');
-  fn = 'Matlab input data';
+  fn = 'Matlab input';
+  pn_fn = lower(fn);
  case 'txt'
   [fn, pn] = uigetfile( ...
       {'*.txt;*.dat;*.csv', 'Text files (*.txt, *.dat, *.csv)'; ...
        '*.*',                   'All Files (*.*)'}, ...
       'Select a text file');
   if isequal(fn,0), return, end
-  Y = spm_load(fullfile(pn, fn));
+  pn_fn = fullfile(pn, fn);
+  Y = spm_load(pn_fn);
  case 'wk1'
   [fn, pn] = uigetfile( ...
       {'*.wk1', 'Lotus spreadsheet files (*.wk1)'; ...
        '*.*',                   'All Files (*.*)'}, ...
       'Select a Lotus file');
   if isequal(fn,0), return, end
-  Y = wk1read(fullfile(pn,fn));
+  pn_fn = fullfile(pn, fn);
+  Y = wk1read(pn_fn);
  case 'xls'
   [fn, pn] = uigetfile( ...
       {'*.xls', 'Excel spreadsheet files (*.xls)'; ...
        '*.*',                   'All Files (*.*)'}, ...
       'Select an Excel file');
   if isequal(fn,0), return, end
-  Y = xlsread(fullfile(pn,fn));
+  pn_fn = fullfile(pn, fn);
+  Y = xlsread(pn_fn);
  otherwise
   error('Strange source');
 end
-s_s = struct('descrip', fn);
 if r_f
-  % consider asking to input name
-  s_s.sumfunc = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
-  marsY = marsy({Y},'', s_s);
+  s_f = sf_get_sumfunc(MARS.OPTIONS.statistics.sumfunc);
+  r_st = struct('name', fn,...
+		'descrip', 'Region data Loaded from ' fn;
+  marsY = marsy({Y},str, s_f);
 else
-  % consider asking to input names
   marsY = marsy(Y);
+  r_des = [' data oaded from ' fn];
 end
+
+% Names and descriptions
+stop_f = 0;
+ns = region_name(marsY);
+for r = 1:length(ns)
+  ns{r} = spm_input(...
+      sprintf('Name for region %d', r),...
+      '+1', 's', ns{r});
+  if isempty(ns{r}), stop_f = 1; break, end
+end
+if ~stop_f
+  marsY = region_name(marsY, ns{r});
+end
+
 mars_armoire('set', 'roi_data', marsY);
   
 %=======================================================================
@@ -728,6 +746,7 @@ switch src{1}
   str = '';
   while ~marsbar('is_valid_varname', str)
     str = spm_input('Matlab variable name', '+1', 's');
+    if isempty(str), return, end
   end
   assignin('base', str, Y);
  case 'txt'
