@@ -51,10 +51,13 @@ if isa(VY, 'mardo')
   if ~has_images(VY)
     error('This design does not contain images');
   end
+  TR = tr(VY);
   des_summary = summary(VY);
   VY = get_images(VY);
+else
+  TR = [];
+  des_summary = 'None';
 end
-
 % or be filenames
 if ischar(VY)
   if vf, fprintf('%-40s: ','Mapping files');  end
@@ -100,6 +103,8 @@ if vf, fprintf('%s%30s\n',sprintf('\b')*ones(1,30),'...done'); end
 marsY = marsy(r_data, r_info, struct(...
     'sumfunc', sumfunc, ...
     'descrip', ['Data extracted from ' label(o)],...
-    'info', struct('VY', VY, 'des_summary', des_summary)));
+    'info', struct('VY', VY, ...
+		   'des_summary', {des_summary},...
+		   'TR', TR)));
 
 
