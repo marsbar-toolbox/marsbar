@@ -24,4 +24,4 @@ else
     item_contents = setfield(item_contents, fn{1}, getfield(I, fn{1}));
   end
 end
-o.items = setfield(o.items, item_name, item_contents);
+o = set_item_struct(o, item_name, item_contents);
