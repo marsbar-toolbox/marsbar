@@ -91,7 +91,7 @@ end
 
 % fill into design
 SPM.xVi.form = cVi;
-xsDes = struct('Intrinsic_correlations', SPM.xVi.form);
+xsDes = struct('Serial_correlations', SPM.xVi.form);
 SPM.xsDes = mars_struct('ffillmerge', SPM.xsDes, xsDes);
 
 % put stuff into object
