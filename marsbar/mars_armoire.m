@@ -147,7 +147,12 @@ end
 switch lower(action)
  case 'add'
   data.name = item;
-  data = fillafromb(data, i_def);
+  I = i_def;
+  def_fns = fieldnames(I);
+  new_fns = def_fns(~ismember(def_fns, fieldnames(data)));
+  for fn = new_fns'
+    data = setfield(data, fn{1}, getfield(I, fn{1}));
+  end
   i_down_dump(data);
  case 'add_if_absent'
   if ~mars_armoire('exist', item)
@@ -392,4 +397,27 @@ if isempty(MARMOIRE) | ~isstruct(MARMOIRE)
   MARMOIRE = struct;
 end
 g = MARMOIRE;
+return
+
+function savestruct(varargin)
+% saves data in structure as variables in .mat file
+% FORMAT savestruct(matname, struct) or
+% FORMAT savestruct(struct, matname)  
+%
+% Local copy in mars_armoire to make function independent
+% of marsbar (and SPM) distribution
+  
+if nargin ~= 2
+  error('Need matfile name and structure (only)');
+end
+if isstruct(varargin{1}), varargin = varargin([2 1]); end
+varargin{3} = fieldnames(varargin{2});
+if any(ismember(varargin{3}, {'wombat_tongue'}))
+  error('Whoops, unexpected use of wombat_tongue');
+end
+for wombat_tongue = 1:length(varargin{3})
+  eval([varargin{3}{wombat_tongue} ' = varargin{2}.' ...
+	varargin{3}{wombat_tongue} ';']);
+end
+save(varargin{1}, varargin{3}{:});
 return

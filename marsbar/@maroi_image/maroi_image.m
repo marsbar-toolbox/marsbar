@@ -39,7 +39,7 @@ if isfield(params, 'fname')
 end
 
 % fill with defaults
-pparams = maroi('fillmerge', defstruct, params);
+pparams = mars_struct('fillmerge', defstruct, params);
 
 if ~isempty(pparams.vol) % check for attempt at create empty object
 
@@ -61,7 +61,7 @@ end
 [uo, pparams] = maroi_matrix(pparams);
 
 % reparse parameters into those for this object, children
-[pparams, others] = maroi('split', pparams, defstruct);
+[pparams, others] = mars_struct('split', pparams, defstruct);
 
 o = class(pparams, myclass, uo);
 return

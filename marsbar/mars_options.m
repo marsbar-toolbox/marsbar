@@ -45,7 +45,7 @@ switch lower(optstr)
     tmp = load(cfg_fname);
     if ~isempty(tmp)
       if isfield(tmp, 'mars')
-	mars = fillafromb(tmp.mars, mars);
+	mars = mars_struct('fillafromb', tmp.mars, mars);
       end
     end
   end
@@ -175,11 +175,11 @@ switch lower(optstr)
 	  'Did not load marsbar config file');
     end
   end
-  mars = fillafromb(pwdefs, mars_options('basedefaults'));
+  mars = mars_struct('fillafromb',pwdefs, mars_options('basedefaults'));
   
    % --------------------------------------------------
  case 'fill'                             %-fill from template
-  mars = fillafromb(mars,cfg_fname);
+  mars = mars_struct('fillafromb',mars,cfg_fname);
   
  otherwise
   error('Don''t recognize options action string')

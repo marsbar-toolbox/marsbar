@@ -8,7 +8,10 @@ function [o, others] = maroi(params, varargin)
 % o = maroi('load', fname);
 % 
 % or to access class data
-% o = maroi('classdata', p1, p2); (see classdata method)
+% res = maroi('classdata', p1, p2); (see classdata method)
+%
+% or to process a filename to be suitable for saving an ROI
+% new_fn = maroi('filename', old_fn);
 %
 % An ROI is a definition of a region in space. As currently implemented,
 % an ROI can be of three types:
@@ -112,15 +115,6 @@ if ischar(params)
     o = my_loadroi(varargin{:});
    case 'filename'
     o = my_roifname(varargin{:});
-   case 'fillsplit'
-    [o others] = my_fillsplit(varargin{:});
-   case 'fillmerge'
-    [o b] = my_fillsplit(varargin{:});
-    o = my_merge(o, b);
-   case 'merge'
-    o = my_merge(varargin{:});
-   case 'split'
-    [o others] = my_split(varargin{:});
    otherwise
     error(['Don''t recognize maroi action string: ' params ]);
    end
@@ -128,7 +122,7 @@ if ischar(params)
 end
 
 % fill with defaults, parse into fields for this object, children
-[pparams, others] = maroi('fillsplit', defstruct, params);
+[pparams, others] = mars_struct('fillsplit', defstruct, params);
 
 % Check for default thresholds according to binarize flag
 if isfield(params, 'binarize') & ~isempty(params.binarize) & ...

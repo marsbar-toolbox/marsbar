@@ -51,7 +51,7 @@ if ~isstruct(params)
 end
 
 % fill with defaults, parse into fields for this object, children
-[pparams, others] = my_fillsplit(defstruct, params);
+[pparams, others] = mars_struct('fillsplit', defstruct, params);
 
 o  = class(pparams, myclass);
 return

@@ -55,13 +55,13 @@ end
 % Constructor call
 
 % fill with defaults
-pparams = maroi('fillmerge', defstruct, params);
+pparams = mars_struct('fillmerge', defstruct, params);
 
 % umbrella object, parse out fields for (this object and children)
 [uo, pparams] = maroi(pparams);
 
 % reparse parameters into those for this object, children
-[pparams, others] = maroi('split', pparams, defstruct);
+[pparams, others] = mars_struct('split', pparams, defstruct);
 
 % bless into object
 o = class(pparams, myclass, uo);

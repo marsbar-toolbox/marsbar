@@ -1,8 +1,7 @@
-function [o, others] = mardo(params, params2)
+function [o, others] = mardo(params)
 % mardo - class constructor for MarsBaR design object
 % inputs [defaults]
 % params  - structure, containing SPM/MarsBaR design
-% params2 - structure with other fields for mardo object
 %
 % $Id$
   
@@ -16,19 +15,24 @@ if isa(params, myclass)
   o = params;
   return
 end
-if nargin < 2
-  params1 = defstruct;
-end
-params1.des_struct = params;
 
 % check inputs
-if ~isstruct(params1) 
+if ~isstruct(params)
+  error('Need structure as input to constructor function');
+end
+if ~isfield(params, 'des_struct')
+  % Appears to be an SPM design
+  params.des_struct = params;
 end
 
 % fill with defaults, parse into fields for this object, children
-[pparams, others] = my_fillsplit(defstruct, params1);
+[pparams, others] = mars_struct('fillsplit', defstruct, params);
 
-% identify type of design, send to correct object
+% set the mardo object
 o  = class(pparams, myclass);
+
+% offer as food to children
+o = mardo_99(o, others);
+o = mardo_2(o, others);
 
 return

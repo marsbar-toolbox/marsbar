@@ -3,26 +3,27 @@ To do list
 
 try / catch round load in mars_armoire
 
-delete mars_extract_data, add mars_image_scaling
-
-add @mardo, @mardo_2, @mardo_99
-add mars_arm_call
+delete fillafromb, fillstruct @maroi/private/...
+my_fillsplit, my_merge, my_split
+delete @mars_space/private/...
+my_fillsplit
 
 Strategy is to use an object to contain MarsBaR / SPM designs
 Not quite worked out yet.
 
 Fields in spmD used by marsbar estimatation
 mars_stat
-xX
+spm99/mars      spm2
+xX		
 xX.X
-xX.xVi
-xX.xVi.Vi
+xX.xVi          xVi
+xX.xVi.Vi	xVi.Vi
 xX.K
-xX.Xnames
+xX.Xnames     - xX.name 
 
 Fields added
-xX.V
-xX.xKXs     %-Filtered design matrix
+xX.V            xVi.V
+xX.xKXs                      %-Filtered design matrix
 xX.pKX     
 xX.pKXV	       %-for contrast variance weight
 xX.Bcov	       %-Variance of est. param.
