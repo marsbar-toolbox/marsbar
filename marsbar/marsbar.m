@@ -28,19 +28,10 @@ function varargout=marsbar(varargin)
 % Please visit our friends at The Visible Mars Bar project:
 % http://totl.net/VisibleMars
 %
-% V0.2: 28/1/03
-% Show volume in GUI (need volume method for ROIs)
-% Fixed SPM/matlab 6 bug for estimate (from SPM99 updates)
-% Cluster / maximum need to be aligned (Alex Andrade spotted this one)
-% Remove restriction on no of ROIs to display
-%
-% V0.21: 25/2/03 AP
-% Added flip LR to menu
-%
 % $Id$
 
 % Marsbar version
-MBver = '0.22';  % Development release 
+MBver = '0.23';  % Stable release
 
 % Marsbar defaults in global variable structure
 global MARSBAR;
