@@ -53,7 +53,7 @@ for a = 1:length(actions)
     xGX = [];            % globals
     sGXcalc  = 'none';   % global calculation description
     sGMsca   = 'none';   % grand mean scaling description
-    Global = 'none';     % proportional scaling or no
+    Global   = 'None';   % proportional scaling or no
  
     BFstr = ''; DSstr = ''; ntr = [];
     if have_sess
@@ -196,7 +196,7 @@ for a = 1:length(actions)
     [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
     
     % TR if not set (it should be) 
-    if isfield(xX, 'RT')
+    if ~isfield(xX, 'RT')
       spmD.xX.RT  = spm_input('Interscan interval {secs}','+1');
     end
     RT = spmD.xX.RT;
