@@ -20,6 +20,10 @@ if ischar(cname)
   cname = cellstr(cname);
 end
 
-xc = get_contrasts(D);  
-ic = find(ismember({xc(:).name}, cname));
+xc = get_contrasts(D); 
+if isempty(xc)
+  ic = [];
+else
+  ic = find(ismember({xc(:).name}, cname));
+end
 xc = xc(ic);
