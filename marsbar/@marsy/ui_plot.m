@@ -248,12 +248,12 @@ for c = plot_spec.r_nos
       axis tight
       % Rename tick labels 
       xt  = get(gca, 'xtick');
-      set(gca, 'xtick', xt(xt==fix(xt)));
-      xtl = str2num(get(gca,'xticklabel'));
-      for t = 1:length(xtl)
-	xtl2{t} = sprintf('%5.3f', H(xtl(t)));
+      xt  =  xt(xt==fix(xt));
+      set(gca, 'xtick', xt);
+      for t = 1:length(xt)
+	xtl{t} = sprintf('%5.3f', H(xt(t)));
       end
-      set(gca, 'xticklabel', xtl2);
+      set(gca, 'xticklabel', xtl);
       xlabel(sprintf('Frequency (%s)', b_str))
       ylabel('Relative spectral density')
       axis tight
@@ -268,3 +268,4 @@ for c = plot_spec.r_nos
 end
 
 return
+
