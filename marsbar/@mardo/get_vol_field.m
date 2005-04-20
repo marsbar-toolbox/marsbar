@@ -26,25 +26,5 @@ SPM = des_struct(D);
 if ~isfield(SPM, fieldn)
   error([ fieldn ' is not a field in design']);
 end
-if ~isfield(SPM, 'swd')
-  error('Need directory of design; it is missing');
-end
-swd = SPM.swd;
-
 V = getfield(SPM, fieldn);
-
-if ischar(V)
-  V = cellstr(V);
-end
-if iscell(V)       % SPM99 format
-  for i = 1:prod(size(V))
-    V2(i) = spm_vol(fullfile(swd, V{i}));
-  end
-  V = V2;
-elseif isstruct(V) % SPM2 format
-  for i = 1:prod(size(V))
-    V(i).fname = fullfile(swd, V(i).fname);
-  end  
-else
-  error('Unexpected format of vol struct field');
-end
+V = full_vol(D, V);
