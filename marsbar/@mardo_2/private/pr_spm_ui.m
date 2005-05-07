@@ -1,5 +1,5 @@
 function varargout = pr_spm_ui(varargin)
-% MardBar: setting up the general linear model for independent data
+% MarsBaR: setting up the general linear model for independent data
 %
 % MarsBaR version copied with minor edits from:
 % @(#)spm_spm_ui.m	2.49 Andrew Holmes 03/03/20
