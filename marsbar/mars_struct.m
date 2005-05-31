@@ -41,8 +41,11 @@ function varargout = mars_struct(action, varargin)
 % force fill, followed by split
 % All fields from a, that are also present in b, and not empty in b, 
 % are replaced with the values in b; the result is returned as c  
-% Any fields present in a, but not present in b, are returned in d
-%
+% Any fields present in b, but not present in a, are returned in d
+% So, let's say you have a default structure D, and you want to fill this
+% in with any interesting data in a passed structure P, you could use:
+% [good_struct not_recognized]= mars_struct('ffillsplit', D, P);
+%  
 % FORMAT c = mars_struct('ffillmerge', a, b)
 % force fill followed by merge
 % performs 'ffillsplit' on a and b, then merges a and b
