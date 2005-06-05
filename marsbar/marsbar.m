@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.37';  % 8th SPM2 development release 
+MBver = '0.38';  % SPM2 stable release 
 
 % Various working variables in global variable structure
 global MARS;
@@ -270,7 +270,7 @@ funcs = {...
     'marsbar(''ana_cd'')',...
     'marsbar(''ana_desmooth'')',...
     'marsbar(''def_from_est'')',...
-    'mars_arm(''set_ui'', ''def_design'');',...
+    'marsbar(''set_def'')',...
     ['mars_arm(''save_ui'', ''def_design'', ' fw_st ');'],...
     'mars_arm(''show_summary'', ''def_design'')'};
 
@@ -859,6 +859,14 @@ marsE = mars_arm('get', 'est_design');
 if isempty(marsE), return, end;
 errf = mars_arm('set', 'def_design', marsE);
 if ~errf, marsbar('design_report'); end
+
+%=======================================================================
+case 'set_def'                           %-sets default design using GUI
+%=======================================================================
+% marsbar('set_def')
+%-----------------------------------------------------------------------
+if mars_arm('set_ui', 'def_design'), return, end
+marsbar('design_report');
 
 %=======================================================================
 case 'design_report'                         %-does explore design thing
