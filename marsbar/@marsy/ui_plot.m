@@ -251,9 +251,9 @@ for c = plot_spec.r_nos
       xt  =  xt(xt==fix(xt));
       set(gca, 'xtick', xt);
       for t = 1:length(xt)
-	xtl{t} = sprintf('%5.3f', H(xt(t)));
+	xtl_fft{t} = sprintf('%5.3f', H(xt(t)));
       end
-      set(gca, 'xticklabel', xtl);
+      set(gca, 'xticklabel', xtl_fft);
       xlabel(sprintf('Frequency (%s)', b_str))
       ylabel('Relative spectral density')
       axis tight
