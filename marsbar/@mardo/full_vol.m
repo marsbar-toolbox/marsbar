@@ -47,14 +47,10 @@ if isstruct(imgs) % vol struct, check for absolute path name
     if ~mars_utils('isabspath', fname);
       fname = fullfile(swd, fname);
     end
-    if ~exist(fname, 'file')
-      V(i) = def_struct;
-    end
     V(i).fname = fname;
   end
 elseif ischar(imgs)
   for i = 1:size(imgs, 1)
-    V(i) = def_struct;
     fname = deblank(imgs(i,:));
     if ~mars_utils('isabspath', fname)
       fname = fullfile(swd, fname);
