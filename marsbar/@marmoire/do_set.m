@@ -32,7 +32,7 @@ if nargin < 5
   filename = NaN;
 end
 
-% Errf for return#
+% Errf for return
 errf = 0;
 
 % process flags
@@ -53,7 +53,7 @@ if strcmp(action, 'set_ui')
   [fn pn] = mars_uifile('get', ...
 			item_struct.filter_spec, ...
 			['Select ' item_struct.title '...']);
-  if isequal(fn,0) | isequal(pn,0), return, end
+  if isequal(fn,0) | isequal(pn,0), errf = 1;, return, end
   filename = fullfile(pn, fn);
   data = [];
 end
