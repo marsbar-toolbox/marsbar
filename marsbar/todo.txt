@@ -3,3 +3,4 @@ To do list
 
 Odd EoI + subset contrast error in MV routine.
 Random effects structure, with import / export etc
+Simple means store for event signal plotting (in case of estimation failure)
