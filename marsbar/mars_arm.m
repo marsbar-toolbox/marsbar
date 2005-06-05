@@ -57,7 +57,7 @@ switch lower(action)
   end  
   mars_utils('graphic_text', S, get_item_param(o, item_name, 'title'));
  otherwise
-  error('Weird');
+  error(['Weird: ' action]);
 end
 
 MARS.ARMOIRE = o;
