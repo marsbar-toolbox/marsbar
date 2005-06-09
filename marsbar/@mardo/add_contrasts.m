@@ -89,6 +89,8 @@ xc_len = length(xCon);
 old_xc_len = xc_len;
 for i=1:length(C)
   if ~xc_len, xCon = C(i); Ic(i) = 1; xc_len = 1; break, end
+  % Clear any vol fields, as they will not match this design
+  [C(i).Vcon C(i).Vspm] = deal([]); 
   Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
   if ~Ic(i)
     xc_len = xc_len+1;
