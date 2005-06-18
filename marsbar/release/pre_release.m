@@ -61,6 +61,6 @@ unix(sprintf('tar zcvf %s.tar.gz %s', full_name, full_name));
 unix(sprintf('rm -rf %s', full_name));
 
 fprintf('Created %s release %s\n', proj, full_name);
-fprintf('Consider Changelog, e.g. cvs2cl.pl -l "-d 2005-06-05<"');
+fprintf('Consider Changelog, e.g. cvs2cl.pl -l "-d 2005-06-05<\n"');
 
 
