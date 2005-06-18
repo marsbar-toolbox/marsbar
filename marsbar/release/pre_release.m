@@ -19,9 +19,15 @@ if nargin < 1
   error('Need username');
 end
 if nargin < 2
+  rname = '';
+end
+if isempty(rname)
   rname = '-%s';
 end
 if nargin < 3
+  outdir = '';
+end
+if isempty(outdir)
   outdir = pwd;
 end
 if nargin < 4
