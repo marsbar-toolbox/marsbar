@@ -30,6 +30,7 @@ end
 VY = get_images(D);
 
 % now change directory
+newpath = spm_get('cpath', newpath);
 if filesep == '\', other_filesep='/';else other_filesep='\';end
 n = length(VY);
 strout = strvcat(VY(:).fname);
@@ -48,8 +49,7 @@ if ~exist(nfnames{1}, 'file')
   error(['Cannot find first file here: ' nfnames{1}]);
 end
 if isempty(byteswap) 
-  V2 = spm_vol(nfnames{1});
-  byteswap = V2.dim(4) ~= VY(1).dim(4);
+  byteswap = mars_utils('is_swapped_wrong', VY(1));
 end
 
 % do byteswap as necessary
