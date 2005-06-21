@@ -38,6 +38,12 @@ function varargout=mars_utils(varargin)
 %    Returns 1 if the vol struct V has the incorrect swapping
 %    information, and therefore should be remapped.
 %
+% tf = mars_utils('version_less_than', v1, v2)
+%    Returns 1 if version v1 is lower than version v2.
+%    Versions can be numbers.  If strings, versions can contain more than
+%    one '.' character. For example, '0.38.1' is less than '0.39', or
+%    '0.38.2'
+%
 % $Id$
 
 if nargin < 1
@@ -234,6 +240,46 @@ end
 V2 = spm_vol(V.fname);
 varargout = {V2.dim(4) ~= V.dim(4)};
 
+%=======================================================================
+case 'version_less_than' % Returns 1 for if first version less than last
+%=======================================================================
+
+if nargin < 3
+  error('Need two version strings to compare');
+end
+varargout{1} = sf_ver_lt(varargin{2:3});
+
 otherwise
   error('Beyond my range');
 end
+return
+
+% Subfunctions
+
+function tf = sf_ver_lt(v1, v2)
+% Returns 1 if version string v1 is lower than v2
+vs = {v1, v2};
+for v = 1:2
+  ns = vs{v};
+  if ~ischar(ns), ns = num2str(ns); end
+  ns = sf_str_to_nums(ns); 
+  cmp_mat(v, 1:length(ns)) = ns;
+end
+dp = diff(cmp_mat) * -1;
+for i = 1:length(dp)
+  if dp(i)<0, tf = 1; return, end
+  if dp(i)>0, tf = 0; return, end 
+end
+tf = 0;
+return
+
+function ns = sf_str_to_nums(str)
+str = str(ismember(str, '0123456789.'));
+str = ['.' str '.'];
+ps = find(str == '.');
+ns = [];
+for p = 2:length(ps)
+  s = str(ps(p-1)+1:ps(p)-1);
+  ns = [ns str2num(s)];
+end
+return
