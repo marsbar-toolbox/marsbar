@@ -85,10 +85,9 @@ end
 if flags.check_swap
   for v = 1:nf
     if flags.check_all | v == 1
+      scf = 1;
       if mars_utils('is_swapped_wrong', VY(v))
 	if VY(v).dim(4) < 256, scf = 256; else scf = 1/256; end
-      else 
-	scf = 1; 
       end
     end
     VY(v).dim(4) = VY(v).dim(4) * scf;
