@@ -73,7 +73,7 @@ switch c_e
   e_f = 1;
   n_chk = prod(size(cV));
   for v = 1:n_chk
-    if ~exist('file', newfns{v}), e_f = 0; break; end
+    if ~exist(newfns{v}, 'file'), e_f = 0; break; end
   end
   if ~e_f
     str = sprintf('Image %s does not exist', newfns{v});
