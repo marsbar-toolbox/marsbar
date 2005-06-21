@@ -34,6 +34,10 @@ function varargout=mars_utils(varargin)
 %    global SPM_VER variable for version, and tries to get directly from
 %    spm.m / Contents.m pairs.
 % 
+% tf = mars_utils('is_swapped_wrong', V)
+%    Returns 1 if the vol struct V has the incorrect swapping
+%    information, and therefore should be remapped.
+%
 % $Id$
 
 if nargin < 1
@@ -213,6 +217,22 @@ for s = 1:length(spm_ms)
 end
 
 varargout = {ver};
+
+%=======================================================================
+case 'is_swapped_wrong'    % Returns 1 for if vol is incorrectly swapped
+%=======================================================================
+if nargin < 2
+  error('Need vol struct to test');
+end
+V = varargin{2};
+if ~isstruct(V)
+  error('Need vol struct as input');
+end
+if ~isfield(V, 'fname')
+  error('No fname field in vol struct');
+end
+V2 = spm_vol(V.fname);
+varargout = {V2.dim(4) ~= V.dim(4)};
 
 otherwise
   error('Beyond my range');
