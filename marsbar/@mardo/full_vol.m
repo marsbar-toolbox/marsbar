@@ -19,8 +19,8 @@ if nargin < 2
   error('Need image information');
 end
 
-swd = swd(D);
-if isempty(swd)
+Swd = swd(D);
+if isempty(Swd)
   error('Need directory of design; it is missing');
 end
 
@@ -45,7 +45,7 @@ if isstruct(imgs) % vol struct, check for absolute path name
   for i = 1:nimgs
     fname = V(i).fname;
     if ~mars_utils('isabspath', fname);
-      fname = fullfile(swd, fname);
+      fname = fullfile(Swd, fname);
     end
     V(i).fname = fname;
   end
@@ -53,7 +53,7 @@ elseif ischar(imgs)
   for i = 1:size(imgs, 1)
     fname = deblank(imgs(i,:));
     if ~mars_utils('isabspath', fname)
-      fname = fullfile(swd, fname);
+      fname = fullfile(Swd, fname);
     end
     if exist(fname, 'file')
       V(i) = spm_vol(fname);
