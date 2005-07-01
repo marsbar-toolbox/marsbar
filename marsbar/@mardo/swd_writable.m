@@ -4,10 +4,10 @@ function tf = swd_writable(D)
 % $Id$
   
 tf = 0;
-swd = swd(D);
-if isempty(swd), return, end
+Swd = swd(D);
+if isempty(Swd), return, end
 
-test_file = fullfile(swd, 'write_test.txt');
+test_file = fullfile(Swd, 'write_test.txt');
 try
   save(test_file, 'test_file');
   tf = 1;
