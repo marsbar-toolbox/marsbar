@@ -57,7 +57,7 @@ if ~has_images(D)
 end
 
 % try to get one F and one T contrast
-swd = fileparts(d_path);
+Swd = fileparts(d_path);
 xCon = get_contrasts(D);
 stats = [xCon(:).STAT];
 Ic    = []; fnames = {};
@@ -67,7 +67,7 @@ for t = 'TF'
     if ~isempty(F)
       % SPM99 = filename, SPM2 = vol_struct
       if isstruct(F), F = F.fname; end
-      F = fullfile(swd, F);
+      F = fullfile(Swd, F);
       if exist(F, 'file'), Ic = [Ic c]; fnames{end+1} = F; break, end
     end
   end
