@@ -29,13 +29,16 @@ if isa(params, myclass)
 end
 
 % check inputs
-if ~isstruct(params) 
-  if ischar(params) % maybe it is an image filename
-    params = spm_vol(params);
+if ~isstruct(params)
+  % Matlab 7 does not like assigment of struct to non empty var
+  inp1 = params;
+  clear params;
+  if ischar(inp1) % maybe it is an image filename
+    params = spm_vol(inp1);
     params.dim = params.dim(1:3);
-  elseif prod(size(params)) == 3 
+  elseif prod(size(inp1)) == 3 
     % could be the dimensions of a space
-    params.dim = params(:)';
+    params.dim = inp1(:)';
     if ~isempty(params2), params.mat = params2; end
   else						       
     % lets hope it's a useful matrix, but with a mat parameter, quoi
@@ -44,7 +47,7 @@ if ~isstruct(params)
 	     ' matrix'])
     end
     params.mat = params2;
-    m = params;
+    m = inp1;
     sz = size(m);
     params.dim = [1 1 1];
     params.dim(1:length(sz)) = sz;
