@@ -16,11 +16,11 @@ if nargin < 2
 end
 SPM = des_struct(D);
 if ~mars_utils('isabspath', fname)
-  swd = mars_struct('getifthere', SPM, 'swd');
-  if isempty(swd)
+  Swd = mars_struct('getifthere', SPM, 'swd');
+  if isempty(Swd)
     error('No path passed, and none in design');
   end
-  fname = fullfile(swd, fname);
+  fname = fullfile(Swd, fname);
 else
   SPM.swd = fileparts(fname);
 end
