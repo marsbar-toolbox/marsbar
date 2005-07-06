@@ -156,7 +156,7 @@ switch lower(optstr)
 	{'mean','wtmean','median','eigen1','ask'},...
 	'Mean|Weighted mean|Median|1st eigenvector|Always ask');
 	   
-    tmp = [0 1]; tmpi = find(tmp == mars.statistics.flip_option);
+    tmp = [1 0]; tmpi = find(tmp == mars.statistics.flip_option);
     mars.statistics.flip_option = spm_input('Flip design images SPM99-2',...
 					 '+1','b','Yes|No',tmp, tmpi);
 
