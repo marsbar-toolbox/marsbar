@@ -28,20 +28,35 @@ function varargout = spm_get(Action, varargin)
 %
 % $Id$
 
-allowed_actions = {'cpath', 'files'};
-
 if nargin < 1
   Action=Inf;
 end
 
 % If the first argument is a string, this is an action
 if ischar(Action)
-  Action = lower(Action);
-  if ~ismember(Action, allowed_actions)
+  switch(lower(Action))
+   case 'cpath'   
+    varargout{:} = spm_select('cpath', varargin{:});
+   case 'files'
+    if nargin < 2
+      Dir = pwd;
+    else
+      Dir = varargin{1};
+    end
+    if nargin < 3
+      Filt = '.*';
+    else
+      Filt = sf_shexp_regexp(varargin{2});
+    end
+    varargout{:} = spm_select('list', Dir, Filt);
+    % The old spm_get returned full file paths
+    Files = varargout{1};
+    varargout{1} = [repmat([Dir filesep], size(Files, 1), 1) Files];
+   otherwise
     error([Action ': I''m sorry, but I can''t do that']);
   end
   if strcmp(Action, 'files'), Action='List'; end
-  varargout{:} = spm_select(Action, varargin{:});
+
   return
 end
 
