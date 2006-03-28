@@ -24,7 +24,7 @@ if isempty(action_str), action_str = 'display'; end
 
 switch lower(action_str), case 'display'             %-Display ROIs
 if nargin < 2
-  roi_obj = spm_get([0 Inf],'roi.mat','Select ROI(s) to view');
+  roi_obj = spm_get([0 Inf],'*roi.mat','Select ROI(s) to view');
 else 
   roi_obj = varargin{1};
 end

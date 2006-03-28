@@ -628,7 +628,7 @@ case 'show_volume'                  %- shows ROI volume in mm to console
 %=======================================================================
 % marsbar('show_volume')
 %-----------------------------------------------------------------------
-roi_names = spm_get([0 Inf], 'roi.mat', 'Select ROIs tp get volume');
+roi_names = spm_get([0 Inf], '*roi.mat', 'Select ROIs tp get volume');
 if isempty(roi_names),return,end
 rois = maroi('load_cell', roi_names);
 for i = 1:size(rois, 1)
@@ -643,7 +643,7 @@ case 'roi_as_image'                               %- writes ROI as image
 %-----------------------------------------------------------------------
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Write ROI to image');
 
-roi = spm_get([0 1], 'roi.mat', 'Select ROI to write');
+roi = spm_get([0 1], '*roi.mat', 'Select ROI to write');
 if isempty(roi),return,end
 [pn fn ext] = fileparts(roi);
 roi = maroi('load', roi);
@@ -914,7 +914,7 @@ varargout = {[]};
 % Check for save of current data
 if sf_prev_save('roi_data') == -1, return, end
 if isempty(roi_list)
-  roi_list = spm_get(Inf,'roi.mat','Select ROI(s) to extract data for');
+  roi_list = spm_get(Inf,'*roi.mat','Select ROI(s) to extract data for');
 end
 if isempty(roi_list), return, end
 
