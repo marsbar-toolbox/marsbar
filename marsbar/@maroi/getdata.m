@@ -73,10 +73,13 @@ end
 XYZ = [XYZ; ones(size(multv))];
 
 % check for same dims etc - which could save a bag of time
+% Code a bit tricksy here to allow comparison of vector and 4x4 matrices
+% without doing loops
 %---------------------------------------------------------
 nimgs = length(data_imgs);
-chgflgs = any(diff(cat(3,data_imgs(:).dim),1,3) & ...
-	  repmat([1 1 1 0],[1 1 nimgs-1])) | ...
+dims = cat(3,data_imgs(:).dim);
+dims = dims(:, 1:3, :); % to allow for SPM2/SPM99 4 element dims
+chgflgs = any(diff(dims,1,3)) | ...
 	  any(any(diff(cat(3,data_imgs(:).mat),1,3)));
 chgflgs = [1; chgflgs(:)];
 
