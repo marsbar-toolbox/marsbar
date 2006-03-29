@@ -35,8 +35,7 @@ function varargout=mars_utils(varargin)
 %    spm.m / Contents.m pairs.
 % 
 % tf = mars_utils('is_swapped_wrong', V)
-%    Returns 1 if the vol struct V has the incorrect swapping
-%    information, and therefore should be remapped.
+%    Deprecated - see version in mars_vol_utils
 %
 % tf = mars_utils('version_less_than', v1, v2)
 %    Returns 1 if version v1 is lower than version v2.
@@ -49,8 +48,9 @@ function varargout=mars_utils(varargin)
 if nargin < 1
   error('Need action');
 end
+Action = lower(varargin{1});
 
-switch(lower(varargin{1}))
+switch(Action)
   
 %=======================================================================
 case 'str2fname'                                   %-string to file name
@@ -227,18 +227,10 @@ varargout = {ver};
 %=======================================================================
 case 'is_swapped_wrong'    % Returns 1 for if vol is incorrectly swapped
 %=======================================================================
-if nargin < 2
-  error('Need vol struct to test');
-end
-V = varargin{2};
-if ~isstruct(V)
-  error('Need vol struct as input');
-end
-if ~isfield(V, 'fname')
-  error('No fname field in vol struct');
-end
-V2 = spm_vol(V.fname);
-varargout = {V2.dim(4) ~= V.dim(4)};
+warning(...
+    sprintf(['mars_utils version of ''is_swapped_wrong'' deprecated\n',...
+	     'Please use same function in mars_vol_utils']));
+varargout = {mars_vol_utils(varargin{:})};
 
 %=======================================================================
 case 'version_less_than' % Returns 1 for if first version less than last
@@ -250,7 +242,7 @@ end
 varargout{1} = sf_ver_lt(varargin{2:3});
 
 otherwise
-  error('Beyond my range');
+  error([Action ' is too strange']);
 end
 return
 

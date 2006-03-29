@@ -435,7 +435,7 @@ end
 %-Implicit masking: Ignore zero voxels in low data-types?
 %-----------------------------------------------------------------------
 % (Implicit mask is NaN in higher data-types.)
-type = getfield(spm_vol(P{1,1}),'dim')*[0,0,0,1]';
+type = mars_vol_utils('type', mars_vol(P{1,1}));
 if ~spm_type(type,'nanrep')
 	switch D.M_.I
 	case Inf,    M_I = spm_input('Implicit mask (ignore zero''s)?',...
@@ -550,17 +550,13 @@ spm('Pointer','Watch');
 % dimensions and orientation / voxel size
 %=======================================================================
 fprintf('%-40s: ','Mapping files')                                   %-#
-VY    = spm_vol(char(P));
+VY    = mars_vol(char(P));
 
 
-%-Check compatability of images (Bombs for single image)
+%-Check compatability of images
 %-----------------------------------------------------------------------
-if any(any(diff(cat(1,VY(:).dim),1,1),1) & [1,1,1,0]) 
-	error('images do not all have the same dimensions')
-end
-if any(any(any(diff(cat(3,VY(:).mat),1,3),3)))
-	error('images do not all have same orientation & voxel size')
-end
+[samef msg] = spm_vol_check(VY);
+if ~samef, disp(char(msg)),error('Cannot use images'),end;
 
 fprintf('%30s\n','...done')                                          %-#
 
@@ -712,7 +708,7 @@ if isreal(M_T),	M_TH =      M_T  * ones(nScan,1);	%-NB: -Inf is real
 else,		M_TH = imag(M_T) * (rg.*gSF); end
 
 if ~isempty(M_P)
-	VM  = spm_vol(char(M_P));
+	VM  = mars_vol(char(M_P));
 	xsM.Explicit_masking = [{'Yes: mask images :'};{VM.fname}'];
 else
 	VM  = [];
