@@ -62,19 +62,18 @@ end
 
 % Otherwise, must be file / directory selection
 if nargin < 2
-  filter = 'any';
+  Filt = 'any';
 else
-  Filter = varargin{1};
+  Filt = varargin{1};
   varargin(1) = [];
-  Filter = sf_shexp_regexp(Filter);
+  Filt = sf_shexp_regexp(Filt);
 end
 if any(Action < 0)
   % Directory select
   Action = abs(Action);
-  Filter = 'dir';
+  Filt = 'dir';
 end
-Filter
-varargout{:} = spm_select(Action, Filter, varargin{:});
+varargout{:} = spm_select(Action, Filt, varargin{:});
 return
 
 
