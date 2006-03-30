@@ -14,6 +14,10 @@ function tf = save_spm(D, fname);
 if nargin < 2
   fname = 'SPM.mat';
 end
+
+% Convert vols to native format
+D = convert_vols(D, native_vol_ver(D));
+
 SPM = des_struct(D);
 if ~mars_utils('isabspath', fname)
   Swd = mars_struct('getifthere', SPM, 'swd');
@@ -24,6 +28,7 @@ if ~mars_utils('isabspath', fname)
 else
   SPM.swd = fileparts(fname);
 end
+
 
 try 
   if verbose(D)

@@ -15,6 +15,9 @@ if ischar(obj)
   filename = tmp;
 end
 
+% Convert vols to native format
+obj = convert_vols(obj, native_vol_ver(obj));
+
 % unobjectify marsy object before save
 SPM = des_struct(obj);
 if isfield(SPM, 'marsY')

@@ -22,6 +22,10 @@ if nargin < 2
     error('Cannot work out design type for default filename');
   end
 end
+
+% Convert vols to native format
+D = convert_vols(D, native_vol_ver(D));
+
 SPM = des_struct(D);
 if ~mars_utils('isabspath', fname)
   Swd = mars_struct('getifthere', SPM, 'swd');

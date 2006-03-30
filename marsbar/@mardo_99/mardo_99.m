@@ -104,4 +104,7 @@ if iscell(K);
   o = des_struct(o, SPM);
 end
 
+% convert vols to current format
+o = convert_vols(o);
+
 return

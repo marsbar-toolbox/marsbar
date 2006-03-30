@@ -98,4 +98,7 @@ params.cvs_version = cvs_v;
 % set the mardo object
 o  = class(params, myclass, uo);
 
+% convert vols to current format
+o = convert_vols(o);
+
 return
