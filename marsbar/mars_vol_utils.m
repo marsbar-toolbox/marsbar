@@ -25,6 +25,9 @@ function varargout=mars_vol_utils(varargin)
 %    information from a fresh mapping from the same file, and thus might
 %    have to be remapped. 
 %
+% V = mars_vol_utils('byte_swap', V)
+%    Returns new vols for opposite byte ordering to current spec
+%
 % V = mars_vol_utils('convert', V, ver)
 %    Return vol struct(s) V converted to type specified in ver
 %    If ver not specified, convert to current ver type
@@ -99,6 +102,28 @@ V2 = spm_vol(V.fname);
 [t le] = sf_type(V);
 [t le2] = sf_type(V2);
 varargout = {le ~= le2};
+
+%=======================================================================
+case 'byte_swap'      % return vols with opposite recorded byte ordering
+%=======================================================================
+if nargin < 2
+  error('Need vol struct to swap');
+end
+sf_die_no_vol(V);
+switch sf_ver(V)
+ case '99'
+  for i = 1:numel(V)
+    if V(i).dim(4) < 256, scf = 256; else scf = 1/256; end
+    V(i).dim(4) = V(i).dim(4) * scf;
+  end
+ case '5'
+  for i = 1:numel(V)
+    V(i).dt(2) = 1-V(i).dt(2);
+  end
+ otherwise
+  error(['Don''t often see those ' sf_ver(V)]);
+end
+varargout = {V};
 
 %=======================================================================
 case 'convert'              % Returns vols converted to alternative type

@@ -54,10 +54,7 @@ end
 
 % do byteswap as necessary
 if byteswap
-  if VY(1).dim(4) < 256, scf = 256; else scf = 1/256; end
-  for i = 1:n
-    VY(i).dim(4) = VY(i).dim(4) * scf;
-  end
+  VY = mars_vol_utils('byte_swap', VY);
   if verbose(D)
     disp('Images vols byteswapped');
   end

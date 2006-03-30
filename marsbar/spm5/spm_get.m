@@ -28,6 +28,8 @@ function varargout = spm_get(Action, varargin)
 %
 % $Id$
 
+nout = max(nargout,1);
+
 if nargin < 1
   Action=Inf;
 end
@@ -36,7 +38,7 @@ end
 if ischar(Action)
   switch(lower(Action))
    case 'cpath'   
-    varargout{:} = spm_select('cpath', varargin{:});
+    varargout = {spm_select('cpath', varargin{:})};
    case 'files'
     if nargin < 2
       Dir = pwd;
@@ -48,7 +50,7 @@ if ischar(Action)
     else
       Filt = sf_shexp_regexp(varargin{2});
     end
-    varargout{:} = spm_select('list', Dir, Filt);
+    varargout = {spm_select('list', Dir, Filt)};
     % The old spm_get returned full file paths
     Files = varargout{1};
     varargout{1} = [repmat([Dir filesep], size(Files, 1), 1) Files];
@@ -73,7 +75,7 @@ if any(Action < 0)
   Action = abs(Action);
   Filt = 'dir';
 end
-varargout{:} = spm_select(Action, Filt, varargin{:});
+varargout = {spm_select(Action, Filt, varargin{:})};
 return
 
 
