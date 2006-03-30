@@ -88,7 +88,8 @@ Y = zeros(nimgs, dlen);
 
 for i = 1:nimgs
   % nan replacement
-  nanrep =  spm_type(data_imgs(i).dim(4), 'nanrep');
+  i_type = mars_vol_utils('type', data_imgs(i));
+  nanrep =  spm_type(i_type, 'nanrep');
 
   if chgflgs(i)  % images not the same, (re)get resample points
     ixyz = data_imgs(i).mat \ XYZ;
