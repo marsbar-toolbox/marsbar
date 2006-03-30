@@ -21,8 +21,7 @@ if nargin<2, D = []; else, D = varargin{2}; end
 
 %-GUI setup
 %-----------------------------------------------------------------------
-CVSid    = mars_cvs_version(mfilename, 'mardo_2');
-SPMid    = spm('SFnBanner',mfilename,CVSid);
+SPMid    = spm('SFnBanner',mfilename,marsbar('ver'));
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','Stats: Setup analysis',0);
 spm_help('!ContextHelp',mfilename)
 

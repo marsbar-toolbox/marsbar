@@ -23,7 +23,7 @@ function [o, others] = mardo_99(params, others, varargin)
 % $Id$
   
 myclass = 'mardo_99';
-cvs_v   = mars_cvs_version(myclass);
+cvs_v   = marsbar('ver'); % was CVS version; now marsbar version
 
 % Default object structure
 defstruct = [];

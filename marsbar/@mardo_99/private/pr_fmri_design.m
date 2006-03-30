@@ -10,8 +10,7 @@ function [SPM] = pr_fmri_design(SPM)
   
 %-GUI setup
 %-----------------------------------------------------------------------
-CVSid    = mars_cvs_version(mfilename, 'mardo_99');
-SPMid    = spm('SFnBanner',mfilename,CVSid);
+SPMid    = spm('SFnBanner',mfilename,marsbar('ver'));
 [Finter,Fgraph,CmdLine] = spm('FnUIsetup','fMRI stats model setup',0);
 spm_help('!ContextHelp',mfilename)
 

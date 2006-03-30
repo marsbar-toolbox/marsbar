@@ -128,7 +128,7 @@ function [o, others] = mardo(params, others, passf)
 % $Id$
   
 myclass = 'mardo';
-cvs_v   = mars_cvs_version(myclass);
+cvs_v   = marsbar('ver'); % was CVS version; now marsbar version
 
 % Default flip option
 flippo = mars_struct('getifthere', ...
