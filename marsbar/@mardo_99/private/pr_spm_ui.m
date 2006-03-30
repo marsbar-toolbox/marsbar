@@ -441,7 +441,7 @@ end
 %-Implicit masking: Ignore zero voxels in low data-types?
 %-----------------------------------------------------------------------
 % (Implicit mask is NaN in higher data-types.)
-type = mars_vol_utils('type', mars_vol(P{1,1}));
+type = mars_vol_utils('type', spm_vol(P{1,1}));
 if ~spm_type(type,'nanrep')
 	switch D.M_.I
 	case Inf,    M_I = spm_input('Implicit mask (ignore zero''s)?',...
@@ -504,7 +504,7 @@ spm('Pointer','Watch');
 %=======================================================================
 fprintf('%-40s: ','Mapping files')                                   %-#
 for  i = 1:nVar
-	VY(:,i) = mars_vol(char(P{:,i}));
+	VY(:,i) = spm_vol(char(P{:,i}));
 end
 
 %-Check compatability of images
@@ -672,7 +672,7 @@ if isreal(M_T),	M_TH =      M_T  * ones(nScan,nVar);	%-NB: -Inf is real
 else,		M_TH = imag(M_T) * (rg.*gSF); end
 
 if ~isempty(M_P)
-	VM = mars_vol(char(M_P));
+	VM = spm_vol(char(M_P));
 	xsM.Explicit_masking = [{'Yes: mask images :'};{VM.fname}'];
 else
 	VM=[];
