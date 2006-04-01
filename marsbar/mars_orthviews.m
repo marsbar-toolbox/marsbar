@@ -290,7 +290,7 @@ img_flt = mars_veropts('get_img_ext');
    varargin(1) = {1};
  end
  if nargin < 3
-   varargin(2) = {spm_get(1, 'img', 'Image with activation signal')};
+   varargin(2) = {spm_get(1, img_flt, 'Image with activation signal')};
  end
  if ischar(varargin{2}),varargin{2} = spm_vol(varargin{2});end
  if nargin < 4
