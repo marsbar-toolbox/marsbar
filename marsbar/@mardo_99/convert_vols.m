@@ -23,9 +23,8 @@ if nargin < 2
   ver = mars_vol_utils('current_ver');
 end
 
-o = images(o, sf_conv(images(o), ver));
-
 SPM = des_struct(o);
+SPM = sf_conv(SPM, ver, 'VY');
 SPM = sf_conv(SPM, ver, 'xM', 'VM');
 o = des_struct(o, SPM);
 

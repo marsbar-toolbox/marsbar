@@ -4,7 +4,7 @@ function varargout=mars_vol_utils(varargin)
 % tf = mars_vol_utils('is_vol', V)
 %    Returns 1 if V may be a vol struct (right fields)
 %
-% [t,le,sw] = mars_vol_utils('type', V)
+% [t,be,sw] = mars_vol_utils('type', V)
 %    Returns type number for vol struct - see spm_type, spm_vol
 %    Second output t = 1 if vol seems to be little-endian
 %    Third output sw = 1 if vol swapped relative to this platform
@@ -91,7 +91,7 @@ if nargin < 2
   error('Need vol struct to check swapping');
 end
 sf_die_no_vol(V);
-[t le sw] = sf_type(V);
+[t be sw] = sf_type(V);
 varargout = {sw};
 
 %=======================================================================
@@ -116,9 +116,9 @@ if nargin < 2
 end
 sf_die_no_vol(V);
 V2 = spm_vol(V.fname);
-[t le] = sf_type(V);
-[t le2] = sf_type(V2);
-varargout = {le ~= le2};
+[t be] = sf_type(V);
+[t be2] = sf_type(V2);
+varargout = {be ~= be2};
 
 %=======================================================================
 case 'byte_swap'      % return vols with opposite recorded byte ordering
@@ -208,19 +208,19 @@ if ~sf_is_vol(V)
 end
 return
 
-function [t, le, sw] = sf_type(V)
-% returns type number, little-endian flag, swapped flag
-plat_le = not(spm_platform('bigend'));
+function [t, be, sw] = sf_type(V)
+% returns type number, big-endian flag, swapped flag
+plat_be = spm_platform('bigend');
 V = V(1);
 if sf_same_ver(V, '5') % spm5 vol type
   t = V.dt(1); 
-  le = V.dt(2);
-  sw = xor(le, plat_le);
+  be = V.dt(2);
+  sw = xor(be, plat_be);
 elseif length(V.dim) > 3 % spm99 style type specifier
   t = V.dim(4);
   sw = (t > 256);
   if sw, t = t/256; end
-  le = xor(plat_le, sw);
+  be = xor(plat_be, sw);
 else
   error('Could not get vol type');
 end
@@ -303,10 +303,10 @@ is_n = isfield(Vi, 'n');
 for i = 1:numel(Vi)
   OV = Vi(i);
   NV = d;
-  [t le] = sf_type(OV);
+  [t be] = sf_type(OV);
   NV.fname = OV.fname;
   NV.dim = OV.dim(1:3);
-  NV.dt = [t le];
+  NV.dt = [t be];
   NV.mat = OV.mat;
   NV.pinfo = OV.pinfo;
   NV.descrip = OV.descrip;
@@ -323,7 +323,7 @@ Vo = d; % in case Vi is empty
 for i = 1:numel(Vi)
   OV = Vi(i);
   NV = d;
-  [t le sw] = sf_type(OV);
+  [t be sw] = sf_type(OV);
   if sw, t = t * 256; end
   NV.fname = OV.fname;
   NV.dim = [OV.dim(1:3) t];
