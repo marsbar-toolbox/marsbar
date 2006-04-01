@@ -12,8 +12,8 @@ function [o, others] = mardo_5(params, others, varargin)
 %
 % This object is called from the mardo object contructor
 % with a mardo object as input.  mardo_5 checks to see
-% if the contained design is an SPM2 design, returns
-% the object unchanged if not.  If it is an SPM2
+% if the contained design is an SPM5 design, returns
+% the object unchanged if not.  If it is an SPM5
 % design, it claims ownership of the passed object.
 %
 % The constructor can also be called to give class functions, where the
@@ -70,11 +70,8 @@ if isa(params, 'mardo')
   % Check to see if this is a suitable design, return if not
   des = des_struct(params);
   if ~my_design(des), o = params; return, end
-  % own
-  if isfield(des, 'SPM')
-    des = des.SPM;
-  end
-  uo = des_struct(params, des);
+  % own, by making mardo_2 object for design
+  [uo others] = mardo_2(params, others, 1);
   params = [];
 else
   uo = [];

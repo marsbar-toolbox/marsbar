@@ -17,7 +17,7 @@ function D = fill(D, actions)
 % Copied/pasted then rearranged from SPM2 spm_fmri_spm_ui
 % Matthew Brett - 17/11/01 - MRS2TH
 %
-% $Id$
+% $Id: fill.m 543 2004-12-14 08:58:05Z matthewbrett $
 
 if nargin < 2
   actions = '';
@@ -128,14 +128,10 @@ for a = 1:length(actions)
     VY     = spm_vol(SPM.xY.P);
     fprintf('%30s\n','...done')                                          %-#
     
-    %-check internal consistency of images
+    %-Check compatability of images
     %-----------------------------------------------------------------------
-    if any(any(diff(cat(1,VY.dim),1,1),1) & [1,1,1,0])
-      error('images do not all have the same dimensions')           
-    end
-    if any(any(any(diff(cat(3,VY.mat),1,3),3)))
-      error('images do not all have same orientation & voxel size')
-    end
+    [samef msg] = spm_vol_check(VY);
+    if ~samef, disp(char(msg)),error('Cannot use images'),end;
 	
     %-place in xY
     %-----------------------------------------------------------------------

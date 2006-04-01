@@ -110,7 +110,8 @@ if isempty(fname), return, end
 
 % set img extension and make absolute path
 [pn fn ext] = fileparts(fname);
-fname = fullfile(fdir, [fn '.img']);
+out_ext = mars_veropts('pref_img_out_ext');
+fname = fullfile(fdir, [fn out_ext]);
 fname = spm_get('cpath', fname);
 
 if any(flags == 'k') & exist(fname, 'file')

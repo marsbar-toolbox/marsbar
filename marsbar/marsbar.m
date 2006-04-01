@@ -568,7 +568,7 @@ case 'combinerois'                                        %-combine ROIs
 %=======================================================================
 % marsbar('combinerois')
 %-----------------------------------------------------------------------
-roilist = spm_get(Inf,maroi('classdata', 'fileend'), ...
+roilist = spm_get(Inf,['*' maroi('classdata', 'fileend')], ...
 		  'Select ROI(s) to combine');
 if isempty(roilist)
   return
@@ -610,7 +610,7 @@ case 'flip_lr'                                          %-flip roi L<->R
 %=======================================================================
 % marsbar('flip_lr')
 %-----------------------------------------------------------------------
-roilist = spm_get([0 1],maroi('classdata', 'fileend'),...
+roilist = spm_get([0 1],['*' maroi('classdata', 'fileend')],...
 		  'Select ROI to flip L/R');
 if isempty(roilist)
   return
@@ -661,7 +661,7 @@ switch char(spo)
  case 'spacebase'
    sp = maroi('classdata', 'spacebase');
  case 'image'
-  img = spm_get([0 1], 'img', 'Image defining space');
+  img = spm_get([0 1], mars_veropts('get_img_ext'), 'Image defining space');
   if isempty(img),return,end
   sp = mars_space(img);
  case 'native'
@@ -689,13 +689,13 @@ case 'attach_image'                          %- attaches image to ROI(s)
 % marsbar('attach_image' [,img [,roilist]])
 %-----------------------------------------------------------------------
 if nargin < 2
-  V = spm_get([0 1], 'img', 'Image to attach');
+  V = spm_get([0 1], mars_veropts('get_img_ext'), 'Image to attach');
   if isempty(V), return, end
 else
   V = varargin{1};
 end
 if nargin < 3
-  rois = spm_get([0 Inf], maroi('classdata', 'fileend'), ...
+  rois = spm_get([0 Inf], ['*' maroi('classdata', 'fileend')], ...
 		 'Select ROIs to attach image to');
   
   if isempty(rois), return, end

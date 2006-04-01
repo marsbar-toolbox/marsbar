@@ -282,6 +282,10 @@ case 'addtruecolourimage',
  % mx   - maximum intensity to scale to [maximum value in activation image]
  % mn   - minimum intensity to scale to [minimum value in activation image]
  %
+ 
+ % For selecting images, later
+img_flt = mars_veropts('get_img_ext');
+
  if nargin < 2
    varargin(1) = {1};
  end

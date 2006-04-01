@@ -15,10 +15,13 @@ roitype = char(...
     spm_input('Type of ROI', '+1', 'm',{optlabs{:} 'Quit'},...
 	      {optfields{:} 'quit'},length(optfields)+1));
 
+% For selecting images, later
+img_flt = mars_veropts('get_img_ext');
+
 d = [];
 switch roitype
  case 'image'
-  imgname = spm_get(1, 'img', 'Image defining ROI');
+  imgname = spm_get(1, img_flt, 'Image defining ROI');
   [p f e] = fileparts(imgname);
   binf = spm_input('Maintain as binary image', '+1','b',...
 				      ['Yes|No'], [1 0],1);
@@ -60,7 +63,7 @@ switch roitype
    case 'spacebase'
     sp = maroi('classdata', 'spacebase');
    case 'image'
-    img = spm_get([0 1], 'img', 'Image defining space');
+    img = spm_get([0 1], img_flt, 'Image defining space');
     if isempty(img),return,end
     sp = mars_space(img);
   end

@@ -15,6 +15,12 @@ function [o, others] = mardo_2(params, others, varargin)
 % if the contained design is an SPM2 design, returns
 % the object unchanged if not.  If it is an SPM2
 % design, it claims ownership of the passed object.
+% 
+% Note the third argument.  If this call is a call as a constructor (i.e
+% not an action string call), this can be the 'child_pass_f', which is 1
+% if this call is from a child, passing a mardo object to be handled by
+% the mardo_2 class.  In this case we just accept this design is for us,
+% and don't do any SPM2 specific processing
 %
 % The constructor can also be called to give class functions, where the
 % name of the class function is a character string which is one of:
@@ -37,6 +43,11 @@ end
 if nargin < 2
   others = [];
 end
+if nargin < 3
+  arg3 = 0;
+else
+  arg3 = varargin{1};
+end
 
 % parse out string action calls (class functions)
 if ischar(params)
@@ -47,7 +58,7 @@ if ischar(params)
     elseif nargin < 3
       o = pr_spm_filter(others);
     else
-      o = pr_spm_filter(others, varargin{1});
+      o = pr_spm_filter(others, arg3);
     end
     return
   end
@@ -65,11 +76,14 @@ if isa(params, myclass)
   return
 end
 
+% Set child_pass_f 
+child_pass_f = arg3;
+
 % normal call is via mardo constructor
 if isa(params, 'mardo')
   % Check to see if this is a suitable design, return if not
   des = des_struct(params);
-  if ~my_design(des), o = params; return, end
+  if ~arg3 & ~my_design(des), o = params; return, end
   % own
   if isfield(des, 'SPM')
     des = des.SPM;
@@ -98,7 +112,9 @@ params.cvs_version = cvs_v;
 % set the mardo object
 o  = class(params, myclass, uo);
 
-% convert vols to current format
-o = convert_vols(o);
+% convert vols to current format, if not passed from a child
+if ~child_pass_f
+  o = convert_vols(o);
+end
 
 return

@@ -204,9 +204,15 @@ if isempty(o.des_struct), return, end
 
 % If requested, pass to child objects to request ownership
 if passf
+  % Check what object type is returned from each of the potential
+  % constructors.  If returns default (this) object type, the constructor
+  % has disowned the design, and keep looking
   [o others] = mardo_99(o, others);
   if strcmp(class(o), myclass)
     [o others] = mardo_2(o, others);
+  end
+  if strcmp(class(o), myclass)
+    [o others] = mardo_5(o, others);
   end
 end
 

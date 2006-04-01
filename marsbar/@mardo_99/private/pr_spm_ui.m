@@ -11,6 +11,9 @@ function varargout=pr_spm_ui(varargin)
 %-----------------------------------------------------------------------
 if (nargin==0), Action = 'CFG'; else, Action = varargin{1}; end
 
+% For selecting images, later
+img_flt = mars_veropts('get_img_ext');
+
 switch lower(Action), case 'cfg'
 %=======================================================================
 % - C O N F I G U R E   D E S I G N
@@ -464,7 +467,7 @@ case Inf,   M_X = spm_input('explicitly mask images?','+1','y/n',[1,0],2);
 case {0,1}, M_X = D.M_.X;
 otherwise,  error('unrecognised D.M_.X type')
 end
-if M_X, M_P = spm_get(Inf,'*.img',{'select mask images'}); else, M_P = {}; end
+if M_X, M_P = spm_get(Inf,img_flt,{'select mask images'}); else, M_P = {}; end
 
 
 %-Global calculation                                            (GXcalc)
@@ -789,7 +792,7 @@ for j4  = 1:n4
 	    n21 = Dn(2)*Dn(1);
 	    for v=1:nV
 	    	vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
-	    	ttP = spm_get(n21,'.img',{[str,'select images',vstr]});
+	    	ttP = spm_get(n21,img_flt,{[str,'select images',vstr]});
 	    	n21 = length(ttP);
 	    	tP  = [tP,ttP];
 	    end
@@ -825,7 +828,7 @@ for j4  = 1:n4
 	    tP = {};
 	    for v=1:nV
 	    	vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
-	    	ttP = spm_get(n3,'.img',{[str,vstr]});
+	    	ttP = spm_get(n3,img_flt,{[str,vstr]});
 	    	tP = [tP,ttP];
 	    end
 	    P   = [P;tP];
@@ -846,7 +849,7 @@ for j4  = 1:n4
 			tP = {};
 			for v=1:nV
 				vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
-				ttP = spm_get(n2,'.img',{[str,vstr]});
+				ttP = spm_get(n2,img_flt,{[str,vstr]});
 				tP = [tP,ttP];
 			end
 			P   = [P;tP];
@@ -865,7 +868,7 @@ for j4  = 1:n4
 			n1  = Dn(1);
 			for v=1:nV
 				vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
-				ttP = spm_get(n1,'.img',{[str,vstr]});
+				ttP = spm_get(n1,img_flt,{[str,vstr]});
 				n1  = length(ttP);
 				tP  = [tP,ttP];
 			end

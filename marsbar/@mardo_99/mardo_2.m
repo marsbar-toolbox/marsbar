@@ -240,10 +240,7 @@ if isfield(SPM99, 'M')
   SPM.xVol = mars_struct('split', SPM99, ...
 			 {'M', 'DIM', 'XYZ', 'S', 'R', 'FWHM'});
   SPM.xVol.iM = inv(SPM.xVol.M);   % inverse of M
-  SPM.xVol.VRpv = spm_vol('RPV.img');   %filehandle of resels per voxel image
-  if ~isempty(SPM.xVol.VRpv)
-    SPM.xVol.VRpv.fname = ['../' SPM.xVol.VRpv.fname];
-  end
+  % We will deal with the RPV image later on...
 end
 
 %%%%%%%%%%
@@ -281,6 +278,16 @@ if isfield(SPM99, 'swd')
       end
       if ~isempty(SPM.xCon(i).Vspm)
 	SPM.xCon(i).Vspm = spm_vol(SPM.xCon(i).Vspm);   
+      end
+    end
+    if isfield(SPM99, 'M')
+      % Now deal with RPV image
+      if exist('RPV.img', 'file')
+	% filehandle of resels per voxel image
+	SPM.xVol.VRpv = spm_vol('RPV.img'); 
+      else
+	% Don't really understand this one...
+	SPM.xVol.VRpv.fname = ['../' SPM.xVol.VRpv.fname];
       end
     end
     cd(o_pwd);

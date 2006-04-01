@@ -25,6 +25,8 @@ switch lower(arg)
   varargout = {'.mnc'}; 
  case 'get_img_ext' % default image extension for spm_get
   varargout = {'IMAGE'};
+ case 'pref_img_out_ext' % preferred extension for writing images
+  varargout = {'img'}; 
  case 'des_conf'     % filter for configured, not estimated SPM designs
   varargout = {'SPM.mat'};
  case 'flip_option'

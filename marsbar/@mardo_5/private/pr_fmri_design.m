@@ -6,7 +6,7 @@ function [SPM] = pr_fmri_design(SPM)
 % @(#)spm_fMRI_design.m	2.34 Karl Friston 03/01/30
 % See that (SPM2) version for comments etc
 %
-% $Id$
+% $Id: pr_fmri_design.m 607 2006-03-30 20:54:55Z matthewbrett $
   
 %-GUI setup
 %-----------------------------------------------------------------------
@@ -120,6 +120,11 @@ for s = 1:length(SPM.nscan)
 			X = X([0:(k - 1)]*fMRI_T + fMRI_T0 + 32,:);
 		end
 
+		% and orthonalise (within trial type)
+		%-------------------------------------------------------
+		for i = 1:length(Fc)
+		  X(:,Fc(i).i) = pr_spm_orth(X(:,Fc(i).i));
+		end
 
 		% get user specified regressors
 		%=======================================================

@@ -26,7 +26,7 @@ end
 
 % Process input arguments
 if isempty(roi_list)
-  roi_list = spm_get([0 Inf], maroi('classdata', 'fileend'), ...
+  roi_list = spm_get([0 Inf], ['*' maroi('classdata', 'fileend')], ...
 		     'Select ROIs to write to image');
   if isempty(roi_list), return, end
 end
@@ -89,10 +89,12 @@ if any(flags == 'i')
 end
 
 % Prepare and write image
-V = struct('fname', img_name,...
-	   'mat',   roi_space.mat,...
-	   'pinfo', [1 0 0]',...
-	   'dim',   [roi_space.dim spm_type(img_type)]);
+V = mars_vol_utils('def_vol');
+V.fname = img_name;
+V.mat = roi_space.mat;
+V.dim(1:3) = roi_space.dim;
+V = mars_vol_utils('set_type', V, img_type);
+
 V = spm_create_vol(V);
 V = spm_write_vol(V, img_data);
 

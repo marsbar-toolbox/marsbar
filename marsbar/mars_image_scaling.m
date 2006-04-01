@@ -65,7 +65,8 @@ if isempty(VY)  % need to know about images
   nsess = spm_input(sprintf('No of %ss', sess_str), '+1', 'r', 1, 1); 
   % select files for each session
   for s = 1:nsess
-    simgs = spm_get(Inf, 'img', sprintf('Data images %s %d', sess_str, s));
+    simgs = spm_get(Inf, mars_veropts('get_img_ext'), ...
+		    sprintf('Data images %s %d', sess_str, s));
     row{s} = (1:size(simgs, 1))'+size(VY,1);
     VY = strvcat(VY, simgs);
   end 

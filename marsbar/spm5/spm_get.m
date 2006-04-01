@@ -48,7 +48,7 @@ if ischar(Action)
     if nargin < 3
       Filt = '.*';
     else
-      Filt = sf_shexp_regexp(varargin{2});
+      Filt = sf_get_to_select_filt(varargin{2});
     end
     varargout = {spm_select('list', Dir, Filt)};
     % The old spm_get returned full file paths
@@ -68,7 +68,7 @@ if nargin < 2
 else
   Filt = varargin{1};
   varargin(1) = [];
-  Filt = sf_shexp_regexp(Filt);
+  Filt = sf_get_to_select_filt(Filt);
 end
 if any(Action < 0)
   % Directory select
@@ -80,6 +80,12 @@ return
 
 
 % Subfunctions
+function F = sf_get_to_select_filt(F)
+% Converts filter for old spm_get routine to something for spm_select
+if strcmpi(F, 'image'), F = lower(F); return, end
+F = sf_shexp_regexp(F);
+return
+
 function new_str = sf_shexp_regexp(old_str)
 % Does basic conversion from shell expression to regexp
 % Have ignored some quoting issues here:
