@@ -9,6 +9,10 @@ function varargout=mars_vol_utils(varargin)
 %    Second output t = 1 if vol seems to be little-endian
 %    Third output sw = 1 if vol swapped relative to this platform
 %
+% V = mars_vol_utils('set_type', V, type_info)
+%    Sets type of vol struct, using type_info
+%    type_info can be a number, or a string (see spm_type)
+%  
 % tf = mars_vol_utils('is_swapped', V)
 %    Returns 1 if V contains data that has opposite endianness from
 %    current platform (as given by spm_platform('bigendian')
@@ -66,6 +70,19 @@ if nargin < 2
 end
 sf_die_no_vol(V);
 varargout{:} = sf_type(V);
+
+%=======================================================================
+case 'set_type'                                          % Sets vol type
+%=======================================================================
+if nargin < 2
+  error('Need vol struct to set type');
+end
+sf_die_no_vol(V);
+if nargin < 3
+  error('Need type to set');
+end
+type_info = varargin{3};
+varargout = {sf_set_type(V, type_info)};
 
 %=======================================================================
 case 'is_swapped' % Returns 1 if vol swapped relative to this platform
@@ -150,7 +167,6 @@ switch sf_ver(V)
  otherwise
   error([sf_ver(V) ' is just nuts']);
 end
-return
 
 %=======================================================================
 case 'def_vol'                % Returns default vol struct of given type
@@ -172,7 +188,7 @@ end
 return 
  
 otherwise
-  error([Action 'is beyond my range']);
+  error([Action ' is beyond my range']);
 end
 return
 
@@ -210,6 +226,34 @@ else
 end
 return
 
+function V = sf_set_type(V, type_info)
+% set type for V from type_info
+switch sf_current_ver
+ case '99'
+  if ischar(type_info)
+    if strcmp(type_info, 'float32'), type_info='float'; end
+    if strcmp(type_info, 'float64'), type_info='double'; end
+    type_info = spm_type(type_info);
+  end
+ case '5'
+  if ischar(type_info)
+    if strcmp(type_info, 'float'), type_info='float32'; end
+    if strcmp(type_info, 'double'), type_info='float64'; end
+    type_info = spm_type(type_info);
+  end
+ otherwise
+  error(['Don''t like your type: ' sf_current_ver]);
+end
+switch sf_ver(V)
+ case '99'
+  V.dim(4) = type_info;
+ case '5'
+  V.dt(1) = type_info;
+ otherwise
+  error(['That''s a funny type: ' sf_ver(V)]);
+end
+return
+  
 function ver = sf_ver(V)
 % returns version string ('99' or '5')
 if isfield(V, 'dt')
@@ -233,19 +277,19 @@ return
 function V = sf_def_vol_99;
 V = struct(...
     'fname', '',...
-    'dim', [], ...
-    'pinfo', [], ...
-    'mat', [], ...
+    'dim', zeros(1,4), ...
+    'pinfo', [1 0 0]', ...
+    'mat', eye(4), ...
     'n', [], ...
     'descrip', '');
 return
 
 function V = sf_def_vol_5;
 V = struct('fname', '',...
-	   'dim',   [],...
-	   'dt',    [],...
-	   'pinfo', [],...
-	   'mat',   [],...
+	   'dim',   zeros(1,3),...
+	   'dt',    [0 0],...
+	   'pinfo', [1 0 0]',...
+	   'mat',   eye(4),...
 	   'n',     [],...
 	   'descrip', '',...
 	   'private',[]);

@@ -83,14 +83,16 @@ switch c_e
   error(sprintf('Who asked for %s?', c_e));
 end
 if flags.check_swap
-  for v = 1:nf
-    if flags.check_all | v == 1
-      scf = 1;
-      if mars_utils('is_swapped_wrong', VY(v))
-	if VY(v).dim(4) < 256, scf = 256; else scf = 1/256; end
+  if flags.check_all
+    for v = 1:nf
+      if mars_vol_utils('is_swapped_wrong', VY(v))
+	VY(v) = mars_vol_utils('byte_swap', VY(v));
       end
     end
-    VY(v).dim(4) = VY(v).dim(4) * scf;
+  else % just check the first and apply to all
+    if mars_vol_utils('is_swapped_wrong', VY(1))
+      VY = mars_vol_utils('byte_swap', VY);
+    end
   end
 end
 
