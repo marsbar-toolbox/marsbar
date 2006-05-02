@@ -48,11 +48,13 @@ if mlv < 6.5
   end
   arglist = {filter_spec, prompt, varargin{:}};
 else % (so matlab >= 6.5)
-  % It seems that, in matlab 7, with the Java interface, at least on
-  % linux, maybe all platforms, and for a cell array filterspec, as here,
-  % all filters need to be of form '*.<ext>', where <ext> is the file
-  % extension
-  if mlv >= 7 & usejava('jvm')
+  % It seems that, in the following setup:
+  % matlab 7; Java interface; linux; cell array filterspec
+  % - all uigetfile filters need to be of form '*.<ext>', where <ext> is
+  % the file extension.  This is not so for the one version of matlab 7
+  % on windows that I tested (matlab 7.1.0.253 or something).  I'm
+  % guessing that other Unices may have the same problem though. 
+  if mlv >= 7 & usejava('jvm') & isunix
     for fsn = 1:size(filter_spec, 1)
       [pn fn ext] = fileparts(filter_spec{fsn, 1});
       filter_spec{fsn, 1} = ['*' ext];
