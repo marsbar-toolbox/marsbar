@@ -56,6 +56,19 @@ splashf = ~marsbar('is_started');
 % promote spm directory to top of path, read defaults
 marsbar('on');
 
+% Workaround for bizarre linux uigetfile problem: see
+% http://www.mathworks.com/support/bugreports/details.html?rp=259878
+% (or search Mathworks support for uigetfile linux
+mlv = version; mlv = str2num(mlv(1:3));
+if mlv >= 7 & strcmp(computer, 'GLNX86')
+  if usejava('jvm')
+    setappdata(0,'UseNativeSystemDialogs',false)
+  else
+    warning(['Matlab 7, linux, no java, please see FAQ for '...
+	     'information on problems with file selection dialogs']);
+  end
+end
+
 %-Open startup window, set window defaults
 %-----------------------------------------------------------------------
 S = get(0,'ScreenSize');
