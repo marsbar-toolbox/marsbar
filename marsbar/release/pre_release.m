@@ -1,9 +1,8 @@
-function pre_release(username, rname, outdir, proj, proj_descrip)
+function pre_release(rname, outdir, proj, proj_descrip)
 % Runs pre-release export, cleanup
-% FORMAT pre_release(username, rname, outdir, proj, proj_descrip)
+% FORMAT pre_release(rname, outdir, proj, proj_descrip)
 %
 % Inputs [defaults]
-% username     - marsbar CVS username 
 % rname        - string to define release version ['-%s']
 % outdir       - directory to output release to [pwd]
 % proj         - project name (and name of main project file) ['marsbar']
@@ -16,24 +15,21 @@ function pre_release(username, rname, outdir, proj, proj_descrip)
 % $Id$
   
 if nargin < 1
-  error('Need username');
-end
-if nargin < 2
   rname = '';
 end
 if isempty(rname)
   rname = '-%s';
 end
-if nargin < 3
+if nargin < 2
   outdir = '';
 end
 if isempty(outdir)
   outdir = pwd;
 end
-if nargin < 4
+if nargin < 3
   proj = 'marsbar';
 end
-if nargin < 5
+if nargin < 4
   proj_descrip = 'MarsBaR ROI toolbox';
 end
 
@@ -42,8 +38,9 @@ V = eval([proj '(''ver'')']);
 rname = sprintf(rname, V);
 
 % export from CVS
-cmd = sprintf(['svn export https://svn.sourceforge.net/svnroot/%s/trunk/%s %s',
-	       username, proj, proj, proj);
+cmd = sprintf(...
+    'svn export https://svn.sourceforge.net/svnroot/%s/trunk/%s %s', ...
+    proj, proj, proj);
 unix(cmd);
 
 % make contents file
