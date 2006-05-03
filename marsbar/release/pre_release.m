@@ -42,8 +42,8 @@ V = eval([proj '(''ver'')']);
 rname = sprintf(rname, V);
 
 % export from CVS
-cmd = sprintf(['cvs -d:ext:%s@cvs.sourceforge.net:/cvsroot/%s ' ...
-	       'export -D tomorrow %s'], username, proj, proj);
+cmd = sprintf(['svn export https://svn.sourceforge.net/svnroot/%s/trunk/%s %s',
+	       username, proj, proj, proj);
 unix(cmd);
 
 % make contents file
@@ -67,6 +67,6 @@ unix(sprintf('tar zcvf %s.tar.gz %s', full_name, full_name));
 unix(sprintf('rm -rf %s', full_name));
 
 fprintf('Created %s release %s\n', proj, full_name);
-fprintf('Consider Changelog, e.g. cvs2cl.pl --prune -l "-d 2005-06-05<"\n');
+fprintf('Consider Changelog, e.g. svn2cl.sh"\n');
 
 
