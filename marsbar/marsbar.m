@@ -721,6 +721,7 @@ for i = 1:size(rois, 1)
   try 
     r = maroi('load', n);
   catch
+    r = []
     if ~strmatch(lasterr, 'Cant map image file.')
       error(lasterr);
     end

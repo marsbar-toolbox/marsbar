@@ -75,7 +75,22 @@ if any(Action < 0)
   Action = abs(Action);
   Filt = 'dir';
 end
-varargout = {spm_select(Action, Filt, varargin{:})};
+if nargin<3
+  Prompt='Select files...';
+else 
+  Prompt = varargin{1};
+  varargin(1) = [];
+end
+varargout = {spm_select(Action, Filt, Prompt, varargin{:})};
+if isempty(varargout), return, end
+% Cell array prompt should return cell array of arguments
+if iscellstr(Prompt)
+  if isempty(varargout{1})
+    varargout{1} = {};
+  else
+    varargout{1} = cellstr(varargout{1});
+  end
+end
 return
 
 

@@ -824,7 +824,7 @@ for j4  = 1:n4
 	    for v=1:nV
 	    	vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
 	    	ttP = spm_get(n21,img_flt,{[str,'select images',vstr]});
-	    	n21 = size(ttP, 1);
+	    	n21 = length(ttP);
 	    	tP  = [tP,ttP];
 	    end
 	    ti2 = spm_input([str,' ',DsF{2},'?'],GUIpos2,'c',ti2',n21,Dn(2));
@@ -900,7 +900,7 @@ for j4  = 1:n4
 			for v=1:nV
 				vstr=''; if bMV, vstr=sprintf(' (var-%d)',v); end
 				ttP = spm_get(n1,img_flt,{[str,vstr]});
-				n1  = size(ttP,1);
+				n1  = length(ttP);
 				tP  = [tP,ttP];
 			end
 			P   = [P;tP];

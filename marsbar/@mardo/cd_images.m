@@ -49,7 +49,7 @@ if ~exist(nfnames{1}, 'file')
   error(['Cannot find first file here: ' nfnames{1}]);
 end
 if isempty(byteswap) 
-  byteswap = mars_utils('is_swapped_wrong', VY(1));
+  byteswap = mars_vol_utils('is_swapped_wrong', VY(1));
 end
 
 % do byteswap as necessary
