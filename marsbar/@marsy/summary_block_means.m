@@ -19,5 +19,5 @@ N = size(y, 2);
 mus = zeros(B, N);
 
 for b = 1:B
-  mus(b, :) = mean(y(r{b},:),1)';
+  mus(b, :) = mean(y(r{b},:),1);
 end
