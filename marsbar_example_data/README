@@ -19,16 +19,19 @@ was 3 seconds for session 2 and 10 seconds for session 3.
 
 The dataset contains slice-time corrected realigned undistorted
 normalized images, with prefix "nrua", in three data directories,
-sess1, sess2 and sess3.  To run initial processing on the dataset in
-SPM, start matlab, change to the "batch" directory, and, from the
-console window run:
+sess1, sess2 and sess3.  
+
+All the preprocessing scripts are in the main marsbar distribution, in
+the 'examples/batch' subdirectory.  To run initial processing on the
+dataset in SPM, start matlab, change to the '<marsbar>/examples/batch'
+directory, and, from the console window run:
 
 run_preprocess
 
 The routines will create smoothed images and run a standard
 SPM statistical model on each of the three sessions.
 
-The routines should work with SPM99 or SPM2.
+The routines should work with SPM99, SPM2 or SPM5
 
 There is also an example batch script for MarsBaR that replicates the
 analyses described in the MarsBaR tutorial; see
