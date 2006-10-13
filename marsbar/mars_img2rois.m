@@ -33,7 +33,7 @@ else
   Pprompt = 'Image containing clusters';
 end
 if isempty(P)
-  P = spm_get(1, mars_veropts('get_img_ext', Pprompt);
+  P = spm_get(1, mars_veropts('get_img_ext', Pprompt));
 end
 if isempty(P)
   return

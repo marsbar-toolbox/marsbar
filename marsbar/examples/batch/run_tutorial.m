@@ -111,7 +111,7 @@ trim_stim = label(trim_stim, 'batch_trim_stim');
 saveroi(trim_stim, fullfile(roi_dir, 'batch_trim_stim_roi.mat'));
 
 % Save as image
-save_as_image(trim_stim, 'batch_trim_stim.img');
+save_as_image(trim_stim, fullfile(root_dir, 'batch_trim_stim.img'));
 
 % We will do estimation for the trimmed functional ROI, and for two
 % anatomical ROIs

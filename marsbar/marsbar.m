@@ -94,8 +94,16 @@ case 'on'                                           %-Initialise MarsBaR
 %=======================================================================
 
 % promote spm replacement directory
+% remove incorrect spm replacement directories
 mbpath = fileparts(which('marsbar.m'));
 spmV = mars_utils('spm_version');
+m_spm_paths = {'spm99', 'spm2', 'spm5'};
+w_s = warning;
+warning off
+for p = m_spm_paths(~ismember(m_spm_paths, spmV))
+  rmpath(fullfile(mbpath, char(p)))
+end
+warning(w_s)
 MARS.ADDPATHS = {fullfile(mbpath, ['spm' spmV(4:end)])};
 addpath(MARS.ADDPATHS{:}, '-begin');
 fprintf('MarsBaR analysis functions prepended to path\n');
