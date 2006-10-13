@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.40';  % SPM5 alpha test release second version
+MBver = '0.41';  % SPM5 alpha test release second version
 
 % Various working variables in global variable structure
 global MARS;
