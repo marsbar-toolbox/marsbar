@@ -1,0 +1,34 @@
+Batch processing scripts for MarsBaR example data
+-------------------------------------------------
+
+This directory contains the batch scripts for preprocessing of the
+MarsBaR example dataset.  You can get the dataset from the MarsBaR
+download page, currently:
+
+https://sourceforge.net/project/showfiles.php?group_id=76381
+
+To run initial processing on the dataset in SPM, start matlab, change
+('cd') to the '<marsbar>/examples/batch' directory, and, from the
+console window run:
+
+run_preprocess
+
+The routines will create smoothed images and run a standard
+SPM statistical model on each of the three sessions.
+
+The routines should work with SPM99, SPM2 or SPM5
+
+There is also an example batch script for MarsBaR that replicates the
+analyses described in the MarsBaR tutorial; see
+http://marsbar.sourceforge.net.  To run:
+
+run_tutorial
+
+Please use the MarsBaR mailing list for any questions or to report
+problems:
+
+https://lists.souceforge.net/lists/listinfo/marsbar-users
+
+We wish you a pleasant FMRI experience,
+
+Matthew Brett - for the team
