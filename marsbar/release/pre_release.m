@@ -8,7 +8,7 @@ function pre_release(rname, outdir, proj, proj_descrip)
 % proj         - project name (and name of main project file) ['marsbar']
 % proj_descrip - short description of project ['MarsBaR ROI toolbox']
 %
-% e.g.  pre_release('matthewbrett', '-devel-%s', '/tmp')
+% e.g.  pre_release('-devel-%s', '/tmp')
 % would output a release called marsbar-devel-0.34.tar.gz (if the marsbar
 % version string is '0.34') to the /tmp directory
 %
@@ -37,9 +37,9 @@ end
 V = eval([proj '(''ver'')']);
 rname = sprintf(rname, V);
 
-% export from CVS
+% export from SVN
 cmd = sprintf(...
-    'svn export https://svn.sourceforge.net/svnroot/%s/trunk/%s %s', ...
+    'svn export https://marsbar.svn.sourceforge.net/svnroot/%s/trunk/%s %s', ...
     proj, proj, proj);
 unix(cmd);
 
