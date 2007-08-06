@@ -34,7 +34,7 @@ function varargout=marsbar(varargin)
 % grep "^case " marsbar.m
   
 % Marsbar version
-MBver = '0.41';  % SPM5 alpha test release second version
+MBver = '0.41.1';  % SPM5 stable release
 
 % Various working variables in global variable structure
 global MARS;
@@ -159,6 +159,11 @@ mars_options('put');
 if loadf
   fprintf('Loaded MarsBaR defaults from %s\n',sourcestr);
 end
+
+% Add very very odd fix for maroi object path problem
+% and matlab 7.1 (at least)
+% Don't ask why this is needed - I don't know.
+maroi;
 
 %=======================================================================
 case 'off'                                              %-Unload MarsBaR 
