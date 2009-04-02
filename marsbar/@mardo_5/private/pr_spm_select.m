@@ -92,7 +92,7 @@ if nargin<1, n       = [0 Inf]; end;
 ok  = 0;
 if numel(n)==1,   n    = [n n];    end;
 if n(1)>n(2),     n    = n([2 1]); end;
-if ~finite(n(1)), n(1) = 0;        end;
+if ~isfinite(n(1)), n(1) = 0;        end;
 if numel(already)>n(2), already = already(1:n(2)); end
 already = strvcat(already);
 
@@ -627,7 +627,7 @@ if length(vlo)>lim1,
     msg(lb,['Retained ' num2str(lim1) '/' num2str(length(vlo))...
         ' of selection.']);
     beep;
-elseif finite(lim(2))
+elseif isfinite(lim(2))
     if lim(1)==lim(2),
         msg(lb,['Selected ' num2str(size(str3,1)) '/' num2str(lim(2)) ' files.']);
     else
@@ -637,7 +637,7 @@ else
     if size(str3,1) == 1, ss = ''; else ss = 's'; end;
     msg(lb,['Selected ' num2str(size(str3,1)) ' file' ss '.']);
 end;
-if ~finite(lim(1)) || size(str3,1)>=lim(1),
+if ~isfinite(lim(1)) || size(str3,1)>=lim(1),
     set(sib(lb,'D'),'Enable','on');
 end;
 
@@ -1105,7 +1105,7 @@ if numel(str)>lim(2),
     msg(ob,['Retained ' num2str(lim(2)) ' of the ' num2str(numel(str)) ' files.']);
     beep;
     str = str(1:lim(2));
-elseif finite(lim(2)),
+elseif isfinite(lim(2)),
     if lim(1)==lim(2),
         msg(ob,['Specified ' num2str(numel(str)) '/' num2str(lim(2)) ' files.']);
     else
@@ -1115,7 +1115,7 @@ else
     if numel(str) == 1, ss = ''; else ss = 's'; end;
     msg(ob,['Specified ' num2str(numel(str)) ' file' ss '.']);
 end;
-if ~finite(lim(1)) || numel(str)>=lim(1),
+if ~isfinite(lim(1)) || numel(str)>=lim(1),
     set(sib(ob,'D'),'Enable','on');
 else
     set(sib(ob,'D'),'Enable','off');

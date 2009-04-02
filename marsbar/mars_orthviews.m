@@ -715,11 +715,11 @@ if isstruct(vol),
 	mx = -Inf;
 	for i=1:vol.dim(3),
 		tmp = spm_slice_vol(vol,spm_matrix([0 0 i]),vol.dim(1:2),0);
-		imx = max(tmp(find(finite(tmp))));
+		imx = max(tmp(find(isfinite(tmp))));
 		if ~isempty(imx),mx = max(mx,imx);end
 	end;
 else,
-	mx = max(vol(find(finite(vol))));
+	mx = max(vol(find(isfinite(vol))));
 end;
 %_______________________________________________________________________
 function mn = minval(vol)
@@ -728,11 +728,11 @@ if isstruct(vol),
         mn = Inf;
         for i=1:vol.dim(3),
                 tmp = spm_slice_vol(vol,spm_matrix([0 0 i]),vol.dim(1:2),0);
-		imn = min(tmp(find(finite(tmp))));
+		imn = min(tmp(find(isfinite(tmp))));
 		if ~isempty(imn),mn = min(mn,imn);end
         end;
 else,
-        mn = min(vol(find(finite(vol))));
+        mn = min(vol(find(isfinite(vol))));
 end;
 
 %_______________________________________________________________________
@@ -840,9 +840,9 @@ for i = valid_handles(arg1),
 
 				sc   = 64/(mx-mn);
 				off  = 65.51-mn*sc;
-				msk  = find(finite(tmpt)); imgt(msk) = off+tmpt(msk)*sc;
-				msk  = find(finite(tmpc)); imgc(msk) = off+tmpc(msk)*sc;
-				msk  = find(finite(tmps)); imgs(msk) = off+tmps(msk)*sc;
+				msk  = find(isfinite(tmpt)); imgt(msk) = off+tmpt(msk)*sc;
+				msk  = find(isfinite(tmpc)); imgc(msk) = off+tmpc(msk)*sc;
+				msk  = find(isfinite(tmps)); imgs(msk) = off+tmps(msk)*sc;
 
 				cmap = get(st.fig,'Colormap');
 				if size(cmap,1)~=128
@@ -936,9 +936,9 @@ for i = valid_handles(arg1),
 					tmpt = spm_slice_vol(vol,inv(TM0*(st.Space\M)),TD,[0 NaN])'/(mx-mn)+mn;
 					tmpc = spm_slice_vol(vol,inv(CM0*(st.Space\M)),CD,[0 NaN])'/(mx-mn)+mn;
 					tmps = spm_slice_vol(vol,inv(SM0*(st.Space\M)),SD,[0 NaN])'/(mx-mn)+mn;
-					tmpt(find(~finite(tmpt))) = 0;
-					tmpc(find(~finite(tmpc))) = 0;
-					tmps(find(~finite(tmps))) = 0;
+					tmpt(find(~isfinite(tmpt))) = 0;
+					tmpc(find(~isfinite(tmpc))) = 0;
+					tmps(find(~isfinite(tmps))) = 0;
 
 					tmp  = cat(3,tmpt*colour(1),tmpt*colour(2),tmpt*colour(3));
 					imgt = (repmat(1-tmpt,[1 1 3]).*imgt+tmp);
@@ -1061,7 +1061,7 @@ scf = (cml-1)/(mx-mn);
 img = round((inpimg-mn)*scf)+1;
 img(find(img<1))=1; 
 img(find(img>cml))=cml;
-img(~finite(img)) = miscol;
+img(~isfinite(img)) = miscol;
 %_______________________________________________________________________
 %_______________________________________________________________________
 function cmap = getcmap(acmapname)
