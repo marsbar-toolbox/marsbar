@@ -98,13 +98,18 @@ case 'on'                                           %-Initialise MarsBaR
 mbpath = fileparts(which('marsbar.m'));
 spmV = mars_utils('spm_version');
 m_spm_paths = {'spm99', 'spm2', 'spm5'};
+v_path = lower(spmV);
+% spm8 is effectively identical to spm5 for marsbar
+if strcmp(v_path, 'spm8')
+    v_path = 'spm5';
+end
 w_s = warning;
 warning off
-for p = m_spm_paths(~ismember(m_spm_paths, spmV))
+for p = m_spm_paths(~ismember(m_spm_paths, v_path))
   rmpath(fullfile(mbpath, char(p)))
 end
 warning(w_s)
-MARS.ADDPATHS = {fullfile(mbpath, ['spm' spmV(4:end)])};
+MARS.ADDPATHS = {fullfile(mbpath, v_path)};
 addpath(MARS.ADDPATHS{:}, '-begin');
 fprintf('MarsBaR analysis functions prepended to path\n');
 

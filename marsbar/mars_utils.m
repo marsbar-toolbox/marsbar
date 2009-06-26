@@ -200,29 +200,26 @@ end
 %=======================================================================
 case 'spm_version'                   % Robust get for SPM version string
 %=======================================================================
+% The problem we are trying to solve here is how to take account of the
+% unusual situation of the spm.m file _not_ being in the same directory
+% as the Contents.m file.  SPM8 raises an error, SPM5 and probably
+% previous just returns 'SPM'.  We raise an error always.
 
-if nargin < 2
-  check_global = 1;
-else
-  check_global = varargin{2};
+try
+    ver = spm('ver');
+catch
+    err = lasterr;
+    if strcmp('Undefined', err(1:length('Undefined')))
+        error('Marsbar needs SPM on the matlab path')
+    end
+    error(lasterr)
 end
-
-if check_global
-  % Try global first
-  v_s = spm('GetGlobal', 'SPM_VER');
-  if isfield(v_s, 'v')
-    if ~strcmp(v_s.v, 'SPM'), varargout = {v_s.v}; return; end
-  end
+% If version find failed, for SPM5, routine returns 'SPM'
+str = ['Can''t obtain SPM Revision information. Is spm.m in the same' ...
+       ' directory as Contents.m?'];
+if strcmp(ver, 'SPM')
+    error(str)
 end
-
-% Next try all versions of spm.m on path
-ver = 'SPM';
-spm_ms = which('spm.m', '-all');  
-for s = 1:length(spm_ms)
-  ver = spm('ver', spm_ms{s}, 1, 1);
-  if ~strcmp(ver, 'SPM'),  break, end
-end
-
 varargout = {ver};
 
 %=======================================================================
