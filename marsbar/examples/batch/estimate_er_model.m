@@ -59,7 +59,7 @@ switch spm('ver')
       'contrasts', con_struct);
   spm_bch('do_bch_wrapper');
   
- case {'SPM2', 'SPM5'}
+ otherwise
   % load SPM defaults
   if ~exist('defaults', 'var')
     global defaults;

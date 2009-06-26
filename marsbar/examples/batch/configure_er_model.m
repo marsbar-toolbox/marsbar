@@ -70,7 +70,7 @@ switch spm('ver')
   spm_bch('do_bch_wrapper');
   model_file = fullfile(ana_dir, 'SPMcfg.mat');
   
- case {'SPM2', 'SPM5'}
+ otherwise
   er_model_spm2(sess_dir, sesses, ana_dir);
   model_file = fullfile(ana_dir, 'SPM.mat');
   
