@@ -105,7 +105,7 @@ html_theme_options = {
     'sidebarbgcolor': '#fbfbe0',
     'sidebartextcolor': '#C00',
     'sidebarlinkcolor': '#084B8A',
-    'relbarbgcolor': '#848484',
+    'relbarbgcolor': '#2E2E2E',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
