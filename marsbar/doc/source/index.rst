@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-MarsBAR - the documentation
-===========================
+============================================
+ MarsBaR region of interest toolbox for SPM
+============================================
 
 Contents:
 
@@ -12,8 +13,13 @@ Contents:
    :maxdepth: 2
 
    introduction
+   download
+   tutorial/index
    faq
-   svn
+   support
+   development/index
+
+.. image:: http://sourceforge.net/sflogo.php?group_id=76381&type=2
 
 Indices and tables
 ==================
