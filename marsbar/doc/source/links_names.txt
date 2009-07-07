@@ -18,4 +18,5 @@
 .. _`Gmane`: http://gmane.org/
 .. _`recent MarsBaR emails`: http://blog.gmane.org/gmane.comp.graphics.spm.marsbar
 .. _`SourceForge`: http://sourceforge.net
+.. _`mricro`: http://www.mricro.com/
 
