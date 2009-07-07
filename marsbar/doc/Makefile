@@ -1,7 +1,7 @@
 # Makefile for Sphinx documentation
 #
 
-WWW=matthewbrett,marsbar@www.sourceforge.net:htdocs
+WWW=matthewbrett,marsbar@web.sourceforge.net:htdocs
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
@@ -13,7 +13,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest pdf all dist
+.PHONY: help clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest pdf all dist public
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -43,8 +43,8 @@ dist: clean all
 	cp -al build/html/* dist/
 	@echo "Build finished.  Final docs are in dist/"
 
-public_html: dist
-	rsync -avH --delete dist/ $(WWW)/
+public: dist
+	rsync -avH --delete dist/ $(WWW)/test/
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
