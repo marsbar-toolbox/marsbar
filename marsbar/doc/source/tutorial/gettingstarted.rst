@@ -8,11 +8,11 @@ same.
 How to read this document
 -------------------------
 
-There are three threads in this tutorial.  The first and most obvious is a step
-by step guide to running several standard ROI analyses.   On the way, there are
-two sets of diversions.  These are interface summaries, and technical notes.
- The text for both of these is indented.  If you just want to do the tutorial,
-you can skip these diversions, and come back to them later.  The interface
+There are three threads in this tutorial. The first and most obvious is a step
+by step guide to running several standard ROI analyses.  On the way, there are
+two sets of diversions. These are interface summaries, and technical notes.
+The text for both of these is indented. If you just want to do the tutorial,
+you can skip these diversions, and come back to them later. The interface
 summaries give you more information on the range of things that MarsBaR can do;
 the technical notes are more detailed explanations of the workings of MarsBaR,
 which can be useful in understanding some of the more obscure parts of the
@@ -32,15 +32,15 @@ All of these are available via the MarsBaR pages - see :ref:`download-install`
 
 The web page has instructions on downloading and installing
 MarsBaR. MarsBaR needs a version of SPM_, so if you don't have SPM, you
-will need it.  This tutorial assumes you are using SPM5, but you can run
+will need it. This tutorial assumes you are using SPM5, but you can run
 the tutorial with SPM2 or SPM99; the results will be very similar.
 
-For the example dataset, unpack the archive somewhere suitable.  This will give
+For the example dataset, unpack the archive somewhere suitable. This will give
 you a directory marsbar_example_data-N, where N is the version number of the
-example data (currently 0.3).  Finally, unpack the AAL ROI library somewhere;
+example data (currently 0.3). Finally, unpack the AAL ROI library somewhere;
 it will create a new directory, called something like marsbar-aal-0.2. The
 library contains ROIs in MarsBaR format that were anatomically defined by hand
-on a single brain matched to the MNI / ICBM templates.  The ROI definitions are
+on a single brain matched to the MNI / ICBM templates. The ROI definitions are
 described in:
 
   Tzourio-Mazoyer N, Landeau B, Papathanassiou D, Crivello F, Etard O, Delcroix
@@ -59,9 +59,9 @@ fitting and power in fast event related designs
 <http://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html>`_. NeuroImage,
 19(2) Supplement 1, abstract 791
 
-The data consist of three EPI runs, all from one subject.  In each run the
+The data consist of three EPI runs, all from one subject. In each run the
 subject watched a computer screen, and pressed a button when they saw a
-flashing checker board.  An “event” in this design is one presentation of the
+flashing checker board. An “event” in this design is one presentation of the
 flashing checker board.
 
 We did this experiment because we were interested to see if events at fast
@@ -75,9 +75,9 @@ Plan of campaign
 ----------------
 
 We are going to analyse the data to see if there is different activation for
-fast and slow presentation rates.  ROI analysis is an obvious choice here,
+fast and slow presentation rates. ROI analysis is an obvious choice here,
 because we know where the activation is likely to be – in the primary visual
-cortex – but we are more interested in how much activation there will be.  So,
+cortex – but we are more interested in how much activation there will be. So,
 we will first need to define an ROI for the visual cortex, and then analyze the
 data within the ROI.
 
@@ -87,39 +87,39 @@ functional definition and second, an anatomical definition.
 Defining a functional ROI
 -------------------------
 
-A key problem in an ROI analysis is finding the right ROI.  This is easier for
+A key problem in an ROI analysis is finding the right ROI. This is easier for
 the visual cortex than for almost any other functional area, because the
 location of the visual cortex is fairly well predicted by the calcarine sulcus,
-in the occipital lobe, which is  easy enough to define on a structural scan.
- However, there is a moderate degree of individual variation in the size and
+in the occipital lobe, which is easy enough to define on a structural scan.
+However, there is a moderate degree of individual variation in the size and
 border of the primary visual cortex.
 
 One approach to this problem is to use the subject's own activation pattern to
-define the ROI.  We might ask the subject to do another visual task in the
-scanner, and use SPM to detect the activated areas.  We find the subject's
+define the ROI. We might ask the subject to do another visual task in the
+scanner, and use SPM to detect the activated areas. We find the subject's
 primary visual cortex from the activation map, and use this functional ROI to
-analyze other data from the same subject.  This approach has been very fruitful
+analyze other data from the same subject. This approach has been very fruitful
 for areas such as the fusiform face area, which vary a great deal in position
 between subjects.
 
 For this dataset, we are most interested in the difference between the fast
-presentation rates of run 1, and the slow presentation rates of run 3.  So, we
+presentation rates of run 1, and the slow presentation rates of run 3. So, we
 can use an SPM analysis of run 2 to define the visual cortex, and use this as
 an ROI for our analysis of run 1 and run 3.
 
 Functional ROIs usually need independent data
 ---------------------------------------------
 
-Using the recipe above, we are not using run 2 for the ROI analysis.  Because
+Using the recipe above, we are not using run 2 for the ROI analysis. Because
 we will use run 2 to define the ROI, if we extract data from this ROI for run
 2, it will be biased to be more activated than the data from run 1 and run 3.
- Imagine that our experiment had not worked, and there was no real activation
-in any of the runs.  We do an SPM analysis on run 2, and drop the threshold to
-find some voxels with higher signal than others due to noise.  We define the
+Imagine that our experiment had not worked, and there was no real activation
+in any of the runs. We do an SPM analysis on run 2, and drop the threshold to
+find some voxels with higher signal than others due to noise. We define the
 ROI using this noise cluster, and extract data from the ROI for this session,
-and the other two sessions.  The activation signal from the ROI in run 2 will
+and the other two sessions. The activation signal from the ROI in run 2 will
 probably appear to be higher than for the other sessions, because we selected
-these voxels beforehand to have high signal for run 2.  The same argument
+these voxels beforehand to have high signal for run 2. The same argument
 applies if we select the ROI from a truly activated area; the exact choice of
 voxels will depend to some extent on the noise in this session, and so data
 extracted from this ROI, for this session, will be biased to have high signal.
@@ -127,26 +127,26 @@ extracted from this ROI, for this session, will be biased to have high signal.
 Starting the tutorial
 ---------------------
 
-First you will need to run some processing on the example dataset.  After you
+First you will need to run some processing on the example dataset. After you
 unpack the dataset archive, you should have four subdirectories in the main
-marsbar_example_data directory.  Directories sess1, sess2 and sess3 contain the
+marsbar_example_data directory. Directories sess1, sess2 and sess3 contain the
 slice-time corrected and realigned, undistorted, spatially normalized data for
 the three sessions (runs) of the experiment. The rois directory contains
 pre-defined regions of interest.
 
-To run the tutorial, find where your marsbar directory is.  You can do this
+To run the tutorial, find where your marsbar directory is. You can do this
 from the matlab prompt with >> which marsbar . If <marsbar> is the marsbar
 directory, then you should be able to see a directory called
 <marsbar>/examples/batch. This batch directory contains Matlab program files to
-run the preprocessing..  Change directory to  batch , and start Matlab.   From
-the Matlab prompt, run the command run_preprocess.  This little script will run
+run the preprocessing.. Change directory to batch , and start Matlab.  From
+the Matlab prompt, run the command run_preprocess. This little script will run
 smooth the images by 8mm FWHM, and run SPM models for each run.
 
 Now start MarsBaR. If you have put or linked MarsBaR into your SPM toolbox
-directory then you can start MarsBaR from the SPM interface.  Click
+directory then you can start MarsBaR from the SPM interface. Click
 Toolboxes... and then marsbar.
 
-Otherwise, make sure the MarsBaR directory is on the Matlab path,  and run the
+Otherwise, make sure the MarsBaR directory is on the Matlab path, and run the
 command marsbar from the Matlab >> prompt.
 
 .. include:: ../links_names.txt
