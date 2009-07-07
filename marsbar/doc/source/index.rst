@@ -7,6 +7,14 @@
  MarsBaR region of interest toolbox for SPM
 ============================================
 
+MarsBaR (MARSeille Boîte À Région d'Intérêt) is a toolbox for
+`SPM`_ which provides routines for region of interest analysis.
+Features include region of interest definition, combination of
+regions of interest with simple algebra, extraction of data for
+regions with and without SPM preprocessing (scaling, filtering), and
+statistical analyses of ROI data using the SPM statistics machinery.
+
+
 .. only:: html
 
    :Release: |version|
@@ -19,7 +27,7 @@
 .. toctree::
    :maxdepth: 2
 
-   introduction
+   about
    download
    tutorial/index
    faq
@@ -34,3 +42,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`search`
 
+.. include:: links_names.txt
