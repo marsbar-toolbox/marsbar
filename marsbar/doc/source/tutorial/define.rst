@@ -41,30 +41,32 @@ sess2/SPM2_ana directory. Select the SPM.mat file and click Done. Choose the
 stim_hrf t contrast from the SPM contrast manager, click Done. Then accept all
 the default answers from the interface, like this:
 
-+-----------------------------+--------+
-|Prompt                       |Response|
-+-----------------------------+--------+
-|mask with other contrasts:   |no      |
-+-----------------------------+--------+
-|title for comparison         |stim_hrf|
-+-----------------------------+--------+
-|p value adjustment to control|none    |
-+-----------------------------+--------+
-|threshold {T or p value}     |0.05    |
-+-----------------------------+--------+
-|& extent threshold {voxels}  |0       |
-+-----------------------------+--------+
++-------------------------------+----------+
+| Prompt                        | Response |
++===============================+==========+
+| mask with other contrasts:    | no       |
++-------------------------------+----------+
+| title for comparison          | stim_hrf |
++-------------------------------+----------+
+| p value adjustment to control | none     |
++-------------------------------+----------+
+| threshold {T or p value}      | 0.05     |
++-------------------------------+----------+
+| & extent threshold {voxels}   | 0        |
++-------------------------------+----------+
 
 
-Technical note: MarsBaR and SPM designs
+.. note:: 
 
-For the large majority of tasks, MarsBaR can use SPM designs interchangeably.
-For example, when running with SPM5, you can load SPM99 designs and estimate
-them in MarsBaR; you can also estimate SPM5 designs from MarsBaR, even if you
-are using - say - SPM99. However, MarsBaR uses the standard SPM routines for
-the 'Get SPM cluster(s)' routines. This means that if, for example, you are
-running SPM5 you can only get clusters from an SPM5 design and you can only get
-clusters from an SPM99 design if you are running SPM99.
+   **MarsBaR and SPM designs**: For the large majority of tasks, MarsBaR
+   can use SPM designs interchangeably.  For example, when running with
+   SPM5, you can load SPM99 designs and estimate them in MarsBaR; you
+   can also estimate SPM5 designs from MarsBaR, even if you are using -
+   say - SPM99. However, MarsBaR uses the standard SPM routines for the
+   'Get SPM cluster(s)' routines. This means that if, for example, you
+   are running SPM5 you can only get clusters from an SPM5 design and
+   you can only get clusters from an SPM99 design if you are running
+   SPM99.
 
 Now you have run the Get SPM cluster(s) interface, you should have an SPM
 activation map in the graphics window:
@@ -102,29 +104,32 @@ characters or so, the description can be longer. For the moment, accept the
 defaults, which derive from the coordinates of the voxel under the red arrow
 and the title of the contrast:
 
-+------------------+--------------------------------------+
-|Prompt            |Response                              |
-+------------------+--------------------------------------+
-|Description of ROI|stim_hrf cluster at [-9.0 -93.0 -15.0]|
-+------------------+--------------------------------------+
-|Label for ROI     |stim_hrf_-9_-93_-15                   |
-+------------------+--------------------------------------+
++-------------------+-------------------------------------------+
+|Prompt             |Response                                   |
++===================+===========================================+
+|Description of ROI | ``stim_hrf`` cluster at [-9.0 -93.0 -15.0]|
++-------------------+-------------------------------------------+
+|Label for ROI      | ``stim_hrf_-9_-93_-15``                   |
++-------------------+-------------------------------------------+
 
+After this, MarsBaR offers a dialog box to give a filename for the
+ROI. By default the offered filename will be
+``stim_hrf_-9_-93_-15_roi.mat`` in the ``sess2/SPM2_ana`` directory. For
+simplicity, why not accept the default name and click Save to save the
+ROI.
 
-After this, MarsBaR offers a dialog box to give a filename for the ROI. By
-default the offered filename will be stim_hrf_-9_-93_-15_roi.mat in the
-sess2/SPM2_ana directory. For simplicity, why not accept the default name and
-click Save to save the ROI.
+.. note::
 
-Technical note: ROIs and filenames
+   *ROIs and filenames*
 
-MarsBaR stores each ROI in a separate file. In fact, the files are in the
-Matlab .mat format.  MarsBaR will accept any filename for the ROI, and can
-load ROIs from any file that you have saved them to, but it will suggest that
-you save the ROI with a filename that ends in _roi.mat. This is just for
-convenience, so that when you are asked to select ROIs, the MarsBaR GUI can
-assume that ROI files end with this suffix. It will probably make your life
-easier if you keep to this convention.
+   MarsBaR stores each ROI in a separate file. In
+   fact, the files are in the Matlab .mat format.  MarsBaR will accept any
+   filename for the ROI, and can load ROIs from any file that you have
+   saved them to, but it will suggest that you save the ROI with a filename
+   that ends in _roi.mat. This is just for convenience, so that when you
+   are asked to select ROIs, the MarsBaR GUI can assume that ROI files end
+   with this suffix. It will probably make your life easier if you keep to
+   this convention.
 
 Review the ROI
 --------------
@@ -177,29 +182,29 @@ Figure 11: ROI build menu
 
 From the menu, select Box (ranges XYZ). Answer the prompts like this:
 
-+-------------------+----------------------------------------------+
-|Prompt             |Response                                      |
-+-------------------+----------------------------------------------+
-|[2] Range in X (mm)|-20 20                                        |
-+-------------------+----------------------------------------------+
-|[2] Range in Y (mm)|-66 -106                                      |
-+-------------------+----------------------------------------------+
-|[2] Range in Z (mm)|-20 7                                         |
-+-------------------+----------------------------------------------+
-|Description of ROI |box at -20.0>X<20.0 -106.0>Y<-66.0 -20.0>Z<7.0|
-+-------------------+----------------------------------------------+
-|Label for ROI      |box_x_-20:20_y_-106:-66_z_-20:7               |
-+-------------------+----------------------------------------------+
-|Filename           |box_x_-20_20_y_-106_-66_z_-20_7_roi.mat       |
-+-------------------+----------------------------------------------+
++---------------------+-------------------------------------------------+
+| Prompt              | Response                                        |
++=====================+=================================================+
+| [2] Range in X (mm) | -20 20                                          |
++---------------------+-------------------------------------------------+
+| [2] Range in Y (mm) | -66 -106                                        |
++---------------------+-------------------------------------------------+
+| [2] Range in Z (mm) | -20 7                                           |
++---------------------+-------------------------------------------------+
+| Description of ROI  | box at -20.0>X<20.0 -106.0>Y<-66.0 -20.0>Z<7.0  |
++---------------------+-------------------------------------------------+
+| Label for ROI       | ``box_x_-20:20_y_-106:-66_z_-20:7``             |
++---------------------+-------------------------------------------------+
+| Filename            | ``box_x_-20_20_y_-106_-66_z_-20_7_roi.mat``     |
++---------------------+-------------------------------------------------+
 
 
 The last three values here are the defaults.
 
-To check this is as you want it, choose ROI Definition, View, select both of
-box_x_-20_20_y_-106_-66_z_-20_7_roi.mat and stim_hrf_-9_-93_-12_roi.mat, in
-that order, and click Done. You should see the box in blue, with the
-activation cluster overlaid in red.
+To check this is as you want it, choose ROI Definition, View, select
+both of ``box_x_-20_20_y_-106_-66_z_-20_7_roi.mat`` and
+``stim_hrf_-9_-93_-12_roi.mat``, in that order, and click Done. You
+should see the box in blue, with the activation cluster overlaid in red.
 
 We now need to combine the two ROIs, to select only those voxels that are
 shared by the box and the activation cluster.
@@ -212,21 +217,21 @@ window. Choose Combine ROIs; select both the box and the cluster ROIs, click
 on Done. The prompt now asks for a function with which to combine the ROIs.
 In this function, the first ROI you selected is r1, and the second ROI is r2.
 Here we want to get the overlap, and this is represented by the logical AND
-operator, which is “&” in Matlab. Enter the function “r1 & r2” (without the
-quotes).
+operator, which is ``&`` in Matlab. Enter the function ``r1 & r2``.
 
-Technical note: combining ROIs
+.. note::
 
-You can use most mathematical functions to combine ROIs. If you wanted to
-combine two ROIs, so the new ROI has all the voxels in ROI 1 and all the voxels
-in ROI2, you could use the function “r1 | r2” (read as “r1 or r2”). If you
-wanted only the voxels in ROI 1 that are not in ROI 2: “r1 & ~ r2”. Similarly,
-you can choose more than two ROIs and combine them. The function “(r1 & r2) &
-~r3” gives all the voxels in ROI 1 and ROI 2, but excluding those that are in
-ROI 3.
+   *Combining ROIs* You can use most mathematical functions to combine
+   ROIs. If you wanted to combine two ROIs, so the new ROI has all the
+   voxels in ROI 1 and all the voxels in ROI2, you could use the
+   function ``r1 | r2`` (read as "r1 or r2"). If you wanted only the
+   voxels in ROI 1 that are not in ROI 2: ``r1 & ~ r2``. Similarly, you
+   can choose more than two ROIs and combine them. The function ``(r1 &
+   r2) & ~r3`` gives all the voxels in ROI 1 and ROI 2, but excluding
+   those that are in ROI 3.
 
 After this, accept the default description, set the label to something like
-“Trimmed stim run 2”, and save the ROI as trim_stim_roi.mat.
+“Trimmed stim run 2”, and save the ROI as ``trim_stim_roi.mat``.
 
 Writing the ROI as an image
 ---------------------------
@@ -239,22 +244,24 @@ trim_stim_roi.mat as the ROI to export. Another menu appears, asking for a
 Space for ROI image. The three options are Base space for ROIs, From image, or
 ROI native space.
 
-Technical note: ROIs and image spaces
+.. note::
 
-An ROI can be one of two fundamental types: a shape (such as a box or sphere)
-or a list of points (such as an activation cluster or coordinates read in from
-an ROI in an image). Shape ROIs know nothing about such vulgarities as voxels,
-they are abstract concepts waiting to be applied. In order to display shapes,
-or write them to images, or combine them with other ROIs, we need to convert
-them to point lists in a certain space – with dimensions in X Y and Z, and
-voxels with specified sizes. For example, when MarsBaR combines ROIs, it needs
-some default space (dimensions, voxel sizes) in which to define the new point
-list ROI. By default, this is the space of the MNI template; so the Base space
-for ROIs in the menu above will be MNI space. This is a good space to use if
-you are working with spatially normalized data, but ROIs are often defined on a
-subject's data before spatial normalization. In this case, it may be more
-useful to set the ROI base space to match the subject's own activation images,
-using Options, Edit options from the MarsBaR window.
+   **ROIs and image spaces**: An ROI can be one of two fundamental types: a
+   shape (such as a box or sphere) or a list of points (such as an
+   activation cluster or coordinates read in from an ROI in an
+   image). Shape ROIs know nothing about such vulgarities as voxels, they
+   are abstract concepts waiting to be applied. In order to display shapes,
+   or write them to images, or combine them with other ROIs, we need to
+   convert them to point lists in a certain space – with dimensions in X Y
+   and Z, and voxels with specified sizes. For example, when MarsBaR
+   combines ROIs, it needs some default space (dimensions, voxel sizes) in
+   which to define the new point list ROI. By default, this is the space of
+   the MNI template; so the Base space for ROIs in the menu above will be
+   MNI space. This is a good space to use if you are working with spatially
+   normalized data, but ROIs are often defined on a subject's data before
+   spatial normalization. In this case, it may be more useful to set the
+   ROI base space to match the subject's own activation images, using
+   Options, Edit options from the MarsBaR window.
 
 The issue of the ROI space comes up here, because we need to define what
 dimensions and voxels we should use when writing the image. We can either
@@ -272,6 +279,5 @@ select Base space for ROIs, choose a directory to save the image, and accept
 the default filename for the image, which should be trim_stim. You can check
 this has worked, by finding the SPM buttons window, selecting Display, and
 choosing the new trim_stim.img.
-
 
 .. include:: ../links_names.txt

@@ -30,15 +30,16 @@ give a reasonable approximation to the putamen in our data.
 Running an analysis using structural ROIs
 -----------------------------------------
 
-is exactly the same as running the analysis with the functional ROI. Select
-Design from the MarsBaR menu, and Set design from file. Choose
-sess1/SPM2_ana/SPM.mat.  Click on Data, Extract ROI data (default). When you
-are asked for ROI file, navigate to the AAL directory, select MNI_
-Putamen_L_roi.mat and click Done. When the data extraction is done, choose
-Results, Estimate results and wait till MarsBaR has done its thing. Select
-Results, Statistic table, enter the stim_hrf contrast, as shown in , above.
-Repeat the same procedure, using the AAL MNI_ Putamen_R_roi.mat ROI. You
-will now have two tables like these:
+is exactly the same as running the analysis with the functional
+ROI. Select Design from the MarsBaR menu, and Set design from
+file. Choose ``sess1/SPM2_ana/SPM.mat``.  Click on Data, Extract ROI
+data (default). When you are asked for ROI file, navigate to the AAL
+directory, select ``MNI_Putamen_L_roi.mat`` and click Done. When the
+data extraction is done, choose Results, Estimate results and wait till
+MarsBaR has done its thing. Select Results, Statistic table, enter the
+stim_hrf contrast, as shown in , above.  Repeat the same procedure,
+using the AAL ``MNI_Putamen_R_roi.mat`` ROI. You will now have two
+tables like these:
 
 Figure 19: statistics table for left putamen, run 1
 
