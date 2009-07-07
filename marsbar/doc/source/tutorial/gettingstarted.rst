@@ -28,51 +28,19 @@ three packages:
 #. the example dataset (version 0.3)
 #. the AAL ROI library (version 0.2)
 
-All of these are available via the MarsBaR pages - see :ref:`download-install`
+To install these packages, see :ref:`download-install`
 
-The web page has instructions on downloading and installing
-MarsBaR. MarsBaR needs a version of SPM_, so if you don't have SPM, you
-will need it. This tutorial assumes you are using SPM5, but you can run
-the tutorial with SPM2 or SPM99; the results will be very similar.
+This tutorial assumes you are using SPM5, but you can run the tutorial
+with SPM2 or SPM99; the results will be very similar.
 
-For the example dataset, unpack the archive somewhere suitable. This will give
-you a directory marsbar_example_data-N, where N is the version number of the
-example data (currently 0.3). Finally, unpack the AAL ROI library somewhere;
-it will create a new directory, called something like marsbar-aal-0.2. The
-library contains ROIs in MarsBaR format that were anatomically defined by hand
-on a single brain matched to the MNI / ICBM templates. The ROI definitions are
-described in:
-
-  Tzourio-Mazoyer N, Landeau B, Papathanassiou D, Crivello F, Etard O, Delcroix
-  N, et al. (2002). Automated anatomical labelling of activations in SPM using a
-  macroscopic anatomical parcellation of the MNI MRI single subject brain.
-  NeuroImage 15: 273-289.
-
-The example dataset
--------------------
-
-The example data are taken from an experiment described in an HBM2003
-conference abstract:
-
-Matthew Brett, Ian Nimmo-Smith, Katja Osswald, Ed Bullmore (2003) `Model
-fitting and power in fast event related designs
-<http://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html>`_. NeuroImage,
-19(2) Supplement 1, abstract 791
-
-The data consist of three EPI runs, all from one subject. In each run the
-subject watched a computer screen, and pressed a button when they saw a
-flashing checker board. An “event” in this design is one presentation of the
-flashing checker board.
-
-We did this experiment because we were interested to see if events at fast
-presentation rates give different activation levels from events that are more
-widely spaced. Each run has a different presentation rate. We randomized the
-times between events in each run to give an average rate of 1 event every
-second in run 1, 1 event every 3 seconds for run 2, and 1 event every 10
-seconds for run 3.
 
 Plan of campaign
 ----------------
+
+The :ref:`example-data` are from an experiment with three EPI runs of
+flashing checkerboard events.  The first run was at a high presentation
+rate (average 1 per second), run 2 was at a medium rate (average 1 every
+3 seconds) and run 3 was slow (1 every 10 seconds on average).
 
 We are going to analyse the data to see if there is different activation for
 fast and slow presentation rates. ROI analysis is an obvious choice here,
@@ -124,29 +92,33 @@ applies if we select the ROI from a truly activated area; the exact choice of
 voxels will depend to some extent on the noise in this session, and so data
 extracted from this ROI, for this session, will be biased to have high signal.
 
+.. _tutorial-processing:
+
 Starting the tutorial
 ---------------------
 
-First you will need to run some processing on the example dataset. After you
-unpack the dataset archive, you should have four subdirectories in the main
-marsbar_example_data directory. Directories sess1, sess2 and sess3 contain the
-slice-time corrected and realigned, undistorted, spatially normalized data for
-the three sessions (runs) of the experiment. The rois directory contains
-pre-defined regions of interest.
+First you will need to run some processing on the example dataset. After
+you unpack the dataset archive, you should have four subdirectories in
+the main ``marsbar_example_data`` directory. Directories ``sess1``,
+``sess2`` and ``sess3`` contain the slice-time corrected and realigned,
+undistorted, spatially normalized data for the three sessions (runs) of
+the experiment. The ``rois`` directory contains pre-defined regions of
+interest.
 
-To run the tutorial, find where your marsbar directory is. You can do this
-from the matlab prompt with >> which marsbar . If <marsbar> is the marsbar
-directory, then you should be able to see a directory called
-<marsbar>/examples/batch. This batch directory contains Matlab program files to
-run the preprocessing.. Change directory to batch , and start Matlab.  From
-the Matlab prompt, run the command run_preprocess. This little script will run
-smooth the images by 8mm FWHM, and run SPM models for each run.
+To run the tutorial, find where your marsbar directory is. You can do
+this from the matlab prompt with ``>> which marsbar`` . If ``<marsbar>``
+is the marsbar directory, then you should be able to see a directory
+called ``<marsbar>/examples/batch``. This ``batch`` subdirectory contains
+Matlab program files to run the preprocessing. Change directory to
+``batch``, and start Matlab.  From the Matlab prompt, run the command
+``run_preprocess``. This little script will smooth the images by 8mm
+FWHM, and run SPM models for each run.
 
 Now start MarsBaR. If you have put or linked MarsBaR into your SPM toolbox
 directory then you can start MarsBaR from the SPM interface. Click
 Toolboxes... and then marsbar.
 
 Otherwise, make sure the MarsBaR directory is on the Matlab path, and run the
-command marsbar from the Matlab >> prompt.
+command marsbar from the Matlab ``>>`` prompt.
 
 .. include:: ../links_names.txt

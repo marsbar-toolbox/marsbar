@@ -3,8 +3,17 @@
 Download and install
 ~~~~~~~~~~~~~~~~~~~~
 
-All MarsBaR releases are available via the `MarsBaR project download
-page`_. For the current stable release, look for the marsbar package;
+All MarsBaR file releases are available via the `MarsBaR project download
+page`_. 
+
+Installing MarsBaR
+++++++++++++++++++
+
+MarsBaR needs a version of SPM_, so if you don't have SPM, please
+download and install that first.  MarsBaR works with SPM versions 99, 2,
+5, and 8.
+
+For the current stable release of MarsBaR, look for the marsbar package;
 marsbar-devel is the development release. Releases consist of an archive
 which will unpack in a directory named after the MarsBaR version - for
 example ``marsbar-0.41``. You then have two options for using MarsBaR
@@ -38,5 +47,60 @@ within SPM.
 Either way, the next time you start spm you should be able to start
 the toolbox by selecting 'marsbar' from the toolbox button on the SPM
 interface.
+
+Other MarsBaR downloads
++++++++++++++++++++++++
+
+.. _example-data:
+
+Example dataset
+```````````````
+You may want the example dataset to try out MarsBaR, or to run the :ref:`tutorial`.
+
+Download the dataset from the `MarsBaR project download page`_.
+
+To install, unpack the archive in a directory you can write to. This
+will give you a subdirectory directory ``marsbar_example_data-N``, where
+N is the version number of the example data (currently 0.3). 
+
+The example data are taken from an experiment described in an HBM2003
+conference abstract:
+
+  Matthew Brett, Ian Nimmo-Smith, Katja Osswald, Ed Bullmore (2003) `Model
+  fitting and power in fast event related designs
+  <http://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html>`_. NeuroImage,
+  19(2) Supplement 1, abstract 791
+
+The data consist of three EPI runs, all from one subject. In each run the
+subject watched a computer screen, and pressed a button when they saw a
+flashing checker board. An “event” in this design is one presentation of the
+flashing checker board.
+
+We did this experiment because we were interested to see if events at fast
+presentation rates give different activation levels from events that are more
+widely spaced. Each run has a different presentation rate. We randomized the
+times between events in each run to give an average rate of 1 event every
+second in run 1, 1 event every 3 seconds for run 2, and 1 event every 10
+seconds for run 3.
+
+There are some automated pre-processing scripts for this dataset in the
+MarsBaR distribution, see :ref:`tutorial-processing` for more details.
+
+MarsBaR AAL structural ROIs
+```````````````````````````
+These ROIs can be useful as a standard set of anatomical definitions.
+
+To install, download the AAL ROI archive file from the `MarsBaR project
+download page`_. Unpack the archive somewhere; it will create a new
+directory, called something like ``marsbar-aal-0.2``. 
+
+The AAL ROI library contains ROIs in MarsBaR format that were
+anatomically defined by hand on a single brain matched to the MNI / ICBM
+templates. The ROI definitions are described in:
+
+  Tzourio-Mazoyer N, Landeau B, Papathanassiou D, Crivello F, Etard O, Delcroix
+  N, et al. (2002). Automated anatomical labelling of activations in SPM using a
+  macroscopic anatomical parcellation of the MNI MRI single subject brain.
+  NeuroImage 15: 273-289.
 
 .. include:: links_names.txt
