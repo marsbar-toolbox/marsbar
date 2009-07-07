@@ -7,12 +7,12 @@
  MarsBaR region of interest toolbox for SPM
 ============================================
 
-.. htmlonly::
+.. only:: html
 
    :Release: |version|
    :Date: |today|
 
-   Download `PDF <http://marsbar.sourceforge.net/manual/marsbar.pdf>`_
+   Download `PDF <marsbar.pdf>`_
 
    Contents:
 
