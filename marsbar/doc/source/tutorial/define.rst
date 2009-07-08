@@ -10,26 +10,29 @@ like this:
 
 Figure 7: ROI definition menu
 
-Interface summary: the ROI definition menu
+.. admonition:: Interface summary - the ROI definition menu
+     :class: interfacenote note
 
-View displays one or ROIs on a structural image.
-
-Draw calls up a Matlab interface for drawing ROIs.
-
-Get SPM cluster(s) uses the SPM results interface to select and save activation
-clusters as ROIs.
-
-Build gives an interface to various methods for defining ROIs, using shapes
-(boxes, spheres), activation clusters, and binary images.
-
-Transform offers a GUI for combining ROIs, and for flipping the orientation of
-an ROI to the right or left side of the brain.
-
-Import allows you to import all SPM activations as ROIs, or to import ROIs from
-cluster images, such as those written by the SPM results interface, or from
-images where ROIs are defined by number labels (ROI 1 has value 1, ROI 2 has
-value 2, etc.). Similarly Export writes ROIs as images for use in other
-packages, such as MRIcro_.
+     View
+        displays one or ROIs on a structural image.
+     Draw
+        calls up a Matlab interface for drawing ROIs.
+     Get SPM cluster(s)
+        uses the SPM results interface to select and save activation
+        clusters as ROIs.
+     Build 
+        gives an interface to various methods for defining ROIs, using
+        shapes (boxes, spheres), activation clusters, and binary images.
+     Transform
+        offers a GUI for combining ROIs, and for flipping the orientation
+        of an ROI to the right or left side of the brain.
+     Import
+        allows you to import all SPM activations as ROIs, or to import ROIs
+        from cluster images, such as those written by the SPM results
+        interface, or from images where ROIs are defined by number labels
+        (ROI 1 has value 1, ROI 2 has value 2, etc.). Similarly
+     Export
+        writes ROIs as images for use in other packages, such as MRIcro_.
 
 Defining a functional ROI
 -------------------------
@@ -56,17 +59,17 @@ the default answers from the interface, like this:
 +-------------------------------+----------+
 
 
-.. note:: 
+.. admonition:: Technical note - MarsBaR and SPM designs
+   :class: technote note
 
-   **MarsBaR and SPM designs**: For the large majority of tasks, MarsBaR
-   can use SPM designs interchangeably.  For example, when running with
-   SPM5, you can load SPM99 designs and estimate them in MarsBaR; you
-   can also estimate SPM5 designs from MarsBaR, even if you are using -
-   say - SPM99. However, MarsBaR uses the standard SPM routines for the
-   'Get SPM cluster(s)' routines. This means that if, for example, you
-   are running SPM5 you can only get clusters from an SPM5 design and
-   you can only get clusters from an SPM99 design if you are running
-   SPM99.
+   For the large majority of tasks, MarsBaR can use SPM designs
+   interchangeably.  For example, when running with SPM5, you can load
+   SPM99 designs and estimate them in MarsBaR; you can also estimate
+   SPM5 designs from MarsBaR, even if you are using - say -
+   SPM99. However, MarsBaR uses the standard SPM routines for the 'Get
+   SPM cluster(s)' routines. This means that if, for example, you are
+   running SPM5 you can only get clusters from an SPM5 design and you
+   can only get clusters from an SPM99 design if you are running SPM99.
 
 Now you have run the Get SPM cluster(s) interface, you should have an SPM
 activation map in the graphics window:
@@ -88,14 +91,18 @@ right of the axial view and choosing goto global maxima.
 When the red arrow is in the main cluster, click on the Write ROI(s) menu in
 the SPM input window and select Write one cluster.
 
-Interface summary: Write ROI(s)
+.. admonition:: Interface summary - Write ROI(s)
+   :class: interfacenote note
 
-Write one cluster writes out a single cluster at the selected location; Write
-all clusters writes all clusters from the SPM map; MarsBaR will ask for a
-directory to save the files, and a root name for the ROI files before saving
-each ROI as a separate file. Rerun results UI restarts the SPM results
-interface as if you had clicked on the SPM results button; Clear clears the
-SPM graphics window.
+   Write one cluster
+      writes out a single cluster at the selected location.
+   Write all clusters
+      writes all clusters from the SPM map; MarsBaR will ask for a
+      directory to save the files, and a root name for the ROI files
+      before saving each ROI as a separate file.
+   Rerun results UI
+      restarts the SPM results interface as if you had clicked on the
+      SPM results button; Clear clears the SPM graphics window.
 
 After you have selected Write one cluster, MarsBaR asks for details to save
 with the ROI, which are a description, and a label. Both provide information
@@ -118,18 +125,17 @@ ROI. By default the offered filename will be
 simplicity, why not accept the default name and click Save to save the
 ROI.
 
-.. note::
+.. admonition:: Technical note - ROIs and filenames
+   :class: technote note
 
-   *ROIs and filenames*
-
-   MarsBaR stores each ROI in a separate file. In
-   fact, the files are in the Matlab .mat format.  MarsBaR will accept any
-   filename for the ROI, and can load ROIs from any file that you have
-   saved them to, but it will suggest that you save the ROI with a filename
-   that ends in _roi.mat. This is just for convenience, so that when you
-   are asked to select ROIs, the MarsBaR GUI can assume that ROI files end
-   with this suffix. It will probably make your life easier if you keep to
-   this convention.
+   MarsBaR stores each ROI in a separate file. In fact, the files are in
+   the Matlab ``.mat`` format.  MarsBaR will accept any filename for the
+   ROI, and can load ROIs from any file that you have saved them to, but
+   it will suggest that you save the ROI with a filename that ends in
+   ``_roi.mat``. This is just for convenience, so that when you are asked to
+   select ROIs, the MarsBaR GUI can assume that ROI files end with this
+   suffix. It will probably make your life easier if you keep to this
+   convention.
 
 Review the ROI
 --------------
@@ -141,17 +147,19 @@ an average structural image:
 
 Figure 10: the ROI view interface
 
-Interface summary: the view utility
+.. admonition:: Interface summary - the view utility
+   :class: interfacenote note
 
-The view utility allows you to click around the image to review the ROI in the
-standard orthogonal views. You can select multiple ROIs to view on the same
-structural. The list box to the left of the axial view allows you to move to a
-particular ROI (if you have more than one). When the cross-hairs are in the
-ROI, the information panel will show details for that ROI, such as centre of
-mass, and volume in mm. The default structural image is the MNI 152 T1 average
-brain; you can choose any image to display ROIs on by clicking on the
-Options... menu in the MarsBaR window, then choosing Edit Options..., followed
-by Default structural.
+   The view utility allows you to click around the image to review the
+   ROI in the standard orthogonal views. You can select multiple ROIs to
+   view on the same structural. The list box to the left of the axial
+   view allows you to move to a particular ROI (if you have more than
+   one). When the cross-hairs are in the ROI, the information panel will
+   show details for that ROI, such as centre of mass, and volume in
+   mm. The default structural image is the MNI 152 T1 average brain; you
+   can choose any image to display ROIs on by clicking on the
+   Options... menu in the MarsBaR window, then choosing Edit Options...,
+   followed by Default structural.
 
 Refining the ROI
 ----------------
@@ -219,16 +227,16 @@ In this function, the first ROI you selected is r1, and the second ROI is r2.
 Here we want to get the overlap, and this is represented by the logical AND
 operator, which is ``&`` in Matlab. Enter the function ``r1 & r2``.
 
-.. note::
+.. admonition:: Technical note - combining ROIs 
+   :class: technote note
 
-   *Combining ROIs* You can use most mathematical functions to combine
-   ROIs. If you wanted to combine two ROIs, so the new ROI has all the
-   voxels in ROI 1 and all the voxels in ROI2, you could use the
-   function ``r1 | r2`` (read as "r1 or r2"). If you wanted only the
-   voxels in ROI 1 that are not in ROI 2: ``r1 & ~ r2``. Similarly, you
-   can choose more than two ROIs and combine them. The function ``(r1 &
-   r2) & ~r3`` gives all the voxels in ROI 1 and ROI 2, but excluding
-   those that are in ROI 3.
+   You can use most mathematical functions to combine ROIs. If you
+   wanted to combine two ROIs, so the new ROI has all the voxels in ROI
+   1 and all the voxels in ROI2, you could use the function ``r1 | r2``
+   (read as "r1 or r2"). If you wanted only the voxels in ROI 1 that are
+   not in ROI 2: ``r1 & ~ r2``. Similarly, you can choose more than two
+   ROIs and combine them. The function ``(r1 & r2) & ~r3`` gives all the
+   voxels in ROI 1 and ROI 2, but excluding those that are in ROI 3.
 
 After this, accept the default description, set the label to something like
 “Trimmed stim run 2”, and save the ROI as ``trim_stim_roi.mat``.
@@ -244,34 +252,36 @@ trim_stim_roi.mat as the ROI to export. Another menu appears, asking for a
 Space for ROI image. The three options are Base space for ROIs, From image, or
 ROI native space.
 
-.. note::
+.. admonition:: Technical note - ROIs and image spaces
+   :class: technote note
 
-   **ROIs and image spaces**: An ROI can be one of two fundamental types: a
-   shape (such as a box or sphere) or a list of points (such as an
-   activation cluster or coordinates read in from an ROI in an
-   image). Shape ROIs know nothing about such vulgarities as voxels, they
-   are abstract concepts waiting to be applied. In order to display shapes,
-   or write them to images, or combine them with other ROIs, we need to
-   convert them to point lists in a certain space – with dimensions in X Y
-   and Z, and voxels with specified sizes. For example, when MarsBaR
-   combines ROIs, it needs some default space (dimensions, voxel sizes) in
-   which to define the new point list ROI. By default, this is the space of
-   the MNI template; so the Base space for ROIs in the menu above will be
-   MNI space. This is a good space to use if you are working with spatially
-   normalized data, but ROIs are often defined on a subject's data before
-   spatial normalization. In this case, it may be more useful to set the
-   ROI base space to match the subject's own activation images, using
-   Options, Edit options from the MarsBaR window.
+   An ROI can be one of two fundamental types: a shape (such as a box or
+   sphere) or a list of points (such as an activation cluster or
+   coordinates read in from an ROI in an image). Shape ROIs know nothing
+   about such vulgarities as voxels, they are abstract concepts waiting
+   to be applied. In order to display shapes, or write them to images,
+   or combine them with other ROIs, we need to convert them to point
+   lists in a certain space – with dimensions in X Y and Z, and voxels
+   with specified sizes. For example, when MarsBaR combines ROIs, it
+   needs some default space (dimensions, voxel sizes) in which to define
+   the new point list ROI. By default, this is the space of the MNI
+   template; so the Base space for ROIs in the menu above will be MNI
+   space. This is a good space to use if you are working with spatially
+   normalized data, but ROIs are often defined on a subject's data
+   before spatial normalization. In this case, it may be more useful to
+   set the ROI base space to match the subject's own activation images,
+   using Options, Edit options from the MarsBaR window.
 
-The issue of the ROI space comes up here, because we need to define what
-dimensions and voxels we should use when writing the image. We can either
-write the image using the Base space, or we can use some arbitrary space
-defined by an image, or we can get the space directly from the ROI. Here, the
-ROI is an activation cluster, and the native ROI space for an activation
-cluster uses the minimum dimensions necessary to hold all the voxels in the
-ROI. An ROI image for this cluster using native space uses minimum disk
-storage, but does not give a good impression of the ROI location when displayed
-in, for example, MRIcro_.
+   The issue of the ROI space comes up here, because we need to define
+   what dimensions and voxels we should use when writing the image. We
+   can either write the image using the Base space, or we can use some
+   arbitrary space defined by an image, or we can get the space directly
+   from the ROI. Here, the ROI is an activation cluster, and the native
+   ROI space for an activation cluster uses the minimum dimensions
+   necessary to hold all the voxels in the ROI. An ROI image for this
+   cluster using native space uses minimum disk storage, but does not
+   give a good impression of the ROI location when displayed in, for
+   example, MRIcro_.
 
 In our case, the data are spatially normalized, and so are in the space of the
 MNI template. The MNI template space is the default base space for ROIs, so

@@ -20,9 +20,7 @@ statistical analyses of ROI data using the SPM statistics machinery.
    :Release: |version|
    :Date: |today|
 
-   Download `PDF <marsbar.pdf>`_
-
-   Contents:
+   Download `MarsBaR documentation as PDF <marsbar.pdf>`_
 
 .. toctree::
    :maxdepth: 2

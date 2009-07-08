@@ -114,6 +114,8 @@ html_theme_options = {
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
+html_style = 'marsbar.css'
+
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 #html_title = None
@@ -205,3 +207,4 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+

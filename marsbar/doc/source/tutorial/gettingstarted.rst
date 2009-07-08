@@ -10,13 +10,25 @@ How to read this document
 
 There are three threads in this tutorial. The first and most obvious is a step
 by step guide to running several standard ROI analyses.  On the way, there are
-two sets of diversions. These are interface summaries, and technical notes.
-The text for both of these is indented. If you just want to do the tutorial,
-you can skip these diversions, and come back to them later. The interface
-summaries give you more information on the range of things that MarsBaR can do;
-the technical notes are more detailed explanations of the workings of MarsBaR,
-which can be useful in understanding some of the more obscure parts of the
-interface.
+two sets of diversions. These are interface summaries, and technical notes. Interface summaries look like this:
+
+.. admonition:: An interface summary
+   :class: interfacenote note
+
+   with some interface description
+
+and technical notes look like this:
+
+.. admonition:: A technical note
+   :class: technote note
+
+   with some technical notes
+
+If you just want to do the tutorial, you can skip these diversions, and
+come back to them later. The interface summaries give you information on
+the range of things that MarsBaR can do; the technical notes are
+detailed explanations of the workings of MarsBaR, which can be useful in
+understanding some of the obscure parts of the interface.
 
 Gearing up
 ----------

@@ -10,8 +10,6 @@ MarsBaR with a standard dataset.
 
 The tutorial assumes you have some experience using SPM_
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
