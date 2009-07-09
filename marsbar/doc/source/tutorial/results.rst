@@ -4,50 +4,55 @@ Basic results: the statistic table
 Let us start the assessment by getting some t and F values for the effects in
 the design. Click on the Results button in the MarsBaR window:
 
-Figure 14: MarsBaR results menu
+.. image:: fig/results_menu.png
 
-Interface summary: the results menu
 
-Estimate results, as we know, takes the default design, and the ROI data, and
-estimates the model. MarsBaR stores the estimated results in memory as the
-estimated design.
+.. admonition:: Interface summary - the results menu
+   :class: interfacenote note
 
-Import contrasts gives an interface for you to select contrasts from other
-analyses, and import them into the list of contrasts for the current analysis.
-
-Add trial specific F will add F contrasts for each trial, and each session, if
-they are not already present.
-
-Default contrast will set one contrast as the default to use for other options
-on this menu, such as the MarsBaR SPM graph plotting function.
-
-Default region applies only if the current results are for more than one
-region. It will select one region from the data to use for analysis and plots.
-
-Plot residuals puts up various plots of the residual errors from the model, to
-check for violation of assumptions or major outliers.
-
-MarsBaR SPM graph uses the SPM plotting functions to plot contrasts of
-parameter estimates, fitted and adjusted responses, estimates of event or block
-related response, and so on.
-
-Statistic table shows various statistics for selected contrasts, as we will see
-in the tutorial.
-
-% signal change will show an estimate for the percent signal change for a
-single event. There are many assumptions for this analysis; please treat it
-like you would treat your children: with a combination of great care and weary
-scepticism.
-
-Set results from file allows you to choose the results you want to review.
-When you estimate a model in MarsBaR, the program will automatically set the
-new results to be current for the results menu. If you want to analyze some
-other set of MarsBaR results, you can use this option to select and load
-another analysis file. The default file suffix for MarsBaR estimated results
-is '_mres.mat'.
-
-Save results to file will save the current estimated results, including the
-data used for the estimation, to a file on disk.
+   Estimate results
+      as we know, takes the default design, and the ROI data, and
+      estimates the model. MarsBaR stores the estimated results in
+      memory as the estimated design.
+   Import contrasts
+      gives an interface for you to select contrasts from other
+      analyses, and import them into the list of contrasts for the
+      current analysis.
+   Add trial specific F
+      will add F contrasts for each trial, and each session, if they are
+      not already present.
+   Default contrast
+      will set one contrast as the default to use for other options on
+      this menu, such as the MarsBaR SPM graph plotting function.
+   Default region
+      applies only if the current results are for more than one
+      region. It will select one region from the data to use for
+      analysis and plots.
+   Plot residuals
+      puts up various plots of the residual errors from the model, to
+      check for violation of assumptions or major outliers.
+   MarsBaR SPM graph
+      uses the SPM plotting functions to plot contrasts of parameter
+      estimates, fitted and adjusted responses, estimates of event or
+      block related response, and so on.
+   Statistic table
+      shows various statistics for selected contrasts, as we will see in
+      the tutorial.
+   % signal change 
+      will show an estimate for the percent signal change for a single
+      event. There are many assumptions for this analysis; please treat
+      it like you would treat your children: with a combination of great
+      care and weary scepticism.
+   Set results from file
+      allows you to choose the results you want to review.  When you
+      estimate a model in MarsBaR, the program will automatically set
+      the new results to be current for the results menu. If you want to
+      analyze some other set of MarsBaR results, you can use this option
+      to select and load another analysis file. The default file suffix
+      for MarsBaR estimated results is ``_mres.mat``.
+   Save results to file
+      will save the current estimated results, including the data used
+      for the estimation, to a file on disk.
 
 To continue with our analysis, we next need to specify a contrast. In our case
 the contrast is very simple: just a 1 in the column for the HRF regressor used
@@ -137,12 +142,13 @@ trim_stim_roi.mat again. When that is done, run Estimate results from the
 Results menu. Again choose 'no' when asked if you want to save the previous
 estimated design.
 
-Technical note: directories and saving results
+.. admonition:: Technical note - directories and saving results
+   :class: technote note
 
-MarsBaR, unlike SPM, does not need a new directory for each new set of results.
-Designs, results and data are kept in memory until you save them, and you can
-save them with any filename. This means you can keep many sets of results in
-the same directory.
+   MarsBaR, unlike SPM, does not need a new directory for each new set of results.
+   Designs, results and data are kept in memory until you save them, and you can
+   save them with any filename. This means you can keep many sets of results in
+   the same directory.
 
 When the estimation has finished, click on Results, Statistic table. Next you
 need to enter the HRF contrast. Earlier, we imported the HRF column contrast
@@ -150,7 +156,7 @@ from an SPM model. To save time, why not enter this contrast directly using
 the contrast manager; it is just a t statistic with a single 1 in the first
 column:
 
-Figure 17: the stim_hrf contrast
+.. image:: fig/defining_contrast.png
 
 In the end, you get a new statistic table:
 

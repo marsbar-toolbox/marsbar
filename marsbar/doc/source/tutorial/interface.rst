@@ -30,10 +30,6 @@ the file selection window:
 
 .. image:: fig/spm_select.png
 
-Figure 4: the SPM graphics window
-
-.. image:: fig/spm_graphics.png
-
 Sometimes MarsBaR does not use the SPM selection dialog above, but the
 standard Matlab dialog, that will differ for each platform (linux,
 windows, mac). Here's a linux version:

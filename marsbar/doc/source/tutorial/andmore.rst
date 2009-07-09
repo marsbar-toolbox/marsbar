@@ -41,8 +41,6 @@ stim_hrf contrast, as shown in , above.  Repeat the same procedure,
 using the AAL ``MNI_Putamen_R_roi.mat`` ROI. You will now have two
 tables like these:
 
-Figure 19: statistics table for left putamen, run 1
-
 ::
 
    Contrast name                   ROI name: Contrast value:    t statistic:  Uncorrected P:    Corrected P
