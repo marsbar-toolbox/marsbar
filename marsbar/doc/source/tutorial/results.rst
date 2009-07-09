@@ -68,7 +68,15 @@ ugly fashion in the Matlab window. You might want to enlarge your Matlab
 window to stop the text wrapping in an annoying way. Here is the output on my
 machine:
 
-Figure 15: statistics table output for t contrast
+::
+
+   Contrast name                   ROI name: Contrast value:    t statistic:  Uncorrected P:    Corrected P
+   --------------------------------------------------------------------------------------------------------
+
+   stim_hrf
+   ------------------------------------------
+
+                         trimmed stim run 2:           2.27:           4.84:       0.000002:       0.000002
 
 At the left you see the contrast name. Under this, and to the right, MarsBaR
 has printed the ROI label that you entered a while ago. The t statistic is
@@ -95,7 +103,16 @@ analyses.
 Just for practice, let us also run an F contrast. Click Statistic table again,
 choose the effects of interest contrast, click Done:
 
-Figure 16: statistics table output for F contrast
+::
+
+   Contrast name                   ROI name:       Extra SS:    F statistic:  Uncorrected P:    Corrected P
+   --------------------------------------------------------------------------------------------------------
+
+   effects of interest
+   ------------------------------------------
+
+                         trimmed stim run 2:          41.15:          28.26:       0.000000:       0.000000
+
 
 Now the Contrast value has become the Extra SS.  This is a measure of the
 variance that would be added to a model that does not contain the effects in
@@ -103,8 +120,8 @@ the contrast.  The F statistic is this measure, adjusted for the number of
 effects, and divided by the residual variance for the whole model. There is
 no simple way of using this Extra SS value in second level analyses.
 
-Comparing fast and slow events – the difference between run 1 and run 3
------------------------------------------------------------------------
+Comparing fast and slow events
+------------------------------
 
 Our results so far show that there is indeed a highly significant effect of
 visual stimulation on the visual cortex, even for very frequent events. This
@@ -137,7 +154,15 @@ Figure 17: the stim_hrf contrast
 
 In the end, you get a new statistic table:
 
-Figure 18: statistic table for run 3
+::
+
+   Contrast name                   ROI name: Contrast value:    t statistic:  Uncorrected P:    Corrected P
+   --------------------------------------------------------------------------------------------------------
+
+   stim_hrf
+   ------------------------------------------
+
+                         trimmed stim run 2:           3.15:           4.44:       0.000011:       0.000011
 
 You can see that the contrast value – which is proportional to the change in
 signal for a single event – is greater for run 3 than for run 1. Despite this,

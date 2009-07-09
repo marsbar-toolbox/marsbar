@@ -43,7 +43,27 @@ tables like these:
 
 Figure 19: statistics table for left putamen, run 1
 
-Figure 20: statistics table for right putamen, run 1
+::
+
+   Contrast name                   ROI name: Contrast value:    t statistic:  Uncorrected P:    Corrected P
+   --------------------------------------------------------------------------------------------------------
+
+   stim_hrf
+   ------------------------------------------
+
+                                  Putamen_L:           0.09:           0.86:       0.194983:       0.194983
+
+and for the right putamen:
+
+::
+
+   Contrast name                   ROI name: Contrast value:    t statistic:  Uncorrected P:    Corrected P
+   --------------------------------------------------------------------------------------------------------
+
+   stim_hrf
+   ------------------------------------------
+
+                                  Putamen_R:           0.05:           0.58:       0.281891:       0.281891
 
 The subject responded with their right hand, so we expected that the right
 putamen would have less signal than the left.
@@ -52,7 +72,7 @@ Batch mode
 ----------
 
 You can also run MarsBaR in batch mode. There is an example batch script in
-the <marsbar>example/batch directory, called run_tutorial.m. You won't be
+the ``<marsbar>example/batch`` directory, called run_tutorial.m. You won't be
 suprised to hear that this is a batch script that runs most of the steps in
 this tutorial, as well as extracting and plotting reconstructed event time
 courses.
