@@ -52,7 +52,7 @@ dist: clean all
 public: public-stamp
 
 public-stamp: dist
-	rsync -avl --delete dist/ $(WWW)/test/
+	rsync -avl --delete dist/ $(WWW)/
 	touch $@
 
 html:
