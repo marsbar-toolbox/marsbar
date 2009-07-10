@@ -13,7 +13,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest pdf all dist public
+.PHONY: help clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest pdf all dist public apidocs apidoc-stamp thing
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -30,21 +30,30 @@ help:
 	@echo "  doctest   to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	-rm -rf build/* dist
+	-rm -rf build/* dist apidocs *-stamp
 
 pdf: latex
 	cd build/latex && make all-pdf
 
-all: html pdf
+apidocs: apidocs-stamp
+
+apidocs-stamp:
+	cd scripts && matlab -nosplash -nodesktop -r "make_apidocs;exit"
+	touch $@
+
+all: apidocs html pdf
 
 dist: clean all
-	mkdir -p dist
 	ln build/latex/*.pdf dist/
 	cp -al build/html/* dist/
+	cd dist && echo "Options +Indexes" > apidocs/.htaccess && mkdir doc-stable && cp apidocs/.htaccess doc-stable && mkdir doc-devel && cp apidocs/.htaccess doc-devel && ln -s ../apidocs doc-stable/latest && ln -s ../apidocs doc-devel/latest
 	@echo "Build finished.  Final docs are in dist/"
 
-public: dist
-	rsync -avH --delete dist/ $(WWW)/test/
+public: public-stamp
+
+public-stamp: dist
+	rsync -avl --delete dist/ $(WWW)/test/
+	touch $@
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
