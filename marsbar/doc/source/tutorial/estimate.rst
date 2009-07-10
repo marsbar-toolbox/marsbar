@@ -10,7 +10,7 @@ are three stages to the analysis:
 
 The preprocessing for the example data created an SPM model for all three EPI
 runs, so we already have a design made for the first run. We are going to use
-this design and the trim_stim ROI to extract ROI data from the functional
+this design and the ``trim_stim`` ROI to extract ROI data from the functional
 scans. Then we will use the design and the extracted data to estimate the
 model.
 
@@ -23,7 +23,7 @@ this:
 .. image:: fig/design_menu.png
 
 .. admonition:: Interface summary - design menu
-     :class: interfacenote note
+   :class: interfacenote note
 
    The design menu offers options for creating, reviewing, estimating and
    processing SPM / MarsBaR designs.
@@ -92,10 +92,10 @@ If you have been reading the interface summary, welcome back. Isn't it strange
 how time just seems to stop when you are reading about graphical user
 interfaces?
 
-Our plan was to choose our design. Select the Set design from file option in
-the design menu and choose the SPM.mat file in the sess1/SPM2_ana directory.
-MarsBaR loads the design into memory and displays the design matrix in the
-SPM graphics window.
+Our plan was to choose our design. Select the Set design from file
+option in the design menu and choose the ``SPM.mat`` file in the
+``sess1/SPM8_ana`` directory.  MarsBaR loads the design into memory and
+displays the design matrix in the SPM graphics window.
 
 Stage 2: extracting the data
 ````````````````````````````
@@ -152,14 +152,17 @@ the:
       ROIs.
    Set data from file 
       will ask for a MarsBaR data file (default suffix ``_mdata.mat``) and
-      load it into memory as the current set of data. Save data to file
+      load it into memory as the current set of data. 
+   Save data to file
       will save the current set of data to a MarsBaR data file.
+   Show data summary
+      outputs some summary text to the SPM graphics window
 
 Again, welcome back to our linear readers. For the tutorial, we want to
-extract the data for our ROI, from the images in our design. Choose Extract
-ROI data(default); the GUI will ask you to select one or more ROIs files;
-select the trim_stim_roi.mat file. MarsBaR starts to whirr. As it whirrs, it
-will:
+extract the data for our ROI, from the images in our design. Choose
+*Extract ROI data(default)*; the GUI will ask you to select one or more
+ROIs files; select the ``trim_stim_roi.mat`` file. MarsBaR starts to
+whirr. As it whirrs, it will:
 
 #. Take each image in the design (you had already set the default design
    from the design menu);
@@ -185,19 +188,23 @@ summary function item in the MarsBaR options interface.
    voxels in the ROI. This gives us one ROI summary value per image, and we can
    run the statistical model on this time-course of summary values.
 
-   The most obvious way of summarizing the values within the ROI is to take the
-   mean. This is the default in MarsBaR. The mean can be greatly affected by
-   outliers. If we suspect there may be outlier voxels in the ROI, the median may
-   be more robust as a summary function. The first eigenvector is a more complex
-   estimate of the typical signal in the ROI, and will almost always be similar to
-   the mean, for standard ROI data. It is the default for the volume of interest
-   utilities in SPM . The other option offered as a summary function is the
-   weighted mean. Usually ROIs are binary – meaning that they contain ones within
-   the ROI and zeros elsewhere. In this case the weighted mean will be identical
-   to the mean. However, it is possible to define ROIs which contain weighting
-   values, where high values represent high confidence that this voxel is within
-   the region of interest, and values near zero represent low confidence. In this
-   situation, it can be useful to use the ROI values to weight the mean value.
+   The most obvious way of summarizing the values within the ROI is to
+   take the mean. This is the default in MarsBaR. The mean can be
+   greatly affected by outliers. If we suspect there may be outlier
+   voxels in the ROI, the median may be more robust as a summary
+   function. The other option offered as a summary function is the
+   weighted mean. Usually ROIs are binary – meaning that they contain
+   ones within the ROI and zeros elsewhere. In this case the weighted
+   mean will be identical to the mean. However, it is possible to define
+   ROIs which contain weighting values, where high values represent high
+   confidence that this voxel is within the region of interest, and
+   values near zero represent low confidence. In this situation, it can
+   be useful to use the ROI values to weight the mean value.
+
+   Earlier versions of MarsBaR also offered the option of taking the
+   first eigenvector of the signal.  We removed it for version 0.42
+   because it seemed as if it was replicating the behavior of the SPM
+   VOI routines - but it was not.
 
 As MarsBaR extracts the data you will see its progress printed to the matlab
 console. When the extraction is done, the data is kept in memory. You can
@@ -209,10 +216,10 @@ Now we have the design and the data we can estimate the model.
 Stage 3: estimating the model
 `````````````````````````````
 
-As the sweat pours from your brow, you click on the Results menu in the MarsBaR
-window. Scarcely believing it could be this easy, you choose the first item on
-the menu, Estimate results. It was that easy! MarsBaR takes the default
-design and the extracted data, and runs the model. There are more progress
-reports to the matlab console; finally you see the suggestion that you use the
-results section for assessment.
+As the sweat pours from your brow, you click on the Results menu in the
+MarsBaR window. Scarcely believing it could be this easy, you choose the
+first item on the menu, *Estimate results*. It was that easy! MarsBaR
+takes the default design and the extracted data, and runs the
+model. There are more progress reports to the matlab console; finally
+you see the suggestion that you use the results section for assessment.
 

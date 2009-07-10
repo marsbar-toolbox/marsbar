@@ -37,7 +37,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'marsbar'
+project = u'MarsBaR'
 copyright = u'2009, Matthew Brett'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -187,7 +187,7 @@ htmlhelp_basename = 'marsbardoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'marsbar.tex', u'marsbar Documentation',
+  ('index', 'marsbar.tex', u'MarsBaR Documentation',
    u'Matthew Brett', 'manual'),
 ]
 

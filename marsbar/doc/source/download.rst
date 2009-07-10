@@ -16,7 +16,7 @@ download and install that first.  MarsBaR works with SPM versions 99, 2,
 For the current stable release of MarsBaR, look for the marsbar package;
 marsbar-devel is the development release. Releases consist of an archive
 which will unpack in a directory named after the MarsBaR version - for
-example ``marsbar-0.41``. You then have two options for using MarsBaR
+example ``marsbar-0.42``. You then have two options for using MarsBaR
 within SPM.
 
 
@@ -27,21 +27,21 @@ within SPM.
 2. You could set up MarsBaR to run as an SPM toolbox. To do this, the
    contents of the new MarsBaR directory needs to be in a subdirectory
    "marsbar" of the SPM toolbox directory.  Here is a worked example for
-   Unix. Imagine SPM2 was in ``/usr/local/spm/spm2``, and you had just
+   Unix. Imagine SPM8 was in ``/usr/local/spm/spm8``, and you had just
    unpacked the MarsBaR distribution, giving you a directory
-   ``/home/myhome/marsbar-0.41``.  You could then create the marsbar SPM
+   ``/home/myhome/marsbar-0.42``.  You could then create the marsbar SPM
    toolbox directory with::
             
-      mkdir /usr/local/spm/spm2/toolbox/marsbar
+      mkdir /usr/local/spm/spm8/toolbox/marsbar
    
    and copy the MarsBaR distribution into this directory with::
    
-      cp -r /home/myhome/marsbar-0.41/* /usr/local/spm/spm2/toolbox/marsbar
+      cp -r /home/myhome/marsbar-0.42/* /usr/local/spm/spm8/toolbox/marsbar
    
    Alternatively, you could do the same job by making a symbolic link
    between the directories with something like::
 
-      ln -s /home/myhome/marsbar-0.41 /usr/local/spm/spm2/toolbox/marsbar
+      ln -s /home/myhome/marsbar-0.42 /usr/local/spm/spm8/toolbox/marsbar
 
 
 Either way, the next time you start spm you should be able to start
@@ -60,8 +60,8 @@ You may want the example dataset to try out MarsBaR, or to run the :ref:`tutoria
 Download the dataset from the `MarsBaR project download page`_.
 
 To install, unpack the archive in a directory you can write to. This
-will give you a subdirectory directory ``marsbar_example_data-N``, where
-N is the version number of the example data (currently 0.3). 
+will give you a subdirectory like ``marsbar_example_data-0.3``, where
+0.3 is the version number of the example data.
 
 The example data are taken from an experiment described in an HBM2003
 conference abstract:
@@ -86,7 +86,9 @@ seconds for run 3.
 There are some automated pre-processing scripts for this dataset in the
 MarsBaR distribution, see :ref:`tutorial-processing` for more details.
 
-MarsBaR AAL structural ROIs
+.. _aal-rois:
+
+AAL structural ROIs
 ```````````````````````````
 These ROIs can be useful as a standard set of anatomical definitions.
 

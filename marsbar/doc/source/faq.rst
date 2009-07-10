@@ -270,7 +270,7 @@ Why yes, in fact you can. MarsBaR includes the AR modelling from Keith
 Worsley's `fmristat program
 <http://www.math.mcgill.ca/keith/fmristat>`_, which is a good
 alternative to the standard SPM ReML for FMRI. To use this, load your
-(SPM2) design in the GUI, then choose Design - Add/Edit filter for SPM
+design in the GUI, then choose Design - Add/Edit filter for SPM
 design. Set the high-pass filter as you wish, and then choose "fmristat
 AR(n)" for serial autocorrelations. Set the order of the model (AR(1),
 AR(2) etc) - 2 is a good choice. Estimate the model in the usual way.
@@ -287,12 +287,12 @@ In batch mode this would look like::
 How is the FIR (or PSTH) calculated?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MarsBaR and SPM2 use FIR models to calculate the PSTH (peri-stimulus
-time histogram). By default, the FIR models have a time bin of one
-TR. Let us imagine your TR is one second, as is your FIR time-bin.
-You can then think of the FIR as calculating the best estimate of the
-signal 0 seconds, 1 seconds, 2 seconds after the event has occurred,
-and after adjusting for other effects in the model.
+MarsBaR and SPM use FIR models to calculate the PSTH (peri-stimulus time
+histogram). By default, the FIR models have a time bin of one TR. Let us
+imagine your TR is one second, as is your FIR time-bin.  You can then
+think of the FIR as calculating the best estimate of the signal 0
+seconds, 1 seconds, 2 seconds after the event has occurred, and after
+adjusting for other effects in the model.
 
 As this is just a very similar approach to averaging, there is no
 constraint that the signal should be at zero at 0 seconds. Just for

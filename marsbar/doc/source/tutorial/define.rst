@@ -8,7 +8,7 @@ run 3). Now we need to find an activation cluster in the visual cortex.
 Go to the MarsBaR window, and click on ROI definition. You should get a menu
 like this:
 
-Figure 7: ROI definition menu
+.. image:: fig/define_menu.png
 
 .. admonition:: Interface summary - the ROI definition menu
      :class: interfacenote note
@@ -38,9 +38,9 @@ Defining a functional ROI
 -------------------------
 
 We are going define the functional ROI using the SPM analysis for run 2. Select
-“Get SPM cluster(s)...”: from the menu. This runs the standard SPM results
+*Get SPM cluster(s)...*: from the menu. This runs the standard SPM results
 interface. Use the file selection window that SPM offers to navigate to the
-sess2/SPM2_ana directory. Select the SPM.mat file and click Done. Choose the
+``sess2/SPM8_ana`` directory. Select the SPM.mat file and click Done. Choose the
 stim_hrf t contrast from the SPM contrast manager, click Done. Then accept all
 the default answers from the interface, like this:
 
@@ -71,18 +71,18 @@ the default answers from the interface, like this:
    running SPM5 you can only get clusters from an SPM5 design and you
    can only get clusters from an SPM99 design if you are running SPM99.
 
-Now you have run the Get SPM cluster(s) interface, you should have an SPM
+Now you have run the *Get SPM cluster(s)* interface, you should have an SPM
 activation map in the graphics window:
 
-Figure 8: SPM for run 2
+.. image:: fig/spm_run2.png
 
 Meanwhile, you may have noticed there is a new menu in the SPM input window:
 
-Figure 9: Write ROI(s) menu
+.. image:: fig/write_rois_menu.png
 
-Another thing you may not have noticed is that the matlab working directory has
-now changed to the sess2/SPM2_ana. SPM2 does this to be able to keep track of
-where its results files are.
+Another thing you may not have noticed is that the matlab working
+directory has now changed to the ``sess2/SPM8_ana``. SPM does this to be
+able to keep track of where its results files are.
 
 Move the red arrow in the SPM graphics window to the activation cluster in the
 visual cortex. You can do this by dragging the arrow, or right-clicking to the
@@ -121,7 +121,7 @@ and the title of the contrast:
 
 After this, MarsBaR offers a dialog box to give a filename for the
 ROI. By default the offered filename will be
-``stim_hrf_-9_-93_-15_roi.mat`` in the ``sess2/SPM2_ana`` directory. For
+``stim_hrf_-9_-93_-15_roi.mat`` in the ``sess2/SPM8_ana`` directory. For
 simplicity, why not accept the default name and click Save to save the
 ROI.
 
@@ -145,7 +145,7 @@ cortex. Click on the ROI definition menu in the MarsBaR window, and select
 View…. Choose the ROI and click Done. Your ROI should be displayed in blue on
 an average structural image:
 
-Figure 10: the ROI view interface
+.. image:: fig/roi_view.png
 
 .. admonition:: Interface summary - the view utility
    :class: interfacenote note
@@ -164,12 +164,12 @@ Figure 10: the ROI view interface
 Refining the ROI
 ----------------
 
-Now we have reviewed the ROI, we see that the cluster does include visual
-cortex, but there also seems to be some connected activation lateral and
-inferior to the primary visual cortex. The cross-hairs in figure are between
-the voxels which seem to be in primary visual cortex and the more lateral
-voxels. Ideally we would like to restrict the ROI to voxels in the primary
-visual cortex.
+Now we have reviewed the ROI, we see that the cluster does include
+visual cortex, but there also seems to be some connected activation
+lateral and inferior to the primary visual cortex. The cross-hairs in
+the figure are at something like the border between primary visual
+cortex and more lateral voxels. Ideally we would like to restrict the
+ROI to voxels in the primary visual cortex.
 
 We can do this by defining a box ROI that covers the area we are interested in,
 and combining this with the activation cluster.
@@ -186,7 +186,7 @@ restrict the ROI to between -20 and +20mm in X, -66 to -106mm in Y, and -20 to
 To define this box ROI, click on ROI definition, and choose Build..., . You
 will see a new menu in the SPM input window:
 
-Figure 11: ROI build menu
+.. image:: fig/roi_build.png
 
 From the menu, select Box (ranges XYZ). Answer the prompts like this:
 

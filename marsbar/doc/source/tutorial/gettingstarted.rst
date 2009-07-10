@@ -2,15 +2,13 @@
  Getting started
 =================
 
-At the moment (marsbar version 0.41) the development and stable version are the
-same.
+How to read the tutorial
+------------------------
 
-How to read this document
--------------------------
-
-There are three threads in this tutorial. The first and most obvious is a step
-by step guide to running several standard ROI analyses.  On the way, there are
-two sets of diversions. These are interface summaries, and technical notes. Interface summaries look like this:
+There are three threads in this tutorial. The first and most obvious is
+a step by step guide to running several standard ROI analyses.  On the
+way, there are two sets of diversions. These are *interface summaries*,
+and *technical notes*. Interface summaries look like this:
 
 .. admonition:: An interface summary
    :class: interfacenote note
@@ -24,32 +22,32 @@ and technical notes look like this:
 
    with some technical notes
 
-If you just want to do the tutorial, you can skip these diversions, and
-come back to them later. The interface summaries give you information on
-the range of things that MarsBaR can do; the technical notes are
-detailed explanations of the workings of MarsBaR, which can be useful in
-understanding some of the obscure parts of the interface.
+If you just want to do the step-by-step tutorial, you can skip these
+diversions, and come back to them later. The interface summaries give
+you information on the range of things that MarsBaR can do; the
+technical notes are detailed explanations of the workings of MarsBaR,
+which can be useful in understanding the obscure parts of the
+interface.
 
 Gearing up
 ----------
 
 To run all the examples in this tutorial you will need to download and install
-three packages:
+two packages:
 
-#. MarsBaR: this tutorial uses version marsbar-devel-0.41
+#. MarsBaR: this tutorial uses version marsbar-0.42
 #. the example dataset (version 0.3)
-#. the AAL ROI library (version 0.2)
 
 To install these packages, see :ref:`download-install`
 
-This tutorial assumes you are using SPM5, but you can run the tutorial
-with SPM2 or SPM99; the results will be very similar.
+This tutorial assumes you are using SPM8, but you can run the tutorial
+with SPM versions 99, 2 or 5; the results will be very similar.
 
 
 Plan of campaign
 ----------------
 
-The :ref:`example-data` are from an experiment with three EPI runs of
+The :ref:`example-data` is from an experiment with three EPI runs of
 flashing checkerboard events.  The first run was at a high presentation
 rate (average 1 per second), run 2 was at a medium rate (average 1 every
 3 seconds) and run 3 was slow (1 every 10 seconds on average).
