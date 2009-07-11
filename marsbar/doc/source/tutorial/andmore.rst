@@ -29,7 +29,7 @@ normalized, so the :ref:`aal-rois` definition of the putamen will
 probably give a reasonable approximation to the putamen in our data.
 
 Running an analysis using structural ROIs
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 is exactly the same as running the analysis with the functional
 ROI. Select Design from the MarsBaR menu, and *Set design from

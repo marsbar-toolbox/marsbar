@@ -1,5 +1,5 @@
 =====================================
- MarsBaR anonymous subversion access
+ Getting the latest development code
 =====================================
 
 This document gives a brief overview of how to access the MarsBaR code

@@ -1,5 +1,5 @@
-Basic results: the statistic table
-----------------------------------
+Basic results
+-------------
 
 Let us start the assessment by getting some t and F values for the effects in
 the design. Click on the Results button in the MarsBaR window:
@@ -127,7 +127,7 @@ effects, and divided by the residual variance for the whole model. There is
 no simple way of using this *Extra SS* value in second level analyses.
 
 Comparing fast and slow events
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Our results so far show that there is indeed a highly significant effect of
 visual stimulation on the visual cortex, even for very frequent events. This

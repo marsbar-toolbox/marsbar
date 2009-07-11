@@ -1,6 +1,6 @@
-=========================
- Defining and using ROIs
-=========================
+===============
+ Defining ROIs
+===============
 
 The preprocessing script has already run an SPM model for run 2 (and run 1 and
 run 3). Now we need to find an activation cluster in the visual cortex.
