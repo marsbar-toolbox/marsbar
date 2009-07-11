@@ -1,7 +1,9 @@
 # Makefile for Sphinx documentation
 #
 
+# https://sourceforge.net/apps/trac/sourceforge/wiki/Release files for download
 WWW=matthewbrett,marsbar@web.sourceforge.net:htdocs
+FRS=matthewbrett@frs.sourceforge.net:uploads
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
@@ -30,7 +32,7 @@ help:
 	@echo "  doctest   to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	-rm -rf build/* dist apidocs *-stamp
+	-rm -rf build/* dist apidocs *-stamp tarball
 
 pdf: latex
 	cd build/latex && make all-pdf
@@ -46,14 +48,30 @@ all: apidocs html pdf
 dist: clean all
 	ln build/latex/*.pdf dist/
 	cp -al build/html/* dist/
-	cd dist && echo "Options +Indexes" > apidocs/.htaccess && mkdir doc-stable && cp apidocs/.htaccess doc-stable && mkdir doc-devel && cp apidocs/.htaccess doc-devel && ln -s ../apidocs doc-stable/latest && ln -s ../apidocs doc-devel/latest
+	echo "Options +Indexes" > dist/apidocs/.htaccess
+	mkdir dist/doc-stable
+	mkdir dist/doc-devel
+	cp dist/apidocs/.htaccess dist/doc-stable
+	cp dist/apidocs/.htaccess dist/doc-devel
+	ln -s ../apidocs dist/doc-stable/latest
+	ln -s ../apidocs dist/doc-devel/latest
 	@echo "Build finished.  Final docs are in dist/"
 
-public: public-stamp
+public-web: public-web-stamp
 
-public-stamp: dist
+public-web-stamp: dist
 	rsync -avl --delete dist/ $(WWW)/
 	touch $@
+
+release: release-stamp
+
+release-stamp: 
+	- mkdir tarball
+	python scripts/write_release.py ..
+	touch $@
+
+public-release: release
+	cd tarball && rsync -avP -e ssh marsbar*.tar.gz $(FRS)/
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
