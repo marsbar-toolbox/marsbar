@@ -42,7 +42,7 @@ Why do I get an error "Cant open image file" when estimating a design?
 This occurs when the filenames in your SPM or MarsBaR design no
 longer point to valid files. For example, when you first estimated
 the design, the time series images might have been in a directory
-called/now/dead/directory - like this::
+called ``/now/dead/directory`` - like this::
 
   /now/dead/directory/subject1/sess1/image_01.img
   /now/dead/directory/subject1/sess1/image_02.img
@@ -71,7 +71,7 @@ not exist. To fix this, you will need to change the filenames in the
 design to match the new image locations.
 
 You can first check if this is the problem. Click on Design and choose
-Check image names in design. You should see an error message in the
+*Check image names in design*. You should see an error message in the
 matlab console window if the images are not where the design says they
 are.
 
@@ -80,14 +80,14 @@ path is the shared common path for all the image names. In the above
 example, the shared common path for the correct image filenames is
 ``/currently/extant/path``.
 
-To do the fix, you click on Design and choose Change design path to
-images. In the SPM input window you will see the current root
+To do the fix, you click on Design and choose *Change design path to
+images*. In the SPM input window you will see the current root
 directory printed in bold text. In the example above, this would be:
 ``/now/dead/directory``.
 
 You select ``/currently/extant/path`` using the SPM file selection
 window that has just appeared. If all went well, you can check it has
-worked; click Design, choose Check image names in design and hope that
+worked; click Design, choose *Check image names in design* and hope that
 you get the message ``All images in design appear to exist`` in the
 matlab window.
 
@@ -179,8 +179,7 @@ How do I run a MarsBaR analysis in batch mode?
 
 Here is a tiny example of a batch mode script. It assumes you have a
 design which has been estimated in SPM, and has a set of contrasts
-specified. The script snippet will work only for later versions of
-marsbar-devel.
+specified. 
 
 This example script assumes your design is stored in
 ``/my/path/SPM.mat`` and you have an ROI stored in
@@ -206,7 +205,7 @@ This example script assumes your design is stored in
    % get stats and stuff for all contrasts into statistics structure
    marsS = compute_contrasts(E, 1:length(xCon));
 
-See the help for the `compute_contrasts`_ function for details on the
+See the help for the `compute_contrasts <./apidocs/marsbar/@mardo_99/compute_contrasts.html>`_ function for details on the
 contents of the marsS structure.
 
 .. percent-activated:
@@ -362,8 +361,7 @@ average across the events with the same name::
 How do I extract percent signal change from my design using batch?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Maybe something like `this`_::
-
+Maybe something like this::
 
    % Get definitions of all events in model
    [e_specs, e_names] = event_specs(E);
@@ -373,6 +371,8 @@ Maybe something like `this`_::
    for e_s = 1:n_events
      pct_ev(e_s) = event_signal(E, e_specs(:,e_s), dur);  
    end
+
+See also the documentation for `event_signal.m <./apidocs/marsbar/@mardo/event_signal.html>`_.
 
 .. _rfx:
 
@@ -499,8 +499,7 @@ keyboard, rather than the mouse, or type the file name directly into the
 file selection box. There are some other odd wrinkles to the behaviour
 of the uigetfile interface in matlab 7, which should be fixed in marsbar
 version 0.40 and above. For details,search for comments containing
-'uigetfile' in `mars_uifile.m
-<http://marsbar.svn.sourceforge.net/viewvc/marsbar/trunk/marsbar/mars_uifile.m?view=markup>`_.
+'uigetfile' in `mars_uifile.m <./apidocs/mars_uifile.html>`_.
 
 .. _novalid:
 
@@ -528,6 +527,4 @@ and then rerun the data extraction...
 
 
 .. _`SPM statistics tutorial`: http://imaging.mrc-cbu.cam.ac.uk/imaging/PrinciplesStatistics
-.. _`compute_contrasts`: http://marsbar.sourceforge.net/doc-devel/latest/marsbar/@mardo_99/compute_contrasts.html
 .. _`FIR modelling`: http://sourceforge.net/docman/display_doc.php?docid=6217&group_id=13529
-.. _`this`: http://marsbar.sourceforge.net/doc-devel/latest/marsbar/@mardo/event_signal.html

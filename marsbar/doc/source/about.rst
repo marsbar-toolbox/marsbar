@@ -18,8 +18,7 @@ Thanks
 ~~~~~~
 
 For writing credits and some little jokes, see the `marsbar.m file
-<http://marsbar.svn.sourceforge.net/viewvc/marsbar/trunk/marsbar/marsbar.m?view=markup>`_
-file in the MarsBaR release.
+<./apidocs/marsbar/marsbar.html>`_ file in the MarsBaR release.
 
 .. include:: links_names.txt
 
