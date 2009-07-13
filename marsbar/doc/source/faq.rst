@@ -489,17 +489,13 @@ the link above, which is to run the following command::
 in matlab, before you ever start a file selection dialog, such as those
 in MarsBaR. Future versions of MarsBaR will do this automatically. This
 fix doesn't work if you are running in non-Java mode - which is what you
-get if you start matlab with::
-
-   matlab -nojvmmatlab -nojvm
-   
-
-In that case, you will need to either select the file using the
-keyboard, rather than the mouse, or type the file name directly into the
-file selection box. There are some other odd wrinkles to the behaviour
-of the uigetfile interface in matlab 7, which should be fixed in marsbar
-version 0.40 and above. For details,search for comments containing
-'uigetfile' in `mars_uifile.m <./apidocs/mars_uifile.html>`_.
+get if you start matlab with ``matlab -nojvm``.  In that case, you will
+need to either select the file using the keyboard, rather than the
+mouse, or type the file name directly into the file selection box. There
+are some other odd wrinkles to the behaviour of the uigetfile interface
+in matlab 7, which should be fixed in marsbar version 0.40 and
+above. For details, search for comments containing 'uigetfile' in
+`mars_uifile.m <./apidocs/marsbar/mars_uifile.html>`_.
 
 .. _novalid:
 
