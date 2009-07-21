@@ -68,7 +68,7 @@ conference abstract:
 
   Matthew Brett, Ian Nimmo-Smith, Katja Osswald, Ed Bullmore (2003) `Model
   fitting and power in fast event related designs
-  <http://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html>`_. NeuroImage,
+  <https://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html>`_. NeuroImage,
   19(2) Supplement 1, abstract 791
 
 The data consist of three EPI runs, all from one subject. In each run the

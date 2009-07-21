@@ -38,7 +38,7 @@ Once you have a svn client program, you can check out the current
 development code. To do this, use the svn command *checkout* or its
 abbreviation *co*:: 
 
-   svn co https://svn.sourceforge.net/svnroot/marsbar/trunk/marsbar
+   svn co http://svn.sourceforge.net/svnroot/marsbar/trunk/marsbar
    
 Once you've checked out the code you can easily update it from time
 to time. Go to the newly created directory and type:: 
@@ -53,6 +53,6 @@ ability to do a ``svn update``.
 
 .. _`Subversion guided tour`: http://svnbook.red-bean.com/en/1.1/ch03.html
 .. _`appropriate SVN client for your platform`: /docs/B01/en/#svn_client
-.. _`SVN client configuration instructions`: https://sourceforge.net/apps/trac/sourceforge/wiki/Subversion%20client%20instructions
+.. _`SVN client configuration instructions`: http://sourceforge.net/apps/trac/sourceforge/wiki/Subversion%20client%20instructions
 
 .. include:: ../links_names.txt
