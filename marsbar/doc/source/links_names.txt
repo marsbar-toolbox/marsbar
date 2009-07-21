@@ -10,7 +10,7 @@
 
 .. _`SPM`: http://www.fil.ion.ucl.ac.uk/spm
 .. _`marsbar hbm abstract`: http://cirl.berkeley.edu/mb312/abstracts/Marsbar/marsbar_abs.html
-.. _`MarsBaR project download page`: https://sourceforge.net/project/showfiles.php?group_id=76381
+.. _`MarsBaR project download page`: https://sourceforge.net/projects/marsbar/files
 .. _`MarsBaR SVN interface`: http://marsbar.svn.sourceforge.net/viewvc/marsbar/trunk/marsbar
 .. _`m2html`: http://www.artefact.tk/software/matlab/m2html/
 .. _`MarsBaR users mailing list`: https://lists.sourceforge.net/lists/listinfo/marsbar-users
