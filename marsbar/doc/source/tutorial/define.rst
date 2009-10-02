@@ -15,8 +15,6 @@ like this:
 
      View
         displays one or ROIs on a structural image.
-     Draw
-        calls up a Matlab interface for drawing ROIs.
      Get SPM cluster(s)
         uses the SPM results interface to select and save activation
         clusters as ROIs.
@@ -37,12 +35,13 @@ like this:
 Defining a functional ROI
 -------------------------
 
-We are going define the functional ROI using the SPM analysis for run 2. Select
-*Get SPM cluster(s)...*: from the menu. This runs the standard SPM results
-interface. Use the file selection window that SPM offers to navigate to the
-``sess2/SPM8_ana`` directory. Select the SPM.mat file and click Done. Choose the
-stim_hrf t contrast from the SPM contrast manager, click Done. Then accept all
-the default answers from the interface, like this:
+We are going to define the functional ROI using the SPM analysis for
+run 2. Select *Get SPM cluster(s)...*: from the menu. This runs the
+standard SPM results interface. Use the file selection window that SPM
+offers to navigate to the ``sess2/SPM8_ana`` directory. Select the
+SPM.mat file and click *Done*. Choose the ``stim_hrf`` t contrast from
+the SPM contrast manager, click *Done*. Then accept all the default
+answers from the interface, like this:
 
 +-------------------------------+----------+
 | Prompt                        | Response |
