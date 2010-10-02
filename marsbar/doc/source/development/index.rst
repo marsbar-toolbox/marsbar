@@ -7,6 +7,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   svn
+   code
    apidocs
    

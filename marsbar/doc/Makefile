@@ -30,6 +30,7 @@ help:
 	@echo "  changes   to make an overview of all changed/added/deprecated items"
 	@echo "  linkcheck to check all external links for integrity"
 	@echo "  doctest   to run all doctests embedded in the documentation (if enabled)"
+	@echo "  gitwash-update update git workflow from source repo"
 
 clean:
 	-rm -rf build/* dist apidocs *-stamp tarball
@@ -130,3 +131,6 @@ doctest:
 	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) build/doctest
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in build/doctest/output.txt."
+
+gitwash-update:
+	python scripts/gitwash_dumper.py source/development marsbar --github-user=matthew-brett

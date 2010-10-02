@@ -20,3 +20,4 @@
 .. _`SourceForge`: http://sourceforge.net
 .. _`mricro`: http://www.mricro.com/
 
+.. _`marsbar github`: http://github.com/matthew-brett/marsbar
