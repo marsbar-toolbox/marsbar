@@ -114,7 +114,8 @@ end
 
 % strip missing data
 if ~any(flags == 'l')
-  msk = ~any(isnan(Y));
+  % Mask out columns with NaNs
+  msk = ~any(isnan(Y),1);
   if ~all(msk)
     Y = Y(:, msk);
     multv = multv(msk);
