@@ -33,6 +33,8 @@ pparams = mars_struct('ffillmerge', defstruct, params);
 if size(pparams.centre, 2) == 1
   pparams.centre = pparams.centre';
 end
+% enforce radius as double for vox->mm conversions
+pparams.radius = double(pparams.radius)
 
 o = class(pparams, myclass, uo);
 return
