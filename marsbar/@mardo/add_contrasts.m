@@ -1,8 +1,8 @@
 function [D,Ic,changef] = add_contrasts(D, C, varargin)
 % method to add contrast definitions to design
-% 
+%
 % The function has many different formats
-% 
+%
 % FORMAT [D Ic changef] = add_contrasts(D, D2 [,Ic])
 %
 % where D2 is a design. If there is no third argument, all the contrasts in
@@ -12,43 +12,43 @@ function [D,Ic,changef] = add_contrasts(D, C, varargin)
 %
 % OR
 % FORMAT [D Ic changef] = add_contrasts(D, xCon)
-% 
+%
 % where xCon is a structure in SPM contrast format containing contrasts to
 % add.  If there is no third argument, all the contrasts in xCon will be
 % added.  If third argument (Ic) is passed, specifies which contrasts in xCon
 % to add. If Ic passed, and empty, or contains the string 'ui', contrasts to
 % add are fetched using the GUI
-% 
+%
 % OR
 % FORMAT [D Ic changef] = add_contrasts(D, stat_struct)
-% where stat_struct has fields 
+% where stat_struct has fields
 %      'names',       string, or cell array of strings
 %      'types',       string ('T' or 'F'), or cell array
 %      'set_actions', string ('c', 'X0' or 'iX0') or array
 %                     (see spm_FcUtil)
 %                     (field is optional, defaults to 'c')
-%      'values',      matrix of values 
+%      'values',      matrix of values
 %
 % OR
 % FORMAT [D Ic changef] = add_contrasts(D, names, types, values)
 % where names, types, values are cell arrays of values, or values
 % (defined as above)
-% 
+%
 % OR
 % FORMAT [D Ic  changef] = add_contrasts(D, names, types, set_actions, values)
 % where names, types, set_actions, values are cell arrays of values, or
 % values (defined as above)
 %
 % Returns
-% D       - possibly modified SPM design 
+% D       - possibly modified SPM design
 % Ic      - indices of specified contrasts as stored in D
-% changef - 1 if D has changed during call else 0 
-%   
+% changef - 1 if D has changed during call else 0
+%
 % Contrast will not be added if it is already present, but the correct
 % index will be returned in Ic
-% 
+%
 % $Id$
-  
+
 if nargin < 2
   error('Need contrasts to add');
 end
@@ -68,12 +68,12 @@ if isfield(C, 'xCon')     % design structure
 end
 if isfield(C, 'STAT')     % xCon structure
   % parse Ic input
-  if nargin > 2 
+  if nargin > 2
     Ic = varargin{1};
     if isempty(Ic) | strcmp(Ic,'ui')
       D2 = set_contrasts(D, C);
       Ic = ui_get_contrasts(D2,'T&F',Inf,...
-			   'Select contrasts to merge','',1);
+        'Select contrasts to merge','',1);
     end
     C = C(Ic);
   end
@@ -90,15 +90,15 @@ old_xc_len = xc_len;
 for i=1:length(C)
   if ~xc_len, xCon = C(i); Ic(i) = 1; xc_len = 1; break, end
   % Clear any vol fields, as they will not match this design
-  [C(i).Vcon C(i).Vspm] = deal([]); 
+  [C(i).Vcon C(i).Vspm] = deal([]);
   Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
   if ~Ic(i)
     xc_len = xc_len+1;
     xCon(xc_len) = C(i);
     Ic(i) = xc_len;
-  elseif v_f 
+  elseif v_f
     fprintf('\nContrast %s (type %s) already in xCon\n', ...
-	    C(i).name, C(i).STAT);
+        C(i).name, C(i).STAT);
   end
 end
 changef =  xc_len ~= old_xc_len;
@@ -138,15 +138,15 @@ end
 n_e = size(sX.X, 2);
 for c = 1:length(con_set)
   c1 = con_set(c);
-  if size(c1.values, 1) ~= n_e & ... 
-	size(c1.values, 2) == n_e
-    c1.values = c1.values';
+  if size(c1.values, 1) ~= n_e & ...
+      size(c1.values, 2) == n_e
+      c1.values = c1.values';
   end
   C(c) = spm_FcUtil('Set',...
-		    c1.names,...
-		    c1.types,...
-		    c1.set_actions,...
-		    c1.values,...
-		    sX);
+    c1.names,...
+    c1.types,...
+    c1.set_actions,...
+    c1.values,...
+    sX);
 end
 return
