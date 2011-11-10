@@ -1,0 +1,3 @@
+[submodule "testing"]
+	path = testing
+	url = git://github.com/matthew-brett/matlabtesting
