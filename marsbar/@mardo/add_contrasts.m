@@ -69,16 +69,16 @@ if isfield(C, 'xCon')     % design structure
 end
 if isfield(C, 'STAT')     % xCon structure
   % parse Ic input
-  if nargin > 2
-    Ic = varargin{1};
-    if isempty(Ic) | strcmp(Ic,'ui')
+  if nargin > 2 % There is Ic input
+    Ic_in = varargin{1};
+    if isempty(Ic_in) | strcmp(Ic,'ui')
       D2 = set_contrasts(D, C);
       Ic = ui_get_contrasts(D2,'T&F',Inf,...
         'Select contrasts to merge','',1);
     end
-    C = C(Ic);
+    C = C(Ic_in);
   end
-else                      % contrast setting structure or values or cells
+else % contrast setting structure or values or cells
   if ~isstruct(C) % make stat_struct structure if not already passed
     C = sf_cell_to_conset(C, varargin{:});
   end
@@ -90,19 +90,24 @@ xc_len = length(xCon);
 old_xc_len = xc_len;
 % C contains the contrasts to add
 for i=1:length(C)
-  % Initialize xCon if empty
-  if ~xc_len, xCon = C(i); Ic(i) = 1; xc_len = 1; break, end
-  % Clear any vol fields, as they will not match this design
-  [C(i).Vcon C(i).Vspm] = deal([]);
+  % Update this contrast using our own filtered design
+  c_i  = refresh_con(C(i), sX);
+  if xc_len == 0 % the xCon to add to is empty
+    xCon = c_i;
+    xc_len = 1;
+    Ic(1) = 1;
+    continue
+  end
   % Check if we have this contrast already
-  Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
-  if ~Ic(i)
+  Ic(i) = spm_FcUtil('In', c_i, sX, xCon);
+  if Ic(i) == 0
     xc_len = xc_len+1;
-    xCon(xc_len) = C(i);
+    xCon(xc_len) = c_i;
     Ic(i) = xc_len;
   elseif v_f
     fprintf('\nContrast %s (type %s) already in xCon\n', ...
-        C(i).name, C(i).STAT);
+        c_i.name, c_i.STAT) = 1;
+    error('An error')
   end
 end
 changef =  xc_len ~= old_xc_len;
@@ -111,6 +116,18 @@ if changef
   D = des_struct(D, SPM);
 end
 return
+
+function xcon_re_entry = refresh_con(xcon_entry, sX)
+% Rebuild contrast structure from our own filtered design
+if isempty(xcon_entry.c)
+    error('Empty c matrix for contrast, crashing because confused')
+end
+xcon_re_entry = spm_FcUtil('Set',...
+        xcon_entry.name,...
+        xcon_entry.STAT,...
+        'c',...
+        xcon_entry.c,...
+        sX);
 
 function C = sf_cell_to_conset(names, types, varargin)
 % makes contrast setting structure from cell input
