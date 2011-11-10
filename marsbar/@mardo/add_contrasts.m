@@ -60,6 +60,7 @@ xCon = SPM.xCon;
 v_f  = verbose(D);
 
 % process inputs
+% The ``C`` variable will hold the xCon structure for the contrasts to add
 if isa(C, 'mardo')        % design
   C = des_struct(C);
 end
@@ -78,19 +79,22 @@ if isfield(C, 'STAT')     % xCon structure
     C = C(Ic);
   end
 else                      % contrast setting structure or values or cells
-  if ~isstruct(C)
+  if ~isstruct(C) % make stat_struct structure if not already passed
     C = sf_cell_to_conset(C, varargin{:});
   end
-  % make xCon structure
+  % make xCon structure from stat_struct
   C = sf_conset_to_xcon(C, sX);
 end
-
+% Initial xCon before adding new contrasts
 xc_len = length(xCon);
 old_xc_len = xc_len;
+% C contains the contrasts to add
 for i=1:length(C)
+  % Initialize xCon if empty
   if ~xc_len, xCon = C(i); Ic(i) = 1; xc_len = 1; break, end
   % Clear any vol fields, as they will not match this design
   [C(i).Vcon C(i).Vspm] = deal([]);
+  % Check if we have this contrast already
   Ic(i) = spm_FcUtil('In', C(i), sX, xCon);
   if ~Ic(i)
     xc_len = xc_len+1;
