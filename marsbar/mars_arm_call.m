@@ -126,12 +126,16 @@ switch lower(action)
   if ~is_mars_estimated(data)
     error('Design has not been estimated')
   end
-  
+
   % Deal with case of old MarsBaR designs
   if ~has_contrasts(data);
-    tmp = load(spm_get(1, '*x?on.mat',...
-		       'Select contrast file')); 
-    data = set_contrasts(data, tmp);
+    fname = spm_get(1, '*x?on.mat', 'Select contrast file'));
+    [pth, fn, ext] = fileparts(fname);
+    tmp = load(fname);
+    % If the filename does not correspond to marsbar estimation, refresh the
+    % contrasts for safety (the user could have selected an SPM xCon fle).
+    refreshf = ~strcmp(fn, 'mars_xCon.mat');
+    data = set_contrasts(data, tmp, refreshf);
   end
 
   % Put data into object

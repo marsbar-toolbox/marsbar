@@ -32,3 +32,7 @@ fresh_e.xCon = [];
 fresh_e = add_contrasts(fresh_e, get_contrasts(bad_e));
 res = compute_contrasts(fresh_e);
 assert_equal(res.stat, good_stats, 1e-3);
+% Straight load does not refresh
+bad_e = mardo(des_pth);
+res = compute_contrasts(bad_e);
+assert_equal(res.stat, bad_stats, 1e-4);

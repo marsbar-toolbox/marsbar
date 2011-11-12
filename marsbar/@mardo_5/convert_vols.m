@@ -39,7 +39,7 @@ if ~isempty(xCon)
     xCon(i) = sf_conv(xCon(i), ver, 'Vspm');
   end
 end
-o = set_contrasts(o, xCon);
+o = set_contrasts(o, xCon, 0);
 return
 
 function S = sf_conv(S, ver, varargin)

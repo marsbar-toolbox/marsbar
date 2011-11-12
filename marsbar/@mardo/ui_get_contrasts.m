@@ -213,15 +213,15 @@ if nargin<2, STATmode='T|F'; else, STATmode=varargin{1}; end
 %-Setup mConMan window & jump cursor
 [F,cF] = ui_get_contrasts(D, 'Initialise','on',STATmode,n,Prompt,Mcstr,OK2chg);
 if PJump
-	PLoc = get(0,'PointerLocation');
-	FRec = get(F,'Position');
-	set(0,'PointerLocation',[FRec(1)+FRec(3)/2, FRec(2)+FRec(2)/2])
+    PLoc = get(0,'PointerLocation');
+    FRec = get(F,'Position');
+    set(0,'PointerLocation',[FRec(1)+FRec(3)/2, FRec(2)+FRec(2)/2])
 end
 
 %-Wait until filenames have been selected
 hDone = findobj(F,'Tag','Done');
 waitfor(hDone,'UserData')
-	
+
 %-Exit with error if mConManWin deleted
 if ~ishandle(hDone), error('Contrast Manager was quit!'), end
 
@@ -232,8 +232,10 @@ Q        = get(hConList,'UserData');
 I        = Q(get(hConList,'Value'));
 changef  = get(findobj(F,'Tag','D_Reset'), 'UserData');
 
-% Return new contrasts, if modified
-if changef, D = set_contrasts(D, get_contrasts(get(F,'UserData'))); end
+% Set new contrasts, if modified
+if changef
+    D = set_contrasts(D, get_contrasts(get(F,'UserData')), 0);
+end
 
 %-Reset and hide SelFileWin
 ui_get_contrasts(D, 'Initialise','off');
@@ -747,7 +749,7 @@ set(hConList,'String',tmp)
 %-Change name in contrast structure
 %-----------------------------------------------------------------------
 xCon(I).name = nname{1};
-D = set_contrasts(D, xCon);
+D = set_contrasts(D, xCon, 0);
 sf_SetD(D, 1, F);
 
 
@@ -1039,7 +1041,7 @@ if isempty(xCon)
 else
 	xCon = [xCon, DxCon];
 end
-D = set_contrasts(D, xCon);
+D = set_contrasts(D, xCon, 0);
 sf_SetD(D, 1, F);
 
 

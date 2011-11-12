@@ -72,7 +72,7 @@ if isfield(C, 'STAT')     % xCon structure
   if nargin > 2 % There is Ic input
     Ic_in = varargin{1};
     if isempty(Ic_in) | strcmp(Ic,'ui')
-      D2 = set_contrasts(D, C);
+      D2 = set_contrasts(D, C, 0);
       Ic = ui_get_contrasts(D2,'T&F',Inf,...
         'Select contrasts to merge','',1);
     end
