@@ -36,3 +36,7 @@ assert_equal(res.stat, good_stats, 1e-3);
 bad_e = mardo(des_pth);
 res = compute_contrasts(bad_e);
 assert_equal(res.stat, bad_stats, 1e-4);
+% Refreshing explicitly
+fresh_e = refresh_contrasts(bad_e);
+res = compute_contrasts(fresh_e);
+assert_equal(res.stat, good_stats, 1e-3);
