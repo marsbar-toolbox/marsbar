@@ -1,14 +1,18 @@
 % Run smoothing and SPM analysis for MarsBaR ER sample data
-% 
-% $Id: run_preprocess.m,v 1.2 2004/08/15 01:19:43 matthewbrett Exp $ 
+%
+% $Id: run_preprocess.m,v 1.2 2004/08/15 01:19:43 matthewbrett Exp $
 
 % Start marsbar to make sure spm_get works
 marsbar('on')
 
+% Directories we're expecting to be in example data directory
+sesses = {'sess1','sess2','sess3'};
 % You might want to define the path to the example data here, as in
 % subjroot = '/my/path/somewhere';
 subjroot = spm_get(-1, '', 'Root directory of example data');
-sesses = {'sess1','sess2','sess3'};
+if ~exist(fullfile(subjroot, sesses{1}), 'dir')
+    error(sprintf('Expecting %s directory in root directory', sesses{1}))
+end
 
 spm_v = spm('ver');
 sdirname = [spm_v '_ana'];

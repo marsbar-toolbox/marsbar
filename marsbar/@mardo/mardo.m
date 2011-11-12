@@ -222,28 +222,28 @@ if isfield(o.des_struct, 'marsY')
 end
 
 % If the design was loaded from a file, and is 99 type then it may need
-% contrasts.  If it wass estimated in MarsBaR, try loading mars_xCon.mat in
-% the same directory.  If it wass estimated in SPM, try loading xCon.mat in
-% the same directory.
-if ~isempty(fname) & ...
-      strcmp(type(o), 'SPM99') & ...
-      ~has_contrasts(o)
+% contrasts.  If it was estimated in MarsBaR, try loading mars_xCon.mat in the
+% same directory.  If it was estimated in SPM, try loading xCon.mat in the same
+% directory.
+if ~isempty(fname) & strcmp(type(o), 'SPM99') & ~has_contrasts(o)
+  % We try to load contrasts from an xCon file
   [pn fn ext] = fileparts(fname);
-  if is_mars_estimated(o)        
+  if is_mars_estimated(o)
     xcon_name = fullfile(pn, 'mars_xCon.mat')
-  elseif is_spm_estimated(o) 
+  elseif is_spm_estimated(o)
     xcon_name = fullfile(pn, 'xCon.mat');
   else
     xcon_name = '';
   end
   if ~isempty(xcon_name)
+    % There is a file to load
     if exist(xcon_name, 'file')
       xc = load(xcon_name);
       if isfield(xc, 'xCon')
-	o = set_contrasts(o, xc.xCon);
-	if verbose(o)
-	  disp(['Set contrasts from ' xcon_name]);
-	end
+          o = set_contrasts(o, xc.xCon);
+          if verbose(o)
+              disp(['Set contrasts from ' xcon_name]);
+          end
       end
     elseif verbose(o)
       disp('Failed to load contrasts');
