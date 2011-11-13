@@ -30,3 +30,15 @@ assert_true(isempty(my));
 nn_roi = spm_hold(roi, 0);
 my = get_marsy(nn_roi, V, 'mean');
 assert_equal(summary_data(my), squeeze(img_data(2,1,1,:)))
+% Check sampling from two voxels and two images
+st = struct('XYZ', [2,2,1; 2,2,2]', 'mat', mat, 'spm_hold', 0);
+nn_roi = maroi_pointlist(st, 'vox');
+assert_equal(spm_hold(nn_roi), 0)
+my = get_marsy(nn_roi, V(1:2), 'mean');
+% Giving predictable result for one image
+assert_equal(summary_data(my), mean(squeeze(img_data(2,2,1:2,1:2)), 1)');
+my = get_marsy(nn_roi, V(1), 'mean');
+assert_equal(summary_data(my), mean(squeeze(img_data(2,2,1:2,1))))
+% Check that NaN in single image does not squelch all data
+my = get_marsy(nn_roi, V(3), 'mean');
+assert_equal(summary_data(my), squeeze(img_data(2,2,1,3)))
