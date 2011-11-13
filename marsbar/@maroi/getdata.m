@@ -6,7 +6,7 @@ function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)
 % data_imgs - images to fetch data from.  These can be in the form of
 %             a character array, or an array of type spm_vol (see
 %             spm_vol.m)
-%  
+%
 % flags can can be none or more of
 %              z - use zero masking for images without NaN represenation
 %              n - nearest neighbour resampling of images
@@ -14,6 +14,9 @@ function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)
 %              (trilinear resampling is the default)
 %              m - remap images
 %              l - Leave in columns with missing data
+%
+% If the resampling is not set with the flags input, then we use the resampling
+% value from the ROI ``spm_hold`` value.
 %
 % default flags is empty
 %
@@ -47,13 +50,13 @@ elseif any(flags == 'm')
   end
 end
 
-% resampling = trilinear by default
+% resampling = set by ROI hold value by default
 if any(flags == 's')
   holdval = -11;
 elseif any(flags == 'n')
   holdval = 0;
-else
-  holdval = 1;
+else % Not specified, use ROI default resampling value
+  holdval = spm_hold(roiobj);
 end
 
 % NaN replacement
@@ -79,8 +82,7 @@ XYZ = [XYZ; ones(size(multv))];
 nimgs = length(data_imgs);
 dims = cat(3,data_imgs(:).dim);
 dims = dims(:, 1:3, :); % to allow for SPM2/SPM99 4 element dims
-chgflgs = any(diff(dims,1,3)) | ...
-	  any(any(diff(cat(3,data_imgs(:).mat),1,3)));
+chgflgs = any(diff(dims,1,3)) | any(any(diff(cat(3,data_imgs(:).mat),1,3)));
 chgflgs = [1; chgflgs(:)];
 
 % create return matrix
@@ -98,16 +100,12 @@ for i = 1:nimgs
     vXYZ = ixyz(1:3,:);
     mat  = data_imgs(1).mat;
   end
-  
   % resample data at voxel centres of ROI
-  data = spm_sample_vol(data_imgs(i),...
-			ixyz(1,:),ixyz(2,:),ixyz(3,:),holdval);
-    
+  data = spm_sample_vol(data_imgs(i), ixyz(1,:),ixyz(2,:),ixyz(3,:),holdval);
   % clear out missing values
   if ~nanrep & zmask
     data(data == 0) = NaN;
   end
-  
   % return all the values
   Y(i, :) = data;
 end
