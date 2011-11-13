@@ -129,7 +129,7 @@ switch lower(action)
 
   % Deal with case of old MarsBaR designs
   if ~has_contrasts(data);
-    fname = spm_get(1, '*x?on.mat', 'Select contrast file'));
+    fname = spm_get(1, '*x?on.mat', 'Select contrast file');
     [pth, fn, ext] = fileparts(fname);
     tmp = load(fname);
     % If the filename does not correspond to marsbar estimation, refresh the
