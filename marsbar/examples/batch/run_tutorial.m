@@ -11,28 +11,23 @@
 marsbar('on')
 
 % You might want to define the path to the example data here, as in
-% root_dir = '/my/path/somewhere';
-root_dir = spm_get(-1, '', 'Root directory of example data');
-sesses = {'sess1','sess2','sess3'};
+% subjroot = '/my/path/somewhere';
+subjroot = get_subjroot();
 
 % Directory to store (and load) ROIs
-roi_dir = fullfile(root_dir, 'rois');
+roi_dir = fullfile(subjroot, 'rois');
 
 % MarsBaR version check
-if isempty(which('marsbar'))
-  error('Need MarsBaR on the path');
-end
 v = str2num(marsbar('ver'));
 if v < 0.35
   error('Batch script only works for MarsBaR >= 0.35');
 end
-marsbar('on');  % needed to set paths etc
 
 % SPM version check. We need this to guess which model directory to use and
 % to get the SPM configured design name. 
 spm_ver = spm('ver');
 sdirname = [spm_ver '_ana'];
-if strcmp(spm_ver, 'SPM99') 
+if strcmp(spm_ver, 'SPM99')
   conf_design_name = 'SPMcfg.mat';
 else
   spm_defaults;
@@ -46,7 +41,7 @@ spm('defaults', 'fmri');
 mars_sdir = 'Mars_ana';
 
 % Get SPM model for session 2
-sess2_model_dir = fullfile(root_dir, 'sess2', sdirname);
+sess2_model_dir = fullfile(subjroot, 'sess2', sdirname);
 sess2_model = mardo(fullfile(sess2_model_dir, 'SPM.mat'));
 if ~is_spm_estimated(sess2_model)
   error(['Session 2 model has not been estimated. ' ...
@@ -111,7 +106,7 @@ trim_stim = label(trim_stim, 'batch_trim_stim');
 saveroi(trim_stim, fullfile(roi_dir, 'batch_trim_stim_roi.mat'));
 
 % Save as image
-save_as_image(trim_stim, fullfile(root_dir, 'batch_trim_stim.img'));
+save_as_image(trim_stim, fullfile(subjroot, 'batch_trim_stim.img'));
 
 % We will do estimation for the trimmed functional ROI, and for two
 % anatomical ROIs
@@ -136,44 +131,33 @@ clear model_file
 for roi_no = 1:length(roi_array)
   roi = roi_array{roi_no};
   for ss = 1:length(sesses)
-    
     % Run SPM model configuration, just to show we don't need to do SPM
     % estimation before using MarsBaR
     % We only need to do this for the first ROI, because we reuse the
     % design for each ROI
     if roi_no == 1
-      model_file{ss} = configure_er_model(root_dir, sesses{ss}, mars_sdir);
+      model_file{ss} = configure_er_model(subjroot, sesses{ss}, mars_sdir);
     end
-    
     D = mardo(model_file{ss});
-    
     % Extract data
     Y = get_marsy(roi, D, 'mean');
-    
     % MarsBaR estimation
     E = estimate(D, Y);
-    
     % Add contrast, return model, and contrast index
     [E Ic] = add_contrasts(E, 'stim_hrf', 'T', [1 0 0]);
-    
     % Get, store statistics
     stat_struct(ss) = compute_contrasts(E, Ic);
-    
     % And fitted time courses
     [this_tc dt] = event_fitted(E, event_spec, event_duration);
-
     % Make fitted time course into ~% signal change
     tc(:, ss) = this_tc / block_means(E) * 100;
-    
   end
-
   % Show calculated t statistics and contrast values
   % NB this next line only works when we have only one stat/contrast
   % value per analysis
   vals = [ [1 3]; [stat_struct(:).con]; [stat_struct(:).stat]; ];
   fprintf('Statistics for %s\n', label(roi));
   fprintf('Session %d; contrast value %5.4f; t stat %5.4f\n', vals);
-  
   % Show fitted event time courses
   figure
   secs = [0:length(tc) - 1] * dt; 
@@ -182,5 +166,4 @@ for roi_no = 1:length(roi_array)
   xlabel('Seconds')
   ylabel('% signal change');
   legend(sesses)
-  
 end

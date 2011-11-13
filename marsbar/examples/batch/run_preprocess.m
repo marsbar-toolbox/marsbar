@@ -1,5 +1,5 @@
 % Run smoothing and SPM analysis for MarsBaR ER sample data
-% 
+%
 % $Id: run_preprocess.m,v 1.2 2004/08/15 01:19:43 matthewbrett Exp $ 
 
 % Start marsbar to make sure spm_get works
@@ -7,7 +7,8 @@ marsbar('on')
 
 % You might want to define the path to the example data here, as in
 % subjroot = '/my/path/somewhere';
-subjroot = spm_get(-1, '', 'Root directory of example data');
+subjroot = get_subjroot();
+
 sesses = {'sess1','sess2','sess3'};
 
 spm_v = spm('ver');
