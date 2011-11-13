@@ -106,8 +106,7 @@ for i=1:length(C)
     Ic(i) = xc_len;
   elseif v_f
     fprintf('\nContrast %s (type %s) already in xCon\n', ...
-        c_i.name, c_i.STAT) = 1;
-    error('An error')
+            c_i.name, c_i.STAT);
   end
 end
 changef =  xc_len ~= old_xc_len;
