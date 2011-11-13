@@ -7,13 +7,14 @@ function varargout = spm_get(Action, varargin)
 % spm_select. I've only wrapped the spm_get calls used in marsbar.  
 %
 % Usually, file / directory selection call is of format:
-% FORMAT P = spm_get(N, ext, prompt)
+% FORMAT P = spm_get(N, ext, prompt, newwdir)
 % Input
 % N        - matrix specifying what (file or dir) to select, and how
 %            many to select.
 % ext      - the filter for files to select
 % prompt   - the prompt to display for the selection window
-% 
+% newwdir  - new working directory
+%
 % Output
 % P        - a string matrix of file names
 %
@@ -22,11 +23,9 @@ function varargout = spm_get(Action, varargin)
 % (returns canonical version of file path 'path')
 % FORMAT [files,dirs]=spm_select('files',direc,filt)
 % (Returns files matching the filter (filt) and directories within dir)
-% 
+%
 % See spm_select from the spm5 distribution, and spm_get from spm2
 % distribution
-%
-% $Id$
 
 nout = max(nargout,1);
 
@@ -37,7 +36,7 @@ end
 % If the first argument is a string, this is an action
 if ischar(Action)
   switch(lower(Action))
-   case 'cpath'   
+   case 'cpath'
     varargout = {spm_select('cpath', varargin{:})};
    case 'files'
     if nargin < 2
@@ -77,11 +76,20 @@ if any(Action < 0)
 end
 if nargin<3
   Prompt='Select files...';
-else 
+else
   Prompt = varargin{1};
   varargin(1) = [];
 end
-varargout = {spm_select(Action, Filt, Prompt, varargin{:})};
+if nargin<4
+    wd = pwd;
+else
+    wd = varargin{1};
+    varargin(1) = []; % pop processed argument
+end
+if length(varargin) ~= 0
+    error('Sorry, we do not handle this call to spm_select');
+end
+varargout = {spm_select(Action, Filt, Prompt, {''}, wd)};
 if isempty(varargout), return, end
 % Cell array prompt should return cell array of arguments
 if iscellstr(Prompt)
