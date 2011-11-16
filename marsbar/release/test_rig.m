@@ -84,13 +84,13 @@ for c = 1:length(Ic)
   [mx(c) i] = max(img(:));
   xyz(:, c) = mars_utils('e2xyz', i, V.dim(1:3));
   mx_roi(c) = maroi_pointlist(struct('XYZ', xyz(:, c), ...
-				     'mat', V.mat), 'vox');
+                'mat', V.mat), 'vox');
   Y = get_marsy(mx_roi(c), D, 'mean');
   E = estimate(D, Y, params);
   [E n_Ic] = add_contrasts(E, D, Ic(c));
   marsS = compute_contrasts(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
-	  mx(c), marsS.stat(1));
+  mx(c), marsS.stat(1));
   if abs(marsS.stat(1) - mx(c)) > 1e-5
     disp('MarsBaR gives a different result for contrast');
     res = 0;
