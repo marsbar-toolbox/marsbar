@@ -21,7 +21,7 @@ if nargin < 1
   optstr = 'load';
 end
 if nargin < 2
-  mars = getfield(spm('getglobal','MARS'), 'OPTIONS');
+  mars = mars_struct('getifthere', spm('getglobal','MARS'), 'OPTIONS');
 end
 if nargin < 3
   cfg_fname = '';
