@@ -15,8 +15,14 @@ switch lower(arg)
  case 'defaults'
   global defaults
   if isempty(defaults)
-    spm_defaults;
-    spm('defaults','FMRI');
+      try
+        % SPM8 likes to return the defaults
+        defaults = spm('defaults','FMRI');
+      catch
+        % SPM5 does not
+        spm_defaults;
+        spm('defaults','FMRI');
+      end
   end
   varargout = {defaults};
  case 'default_design'
