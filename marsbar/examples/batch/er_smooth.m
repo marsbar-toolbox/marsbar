@@ -26,8 +26,8 @@ n     = size(P,1);
 %---------------------------------------------------------------------------
 for i = 1:n
   Q = deblank(P(i,:));
-  [pth,nm,xt,vr] = fileparts(deblank(Q));
-  U = fullfile(pth,['s' nm xt vr]);
+  [pth,nm,xt] = fileparts(deblank(Q));
+  U = fullfile(pth,['s' nm xt]);
   spm_smooth(Q,U,fwhm);
 end
 
