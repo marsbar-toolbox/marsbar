@@ -90,11 +90,30 @@ for c = 1:length(Ic)
   [E n_Ic] = add_contrasts(E, D, Ic(c));
   marsS = compute_contrasts(E, n_Ic);
   fprintf('SPM statistic %7.4f; MarsBaR statistic %7.4f\n',...
-  mx(c), marsS.stat(1));
-  if abs(marsS.stat(1) - mx(c)) > 1e-5
+            mx(c), marsS.stat(1));
+  st_spm = mx(c);
+  st_mars = marsS.stat(1);
+  bad_test = abs(st_mars - st_spm) > 1e-5;
+  if bad_test % Statistics are different - SPM8 fudge?
+    spmV = mars_utils('spm_version');
+    if lower(spmV) == 'spm8'
+      xCon = get_contrasts(E);
+      this_con = xCon(n_Ic);
+      if this_con.STAT == 'T' & (st_mars > st_spm)
+        % Probably the fudge factor
+        fudge = (st_mars / st_spm - 1) / exp(-8);
+        fprintf('Fudge value was %f\n', fudge);
+        % fudge should now be max SE across all voxels in the
+        % estimation block (e.g. slice) / SE for this voxel
+        if fudge < 10
+          bad_test = 0;
+        end
+      end
+    end
+  end
+  if bad_test
     disp('MarsBaR gives a different result for contrast');
     res = 0;
   end
 end
 return
-
