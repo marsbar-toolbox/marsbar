@@ -52,6 +52,9 @@ if ischar(params)
       o = pr_spm_filter(others, varargin{1:2});
     end
     return
+  otherwise
+    error(sprintf('Is "%s" a filename? Use ``mardo`` to load from files',...
+            params));
   end
 end
     
