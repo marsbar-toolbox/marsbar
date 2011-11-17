@@ -252,7 +252,7 @@ if ~isempty(fname) & strcmp(type(o), 'SPM99') & ~has_contrasts(o)
 end
 
 % Refresh contrasts if option specifies
-if mars_get_option('statistics', 'refresh_contrasts')
+if is_mars_estimated(o) & mars_get_option('statistics', 'refresh_contrasts')
     o = refresh_contrasts(o);
 end
 
