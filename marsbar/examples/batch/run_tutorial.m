@@ -61,9 +61,13 @@ if isstruct(t_con.Vspm)
 else
   t_con_fname = t_con.Vspm;
 end
-t_img_name = fullfile(sess2_model_dir, t_con_fname);
-if ~exist(t_img_name)
-  error(['Cannot find t image ' t_img_name ...
+% SPM5 designs can have full paths in their Vspm.fnames
+t_pth = fileparts(t_con_fname);
+if isempty(t_pth)
+    t_con_fname = fullfile(sess2_model_dir, t_con_fname);
+end
+if ~exist(t_con_fname)
+  error(['Cannot find t image ' t_con_fname ...
 	 '; has it been estimated?']);
 end
 
@@ -73,7 +77,7 @@ erdf = error_df(sess2_model);
 t_thresh = spm_invTcdf(1-p_thresh, erdf);
 
 % get all voxels from t image above threshold
-V = spm_vol(t_img_name);
+V = spm_vol(t_con_fname);
 img = spm_read_vols(V);
 tmp = find(img(:) > t_thresh);
 img = img(tmp);

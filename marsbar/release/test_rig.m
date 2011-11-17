@@ -67,7 +67,11 @@ for t = 'TF'
     if ~isempty(F)
       % SPM99 = filename, SPM2 = vol_struct
       if isstruct(F), F = F.fname; end
-      F = fullfile(Swd, F);
+      % SPM5 has full paths for the contrast images
+      con_pth = fileparts(F);
+      if isempty(con_pth)
+          F = fullfile(Swd, F);
+      end
       if exist(F, 'file'), Ic = [Ic c]; fnames{end+1} = F; break, end
     end
   end
