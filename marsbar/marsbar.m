@@ -633,7 +633,9 @@ end
 if isa(o, 'maroi')
   o = label(o, func);
   o = marsbar('saveroi', o); 
-  fprintf('\nSaved ROI as %s\n', source(o));
+  if ~isempty(o)
+    fprintf('\nSaved ROI as %s\n', source(o));
+  end
 else
   warning(sprintf('\nNo ROI resulted from function %s...\n', func));
 end
