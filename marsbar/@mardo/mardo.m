@@ -240,9 +240,7 @@ if ~isempty(fname) & strcmp(type(o), 'SPM99') & ~has_contrasts(o)
     if exist(xcon_name, 'file')
       xc = load(xcon_name);
       if isfield(xc, 'xCon')
-          % We don't want to refresh the contrasts because they should
-          % correspond with the estimated design
-          o = set_contrasts(o, xc.xCon, 0);
+          o = set_contrasts(o, xc.xCon);
           if verbose(o)
               disp(['Set contrasts from ' xcon_name]);
           end
@@ -251,6 +249,11 @@ if ~isempty(fname) & strcmp(type(o), 'SPM99') & ~has_contrasts(o)
       disp('Failed to load contrasts');
     end
   end
+end
+
+% Refresh contrasts if option specifies
+if mars_get_option('statistics', 'refresh_contrasts')
+    o = refresh_contrasts(o);
 end
 
 % sort out design image flipping

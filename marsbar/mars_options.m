@@ -102,6 +102,9 @@ switch lower(optstr)
   % option to say if images should be flipped when converting
   % to and from spm99 designs
   mars.statistics.flip_option = mars_veropts('flip_option');
+
+  % Whether to refresh contrast structure when loading designs
+  mars.statistics.refresh_contrasts = 1;
   
   % Difference function to calculate % signal change
   mars.events.diff_func = 'abs max';
@@ -160,7 +163,10 @@ switch lower(optstr)
     mars.statistics.flip_option = spm_input('Flip design images SPM99-2',...
 					 '+1','b','Yes|No',tmp, tmpi);
 
-     
+    tmp = [1 0]; tmpi = find(tmp == mars.statistics.refresh_contrasts);
+    mars.statistics.refresh_contrasts = spm_input(...
+        'Load updates F contrasts?', '+1','b','Yes|No',tmp, tmpi);
+
    case 'events'
     mars.events = getdefs(...
 	mars.events,...

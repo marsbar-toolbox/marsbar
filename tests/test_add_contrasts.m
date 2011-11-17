@@ -32,7 +32,13 @@ fresh_e.xCon = [];
 fresh_e = add_contrasts(fresh_e, get_contrasts(bad_e));
 res = compute_contrasts(fresh_e);
 assert_equal(res.stat, good_stats, 1e-3);
-% Straight load does not refresh
+% Straight load does refresh with default options
+bad_e = mardo(des_pth);
+res = compute_contrasts(bad_e);
+assert_equal(res.stat, good_stats, 1e-3);
+% But does not when you set the right option
+global MARS
+MARS.OPTIONS.statistics.refresh_contrasts = 0;
 bad_e = mardo(des_pth);
 res = compute_contrasts(bad_e);
 assert_equal(res.stat, bad_stats, 1e-4);
@@ -40,3 +46,13 @@ assert_equal(res.stat, bad_stats, 1e-4);
 fresh_e = refresh_contrasts(bad_e);
 res = compute_contrasts(fresh_e);
 assert_equal(res.stat, good_stats, 1e-3);
+% Loading via mardo_2
+SPM = des_struct(bad_e);
+MARS.OPTIONS.statistics.refresh_contrasts = 1;
+bad_e = mardo_2(SPM);
+res = compute_contrasts(bad_e);
+assert_equal(res.stat, good_stats, 1e-3);
+MARS.OPTIONS.statistics.refresh_contrasts = 0;
+bad_e = mardo_2(SPM);
+res = compute_contrasts(bad_e);
+assert_equal(res.stat, bad_stats, 1e-4);

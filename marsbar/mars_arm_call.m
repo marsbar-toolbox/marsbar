@@ -132,9 +132,11 @@ switch lower(action)
     fname = spm_get(1, '*x?on.mat', 'Select contrast file');
     [pth, fn, ext] = fileparts(fname);
     tmp = load(fname);
+    % Default refreshing
+    refreshf = mars_get_option('statistics', 'refresh_contrasts');
     % If the filename does not correspond to marsbar estimation, refresh the
     % contrasts for safety (the user could have selected an SPM xCon fle).
-    refreshf = ~strcmp(fn, 'mars_xCon.mat');
+    refreshf = refreshf | ~strcmp(fn, 'mars_xCon.mat')
     data = set_contrasts(data, tmp, refreshf);
   end
 
