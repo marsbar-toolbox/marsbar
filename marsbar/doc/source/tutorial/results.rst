@@ -18,6 +18,15 @@ the design. Click on the Results button in the MarsBaR window:
       gives an interface for you to select contrasts from other
       analyses, and import them into the list of contrasts for the
       current analysis.
+   Refresh F contrasts
+      In earlier versions of marsbar (<= 0.42), F contrasts added from other
+      designs (Import contrasts above) could give wrong results due to cached
+      fields in the contrasts that were specific to the design from which they
+      were imported.  Unless you tell MarsBaR otherwise, it will automatically
+      fix F contrasts in estimated designs when you load them so you should not
+      need this menu option.  If you have set MarsBaR not to refresh F contrasts
+      on load (see Options: Statistics: Load updates F contrasts), then you can
+      use this ``Refresh F contrasts`` menu option to refresh the contrasts.
    Add trial specific F
       will add F contrasts for each trial, and each session, if they are
       not already present.
@@ -82,7 +91,7 @@ machine:
    stim_hrf
    --------------------------
 
-         trimmed stim run 2:           2.27:           4.84:       0.000002:       0.000002
+         trimmed stim run 2:           2.21:           4.44:       0.000011:       0.000011
 
 At the left you see the contrast name. Under this, and to the right, MarsBaR
 has printed the ROI label that you entered a while ago. The t statistic is
@@ -117,7 +126,7 @@ choose the effects of interest contrast, click Done:
    effects of interest
    --------------------------
 
-         trimmed stim run 2:          41.15:          28.26:       0.000000:       0.000000
+         trimmed stim run 2:          40.48:          25.01:       0.000000:       0.000000
 
 
 Now the Contrast value has become the *Extra SS*.  This is a measure of the
@@ -169,7 +178,7 @@ In the end, you get a new statistic table:
    stim_hrf
    --------------------------
 
-         trimmed stim run 2:           3.15:           4.44:       0.000011:       0.000011
+         trimmed stim run 2:           2.96:           3.98:       0.000061:       0.000061
 
 You can see that the contrast value – which is proportional to the change in
 signal for a single event – is greater for run 3 than for run 1. Despite this,

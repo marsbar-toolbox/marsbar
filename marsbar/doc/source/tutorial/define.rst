@@ -46,7 +46,7 @@ answers from the interface, like this:
 +-------------------------------+----------+
 | Prompt                        | Response |
 +===============================+==========+
-| mask with other contrasts:    | no       |
+| apply masking                 | none     |
 +-------------------------------+----------+
 | title for comparison          | stim_hrf |
 +-------------------------------+----------+
@@ -85,7 +85,7 @@ able to keep track of where its results files are.
 
 Move the red arrow in the SPM graphics window to the activation cluster in the
 visual cortex. You can do this by dragging the arrow, or right-clicking to the
-right of the axial view and choosing goto global maxima.
+right of the axial view and choosing ``goto global maxima``.
 
 When the red arrow is in the main cluster, click on the Write ROI(s) menu in
 the SPM input window and select Write one cluster.

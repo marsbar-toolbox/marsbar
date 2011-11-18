@@ -54,7 +54,7 @@ One table for the left putamen:
    stim_hrf
    ---------------------------
 
-                   Putamen_L:           0.09:           0.86:       0.194983:       0.194983
+                   Putamen_L:           0.08:           0.77:       0.222894:       0.222894
 
 and one for the right putamen:
 
@@ -66,7 +66,7 @@ and one for the right putamen:
    stim_hrf
    ---------------------------
 
-                   Putamen_R:           0.05:           0.58:       0.281891:       0.281891
+                   Putamen_R:           0.05:           0.50:       0.307312:       0.307312
 
 The subject responded with their right hand, so we expected that the right
 putamen would have less signal than the left.
