@@ -31,7 +31,7 @@ run_preprocess
 The routines will create smoothed images and run a standard
 SPM statistical model on each of the three sessions.
 
-The routines should work with SPM99, SPM2 or SPM5
+The routines should work with SPM99 through SPM8.
 
 There is also an example batch script for MarsBaR that replicates the
 analyses described in the MarsBaR tutorial; see
