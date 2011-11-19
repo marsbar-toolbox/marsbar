@@ -46,7 +46,9 @@ apidocs-stamp:
 
 all: apidocs html pdf
 
-dist: clean all
+dist: dist-stamp
+
+dist-stamp: clean all
 	ln build/latex/*.pdf dist/
 	cp -al build/html/* dist/
 	echo "Options +Indexes" > dist/apidocs/.htaccess
@@ -57,22 +59,16 @@ dist: clean all
 	ln -s ../apidocs dist/doc-stable/latest
 	ln -s ../apidocs dist/doc-devel/latest
 	@echo "Build finished.  Final docs are in dist/"
+	touch $@
+
+doc-release: dist-stamp
+	python scripts/write_doc_release.py dist ../marsbar archives
 
 public-web: public-web-stamp
 
 public-web-stamp: dist
 	rsync -avl --delete dist/ $(WWW)/
 	touch $@
-
-release: release-stamp
-
-release-stamp: 
-	- mkdir tarball
-	python scripts/write_release.py ..
-	touch $@
-
-public-release: release
-	cd tarball && rsync -avP -e ssh marsbar*.tar.gz $(FRS)/
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
