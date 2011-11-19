@@ -7,13 +7,13 @@ function varargout=marsbar(varargin)
 % MarsBaR (the collection of files listed by contents.m) is copyright under
 % the GNU general public license.  Please see mars_licence.man for details.
 % 
-% Marsbar written by 
+% Marsbar written and copyright claimed by 
 % Jean-Luc Anton, Matthew Brett, Jean-Baptiste Poline, Romain Valabregue 
 %
-% Portions of the code rely heavily on (or are copied from) SPM99 and SPM2
+% Portions of the code rely heavily on (or are copied from) SPM
 % (http://www.fil.ion.ucl.ac.uk/spm), which is also released under the GNU
-% public licence.  Many thanks the SPM authors: (John Ashburner, Karl
-% Friston, Andrew Holmes et al, and of course our own Jean-Baptiste).
+% public licence.  Many thanks the SPM authors: (John Ashburner, Karl Friston,
+% Andrew Holmes et al, and of course our own Jean-Baptiste).
 %
 % This software is MarsBaRWare. It is written in the hope that it is
 % helpful; if you find it so, please let us know by sending a Mars bar to:
