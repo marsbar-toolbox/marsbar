@@ -1,0 +1,45 @@
+.. -*- mode: rst -*-
+.. vim:syntax=rst
+
+.. _changelog:
+
+MarsBaR Development Changelog
+-----------------------------
+
+Changes we have made to MarsBaR starting at release 0.43.
+
+'Close gh-' statements refer to GitHub issues that are available at::
+
+  http://github.com/matthew-brett/marsbar/issues
+
+The full VCS changelog is available here:
+
+  http://github.com/matthew-brett/marsbar/commits/master
+
+Releases
+~~~~~~~~
+
+
+Most work on MarsBaR so far has been by Matthew Brett (MB)
+
+* 0.43 (Saturday 19 November 2011)
+
+  * Bugfix release
+  * Fix for nasty F contrasts importing bug - see
+    https://github.com/matthew-brett/marsbar/issues/1 . Thanks to Scott
+    Fairhall for pointing this one out.
+  * Fix wipeout of vector when only one image sampled by getdata - thanks to
+    Noelia Ventura for the report
+  * Fix startup crash in getting defaults in SPM8 / Matlab 2011b (and maybe
+    earlier versions
+  * Update call to fileparts in prerocessing scripts - out of date for recent
+    matlabs (at least 2011b).
+  * Add fix for ignored ROI hold value - thanks to Peter Ziedman for finding
+    the bug
+  * Excel files had 'wk1' suffix - fixed to 'xls' Thanks to Niels Petter
+    Bjørre Sigvartsen for pointing this one out.
+  * Bug in spm_get wrapper causing crashes in GUI for option setting - thanks
+    to TC Chiang for the report.
+  * Fix bug reported by Chris McNorgan, where int radius causes error in point
+    conversion
+  * Add some tests and testing framework.
