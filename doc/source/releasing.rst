@@ -23,7 +23,7 @@ How to release
 
   Then manually go over the *git log* to make sure the release notes are
   as complete as possible and that every contributor was recognized.
-* Bump the version number in marsbar.m
+* Bump the version number in marsbar.m and ``doc/source/conf.py``; commit
 * Run the pre release script in ``<marsbar>/marsbar/release/pre_release.m``.
 
     >> pre_release
@@ -37,6 +37,7 @@ How to release
 
 * Upload to the file release directories
 * Upload the web documentation
+* Tag the release commit
 * Announce
 
 
