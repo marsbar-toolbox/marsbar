@@ -48,7 +48,9 @@ all: apidocs html pdf
 
 dist: dist-stamp
 
-dist-stamp: clean all
+distclean: clean dist-stamp
+
+dist-stamp: all
 	ln build/latex/*.pdf dist/
 	cp -al build/html/* dist/
 	echo "Options +Indexes" > dist/apidocs/.htaccess
@@ -66,7 +68,7 @@ doc-release: dist-stamp
 
 public-web: public-web-stamp
 
-public-web-stamp: dist
+public-web-stamp: dist-stamp
 	rsync -avl --delete dist/ $(WWW)/
 	touch $@
 
