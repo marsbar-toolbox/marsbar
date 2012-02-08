@@ -90,19 +90,19 @@ for c = unique(cl_vals)
 
   % corresponding XYZ
   cXYZ = XYZ(:, t_cl_is);
-  
+
   if ~isempty(cXYZ)
-    % location label for cluster images
-    if any(flags == 'c')
-      if any(flags == 'x') % maximum 
-	[mx maxi] = max(vals(t_cl_is));
-	mi = t_cl_is(maxi);
-	% voxel coordinate of max
-	vco = XYZ(:, mi);
+      % location label for cluster images
+      if any(flags == 'c')
+          if any(flags == 'x') % maximum 
+              [mx maxi] = max(vals(t_cl_is));
+              mi = t_cl_is(maxi);
+              % voxel coordinate of max
+              vco = XYZ(:, mi);
       else % centre of mass
-	vco = mean(cXYZ, 2);
+          vco = mean(cXYZ, 2);
       end
-    
+
       % pt coordinates in mm
       pt_lab = P.mat * [vco; 1];
       pt_lab = pt_lab(1:3);
@@ -110,21 +110,21 @@ for c = unique(cl_vals)
       % file name and labels
       d = sprintf('%s cluster at [%0.1f %0.1f %0.1f]', rootn, pt_lab);
       l = sprintf('%s_%0.0f_%0.0f_%0.0f', rootn, pt_lab);
-      
-    else % id image labels from voxel values
+
+  else % id image labels from voxel values
       % file name and labels
       d = sprintf('%s: id: %d', rootn, c);
       l = sprintf('%s_%d', rootn, c);
-    end
-    
-    fname = maroi('filename', fullfile(roipath, l));
-    o = maroi_pointlist(struct('XYZ',cXYZ,...
-			       'mat',P.mat,...
-			       'descrip',d,...
-			       'label', l), ...
-			'vox');
-    fprintf('\nSaving %s as %s...', d, fname);
-    saveroi(o, fname);
+  end
+
+  fname = maroi('filename', fullfile(roipath, l));
+  o = maroi_pointlist(struct('XYZ',cXYZ,...
+  'mat',P.mat,...
+  'descrip',d,...
+  'label', l), ...
+  'vox');
+  fprintf('\nSaving %s as %s...', d, fname);
+  saveroi(o, fname);
   end
 end
 fprintf('\nDone...\n');

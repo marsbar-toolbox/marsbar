@@ -1,28 +1,23 @@
 function mars_blobs2rois(xSPM, roipath, rootn)
-% creates ROIs from spm_results_ui SPM 
+% creates ROIs from spm_results_ui SPM
 % FORMAT mars_blobs2rois(xSPM, roipath, rootn)
-%  
+%
 % Inputs
 % xSPM         - SPM results structure with needed fields
 %                  title
 %                  XYZ   - voxel coordinates of activated points
 %                  Z     - statistic values for activated points
-%                  M     - 4x4 matrix from voxels to mm 
+%                  M     - 4x4 matrix from voxels to mm
 % roipath      - directory in which to write ROIs
-% rootn        - root name for ROI(s) 
-%
-% $Id$
+% rootn        - root name for ROI(s)
 
 if nargin < 1
   error('Need SPM structure');
 end
 if nargin < 2
-  pt = [];
-end
-if nargin < 3
   roipath = '';
 end
-if nargin < 4
+if nargin < 3
   rootn = '';
 end
 
@@ -60,8 +55,8 @@ for c = unique(A(:)')
     fn = mars_utils('str2fname', l);
     fname = maroi('filename', fullfile(roipath, fn));
     o = maroi_pointlist(struct('XYZ',XYZ,'mat',xSPM.M,...
-			       'descrip',d, 'label', l), ...
-			'vox');
+        'descrip',d, 'label', l), ...
+        'vox');
     fprintf('\nSaving %s as %s...', d, fname);
     saveroi(o, fname);
   end
