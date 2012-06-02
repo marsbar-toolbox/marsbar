@@ -1,11 +1,11 @@
 function [varargout] = pr_spm_unvec(vX,varargin)
-% unvectorises a vectorised array 
+% unvectorises a vectorised array
 % FORMAT [X] = pr_spm_unvec(vX,X);
 % X  - numeric, cell or stucture array
 % vX - pr_spm_vec(X)
 %
 % i.e. X      = pr_spm_unvec(pr_spm_vec(X),X)
-%      [X{:}] = pr_spm_unvec(pr_spm_vec(X{:}),X{:}) 
+%      [X{:}] = pr_spm_unvec(pr_spm_vec(X{:}),X{:})
 %                                              - (i.e. can also deal)
 %
 % see pr_spm_vec
