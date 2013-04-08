@@ -97,12 +97,8 @@ case 'on'                                           %-Initialise MarsBaR
 % remove incorrect spm replacement directories
 mbpath = fileparts(which('marsbar.m'));
 spmV = mars_utils('spm_version');
-m_spm_paths = {'spm99', 'spm2', 'spm5'};
+m_spm_paths = {'spm99', 'spm2', 'spm5', 'spm8'};
 v_path = lower(spmV);
-% spm8 is effectively identical to spm5 for marsbar
-if strcmp(v_path, 'spm8')
-    v_path = 'spm5';
-end
 w_s = warning;
 warning off
 for p = m_spm_paths(~ismember(m_spm_paths, v_path))
