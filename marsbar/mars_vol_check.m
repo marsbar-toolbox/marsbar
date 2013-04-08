@@ -1,5 +1,5 @@
-function [samef, msg, chgf] = spm_vol_check(varargin)
-% FORMAT [samef, msg, chgf] = spm_vol_check(V1, V2, ...)
+function [samef, msg, chgf] = mars_vol_check(varargin)
+% FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)
 % checks spm_vol structs are in same space
 %
 % V1, V2, etc      - arrays of spm_vol structs
@@ -10,6 +10,7 @@ function [samef, msg, chgf] = spm_vol_check(varargin)
 %_______________________________________________________________________
 % Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
 
+% Copied from spm_vol_check.m
 % Matthew Brett
 % $Id: spm_vol_check.m 184 2005-05-31 13:23:32Z john $
 
