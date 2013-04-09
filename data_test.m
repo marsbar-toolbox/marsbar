@@ -1,4 +1,10 @@
 % Runs tests that depend on example data
+%
+% Run with something like:
+% export MARSBAR_EG_DATAPATH=/home/mb312/data/marsbar_example_data-0.3
+% matlab
+% >> addpath /home/mb312/spm/spm8
+% >> data_test
 cwd = pwd;
 addpath(fullfile(cwd, 'marsbar'));
 addpath(fullfile(cwd, 'marsbar', 'release'));
@@ -40,3 +46,4 @@ res = test_rig(char(designs));
 if ~all(res)
     error('Some designs did not pass');
 end
+disp('Now consider running gui_data_test')

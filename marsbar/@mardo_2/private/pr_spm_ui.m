@@ -556,7 +556,7 @@ VY    = spm_vol(char(P));
 
 %-Check compatability of images
 %-----------------------------------------------------------------------
-[samef msg] = spm_vol_check(VY);
+[samef msg] = mars_vol_check(VY);
 if ~samef, disp(char(msg)),error('Cannot use images'),end;
 
 fprintf('%30s\n','...done')                                          %-#

@@ -136,7 +136,7 @@ for a = 1:length(actions)
     
     %-Check compatability of images
     %-----------------------------------------------------------------------
-    [samef msg] = spm_vol_check(VY);
+    [samef msg] = mars_vol_check(VY);
     if ~samef, disp(char(msg)),error('Cannot use images'),end;
 	
     %-Compute Global variate
