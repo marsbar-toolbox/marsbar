@@ -100,7 +100,8 @@ spmV = mars_utils('spm_version');
 m_spm_paths = {'spm99', 'spm2', 'spm5'};
 v_path = lower(spmV);
 % spm8 is effectively identical to spm5 for marsbar
-if strcmp(v_path, 'spm8')
+switch v_path
+case {'spm8', 'spm12b', 'spm12'}
     v_path = 'spm5';
 end
 w_s = warning;

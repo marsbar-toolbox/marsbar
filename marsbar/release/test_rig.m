@@ -99,8 +99,8 @@ for c = 1:length(Ic)
   st_mars = marsS.stat(1);
   bad_test = abs(st_mars - st_spm) > 1e-5;
   if bad_test % Statistics are different - SPM8 fudge?
-    spmV = mars_utils('spm_version');
-    if lower(spmV) == 'spm8'
+    spmV = lower(mars_utils('spm_version'));
+    if any(strcmp(spmV, {'spm8', 'spm12b', 'spm12'}))
       xCon = get_contrasts(E);
       this_con = xCon(n_Ic);
       if this_con.STAT == 'T' & (st_mars > st_spm)

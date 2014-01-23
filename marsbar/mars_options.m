@@ -84,11 +84,10 @@ switch lower(optstr)
 
   % default structural image for display
   mars.structural.fname = fullfile(spm('Dir'), 'canonical', ...
-				   ['avg152T1' mars_veropts('template_ext')]);
-  
+    ['avg152T1' mars_veropts('template_ext')]);
+
   % default image specifying base space for ROIs
-  mars.spacebase.fname = fullfile(spm('Dir'), 'templates', ...
-				  ['T1' mars_veropts('template_ext')]);
+  mars.spacebase.fname = mars.structural.fname;
   
   % ROI defaults
   mars.roidefs.spm_hold = 1;

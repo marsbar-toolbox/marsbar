@@ -7,5 +7,6 @@ tf = 0;
 if isfield(des, 'SPM'), des = des.SPM; end
 if isfield(des, 'SPMid')
   tf = ~isempty(strmatch('SPM5', des.SPMid)) | ...
-       ~isempty(strmatch('SPM8', des.SPMid));
+       ~isempty(strmatch('SPM8', des.SPMid)) | ...
+       ~isempty(strmatch('SPM12', des.SPMid));
 end
