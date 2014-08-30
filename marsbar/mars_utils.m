@@ -114,7 +114,7 @@ out_ext = mars_veropts('pref_img_out_ext');
 fname = fullfile(fdir, [fn out_ext]);
 fname = spm_get('cpath', fname);
 
-if any(flags == 'k') & exist(fname, 'file')
+if any(flags == 'k') && exist(fname, 'file')
   if ~spm_input(['Overwrite ' fn], '+1', ...
 		'b','Yes|No',[1 0], 1)
     return
@@ -152,9 +152,9 @@ end
 pn = varargin{2};
 switch (spm_platform('filesys'))
  case 'unx'
-  if (~isempty(pn) & pn(1)=='/'), absf=1; else, absf=0; end
+  if (~isempty(pn) && pn(1)=='/'), absf=1; else, absf=0; end
  case 'win'
-  if (length(pn)>1 & pn(2)==':'), absf=1; else, absf=0; end
+  if (length(pn)>1 && pn(2)==':'), absf=1; else, absf=0; end
  otherwise
   error('isabspath not coded for this filesystem');
 end

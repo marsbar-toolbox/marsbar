@@ -57,7 +57,7 @@ for i_no = 1:n_items
   tmp_flags = flags;
   
   % If there is no valid filename, do UI save
-  if pr_is_nix(filename) & ...
+  if pr_is_nix(filename) && ...
 	isempty(I.file_name)
     tmp_flags.ui = 1;
   end

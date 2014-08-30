@@ -64,7 +64,7 @@ switch lower(optstr)
     [fn, fn2] = marsbar('cfgfile');
     if isempty(fn), fn=fn2;end
     [f p] = mars_uifile('put', fn, 'Configuration file to save');
-    if isequal(f,0) | isequal(p,0), return, end
+    if isequal(f,0) || isequal(p,0), return, end
     cfg_fname = fullfile(p, f);
   end
   if ~isempty(cfg_fname)
@@ -226,7 +226,7 @@ else
 end
 
 v = spm_input(prompt, '+1', 'm', labels, vals, defind);
-if iscell(v) & ischar(defval)
+if iscell(v) && ischar(defval)
   v = char(v);
 end
   

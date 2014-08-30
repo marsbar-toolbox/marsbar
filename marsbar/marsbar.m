@@ -60,7 +60,7 @@ marsbar('on');
 % http://www.mathworks.com/support/bugreports/details.html?rp=259878
 % (or search Mathworks support for uigetfile linux
 mlv = version; mlv = str2num(mlv(1:3));
-if mlv >= 7 & strcmp(computer, 'GLNX86')
+if mlv >= 7 && strcmp(computer, 'GLNX86')
   if usejava('jvm')
     setappdata(0,'UseNativeSystemDialogs',false)
   else
@@ -559,7 +559,7 @@ case 'saveroi'                                                %-save ROI
 % 'n'   do not ask for label or description
 % 'l'   use label to make filename, rather than source field
 
-if nargin < 2 | isempty(varargin{2})
+if nargin < 2 || isempty(varargin{2})
   return
 end
 if nargin < 3
@@ -580,7 +580,7 @@ if ~any(flags=='n')
 end
 
 fn = source(o);
-if isempty(fn) | any(flags=='l')
+if isempty(fn) || any(flags=='l')
   fn = maroi('filename', mars_utils('str2fname', label(o)));
 end
 
@@ -708,7 +708,7 @@ end
 gend = maroi('classdata', 'fileend');
 lg = length(gend);
 f2 = [fn ext];
-if length(f2)>=lg & strcmp(gend, [f2(end - lg +1 : end)])
+if length(f2)>=lg && strcmp(gend, [f2(end - lg +1 : end)])
   f2 = f2(1:end-lg);
 else
   f2 = fn;
@@ -1658,7 +1658,7 @@ for i = 1:ic_len
     d_a = [d_a; d];
   end
 end
-if any(d_a) & ~any(diff(d_a))
+if any(d_a) && ~any(diff(d_a))
   if spm_input('FIR type', '+1','m',...
 	       'Single|Stacked', [1 0], 1)
     opts.single = 1;
@@ -1735,7 +1735,7 @@ filter_spec = {...
 [fn pn] = mars_uifile('get', ...
     filter_spec, ...
     'Source design/contrast file...');
-if isequal(fn,0) | isequal(pn,0), return, end
+if isequal(fn,0) || isequal(pn,0), return, end
 fname = fullfile(pn, fn);
 D2 = mardo(fname);
 

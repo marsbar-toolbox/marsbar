@@ -34,7 +34,7 @@ if ~isstruct(flags), flags = []; end
 if pr_is_nix(filename), filename = item_struct.file_name; end
 if pr_is_nix(filename), filename = item_struct.default_file_name; end
 
-if pr_needs_save(item_struct) | isfield(flags, 'force') % force flag
+if pr_needs_save(item_struct) || isfield(flags, 'force') % force flag
   % prompt for filename if UI
   if isfield(flags, 'ui')
     % warn if empty, and warn_empty flag (we must be forcing to get here)

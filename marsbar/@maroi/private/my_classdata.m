@@ -44,7 +44,7 @@ if nargin < 1 % simple classdata call
   cdata = CLASSDATA;
   return
 end
-if nargin < 2 & ~isstruct(fieldname) % fieldname get call
+if nargin < 2 && ~isstruct(fieldname) % fieldname get call
   if isfield(CLASSDATA, fieldname) 
     cdata = getfield(CLASSDATA,fieldname);
   else 
