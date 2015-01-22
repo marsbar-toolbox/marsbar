@@ -25,6 +25,7 @@ roi = maroi_pointlist(st, 'vox');
 assert_equal(voxpts(roi, V(1)), [2,1,1]');
 % With trilinear resampling we will pick up the NaN
 my = get_marsy(roi, V, 'mean');
+disp('(Expected warning about No valid data for roi 1)');
 assert_true(isempty(my));
 % Not so for nearest neighbor resampling
 nn_roi = spm_hold(roi, 0);
