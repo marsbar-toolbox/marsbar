@@ -13,9 +13,7 @@ function pre_release(rname, outdir, proj, proj_descrip, proj_url)
 % e.g.  pre_release('-devel-%s', '/tmp')
 % would output a release called marsbar-devel-0.34.tar.gz (if the marsbar
 % version string is '0.34') to the /tmp directory
-%
-% $Id$
-  
+
 if nargin < 1
   rname = '';
 end
@@ -47,8 +45,7 @@ cmd = sprintf('git clone %s %s', proj_url, proj);
 unix(cmd);
 
 % make contents file
-contents_str = sprintf('Contents of %s version %s', ...
-		       proj_descrip, V);
+contents_str = sprintf('Contents of %s version %s', proj_descrip, V);
 make_contents(contents_str, 'fncrd', fullfile(pwd, proj, proj));
 
 % move directory
