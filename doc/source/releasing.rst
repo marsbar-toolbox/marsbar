@@ -32,19 +32,32 @@ How to release
   Then manually go over the *git log* to make sure the release notes are
   as complete as possible and that every contributor was recognized.
 * Bump the version number in marsbar.m and ``doc/source/conf.py``; commit;
-* Run the pre release script in ``<marsbar>/marsbar/release/pre_release.m``.
+* Run the pre release script in ``<marsbar>/marsbar/release/pre_release.m``::
 
+    mkdir dist
+    cd dist
+    matlab
+    >> addpath ../marsbar
+    >> addpath ../marsbar/release
     >> pre_release
 
-  This creates the marsbar code archive in the current working directory (by
-  default);
-* Run the doc scripts::
+  This creates the marsbar code archives (``.tar.gz``, ``.zip``) in the current
+  working directory (by default);
+* Check you have a copy of the `m2html
+  <http://www.artefact.tk/software/matlab/m2html>`_ scripts on your default
+  matlab path;
+* Run the doc scripts to build the documentation (these depend on ``m2html``)::
 
     cd doc
-    make dist
-    make release-doc
+    make clean
+    make doc-release
 
-* Upload to the file release directories;
-* Upload the web documentation;
+* Do the full monty with::
+
+    make clean
+    make public-web
+
+  This should upload the web documentation;
+* Upload source code to the file release directories;
 * Tag the release commit;
 * Announce.
