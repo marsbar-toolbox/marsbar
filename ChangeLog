@@ -1,5 +1,5 @@
 .. -*- mode: rst -*-
-.. vim:syntax=rst
+.. vim:ft=rst
 
 .. _changelog:
 
@@ -21,6 +21,15 @@ Releases
 
 
 Most work on MarsBaR so far has been by Matthew Brett (MB)
+
+* 0.44 (Thursday 21 January 2015)
+
+  * Feature and bugfix release;
+  * Preliminary compatibility with SPM12;
+  * Added copy of ``spm_vol_check`` to marsbar after SPM removed it from SPM8;
+  * Some text file cleanup (thanks to Dimitri Papadopoulos);
+  * Fix to blobs2rois script input arguments (thanks to Philipp Homan for the
+    bug report.
 
 * 0.43 (Saturday 19 November 2011)
 
