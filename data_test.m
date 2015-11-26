@@ -1,18 +1,36 @@
 % Runs tests that depend on example data
 %
-% Run with something like:
+% Download marsbar example data from
+% http://sourceforge.net/projects/marsbar/files/marsbar%20example%20data/
+%
+% Unpack into a directory such as /home/mb312/data
+%
+% Run these tests from the `marsbar` root directory with something like:
 % export MARSBAR_EG_DATAPATH=/home/mb312/data/marsbar_example_data-0.3
 % matlab
-% >> addpath /home/mb312/spm/spm8
+% >> addpath /home/mb312/spm/spm12
 % >> data_test
+%
+% You can also set the data path within MATLAB before running:
+%
+% >> MARSBAR_EG_DATAPATH='/home/mb312/data/marsbar_example_data-0.3';
+% >> data_test
+%
+% This file runs preprocessing on the example data, so it tests both the
+% preprocessing scripts, and regression testing of marsbar against SPM.
 cwd = pwd;
 addpath(fullfile(cwd, 'marsbar'));
 addpath(fullfile(cwd, 'marsbar', 'release'));
 addpath(fullfile(cwd, 'marsbar', 'examples', 'batch'));
 % Activate marsbar for correct spm_get routine
 marsbar('on');
-% Get location of data from environment variable
-subjroot = getenv('MARSBAR_EG_DATAPATH');
+% Try getting data path from variable
+if exist('MARSBAR_EG_DATAPATH', 'var')
+    subjroot = MARSBAR_EG_DATAPATH;
+    setenv('MARSBAR_EG_DATAPATH', subjroot);
+else % from environment variable
+    subjroot = getenv('MARSBAR_EG_DATAPATH');
+end
 % Otherwise fetch via the GUI
 if isempty(subjroot)
     subjroot = spm_get(-1, '', 'Root directory of example data');
