@@ -30,11 +30,11 @@ if isa(params, myclass)
 end
 
 % check for filename;
-if ischar(params) 
-  params.vol = spm_vol(params);
+if ischar(params)
+  params = struct('vol', spm_vol(params));
 end
 % check for vol struct
-if isfield(params, 'fname') 
+if isfield(params, 'fname')
   params.vol = params;
 end
 
@@ -46,7 +46,7 @@ if ~isempty(pparams.vol) % check for attempt at create empty object
   % check and process vol and func
   [img errstr] = my_vol_func(pparams.vol, pparams.func);
   if isempty(img), error(errstr); end
-  
+
   % prepare for maroi_matrix creation
   pparams.dat = img;
   pparams.mat = pparams.vol.mat;
