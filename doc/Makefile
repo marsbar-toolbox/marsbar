@@ -52,7 +52,7 @@ distclean: clean dist-stamp
 
 dist-stamp: all
 	ln build/latex/*.pdf dist/
-	cp -al build/html/* dist/
+	cp -a build/html/* dist/
 	echo "Options +Indexes" > dist/apidocs/.htaccess
 	mkdir dist/doc-stable
 	mkdir dist/doc-devel
