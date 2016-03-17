@@ -229,13 +229,18 @@ operator, which is ``&`` in Matlab. Enter the function ``r1 & r2``.
 .. admonition:: Technical note - combining ROIs 
    :class: technote note
 
-   You can use most mathematical functions to combine ROIs. If you
-   wanted to combine two ROIs, so the new ROI has all the voxels in ROI
-   1 and all the voxels in ROI2, you could use the function ``r1 | r2``
-   (read as "r1 or r2"). If you wanted only the voxels in ROI 1 that are
-   not in ROI 2: ``r1 & ~ r2``. Similarly, you can choose more than two
-   ROIs and combine them. The function ``(r1 & r2) & ~r3`` gives all the
-   voxels in ROI 1 and ROI 2, but excluding those that are in ROI 3.
+   You can use most mathematical functions to combine ROIs. If you wanted to
+   combine two ROIs, so the new ROI has all the voxels in ROI 1 and all the
+   voxels in ROI2, you could use the function ``r1 | r2`` (read as "r1 or
+   r2"). If you wanted only the voxels in ROI 1 that are not in ROI 2: ``r1 &
+   ~ r2``. Similarly, you can choose more than two ROIs and combine them. The
+   function ``(r1 & r2) & ~r3`` gives all the voxels that in *both of* ROI 1
+   and ROI 2, but excluding those voxels that are in ROI 3.
+
+   Be careful: ``r1 & r2`` gives all the voxels that are in ROI 1 *and in* ROI
+   2 - so ``r1 & r2`` is the *intersection* of ROI 1 and ROI 2.  ``r1 | r2``
+   gives the voxels that are in *either of* ROI 1 or ROI 2 - so ``r1 | r2`` is
+   the *union* of ROI 1 and ROI 2.
 
 After this, accept the default description, set the label to something like
 “Trimmed stim run 2”, and save the ROI as ``trim_stim_roi.mat``.

@@ -35,13 +35,13 @@ Gearing up
 To run all the examples in this tutorial you will need to download and install
 two packages:
 
-#. MarsBaR: this tutorial uses version marsbar-0.42
-#. the example dataset (version 0.3)
+#. MarsBaR: this tutorial assumes marsbar version 0.44;
+#. the example dataset (version 0.3).
 
 To install these packages, see :ref:`download-install`
 
-This tutorial assumes you are using SPM8, but you can run the tutorial
-with SPM versions 99, 2 or 5; the results will be very similar.
+This tutorial assumes you are using SPM8, but you can run the tutorial with
+SPM versions 12, 8, 5, 2 or 99; the results will be very similar.
 
 
 Plan of campaign
@@ -124,11 +124,9 @@ Matlab program files to run the preprocessing. Change directory to
 ``run_preprocess``. This little script will smooth the images by 8mm
 FWHM, and run SPM models for each run.
 
-Now start MarsBaR. If you have put or linked MarsBaR into your SPM toolbox
-directory then you can start MarsBaR from the SPM interface. Click
-Toolboxes... and then marsbar.
-
-Otherwise, make sure the MarsBaR directory is on the Matlab path, and run the
-command marsbar from the Matlab ``>>`` prompt.
+Now start MarsBaR.  First, make sure the MarsBaR directory is on the Matlab
+path.  If you are using the GUI to add marsbar to the path, add only the path
+containing ``marsbar.m``, but *not* the subdirectories in this directory.
+Next, run the command ``marsbar`` from the Matlab ``>>`` prompt.
 
 .. include:: ../links_names.txt
