@@ -31,9 +31,9 @@ function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
 % In order to do the FIR model, there are two ways to go.  The first is to
 % make an FIR model which estimates the signal (say) at every second (TR)
 % after event onset, where your model (Impulse Response) lasts long enough
-% to capture the event and its HRF response - say 10+24 = 24 seconds.  This
+% to capture the event and its HRF response - say 10+24 = 34 seconds.  This
 % is what I will call a 'single' FIR model.  Another approach - and this is
-% what SPM does by default - is to think of the 10 second event as a (say)
+% what SPM does by default - is to think of the 10 second event as (say)
 % 10 events one after the other, each starting 1 second after the last.
 % Here the FIR model estimates the effect of one of these 1 second events,
 % and the length of your FIR model (Impulse response) is just the length of
