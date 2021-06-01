@@ -32,8 +32,6 @@ statistical analyses of ROI data using the SPM statistics machinery.
    support
    development/index
 
-.. image:: http://sourceforge.net/sflogo.php?group_id=76381&type=2
-
 Indices and tables
 ==================
 
