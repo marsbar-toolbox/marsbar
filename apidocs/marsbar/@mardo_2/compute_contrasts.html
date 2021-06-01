@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of compute_contrasts</title>
+  <meta name="keywords" content="compute_contrasts">
+  <meta name="description" content="compute and return results of contrast statistics">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; compute_contrasts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>compute_contrasts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>compute and return results of contrast statistics</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [marsS] = compute_contrasts(marsDe, Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> compute and return results of contrast statistics
+ FORMAT marsS = compute_contrasts(marsDe, Ic)
+ 
+ marsDe     - design object
+ Ic         - indices into contrast structure
+
+ Output
+ marsS      - statistic result structure
+
+ For the 'con', 'stat' 'P' 'Pc' fields below, the results are matrices
+ with one row per contrast, one column per ROI estimated
+
+ The statistics results structure has fields
+ 'con'      - contrast value (numerator of t statistic, or ESS for F)
+ 'stat'     - t or F statistic value
+ 'P'        - uncorrected P value
+ 'Pc'       - P values corrected for number of ROIs
+ 'MVres'    - multivariate results structure with fields
+              'y_pre'    - predicted temporal response
+              'y_obs'    - observerd temporal response
+              'Pf'       - probabability for last (rank of subspace)
+                           eigenvalues  
+              'u'        - principle components
+              'ds'       - component weights (diag(S))
+              'df'       - degrees of freedom for Pf              
+ 'columns'  - names of regions
+ 'rows'     - cell array of structs, one per contrast calculated,
+              with fields:
+              'name'  - contrast name
+              'stat'  - statistic type (T|F)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_stat_compute.html" class="code" title="function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)">pr_stat_compute</a>	private function to compute statistics for SPM2 design</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_stat_compute.html" class="code" title="function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)">pr_stat_compute</a>	private function to compute statistics for SPM2 design</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_stat_compute.html" class="code" title="function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);">pr_stat_compute</a>	calculates contrast value, stats and p values for contrasts</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_stat_compute_mv.html" class="code" title="function [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, ResidualMS, Y)">pr_stat_compute_mv</a>	compute multivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/stat_table.html" class="code" title="function [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic)">stat_table</a>	gets Mars statistics and creates statistic table as cell array</li>
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [marsS] = compute_contrasts(marsDe, Ic)</a>
+0002 <span class="comment">% compute and return results of contrast statistics</span>
+0003 <span class="comment">% FORMAT marsS = compute_contrasts(marsDe, Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% marsDe     - design object</span>
+0006 <span class="comment">% Ic         - indices into contrast structure</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Output</span>
+0009 <span class="comment">% marsS      - statistic result structure</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% For the 'con', 'stat' 'P' 'Pc' fields below, the results are matrices</span>
+0012 <span class="comment">% with one row per contrast, one column per ROI estimated</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% The statistics results structure has fields</span>
+0015 <span class="comment">% 'con'      - contrast value (numerator of t statistic, or ESS for F)</span>
+0016 <span class="comment">% 'stat'     - t or F statistic value</span>
+0017 <span class="comment">% 'P'        - uncorrected P value</span>
+0018 <span class="comment">% 'Pc'       - P values corrected for number of ROIs</span>
+0019 <span class="comment">% 'MVres'    - multivariate results structure with fields</span>
+0020 <span class="comment">%              'y_pre'    - predicted temporal response</span>
+0021 <span class="comment">%              'y_obs'    - observerd temporal response</span>
+0022 <span class="comment">%              'Pf'       - probabability for last (rank of subspace)</span>
+0023 <span class="comment">%                           eigenvalues</span>
+0024 <span class="comment">%              'u'        - principle components</span>
+0025 <span class="comment">%              'ds'       - component weights (diag(S))</span>
+0026 <span class="comment">%              'df'       - degrees of freedom for Pf</span>
+0027 <span class="comment">% 'columns'  - names of regions</span>
+0028 <span class="comment">% 'rows'     - cell array of structs, one per contrast calculated,</span>
+0029 <span class="comment">%              with fields:</span>
+0030 <span class="comment">%              'name'  - contrast name</span>
+0031 <span class="comment">%              'stat'  - statistic type (T|F)</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% $Id$</span>
+0034 
+0035 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsDe);
+0036 xCon = SPM.xCon;
+0037   
+0038 <span class="keyword">if</span> nargin &lt; 2
+0039   Ic = 1:length(xCon);
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">%- results</span>
+0043 [marsS.con marsS.stat, marsS.P, marsS.Pc] = <span class="keyword">...</span>
+0044     <a href="../../marsbar/@mardo_2/private/pr_stat_compute.html" class="code" title="function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)">pr_stat_compute</a>(SPM, Ic);
+0045 marsS.MVres = <a href="../../marsbar/@mardo_2/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>(SPM, Ic);
+0046 
+0047 marsS.columns = <a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(SPM.marsY);
+0048 <span class="keyword">for</span> i = 1:length(Ic)
+0049   marsS.rows{i}.name = xCon(Ic(i)).name;
+0050   marsS.rows{i}.stat = xCon(Ic(i)).STAT;
+0051 <span class="keyword">end</span>
+0052   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of spm_read_hdr</title>
+  <meta name="keywords" content="spm_read_hdr">
+  <meta name="description" content="SPM2 routine to read (SPM customised) Analyze header">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm99</a> &gt; spm_read_hdr.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>spm_read_hdr
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SPM2 routine to read (SPM customised) Analyze header</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [hdr,otherendian] = spm_read_hdr(fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> SPM2 routine to read (SPM customised) Analyze header 
+ (Needed for compatibility with SPM99)
+ FORMAT [hdr,otherendian] = spm_read_hdr(fname)
+ fname       - .hdr filename
+ hdr         - structure containing Analyze header
+ otherendian - byte swapping necessary flag
+_______________________________________________________________________
+ @(#)spm_read_hdr.m    2.2 John Ashburner 03/07/17
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function hk = read_hk(fid)</a></li>
+<li><a href="#_sub2" class="code">function dime = read_dime(fid)</a></li>
+<li><a href="#_sub3" class="code">function hist = read_hist(fid)</a></li>
+<li><a href="#_sub4" class="code">function spmf = read_spmf(fid,n)</a></li>
+<li><a href="#_sub5" class="code">function out = mysetstr(in)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [hdr,otherendian] = spm_read_hdr(fname)</a>
+0002 <span class="comment">% SPM2 routine to read (SPM customised) Analyze header</span>
+0003 <span class="comment">% (Needed for compatibility with SPM99)</span>
+0004 <span class="comment">% FORMAT [hdr,otherendian] = spm_read_hdr(fname)</span>
+0005 <span class="comment">% fname       - .hdr filename</span>
+0006 <span class="comment">% hdr         - structure containing Analyze header</span>
+0007 <span class="comment">% otherendian - byte swapping necessary flag</span>
+0008 <span class="comment">%_______________________________________________________________________</span>
+0009 <span class="comment">% @(#)spm_read_hdr.m    2.2 John Ashburner 03/07/17</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $Id$</span>
+0012   
+0013 fid         = fopen(fname,<span class="string">'r'</span>,<span class="string">'native'</span>);
+0014 otherendian = 0;
+0015 <span class="keyword">if</span> (fid &gt; 0)
+0016     dime = <a href="#_sub2" class="code" title="subfunction dime = read_dime(fid)">read_dime</a>(fid);
+0017     <span class="keyword">if</span> dime.dim(1)&lt;0 | dime.dim(1)&gt;15, <span class="comment">% Appears to be other-endian</span>
+0018         <span class="comment">% Re-open other-endian</span>
+0019         fclose(fid);
+0020         <span class="keyword">if</span> spm_platform(<span class="string">'bigend'</span>), fid = fopen(fname,<span class="string">'r'</span>,<span class="string">'ieee-le'</span>);
+0021         <span class="keyword">else</span>,                      fid = fopen(fname,<span class="string">'r'</span>,<span class="string">'ieee-be'</span>); <span class="keyword">end</span>;
+0022         otherendian = 1;
+0023         dime = <a href="#_sub2" class="code" title="subfunction dime = read_dime(fid)">read_dime</a>(fid);
+0024     <span class="keyword">end</span>;
+0025     hk       = <a href="#_sub1" class="code" title="subfunction hk = read_hk(fid)">read_hk</a>(fid);
+0026     hist     = <a href="#_sub3" class="code" title="subfunction hist = read_hist(fid)">read_hist</a>(fid);
+0027     hdr.hk   = hk;
+0028     hdr.dime = dime;
+0029     hdr.hist = hist;
+0030 
+0031     <span class="comment">% SPM specific bit - unused</span>
+0032     <span class="comment">%if hdr.hk.sizeof_hdr &gt; 348,</span>
+0033     <span class="comment">%    spmf = read_spmf(fid,dime.dim(5));</span>
+0034     <span class="comment">%    if ~isempty(spmf),</span>
+0035     <span class="comment">%        hdr.spmf = spmf;</span>
+0036     <span class="comment">%    end;</span>
+0037     <span class="comment">%end;</span>
+0038 
+0039     fclose(fid);
+0040 <span class="keyword">else</span>,
+0041     hdr = [];
+0042     otherendian = NaN;
+0043     <span class="comment">%error(['Problem opening header file (' fopen(fid) ').']);</span>
+0044 <span class="keyword">end</span>;
+0045 <span class="keyword">return</span>;
+0046 <span class="comment">%_______________________________________________________________________</span>
+0047 <span class="comment">%_______________________________________________________________________</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function hk = read_hk(fid)</a>
+0049 <span class="comment">% read (struct) header_key</span>
+0050 <span class="comment">%-----------------------------------------------------------------------</span>
+0051 fseek(fid,0,<span class="string">'bof'</span>);
+0052 hk.sizeof_hdr         = fread(fid,1,<span class="string">'int32'</span>);
+0053 hk.data_type          = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0054 hk.db_name            = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,18,<span class="string">'uchar'</span>))';
+0055 hk.extents            = fread(fid,1,<span class="string">'int32'</span>);
+0056 hk.session_error    = fread(fid,1,<span class="string">'int16'</span>);
+0057 hk.regular            = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,1,<span class="string">'uchar'</span>))';
+0058 hk.hkey_un0            = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,1,<span class="string">'uchar'</span>))';
+0059 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(hk.hkey_un0), error([<span class="string">'Problem reading &quot;hk&quot; of header file ('</span> fopen(fid) <span class="string">').'</span>]); <span class="keyword">end</span>;
+0060 <span class="keyword">return</span>;
+0061 <span class="comment">%_______________________________________________________________________</span>
+0062 <span class="comment">%_______________________________________________________________________</span>
+0063 <a name="_sub2" href="#_subfunctions" class="code">function dime = read_dime(fid)</a>
+0064 <span class="comment">% read (struct) image_dimension</span>
+0065 <span class="comment">%-----------------------------------------------------------------------</span>
+0066 fseek(fid,40,<span class="string">'bof'</span>);
+0067 dime.dim        = fread(fid,8,<span class="string">'int16'</span>)';
+0068 dime.vox_units    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,4,<span class="string">'uchar'</span>))';
+0069 dime.cal_units    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,8,<span class="string">'uchar'</span>))';
+0070 dime.unused1    = fread(fid,1,<span class="string">'int16'</span>);
+0071 dime.datatype    = fread(fid,1,<span class="string">'int16'</span>);
+0072 dime.bitpix        = fread(fid,1,<span class="string">'int16'</span>);
+0073 dime.dim_un0    = fread(fid,1,<span class="string">'int16'</span>);
+0074 dime.pixdim        = fread(fid,8,<span class="string">'float'</span>)';
+0075 dime.vox_offset    = fread(fid,1,<span class="string">'float'</span>);
+0076 dime.funused1    = fread(fid,1,<span class="string">'float'</span>);
+0077 dime.funused2    = fread(fid,1,<span class="string">'float'</span>);
+0078 dime.funused3    = fread(fid,1,<span class="string">'float'</span>);
+0079 dime.cal_max    = fread(fid,1,<span class="string">'float'</span>);
+0080 dime.cal_min    = fread(fid,1,<span class="string">'float'</span>);
+0081 dime.compressed    = fread(fid,1,<span class="string">'int32'</span>);
+0082 dime.verified    = fread(fid,1,<span class="string">'int32'</span>);
+0083 dime.glmax        = fread(fid,1,<span class="string">'int32'</span>);
+0084 dime.glmin        = fread(fid,1,<span class="string">'int32'</span>);
+0085 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dime.glmin), error([<span class="string">'Problem reading &quot;dime&quot; of header file ('</span> fopen(fid) <span class="string">').'</span>]); <span class="keyword">end</span>;
+0086 <span class="keyword">return</span>;
+0087 <span class="comment">%_______________________________________________________________________</span>
+0088 <span class="comment">%_______________________________________________________________________</span>
+0089 <a name="_sub3" href="#_subfunctions" class="code">function hist = read_hist(fid)</a>
+0090 <span class="comment">% read (struct) data_history</span>
+0091 <span class="comment">%-----------------------------------------------------------------------</span>
+0092 fseek(fid,148,<span class="string">'bof'</span>);
+0093 hist.descrip    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,80,<span class="string">'uchar'</span>))';
+0094 hist.aux_file    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,24,<span class="string">'uchar'</span>))';
+0095 hist.orient        = fread(fid,1,<span class="string">'uchar'</span>);
+0096 hist.origin        = fread(fid,5,<span class="string">'int16'</span>)';
+0097 hist.generated    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0098 hist.scannum    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0099 hist.patient_id    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0100 hist.exp_date    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0101 hist.exp_time    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,10,<span class="string">'uchar'</span>))';
+0102 hist.hist_un0    = <a href="#_sub5" class="code" title="subfunction out = mysetstr(in)">mysetstr</a>(fread(fid,3,<span class="string">'uchar'</span>))';
+0103 hist.views        = fread(fid,1,<span class="string">'int32'</span>);
+0104 hist.vols_added    = fread(fid,1,<span class="string">'int32'</span>);
+0105 hist.start_field= fread(fid,1,<span class="string">'int32'</span>);
+0106 hist.field_skip    = fread(fid,1,<span class="string">'int32'</span>);
+0107 hist.omax        = fread(fid,1,<span class="string">'int32'</span>);
+0108 hist.omin        = fread(fid,1,<span class="string">'int32'</span>);
+0109 hist.smax        = fread(fid,1,<span class="string">'int32'</span>);
+0110 hist.smin        = fread(fid,1,<span class="string">'int32'</span>);
+0111 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(hist.smin), error([<span class="string">'Problem reading &quot;hist&quot; of header file ('</span> fopen(fid) <span class="string">').'</span>]); <span class="keyword">end</span>;
+0112 <span class="keyword">return</span>;
+0113 <span class="comment">%_______________________________________________________________________</span>
+0114 <span class="comment">%_______________________________________________________________________</span>
+0115 <a name="_sub4" href="#_subfunctions" class="code">function spmf = read_spmf(fid,n)</a>
+0116 <span class="comment">% Read SPM specific fields</span>
+0117 <span class="comment">% This bit may be used in the future for extending the Analyze header.</span>
+0118 
+0119 fseek(fid,348,<span class="string">'bof'</span>);
+0120 mgc = fread(fid,1,<span class="string">'int32'</span>);    <span class="comment">% Magic number</span>
+0121 <span class="keyword">if</span> mgc ~= 20020417, spmf = []; <span class="keyword">return</span>; <span class="keyword">end</span>;
+0122 
+0123 <span class="keyword">for</span> j=1:n,
+0124     spmf(j).mat    = fread(fid,16,<span class="string">'double'</span>); <span class="comment">% Orientation information</span>
+0125     spmf(j).unused = fread(fid,384,<span class="string">'uchar'</span>); <span class="comment">% Extra unused stuff</span>
+0126     <span class="keyword">if</span> length(spmf(j).unused)&lt;384,
+0127         error([<span class="string">'Problem reading &quot;spmf&quot; of header file ('</span> fopen(fid) <span class="string">').'</span>]);
+0128     <span class="keyword">end</span>;
+0129      spmf(j).mat = reshape(spmf(j).mat,[4 4]);
+0130 <span class="keyword">end</span>;
+0131 <span class="keyword">return</span>;
+0132 <span class="comment">%_______________________________________________________________________</span>
+0133 <span class="comment">%_______________________________________________________________________</span>
+0134 <a name="_sub5" href="#_subfunctions" class="code">function out = mysetstr(in)</a>
+0135 tmp = find(in == 0);
+0136 tmp = min([min(tmp) length(in)]);
+0137 out = setstr([in(1:tmp)' zeros(1,length(in)-(tmp))])';
+0138 <span class="keyword">return</span>;
+0139 <span class="comment">%_______________________________________________________________________</span>
+0140 <span class="comment">%_______________________________________________________________________</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

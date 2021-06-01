@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_estimate</title>
+  <meta name="keywords" content="pr_estimate">
+  <meta name="description" content="Estimation of a General Linear Model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_estimate.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_estimate
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Estimation of a General Linear Model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function SPM = pr_estimate(SPM, marsY) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Estimation of a General Linear Model
+ FORMAT SPM = pr_estimate(SPM, marsY)
+ Inputs 
+ SPM      - SPM design structure
+ marsY    - marsY data object, or 2D data (Y) matrix
+
+ Outputs
+ SPM      - modified estimated design structure, with data contained as
+            field marsY
+
+ Originally written by Jean-Baptiste Poline
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="../../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="../../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_99/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM99 model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function SPM = pr_estimate(SPM, marsY)</a>
+0002 <span class="comment">% Estimation of a General Linear Model</span>
+0003 <span class="comment">% FORMAT SPM = pr_estimate(SPM, marsY)</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">% SPM      - SPM design structure</span>
+0006 <span class="comment">% marsY    - marsY data object, or 2D data (Y) matrix</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Outputs</span>
+0009 <span class="comment">% SPM      - modified estimated design structure, with data contained as</span>
+0010 <span class="comment">%            field marsY</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Originally written by Jean-Baptiste Poline</span>
+0013 <span class="comment">% $Id$</span>
+0014 
+0015 <span class="comment">%-Say hello</span>
+0016 <span class="comment">%-----------------------------------------------------------------------</span>
+0017 Finter   = spm(<span class="string">'FigName'</span>,<span class="string">'Stats: estimation...'</span>); spm(<span class="string">'Pointer'</span>,<span class="string">'Watch'</span>);
+0018     
+0019 <span class="comment">%-------------------------------------------------------------------------</span>
+0020 <span class="comment">%- set the methods</span>
+0021 
+0022 COV_estim = <span class="string">'assumed'</span>;           <span class="comment">% covariance is assumed to be imposed by filter K</span>
+0023 GLM_resol = <span class="string">'OLS'</span>;               <span class="comment">% ordinary least square</span>
+0024  
+0025 
+0026 <span class="comment">%-------------------------------------------------------------------------</span>
+0027 <span class="comment">%- get the design structure, the filter and the data</span>
+0028 xX = SPM.xX;  
+0029 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'X'</span>), 
+0030   error(<span class="string">'The design does not contain a design matrix'</span>);
+0031 <span class="keyword">end</span>
+0032 
+0033 <span class="comment">% allow matrix or object to be passed as input data</span>
+0034 marsY = <a href="../../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(marsY);
+0035 Y     = <a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(marsY);
+0036 n_roi = size(Y,2);  <span class="comment">%- Y is a time by n_roi matrix</span>
+0037 
+0038 <span class="comment">% Remove columns with no variance</span>
+0039 in_cols = any(diff(Y));
+0040 <span class="keyword">if</span> ~any(in_cols), error(<span class="string">'No variance to estimate model'</span>); <span class="keyword">end</span>
+0041 Y = Y(:, in_cols);
+0042 
+0043 <span class="comment">% We are going to ignore AR(1) options</span>
+0044 <span class="keyword">if</span> <a href="../../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'isthere'</span>, xX, <span class="string">'xVi'</span>, <span class="string">'Form'</span>)
+0045   <span class="keyword">if</span> ~strcmp(xX.xVi.Form, <span class="string">'none'</span>)
+0046     warning([<span class="string">'Sorry, we are going to ignore autocorrelation option: '</span> <span class="keyword">...</span>
+0047          xX.xVi.Form]);
+0048   <span class="keyword">end</span>
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">%----------------------------------------------------------------------------------</span>
+0052 <span class="comment">%- Estimation of the covariance structure of the Ys</span>
+0053 fprintf(<span class="string">'\nEstimating covariance...'</span>);
+0054 <span class="keyword">switch</span> COV_estim
+0055 
+0056     <span class="keyword">case</span> {<span class="string">'AR(p)'</span>}
+0057         <span class="comment">%- compute the temporal cov of Y (V) with AR(p)</span>
+0058         <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'xVi'</span>)
+0059            xX.xVi = struct(    <span class="string">'Vi'</span>, speye(size(xX.X,1)),<span class="keyword">...</span>
+0060                     <span class="string">'Form'</span>,    <span class="string">'AR(p)'</span>); 
+0061         <span class="keyword">end</span>
+0062         <span class="comment">% xX.xVi = estimate_cov(Y,xX);</span>
+0063 
+0064 
+0065     <span class="keyword">case</span> {<span class="string">'assumed'</span>}
+0066         <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'xVi'</span>)
+0067            xX.xVi = struct(    <span class="string">'Vi'</span>, speye(size(xX.X,1)),<span class="keyword">...</span>
+0068                     <span class="string">'Form'</span>,    <span class="string">'none'</span>); 
+0069         <span class="keyword">end</span>
+0070         <span class="comment">%- else, the covariance structure is supposed to be</span>
+0071         <span class="comment">%- stored in xX.xVi</span>
+0072 
+0073     <span class="keyword">otherwise</span>
+0074         warning(<span class="string">'COV_estim does not exist'</span>);
+0075 <span class="keyword">end</span>
+0076 fprintf(<span class="string">'Done\n'</span>);
+0077 
+0078 <span class="keyword">switch</span> GLM_resol
+0079 
+0080     <span class="keyword">case</span> {<span class="string">'OLS'</span>}
+0081         fprintf(<span class="string">'Using OLS\n'</span>);
+0082         <span class="comment">%- no filter already defined</span>
+0083         <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'K'</span>)
+0084            xX.K  = speye(size(xX.X,1));
+0085         <span class="keyword">end</span>
+0086         <span class="comment">% else assume that the filter is xX.K</span>
+0087     
+0088         KVi    = <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>, xX.K, xX.xVi.Vi); 
+0089         V      = <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>, xX.K, KVi'); 
+0090         Y      = <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>, xX.K, Y);
+0091         fprintf(<span class="string">'Setting filter...'</span>);
+0092         KXs    = spm_sp(<span class="string">'Set'</span>, <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>, xX.K, xX.X));
+0093         fprintf(<span class="string">'Done.\n'</span>);
+0094         clear KVi;
+0095 
+0096     <span class="keyword">case</span> {<span class="string">'MaxLik'</span>} 
+0097         <span class="string">'MaxLik'</span> 
+0098         <span class="comment">%- compute the inverse filter -  put it in K ?</span>
+0099         <span class="comment">%- filter data and design</span>
+0100         <span class="comment">%- V = speye(size(xX.X,1));</span>
+0101 
+0102     <span class="keyword">otherwise</span>
+0103         warning(<span class="string">'GLM_resol does not exist'</span>);
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="comment">%- compute GLM</span>
+0107 fprintf(<span class="string">'Computing estimates...'</span>);
+0108 <span class="keyword">if</span> ~spm_sp(<span class="string">'isspc'</span>,KXs), Xs = spm_sp(<span class="string">'set'</span>,KXs); <span class="keyword">else</span> Xs = KXs;  <span class="keyword">end</span>
+0109 
+0110 [trRV trRVRV] = spm_SpUtil(<span class="string">'trRV'</span>,Xs,V); 
+0111 beta          = spm_sp(<span class="string">'x-'</span>, Xs, Y);                 <span class="comment">%-Parameter estimates</span>
+0112 res           = spm_sp(<span class="string">'r'</span>, Xs, Y);                  <span class="comment">%-Residuals</span>
+0113 ResMS         = sum(res.^2)./trRV;                   <span class="comment">%-Res variance estimation</span>
+0114 xX.erdf       = trRV^2/trRVRV;
+0115 
+0116 fprintf(<span class="string">'Done.\n'</span>);
+0117 
+0118 <span class="comment">% fill up design related stuff</span>
+0119 xX.V     = V;                                     <span class="comment">%-V matrix</span>
+0120 xX.xKXs  = KXs;                            <span class="comment">%-Filtered design matrix</span>
+0121 xX.pKX   = spm_sp(<span class="string">'x-'</span>,xX.xKXs);
+0122 xX.pKXV  = xX.pKX*xX.V;                <span class="comment">%-for contrast variance weight</span>
+0123 xX.Bcov  = xX.pKXV*xX.pKX';            <span class="comment">%-Variance of est. param.</span>
+0124 [xX.trRV,xX.trRVRV] <span class="keyword">...</span><span class="comment">                %-Variance expectations</span>
+0125          = spm_SpUtil(<span class="string">'trRV'</span>,xX.xKXs,xX.V);
+0126 xX.nKX   = spm_DesMtx(<span class="string">'sca'</span>,xX.xKXs.X,xX.Xnames);<span class="comment">% scaled design matrix for display</span>
+0127 
+0128 <span class="comment">% Put back into design</span>
+0129 nBeta                    = size(xX.X, 2);
+0130 SPM.betas                = ones(nBeta, n_roi) + NaN;
+0131 SPM.betas(:, in_cols)    = beta;    
+0132 SPM.ResidualMS           = ones(1, n_roi) + NaN;
+0133 SPM.ResidualMS(in_cols)  = ResMS;    
+0134 
+0135 SPM.xX    = xX;
+0136 SPM.marsY = marsY;
+0137 
+0138 <span class="comment">%-Default F-contrasts (in contrast structure)</span>
+0139 <span class="comment">%=======================================================================</span>
+0140 F_iX0 = [];
+0141 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM, <span class="string">'F_iX0'</span>)
+0142   F_iX0 = SPM.F_iX0;
+0143 <span class="keyword">end</span>
+0144 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F_iX0)
+0145   F_iX0 = struct(    <span class="string">'iX0'</span>,        [],<span class="keyword">...</span>
+0146             <span class="string">'name'</span>,        <span class="string">'all effects'</span>);
+0147 <span class="keyword">elseif</span> ~isstruct(F_iX0)
+0148   F_iX0 = struct(    <span class="string">'iX0'</span>,        F_iX0,<span class="keyword">...</span>
+0149             <span class="string">'name'</span>,        <span class="string">'effects of interest'</span>);
+0150 <span class="keyword">end</span>
+0151 
+0152 <span class="comment">%-Create Contrast structure array</span>
+0153 <span class="comment">%-----------------------------------------------------------------------</span>
+0154 xCon  = spm_FcUtil(<span class="string">'Set'</span>,F_iX0(1).name,<span class="string">'F'</span>,<span class="string">'iX0'</span>,F_iX0(1).iX0,xX.xKXs);
+0155 <span class="keyword">for</span> i = 2:length(F_iX0)
+0156     xcon = spm_FcUtil(<span class="string">'Set'</span>,F_iX0(i).name,<span class="string">'F'</span>,<span class="string">'iX0'</span>,F_iX0(i).iX0,xX.xKXs);
+0157     xCon = [xCon xcon];
+0158 <span class="keyword">end</span>
+0159 SPM.xCon = xCon;
+0160 
+0161 <span class="comment">%=======================================================================</span>
+0162 <span class="comment">%- E N D: Cleanup GUI</span>
+0163 <span class="comment">%=======================================================================</span>
+0164 spm_progress_bar(<span class="string">'Clear'</span>)
+0165 spm(<span class="string">'FigName'</span>,<span class="string">'Stats: done'</span>,Finter); spm(<span class="string">'Pointer'</span>,<span class="string">'Arrow'</span>)
+0166 fprintf(<span class="string">'%-40s: %30s\n'</span>,<span class="string">'Completed'</span>,spm(<span class="string">'time'</span>))                     <span class="comment">%-#</span>
+0167 fprintf(<span class="string">'...use the results section for assessment\n\n'</span>)             <span class="comment">%-#</span>
+0168 
+0169 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

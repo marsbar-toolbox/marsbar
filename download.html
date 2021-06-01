@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download and install &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MarsBaR tutorial" href="tutorial/index.html" />
+    <link rel="prev" title="About MarsBaR" href="about.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="tutorial/index.html" title="MarsBaR tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About MarsBaR"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Download and install</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="download-and-install">
+<span id="download-install"></span><h1>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h1>
+<p>All MarsBaR file releases are available via the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project download
+page</a>.</p>
+<div class="section" id="installing-marsbar">
+<h2>Installing MarsBaR<a class="headerlink" href="#installing-marsbar" title="Permalink to this headline">¶</a></h2>
+<p>MarsBaR needs a version of <a class="reference external" href="http://www.fil.ion.ucl.ac.uk/spm">SPM</a>, so if you don’t have SPM, please
+download and install that first.  MarsBaR works with SPM versions 99, 2,
+5, and 8.</p>
+<p>For the current stable release of MarsBaR, look for the marsbar package;
+marsbar-devel is the development release. Releases consist of an archive
+which will unpack in a directory named after the MarsBaR version - for
+example <code class="docutils literal notranslate"><span class="pre">marsbar-0.42</span></code>. You then have two options for using MarsBaR
+within SPM.</p>
+<ol class="arabic">
+<li><p>You can add the new MarsBaR directory to your matlab path. To use
+MarsBaR, start it from the matlab prompt with the command
+“marsbar”, or…</p></li>
+<li><p>You could set up MarsBaR to run as an SPM toolbox. To do this, the
+contents of the new MarsBaR directory needs to be in a subdirectory
+“marsbar” of the SPM toolbox directory.  Here is a worked example for
+Unix. Imagine SPM8 was in <code class="docutils literal notranslate"><span class="pre">/usr/local/spm/spm8</span></code>, and you had just
+unpacked the MarsBaR distribution, giving you a directory
+<code class="docutils literal notranslate"><span class="pre">/home/myhome/marsbar-0.42</span></code>.  You could then create the marsbar SPM
+toolbox directory with:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+</pre></div>
+</div>
+<p>and copy the MarsBaR distribution into this directory with:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="s">-r</span> <span class="s">/home/myhome/marsbar-0.42/*</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+</pre></div>
+</div>
+<p>Alternatively, you could do the same job by making a symbolic link
+between the directories with something like:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="s">-s</span> <span class="s">/home/myhome/marsbar-0.42</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Either way, the next time you start spm you should be able to start
+the toolbox by selecting ‘marsbar’ from the toolbox button on the SPM
+interface.</p>
+</div>
+<div class="section" id="other-marsbar-downloads">
+<h2>Other MarsBaR downloads<a class="headerlink" href="#other-marsbar-downloads" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="example-dataset">
+<span id="example-data"></span><h3>Example dataset<a class="headerlink" href="#example-dataset" title="Permalink to this headline">¶</a></h3>
+<p>You may want the example dataset to try out MarsBaR, or to run the <a class="reference internal" href="tutorial/index.html#tutorial"><span class="std std-ref">MarsBaR tutorial</span></a>.</p>
+<p>Download the dataset from the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project download page</a>.</p>
+<p>To install, unpack the archive in a directory you can write to. This
+will give you a subdirectory like <code class="docutils literal notranslate"><span class="pre">marsbar_example_data-0.3</span></code>, where
+0.3 is the version number of the example data.</p>
+<p>The example data are taken from an experiment described in an HBM2003
+conference abstract:</p>
+<blockquote>
+<div><p>Matthew Brett, Ian Nimmo-Smith, Katja Osswald, Ed Bullmore (2003) <a class="reference external" href="https://cirl.berkeley.edu/mb312/abstracts/ER/er_analysis.html">Model
+fitting and power in fast event related designs</a>. NeuroImage,
+19(2) Supplement 1, abstract 791</p>
+</div></blockquote>
+<p>The data consist of three EPI runs, all from one subject. In each run the
+subject watched a computer screen, and pressed a button when they saw a
+flashing checker board. An “event” in this design is one presentation of the
+flashing checker board.</p>
+<p>We did this experiment because we were interested to see if events at fast
+presentation rates give different activation levels from events that are more
+widely spaced. Each run has a different presentation rate. We randomized the
+times between events in each run to give an average rate of 1 event every
+second in run 1, 1 event every 3 seconds for run 2, and 1 event every 10
+seconds for run 3.</p>
+<p>There are some automated pre-processing scripts for this dataset in the
+MarsBaR distribution, see <a class="reference internal" href="tutorial/gettingstarted.html#tutorial-processing"><span class="std std-ref">Starting the tutorial</span></a> for more details.</p>
+</div>
+<div class="section" id="aal-structural-rois">
+<span id="aal-rois"></span><h3>AAL structural ROIs<a class="headerlink" href="#aal-structural-rois" title="Permalink to this headline">¶</a></h3>
+<p>These ROIs can be useful as a standard set of anatomical definitions.</p>
+<p>To install, download the AAL ROI archive file from the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project
+download page</a>. Unpack the archive somewhere; it will create a new
+directory, called something like <code class="docutils literal notranslate"><span class="pre">marsbar-aal-0.2</span></code>.</p>
+<p>The AAL ROI library contains ROIs in MarsBaR format that were
+anatomically defined by hand on a single brain matched to the MNI / ICBM
+templates. The ROI definitions are described in:</p>
+<blockquote>
+<div><p>Tzourio-Mazoyer N, Landeau B, Papathanassiou D, Crivello F, Etard O, Delcroix
+N, et al. (2002). Automated anatomical labelling of activations in SPM using a
+macroscopic anatomical parcellation of the MNI MRI single subject brain.
+NeuroImage 15: 273-289.</p>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Download and install</a><ul>
+<li><a class="reference internal" href="#installing-marsbar">Installing MarsBaR</a></li>
+<li><a class="reference internal" href="#other-marsbar-downloads">Other MarsBaR downloads</a><ul>
+<li><a class="reference internal" href="#example-dataset">Example dataset</a></li>
+<li><a class="reference internal" href="#aal-structural-rois">AAL structural ROIs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="about.html"
+                        title="previous chapter">About MarsBaR</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial/index.html"
+                        title="next chapter">MarsBaR tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/download.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="tutorial/index.html" title="MarsBaR tutorial"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About MarsBaR"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Download and install</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

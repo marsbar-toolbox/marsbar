@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_event_types_cb</title>
+  <meta name="keywords" content="ui_event_types_cb">
+  <meta name="description" content="method to handle callbacks from ui_event_types">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; ui_event_types_cb.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_event_types_cb
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to handle callbacks from ui_event_types</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = ui_event_types_cb(D, action, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to handle callbacks from ui_event_types
+ FORMAT varargout = ui_event_types_cb(D, action, varargin)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>	method to get / set event types for design</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>	Refreshes data and display of event type window after edit</li>
+<li><a href="ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>	method to edit invidual event types in design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = ui_event_types_cb(D, action, varargin)</a>
+0002 <span class="comment">% method to handle callbacks from ui_event_types</span>
+0003 <span class="comment">% FORMAT varargout = ui_event_types_cb(D, action, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% $Id$</span>
+0006 
+0007 <span class="keyword">if</span> nargin &lt; 2
+0008   error(<span class="string">'Need action'</span>);
+0009 <span class="keyword">end</span>
+0010 
+0011 et = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D);
+0012 F  = gcbf;
+0013 
+0014 <span class="keyword">switch</span> lower(action)
+0015  <span class="keyword">case</span> <span class="string">'ok'</span>
+0016   set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>),<span class="string">'UserData'</span>,1)
+0017  <span class="keyword">case</span> <span class="string">'cancel'</span>
+0018   set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>),<span class="string">'UserData'</span>,0)
+0019  <span class="keyword">case</span> <span class="string">'new'</span>
+0020   e = struct(<span class="string">'name'</span>, <span class="string">'New event'</span>, <span class="string">'e_spec'</span>, []);
+0021   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(et), et = e; <span class="keyword">else</span> et = [et e]; <span class="keyword">end</span>
+0022   D = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D, et);
+0023   [D ic] = <a href="ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>(D, length(et));
+0024   <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ic) <span class="comment">% not cancelled</span>
+0025     <a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>(D, ic, F);
+0026   <span class="keyword">end</span>
+0027  <span class="keyword">case</span> <span class="string">'edit'</span>
+0028   hList = findobj(F,<span class="string">'Tag'</span>,<span class="string">'eList'</span>);
+0029   ic = get(hList, <span class="string">'Value'</span>);
+0030   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ic)
+0031     msgbox(<span class="string">'Please select an event type to edit'</span>);
+0032   <span class="keyword">elseif</span> length(ic) &gt; 1
+0033     msgbox(<span class="string">'Please select a single event type to edit'</span>);
+0034   <span class="keyword">else</span>
+0035     et = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D);
+0036     [D ic] = <a href="ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>(D, ic);
+0037     <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ic) <span class="comment">% not cancelled</span>
+0038       <a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>(D, ic, F, hList);
+0039     <span class="keyword">end</span>
+0040   <span class="keyword">end</span>
+0041  <span class="keyword">case</span> <span class="string">'delete'</span>
+0042   hList = findobj(F,<span class="string">'Tag'</span>,<span class="string">'eList'</span>);
+0043   ic = get(hList, <span class="string">'Value'</span>);
+0044   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ic)
+0045     msgbox(<span class="string">'Please select event type(s) to delete'</span>);
+0046   <span class="keyword">else</span>
+0047     et(ic) = [];
+0048     D = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D, et);
+0049     <a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>(D, 1, F, hList);
+0050   <span class="keyword">end</span>  
+0051  <span class="keyword">otherwise</span>
+0052   error([ action <span class="string">' is deviant'</span> ]);
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">return</span>
+0056 
+0057 
+0058   
+0059   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

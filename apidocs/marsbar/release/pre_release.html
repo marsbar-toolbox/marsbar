@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pre_release</title>
+  <meta name="keywords" content="pre_release">
+  <meta name="description" content="Runs pre-release export, cleanup">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">release</a> &gt; pre_release.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/release&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>pre_release
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Runs pre-release export, cleanup</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function pre_release(rname, outdir, proj, proj_descrip, proj_url) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Runs pre-release export, cleanup
+ FORMAT pre_release(rname, outdir, proj, proj_descrip)
+
+ Inputs [defaults]
+ rname        - string to define release version ['-%s']
+ outdir       - directory to output release to [pwd]
+ proj         - project name (and name of main project file) ['marsbar']
+ proj_descrip - short description of project ['MarsBaR ROI toolbox']
+ proj_url     - URL from which to clone project
+                ['git://github.com/matthew-brett/marsbar.git']
+
+ e.g.  pre_release('-devel-%s', '/tmp')
+ would output a release called marsbar-devel-0.34.tar.gz (if the marsbar
+ version string is '0.34') to the /tmp directory
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="make_contents.html" class="code" title="function make_contents(aString, flags, start_dir)">make_contents</a>	MAKECONTENTS makes Contents file, usually in current working directory.</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function pre_release(rname, outdir, proj, proj_descrip, proj_url)</a>
+0002 <span class="comment">% Runs pre-release export, cleanup</span>
+0003 <span class="comment">% FORMAT pre_release(rname, outdir, proj, proj_descrip)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs [defaults]</span>
+0006 <span class="comment">% rname        - string to define release version ['-%s']</span>
+0007 <span class="comment">% outdir       - directory to output release to [pwd]</span>
+0008 <span class="comment">% proj         - project name (and name of main project file) ['marsbar']</span>
+0009 <span class="comment">% proj_descrip - short description of project ['MarsBaR ROI toolbox']</span>
+0010 <span class="comment">% proj_url     - URL from which to clone project</span>
+0011 <span class="comment">%                ['git://github.com/matthew-brett/marsbar.git']</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% e.g.  pre_release('-devel-%s', '/tmp')</span>
+0014 <span class="comment">% would output a release called marsbar-devel-0.34.tar.gz (if the marsbar</span>
+0015 <span class="comment">% version string is '0.34') to the /tmp directory</span>
+0016 
+0017 <span class="keyword">if</span> nargin &lt; 1
+0018   rname = <span class="string">''</span>;
+0019 <span class="keyword">end</span>
+0020 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(rname)
+0021   rname = <span class="string">'-%s'</span>;
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   outdir = <span class="string">''</span>;
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(outdir)
+0027   outdir = pwd;
+0028 <span class="keyword">end</span>
+0029 <span class="keyword">if</span> nargin &lt; 3
+0030   proj = <span class="string">'marsbar'</span>;
+0031 <span class="keyword">end</span>
+0032 <span class="keyword">if</span> nargin &lt; 4
+0033   proj_descrip = <span class="string">'MarsBaR ROI toolbox'</span>;
+0034 <span class="keyword">end</span>
+0035 <span class="keyword">if</span> nargin &lt; 5
+0036     proj_url = <span class="string">'git://github.com/matthew-brett/marsbar.git'</span>;
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="comment">% project version</span>
+0040 V = eval([proj <span class="string">'(''ver'')'</span>]);
+0041 rname = sprintf(rname, V);
+0042 
+0043 <span class="comment">% Clone from git</span>
+0044 cmd = sprintf(<span class="string">'git clone %s %s'</span>, proj_url, proj);
+0045 unix(cmd);
+0046 
+0047 <span class="comment">% make contents file</span>
+0048 contents_str = sprintf(<span class="string">'Contents of %s version %s'</span>, proj_descrip, V);
+0049 <a href="make_contents.html" class="code" title="function make_contents(aString, flags, start_dir)">make_contents</a>(contents_str, <span class="string">'fncrd'</span>, fullfile(pwd, proj, proj));
+0050 
+0051 <span class="comment">% move directory</span>
+0052 full_name = sprintf(<span class="string">'%s%s'</span>, proj, rname);
+0053 unix(sprintf(<span class="string">'mv %s/%s %s'</span>, proj, proj, full_name));
+0054 <span class="comment">% Make archives</span>
+0055 unix(sprintf(<span class="string">'tar zcvf %s.tar.gz %s'</span>, full_name, full_name));
+0056 unix(sprintf(<span class="string">'zip -r %s.zip %s'</span>, full_name, full_name));
+0057 <span class="comment">% Remove traces of checkout</span>
+0058 unix(sprintf(<span class="string">'rm -rf %s'</span>, full_name));
+0059 unix(sprintf(<span class="string">'rm -rf %s'</span>, proj));
+0060 
+0061 fprintf(<span class="string">'Created %s release %s\n'</span>, proj, full_name);
+0062 fprintf(<span class="string">'Consider Changelog, e.g git log --pretty=%%s --first-parent\n'</span>);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

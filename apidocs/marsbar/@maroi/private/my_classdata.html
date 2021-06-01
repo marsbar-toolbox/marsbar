@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of my_classdata</title>
+  <meta name="keywords" content="my_classdata">
+  <meta name="description" content="my_classdata method - sets/gets class data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@maroi</a> &gt; <a href="index.html">private</a> &gt; my_classdata.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>my_classdata
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>my_classdata method - sets/gets class data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function cdata = my_classdata(fieldname, value) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> my_classdata method - sets/gets class data
+ maroi class data is implemented with a persistent variable
+ CLASSDATA  This is a structure containing fields
+
+ spacebase  - space in which to do ROI combination 
+ fileend    - filename end with extension for ROI files
+ def_binthresh - default roithresh for binarize ROIs
+ def_wtthresh  - default roithresh for non-binarize ROIs
+
+ Field values can be returned with the call
+    maroi('classdata') - which returns the whole structure
+ or maroi('classdata', fieldname) - which returns field data
+
+ Field values can be set with the call
+ maroi('classdata', fieldname, value) OR
+ maroi('classdata', struct) where struct contains fields matching those
+ in CLASSDATA
+
+ The same functionality results from 
+ classdata(maroi_obj, fieldname) etc.
+
+ Matthew Brett 1/8/01 (MRD+)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@maroi/back2base.html" class="code" title="function o = back2base(o)">back2base</a>	back2base method - check for spacebase, transform thereto</li>
+<li><a href="../../../marsbar/@maroi/classdata.html" class="code" title="function cdata = classdata(obj, varargin)">classdata</a>	classdata method - sets/gets class data</li>
+<li><a href="../../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function cdata = my_classdata(fieldname, value)</a>
+0002 <span class="comment">% my_classdata method - sets/gets class data</span>
+0003 <span class="comment">% maroi class data is implemented with a persistent variable</span>
+0004 <span class="comment">% CLASSDATA  This is a structure containing fields</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% spacebase  - space in which to do ROI combination</span>
+0007 <span class="comment">% fileend    - filename end with extension for ROI files</span>
+0008 <span class="comment">% def_binthresh - default roithresh for binarize ROIs</span>
+0009 <span class="comment">% def_wtthresh  - default roithresh for non-binarize ROIs</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Field values can be returned with the call</span>
+0012 <span class="comment">%    maroi('classdata') - which returns the whole structure</span>
+0013 <span class="comment">% or maroi('classdata', fieldname) - which returns field data</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Field values can be set with the call</span>
+0016 <span class="comment">% maroi('classdata', fieldname, value) OR</span>
+0017 <span class="comment">% maroi('classdata', struct) where struct contains fields matching those</span>
+0018 <span class="comment">% in CLASSDATA</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% The same functionality results from</span>
+0021 <span class="comment">% classdata(maroi_obj, fieldname) etc.</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Matthew Brett 1/8/01 (MRD+)</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% $Id$</span>
+0026 
+0027 <span class="keyword">persistent</span> CLASSDATA
+0028 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(CLASSDATA)
+0029   <span class="comment">% default space is that of the SPM templates</span>
+0030   t1mat = [2     0     0   -92; <span class="keyword">...</span>
+0031        0     2     0  -128; <span class="keyword">...</span><span class="comment"> </span>
+0032        0     0     2   -74; <span class="keyword">...</span>
+0033        0     0     0     1];
+0034   CLASSDATA = struct(<span class="keyword">...</span>
+0035       <span class="string">'spacebase'</span>, <a href="../../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>([91 109 91],  t1mat), <span class="keyword">...</span>
+0036       <span class="string">'fileend'</span>,<span class="string">'_roi.mat'</span>,<span class="keyword">...</span>
+0037       <span class="string">'def_hold'</span>, 1,<span class="keyword">...</span>
+0038       <span class="string">'def_binthresh'</span>, 0.5,<span class="keyword">...</span>
+0039       <span class="string">'def_wtthresh'</span>, eps);
+0040 
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="keyword">if</span> nargin &lt; 1 <span class="comment">% simple classdata call</span>
+0044   cdata = CLASSDATA;
+0045   <span class="keyword">return</span>
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">if</span> nargin &lt; 2 &amp;&amp; ~isstruct(fieldname) <span class="comment">% fieldname get call</span>
+0048   <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(CLASSDATA, fieldname) 
+0049     cdata = getfield(CLASSDATA,fieldname);
+0050   <span class="keyword">else</span> 
+0051     cdata = []; 
+0052   <span class="keyword">end</span>
+0053   <span class="keyword">return</span>
+0054 <span class="keyword">end</span>
+0055 
+0056 <span class="comment">% some sort of set call</span>
+0057 <span class="keyword">if</span> ~isstruct(fieldname) 
+0058   fieldname = struct(struct(fieldname, value));
+0059 <span class="keyword">end</span>
+0060 <span class="keyword">for</span> field = fieldnames(fieldname)
+0061   <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(CLASSDATA, field{1})
+0062     CLASSDATA = setfield(CLASSDATA, field{1},<span class="keyword">...</span>
+0063                     getfield(fieldname, field{1}));
+0064   <span class="keyword">end</span>
+0065 <span class="keyword">end</span>
+0066 cdata = CLASSDATA;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

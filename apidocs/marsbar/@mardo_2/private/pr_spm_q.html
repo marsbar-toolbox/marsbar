@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_q</title>
+  <meta name="keywords" content="pr_spm_q">
+  <meta name="description" content="returns an (n x n) autocorrelation matrix for an AR(p) process">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_q.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_q
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns an (n x n) autocorrelation matrix for an AR(p) process</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Q] = pr_spm_q(A,n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns an (n x n) autocorrelation matrix for an AR(p) process
+ FORMAT [Q] = spm_Q(A,n)
+
+ A  - vector pf p AR coeficients
+ n  - size of Q
+___________________________________________________________________________
+ @(#)spm_Q.m    2.2 Karl Friston 03/03/03
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Q] = pr_spm_q(A,n)</a>
+0002 <span class="comment">% returns an (n x n) autocorrelation matrix for an AR(p) process</span>
+0003 <span class="comment">% FORMAT [Q] = spm_Q(A,n)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% A  - vector pf p AR coeficients</span>
+0006 <span class="comment">% n  - size of Q</span>
+0007 <span class="comment">%___________________________________________________________________________</span>
+0008 <span class="comment">% @(#)spm_Q.m    2.2 Karl Friston 03/03/03</span>
+0009 
+0010 <span class="comment">% compute Q</span>
+0011 <span class="comment">%---------------------------------------------------------------------------</span>
+0012 p    = length(A);
+0013 A    = [1 -A(:)'];
+0014 K    = inv(spdiags(ones(n,1)*A,-[0:p],n,n));
+0015 K    = K.*(abs(K) &gt; 1e-4);
+0016 Q    = K*K';
+0017 D    = spdiags(sqrt(1./diag(Q)),0,n,n);
+0018 Q    = D*Q*D;
+0019 Q    = Q.*(abs(Q) &gt; 1e-4);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

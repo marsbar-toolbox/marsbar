@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of spm_write_plane</title>
+  <meta name="keywords" content="spm_write_plane">
+  <meta name="description" content="Write a transverse plane of image data.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm99</a> &gt; spm_write_plane.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>spm_write_plane
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Write a transverse plane of image data.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function V = spm_write_plane(V,A,p) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Write a transverse plane of image data.
+ FORMAT V = spm_write_plane(V,A,p)
+ V   - data structure containing image information.
+       - see spm_vol for a description.
+ A   - the two dimensional image to write.
+ p   - the plane number (beginning from 1).
+
+ VO  - (possibly) modified data structure containing image information.
+       It is possible that future versions of spm_write_plane may
+       modify scalefactors (for example).
+
+_______________________________________________________________________
+ @(#)spm_write_plane.m    2.19 John Ashburner 03/07/16
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="spm_write_vol.html" class="code" title="function V = spm_write_vol(V,Y)">spm_write_vol</a>	Write an image volume to disk, setting scales and offsets as appropriate</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function V = write_analyze_plane(V,A,p)</a></li>
+<li><a href="#_sub2" class="code">function write_error_message(q)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function V = spm_write_plane(V,A,p)</a>
+0002 <span class="comment">% Write a transverse plane of image data.</span>
+0003 <span class="comment">% FORMAT V = spm_write_plane(V,A,p)</span>
+0004 <span class="comment">% V   - data structure containing image information.</span>
+0005 <span class="comment">%       - see spm_vol for a description.</span>
+0006 <span class="comment">% A   - the two dimensional image to write.</span>
+0007 <span class="comment">% p   - the plane number (beginning from 1).</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% VO  - (possibly) modified data structure containing image information.</span>
+0010 <span class="comment">%       It is possible that future versions of spm_write_plane may</span>
+0011 <span class="comment">%       modify scalefactors (for example).</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%_______________________________________________________________________</span>
+0014 <span class="comment">% @(#)spm_write_plane.m    2.19 John Ashburner 03/07/16</span>
+0015 
+0016 <span class="keyword">if</span> any(V.dim(1:2) ~= size(A)), error(<span class="string">'Incompatible image dimensions'</span>);      <span class="keyword">end</span>;
+0017 <span class="keyword">if</span> p&gt;V.dim(3),                 error(<span class="string">'Plane number too high'</span>);              <span class="keyword">end</span>;
+0018 
+0019 <span class="comment">% Write Analyze image by default</span>
+0020 V = <a href="#_sub1" class="code" title="subfunction V = write_analyze_plane(V,A,p)">write_analyze_plane</a>(V,A,p);
+0021 <span class="keyword">return</span>;
+0022 <span class="comment">%_______________________________________________________________________</span>
+0023 
+0024 <span class="comment">%_______________________________________________________________________</span>
+0025 <a name="_sub1" href="#_subfunctions" class="code">function V = write_analyze_plane(V,A,p)</a>
+0026 
+0027 types   = [    2      4      8   16   64   130    132    136,   512   1024   2048 4096 16384 33280  33792  34816];
+0028 maxval  = [2^8-1 2^15-1 2^31-1  Inf  Inf 2^7-1 2^16-1 2^32-1, 2^8-1 2^15-1 2^31-1  Inf   Inf 2^8-1 2^16-1 2^32-1];
+0029 minval  = [    0  -2^15  -2^31 -Inf -Inf  -2^7      0      0,     0  -2^15  -2^31 -Inf  -Inf  -2^7      0      0];
+0030 intt    = [    1      1      1    0    0     1      1      1,     1      1      1    0     0     1      1      1];
+0031 prec = str2mat(<span class="string">'uint8'</span>,<span class="string">'int16'</span>,<span class="string">'int32'</span>,<span class="string">'float'</span>,<span class="string">'double'</span>,<span class="string">'int8'</span>,<span class="string">'uint16'</span>,<span class="string">'uint32'</span>,<span class="string">'uint8'</span>,<span class="string">'int16'</span>,<span class="string">'int32'</span>,<span class="string">'float'</span>,<span class="string">'double'</span>,<span class="string">'int8'</span>,<span class="string">'uint16'</span>,<span class="string">'uint32'</span>);
+0032 swapped = [    0      0      0    0    0     0      0      0,     1      1      1    1     1     1      1      1];
+0033 bits    = [    8     16     32   32   64     8     16     32,     8     16     32   32    64     8     16     32];
+0034 
+0035 dt      = find(types==V.dim(4));
+0036 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dt), error(<span class="string">'Unknown datatype'</span>); <span class="keyword">end</span>;
+0037 
+0038 A = double(A);
+0039 
+0040 <span class="comment">% Rescale to fit appropriate range</span>
+0041 <span class="keyword">if</span> intt(dt),
+0042     A(isnan(A)) = 0;
+0043     mxv         = maxval(dt);
+0044     mnv         = minval(dt);
+0045     A           = round(A*(1/V.pinfo(1)) - V.pinfo(2));
+0046     A(A &gt; mxv)  = mxv;
+0047     A(A &lt; mnv)  = mnv;
+0048 <span class="keyword">end</span>;
+0049 
+0050 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V,<span class="string">'private'</span>) | ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V.private,<span class="string">'fid'</span>) | <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(V.private.fid),
+0051     mach = <span class="string">'native'</span>;
+0052     <span class="keyword">if</span> swapped(dt),
+0053         <span class="keyword">if</span> spm_platform(<span class="string">'bigend'</span>), mach = <span class="string">'ieee-le'</span>; <span class="keyword">else</span>, mach = <span class="string">'ieee-be'</span>; <span class="keyword">end</span>;
+0054     <span class="keyword">end</span>; 
+0055     [pth,nam,ext] = fileparts(V.fname);
+0056     fname         = fullfile(pth,[nam, <span class="string">'.img'</span>]);
+0057     fid           = fopen(fname,<span class="string">'r+'</span>,mach);
+0058     <span class="keyword">if</span> fid == -1,
+0059         fid   = fopen(fname,<span class="string">'w'</span>,mach);
+0060         <span class="keyword">if</span> fid == -1,
+0061             error([<span class="string">'Error opening '</span> fname <span class="string">'. Check that you have write permission.'</span>]);
+0062         <span class="keyword">end</span>;
+0063     <span class="keyword">end</span>;
+0064 <span class="keyword">else</span>,
+0065     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fopen(V.private.fid)),
+0066         mach = <span class="string">'native'</span>;
+0067         <span class="keyword">if</span> swapped(dt),
+0068             <span class="keyword">if</span> spm_platform(<span class="string">'bigend'</span>), mach = <span class="string">'ieee-le'</span>; <span class="keyword">else</span>, mach = <span class="string">'ieee-be'</span>; <span class="keyword">end</span>;
+0069         <span class="keyword">end</span>;
+0070         V.private.fid = fopen(fname,<span class="string">'r+'</span>,mach);
+0071         <span class="keyword">if</span> V.private.fid == -1,
+0072             error([<span class="string">'Error opening '</span> fname <span class="string">'. Check that you have write permission.'</span>]);
+0073         <span class="keyword">end</span>;
+0074     <span class="keyword">end</span>;
+0075     fid = V.private.fid;
+0076 <span class="keyword">end</span>;
+0077 
+0078 <span class="comment">% Seek to the appropriate offset</span>
+0079 datasize = bits(dt)/8;
+0080 off   = (p-1)*datasize*prod(V.dim(1:2)) + V.pinfo(3,1);
+0081 fseek(fid,0,<span class="string">'bof'</span>); <span class="comment">% A bug in Matlab 6.5 means that a rewind is needed</span>
+0082 <span class="keyword">if</span> fseek(fid,off,<span class="string">'bof'</span>)==-1,
+0083     <span class="comment">% Need this because fseek in Matlab does not seek past the EOF</span>
+0084     fseek(fid,0,<span class="string">'bof'</span>); <span class="comment">% A bug in Matlab 6.5 means that a rewind is needed</span>
+0085     fseek(fid,0,<span class="string">'eof'</span>);
+0086     curr_off = ftell(fid);
+0087     blanks   = zeros(off-curr_off,1);
+0088     <span class="keyword">if</span> fwrite(fid,blanks,<span class="string">'uchar'</span>) ~= prod(size(blanks)),
+0089         <a href="#_sub2" class="code" title="subfunction write_error_message(q)">write_error_message</a>(V.fname);
+0090         error([<span class="string">'Error writing '</span> V.fname <span class="string">'.'</span>]);
+0091     <span class="keyword">end</span>;
+0092     fseek(fid,0,<span class="string">'bof'</span>); <span class="comment">% A bug in Matlab 6.5 means that a rewind is needed</span>
+0093     <span class="keyword">if</span> fseek(fid,off,<span class="string">'bof'</span>) == -1,
+0094         <a href="#_sub2" class="code" title="subfunction write_error_message(q)">write_error_message</a>(V.fname);
+0095         error([<span class="string">'Error writing '</span> V.fname <span class="string">'.'</span>]);
+0096         <span class="keyword">return</span>;
+0097     <span class="keyword">end</span>;
+0098 <span class="keyword">end</span>;
+0099 
+0100 <span class="keyword">if</span> fwrite(fid,A,deblank(prec(dt,:))) ~= prod(size(A)),
+0101     <a href="#_sub2" class="code" title="subfunction write_error_message(q)">write_error_message</a>(V.fname);
+0102     error([<span class="string">'Error writing '</span> V.fname <span class="string">'.'</span>]);
+0103 <span class="keyword">end</span>;
+0104 
+0105 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V,<span class="string">'private'</span>) | ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V.private,<span class="string">'fid'</span>) | <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(V.private.fid), fclose(fid); <span class="keyword">end</span>;
+0106 
+0107 <span class="keyword">return</span>;
+0108 <span class="comment">%_______________________________________________________________________</span>
+0109 
+0110 <span class="comment">%_______________________________________________________________________</span>
+0111 <a name="_sub2" href="#_subfunctions" class="code">function write_error_message(q)</a>
+0112 str = {<span class="keyword">...</span>
+0113     <span class="string">'Error writing:'</span>,<span class="keyword">...</span>
+0114     <span class="string">' '</span>,<span class="keyword">...</span>
+0115     [<span class="string">'        '</span>,spm_str_manip(q,<span class="string">'k40d'</span>)],<span class="keyword">...</span>
+0116     <span class="string">' '</span>,<span class="keyword">...</span>
+0117     <span class="string">'Check disk space / disk quota.'</span>};
+0118 spm(<span class="string">'alert*'</span>,str,mfilename,sqrt(-1));
+0119 
+0120 <span class="keyword">return</span>;
+0121 <span class="comment">%_______________________________________________________________________</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

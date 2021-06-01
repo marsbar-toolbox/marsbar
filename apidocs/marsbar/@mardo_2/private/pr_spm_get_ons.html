@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_get_ons</title>
+  <meta name="keywords" content="pr_spm_get_ons">
+  <meta name="description" content="returns input [designed effects] structures">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_get_ons.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_get_ons
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns input [designed effects] structures</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [U] = pr_spm_get_ons(SPM,s) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns input [designed effects] structures
+ FORMAT [U] = spm_get_ons(SPM,s)
+
+ s  - session number (used by batch system)
+
+ U     - (1 x n)   struct array of (n) trial-specific structures
+
+     U(i).name   - cell of names for each input or cause
+     U(i).u      - inputs or stimulus function matrix
+     U(i).dt     - time bin (seconds)
+     U(i).ons    - onsets    (in SPM.xBF.UNITS)
+     U(i).dur    - durations (in SPM.xBF.UNITS)
+    U(i).P      - parameter struct.
+
+         U(i).P(p).name - parameter name
+         U(i).P(p).P    - parameter vector
+         U(i).P(p).h    - order of polynomial expansion
+         U(i).P(p).i    - sub-indices of u pertaining to P
+_______________________________________________________________________
+
+
+ SLICE TIMIING
+
+ With longs TRs you may want to shift the regressors so that they are
+ aligned to a particular slice.  This is effected by resetting the
+ values of defaults.stats.fmri.t and defaults.stats.fmri.t0 in
+ spm_defaults. defaults.stats.fmri.t is the number of time-bins per
+ scan used when building regressors.  Onsets are defined
+ in temporal units of scans starting at 0.  defaults.stats.fmri.t0 is
+ the first time-bin at which the regressors are resampled to coincide
+ with data acquisition.  If defaults.stats.fmri.t0 = 1 then the
+ regressors will be appropriate for the first slice.  If you want to
+ temporally realign the regressors so that they match responses in the
+ middle slice then make defaults.stats.fmri.t0 =
+ defaults.stats.fmri.t/2 (assuming there is a negligible gap between
+ volume acquisitions. Default values are defaults.stats.fmri.t = 16
+ and defaults.stats.fmri.t0 = 1.
+
+
+_______________________________________________________________________
+ @(#)spm_get_ons.m    2.40 Karl Friston 03/07/03
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_orth.html" class="code" title="function x = spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_orth.html" class="code" title="function x = pr_spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_orth.html" class="code" title="function bf = pr_spm_orth(BF)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [U] = pr_spm_get_ons(SPM,s)</a>
+0002 <span class="comment">% returns input [designed effects] structures</span>
+0003 <span class="comment">% FORMAT [U] = spm_get_ons(SPM,s)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% s  - session number (used by batch system)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% U     - (1 x n)   struct array of (n) trial-specific structures</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%     U(i).name   - cell of names for each input or cause</span>
+0010 <span class="comment">%     U(i).u      - inputs or stimulus function matrix</span>
+0011 <span class="comment">%     U(i).dt     - time bin (seconds)</span>
+0012 <span class="comment">%     U(i).ons    - onsets    (in SPM.xBF.UNITS)</span>
+0013 <span class="comment">%     U(i).dur    - durations (in SPM.xBF.UNITS)</span>
+0014 <span class="comment">%    U(i).P      - parameter struct.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%         U(i).P(p).name - parameter name</span>
+0017 <span class="comment">%         U(i).P(p).P    - parameter vector</span>
+0018 <span class="comment">%         U(i).P(p).h    - order of polynomial expansion</span>
+0019 <span class="comment">%         U(i).P(p).i    - sub-indices of u pertaining to P</span>
+0020 <span class="comment">%_______________________________________________________________________</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% SLICE TIMIING</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% With longs TRs you may want to shift the regressors so that they are</span>
+0026 <span class="comment">% aligned to a particular slice.  This is effected by resetting the</span>
+0027 <span class="comment">% values of defaults.stats.fmri.t and defaults.stats.fmri.t0 in</span>
+0028 <span class="comment">% spm_defaults. defaults.stats.fmri.t is the number of time-bins per</span>
+0029 <span class="comment">% scan used when building regressors.  Onsets are defined</span>
+0030 <span class="comment">% in temporal units of scans starting at 0.  defaults.stats.fmri.t0 is</span>
+0031 <span class="comment">% the first time-bin at which the regressors are resampled to coincide</span>
+0032 <span class="comment">% with data acquisition.  If defaults.stats.fmri.t0 = 1 then the</span>
+0033 <span class="comment">% regressors will be appropriate for the first slice.  If you want to</span>
+0034 <span class="comment">% temporally realign the regressors so that they match responses in the</span>
+0035 <span class="comment">% middle slice then make defaults.stats.fmri.t0 =</span>
+0036 <span class="comment">% defaults.stats.fmri.t/2 (assuming there is a negligible gap between</span>
+0037 <span class="comment">% volume acquisitions. Default values are defaults.stats.fmri.t = 16</span>
+0038 <span class="comment">% and defaults.stats.fmri.t0 = 1.</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%_______________________________________________________________________</span>
+0042 <span class="comment">% @(#)spm_get_ons.m    2.40 Karl Friston 03/07/03</span>
+0043 
+0044 <span class="comment">%-GUI setup</span>
+0045 <span class="comment">%-----------------------------------------------------------------------</span>
+0046 spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0047 
+0048 <span class="comment">% time units</span>
+0049 <span class="comment">%-----------------------------------------------------------------------</span>
+0050 k     = SPM.nscan(s);
+0051 T     = SPM.xBF.T;
+0052 dt    = SPM.xBF.dt;
+0053 <span class="keyword">try</span>
+0054     UNITS = SPM.xBF.UNITS;
+0055 <span class="keyword">catch</span>
+0056     UNITS = <span class="string">'scans'</span>;
+0057 <span class="keyword">end</span>
+0058 <span class="keyword">switch</span> UNITS
+0059 
+0060     <span class="keyword">case</span> <span class="string">'scans'</span>
+0061     <span class="comment">%----------------------------------------------------------------</span>
+0062     TR = T*dt;
+0063 
+0064     <span class="keyword">case</span> <span class="string">'secs'</span>
+0065     <span class="comment">%----------------------------------------------------------------</span>
+0066     TR = 1;
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">% get inputs and names (try SPM.Sess(s).U first)</span>
+0070 <span class="comment">%=======================================================================</span>
+0071 <span class="keyword">try</span>
+0072     U   = SPM.Sess(s).U;
+0073     v   = length(U);
+0074 <span class="keyword">catch</span>
+0075 
+0076     <span class="comment">%-prompt string</span>
+0077     <span class="comment">%---------------------------------------------------------------</span>
+0078     str = sprintf(<span class="string">'Session %d: trial specification in %s'</span>,s,UNITS);
+0079     spm_input(str,1,<span class="string">'d'</span>)
+0080 
+0081     U   = {};
+0082     v   = spm_input(<span class="string">'number of conditions/trials'</span>,2,<span class="string">'w1'</span>);
+0083 <span class="keyword">end</span>
+0084 
+0085 <span class="comment">% get trials</span>
+0086 <span class="comment">%-----------------------------------------------------------------------</span>
+0087 <span class="keyword">for</span> i = 1:v
+0088 
+0089     <span class="comment">% get names</span>
+0090     <span class="comment">%---------------------------------------------------------------</span>
+0091     <span class="keyword">try</span>
+0092         Uname     = U(i).name(1);
+0093     <span class="keyword">catch</span>
+0094         str       = sprintf(<span class="string">'name for condition/trial %d ?'</span>,i);
+0095         Uname     = {spm_input(str,3,<span class="string">'s'</span>,sprintf(<span class="string">'trial %d'</span>,i))};
+0096         U(i).name = Uname;
+0097     <span class="keyword">end</span>
+0098 
+0099     <span class="comment">% get main [trial] effects</span>
+0100     <span class="comment">%================================================================</span>
+0101 
+0102     <span class="comment">% onsets</span>
+0103     <span class="comment">%---------------------------------------------------------------</span>
+0104     <span class="keyword">try</span>
+0105         ons = U(i).ons;
+0106         ons = ons(:);
+0107     <span class="keyword">catch</span>
+0108         ons = [];
+0109     <span class="keyword">end</span>
+0110     <span class="keyword">if</span> ~length(ons)
+0111         str      = [<span class="string">'vector of onsets - '</span> Uname{1}];
+0112         ons      = spm_input(str,4,<span class="string">'r'</span>,<span class="string">' '</span>,[Inf 1]);
+0113         U(i).ons = ons(:);
+0114 
+0115     <span class="keyword">end</span>
+0116 
+0117     <span class="comment">% durations</span>
+0118     <span class="comment">%---------------------------------------------------------------</span>
+0119     <span class="keyword">try</span>
+0120         dur = U(i).dur;
+0121         dur = dur(:);
+0122     <span class="keyword">catch</span>
+0123         dur = [];
+0124     <span class="keyword">end</span>
+0125     <span class="keyword">if</span> ~length(dur)
+0126         str = <span class="string">'duration[s] (events = 0)'</span>;
+0127         <span class="keyword">while</span> 1
+0128             dur = spm_input(str,5,<span class="string">'r'</span>,<span class="string">' '</span>,[Inf 1]);
+0129             <span class="keyword">if</span> length(dur) == 1
+0130                 dur    = dur*ones(size(ons));
+0131             <span class="keyword">end</span>
+0132             <span class="keyword">if</span> length(dur) == length(ons), <span class="keyword">break</span>, <span class="keyword">end</span>
+0133             str = sprintf(<span class="string">'enter a scalar or [%d] vector'</span>,<span class="keyword">...</span>
+0134                     length(ons));
+0135         <span class="keyword">end</span>
+0136         U(i).dur = dur;
+0137     <span class="keyword">end</span>
+0138 
+0139     <span class="comment">% peri-stimulus times {seconds}</span>
+0140     <span class="comment">%---------------------------------------------------------------</span>
+0141     pst   = [1:k]*T*dt - ons(1)*TR;            
+0142     <span class="keyword">for</span> j = 1:length(ons)
+0143         w      = [1:k]*T*dt - ons(j)*TR;
+0144         v      = find(w &gt;= -1);
+0145         pst(v) = w(v);
+0146     <span class="keyword">end</span>
+0147 
+0148 
+0149     <span class="comment">% add parameters x trial interactions</span>
+0150     <span class="comment">%================================================================</span>
+0151 
+0152     <span class="comment">% get parameter stucture xP</span>
+0153     <span class="comment">%----------------------------------------------------------------</span>
+0154     <span class="keyword">try</span> 
+0155         xP          = U(i).P;
+0156         Pname       = xP(1).name;
+0157 
+0158         <span class="keyword">switch</span> Pname
+0159 
+0160             <span class="keyword">case</span> <span class="string">'none'</span>
+0161             <span class="comment">%------------------------------------------------</span>
+0162             xP.name  = <span class="string">'time'</span>;
+0163             xP.h     = 0;
+0164 
+0165         <span class="keyword">end</span>
+0166 
+0167     <span class="keyword">catch</span>
+0168 
+0169         Pname       = {<span class="string">'none'</span>,<span class="string">'time'</span>,<span class="string">'other'</span>};
+0170         Pname       = spm_input(<span class="string">'parametric modulation'</span>,6,<span class="string">'b'</span>,Pname);
+0171 
+0172         <span class="keyword">switch</span> Pname
+0173 
+0174         <span class="keyword">case</span> <span class="string">'none'</span>
+0175         <span class="comment">%--------------------------------------------------------</span>
+0176         xP(1).name  = <span class="string">'none'</span>;
+0177         xP(1).P     = ons*TR;
+0178         xP(1).h     = 0;
+0179 
+0180         <span class="keyword">case</span> <span class="string">'time'</span>
+0181         <span class="comment">%--------------------------------------------------------</span>
+0182         xP(1).name  = <span class="string">'time'</span>;
+0183         xP(1).P     = ons*TR;
+0184         xP(1).h     = spm_input(<span class="string">'polynomial order'</span>,8,<span class="string">'n1'</span>,1);
+0185 
+0186         <span class="keyword">case</span> <span class="string">'other'</span>
+0187         <span class="comment">%--------------------------------------------------------</span>
+0188         str   = [<span class="string">'# parameters ('</span> Uname{1} <span class="string">')'</span>];
+0189         <span class="keyword">for</span> q = 1:spm_input(str,7,<span class="string">'n1'</span>,1);
+0190 
+0191             <span class="comment">% get names and parametric variates</span>
+0192             <span class="comment">%------------------------------------------------</span>
+0193             str   = sprintf(<span class="string">'parameter %d name'</span>,q);
+0194             Pname = spm_input(str,7,<span class="string">'s'</span>);
+0195             P     = spm_input(Pname,7,<span class="string">'r'</span>,[],[length(ons),1]);
+0196 
+0197             <span class="comment">% order of polynomial expansion h</span>
+0198             <span class="comment">%------------------------------------------------</span>
+0199             h     = spm_input(<span class="string">'polynomial order'</span>,8,<span class="string">'n1'</span>,1);
+0200 
+0201             <span class="comment">% sub-indices and inputs</span>
+0202             <span class="comment">%------------------------------------------------</span>
+0203             xP(q).name  = Pname;
+0204             xP(q).P     = P(:);
+0205             xP(q).h     = h;
+0206 
+0207         <span class="keyword">end</span>
+0208         <span class="keyword">end</span> <span class="comment">% switch</span>
+0209 
+0210     <span class="keyword">end</span> <span class="comment">% try</span>
+0211 
+0212     <span class="comment">% interaction with causes (u) - 1st = main effects</span>
+0213     <span class="comment">%----------------------------------------------------------------</span>
+0214     u     = ons.^0;
+0215     <span class="keyword">for</span> q = 1:length(xP)
+0216         xP(q).i = [1, ([1:xP(q).h] + size(u,2))];
+0217         <span class="keyword">for</span>   j = 1:xP(q).h
+0218             P   = spm_en(xP(q).P);
+0219              u   = [u P.^j];
+0220             str = sprintf(<span class="string">'%sx%s^%d'</span>,Uname{1},xP.name,j);
+0221             Uname{end + 1} = str;
+0222         <span class="keyword">end</span>
+0223     <span class="keyword">end</span>
+0224 
+0225     <span class="comment">% orthogonalize inputs</span>
+0226     <span class="comment">%---------------------------------------------------------------</span>
+0227     u          = <a href="pr_spm_orth.html" class="code" title="function x = spm_orth(X)">pr_spm_orth</a>(u);
+0228 
+0229     <span class="comment">% and scale so sum(u*dt) = number of events, if event-related</span>
+0230     <span class="comment">%---------------------------------------------------------------</span>
+0231     <span class="keyword">if</span> ~any(dur)
+0232         u  = u/dt;
+0233     <span class="keyword">end</span>
+0234 
+0235     <span class="comment">% create stimulus functions (32 bin offset)</span>
+0236     <span class="comment">%===============================================================</span>
+0237     ton       = round(ons*TR/dt) + 32;            <span class="comment">% onsets</span>
+0238     tof       = round(dur*TR/dt) + ton + 1;            <span class="comment">% offset</span>
+0239     sf        = sparse((k*T + 128),size(u,2));
+0240     <span class="keyword">for</span> j = 1:length(ton)
+0241         sf(ton(j),:) = sf(ton(j),:) + u(j,:);
+0242         sf(tof(j),:) = sf(tof(j),:) - u(j,:);
+0243     <span class="keyword">end</span>
+0244     sf        = cumsum(sf);                    <span class="comment">% integrate</span>
+0245     sf        = sf(1:(k*T + 32),:);                <span class="comment">% stimulus</span>
+0246 
+0247     <span class="comment">% place in ouputs structure</span>
+0248     <span class="comment">%---------------------------------------------------------------</span>
+0249     U(i).name = Uname;        <span class="comment">% - input names</span>
+0250     U(i).dt   = dt;            <span class="comment">% - time bin {seconds}</span>
+0251     U(i).u    = sf;            <span class="comment">% - stimulus function matrix</span>
+0252     U(i).pst  = pst;        <span class="comment">% - pst (seconds)</span>
+0253     U(i).P    = xP;            <span class="comment">% - parameter struct</span>
+0254 
+0255 <span class="keyword">end</span> <span class="comment">% (v)</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

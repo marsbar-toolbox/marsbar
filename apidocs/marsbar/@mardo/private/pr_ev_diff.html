@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_ev_diff</title>
+  <meta name="keywords" content="pr_ev_diff">
+  <meta name="description" content="method to calculate event height for % signal change">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo</a> &gt; <a href="index.html">private</a> &gt; pr_ev_diff.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_ev_diff
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>method to calculate event height for % signal change</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function d = pr_ev_diff(ev_tc, diff_func, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to calculate event height for % signal change
+ FORMAT d = pr_ev_diff(ev_tc, diff_func, varargin)
+ 
+ Inputs
+ ev_tc     - event time course
+ diff_func - difference function; one of
+             'max'     - the maximum of the time course
+             'max-min' - the max minus the min
+             'abs max' - if abs(max) &gt; abs(min) =&gt; max otherwise =&gt; min
+             'abs max-min' -  if abs(max) &gt; abs(min) =&gt; (max - min) 
+                              otherwise =&gt; (min - max) 
+  
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/event_signal.html" class="code" title="function s = event_signal(D, e_spec, dur, diff_func, varargin)">event_signal</a>	method to compute % signal change from fMRI events</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function d = pr_ev_diff(ev_tc, diff_func, varargin)</a>
+0002 <span class="comment">% method to calculate event height for % signal change</span>
+0003 <span class="comment">% FORMAT d = pr_ev_diff(ev_tc, diff_func, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% ev_tc     - event time course</span>
+0007 <span class="comment">% diff_func - difference function; one of</span>
+0008 <span class="comment">%             'max'     - the maximum of the time course</span>
+0009 <span class="comment">%             'max-min' - the max minus the min</span>
+0010 <span class="comment">%             'abs max' - if abs(max) &gt; abs(min) =&gt; max otherwise =&gt; min</span>
+0011 <span class="comment">%             'abs max-min' -  if abs(max) &gt; abs(min) =&gt; (max - min)</span>
+0012 <span class="comment">%                              otherwise =&gt; (min - max)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015 
+0016 <span class="keyword">if</span> nargin &lt; 2
+0017   diff_func = <span class="string">''</span>;
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(diff_func)
+0020   diff_func = <span class="string">'max'</span>;
+0021 <span class="keyword">end</span>
+0022 
+0023 [m n] = size(ev_tc);
+0024 d = zeros(1, n);
+0025 <span class="keyword">switch</span> lower(diff_func)
+0026  <span class="keyword">case</span> <span class="string">'max'</span>
+0027   d = max(ev_tc, [], 1);
+0028  <span class="keyword">case</span> <span class="string">'max-min'</span>
+0029   d = max(ev_tc, [], 1) - min(ev_tc, [], 1);
+0030  <span class="keyword">case</span> <span class="string">'abs max'</span>
+0031   [d i] = max(abs(ev_tc), [], 1);
+0032   <span class="keyword">for</span> s = 1:n, d(s) = ev_tc(i(s), s); <span class="keyword">end</span>
+0033  <span class="keyword">case</span> <span class="string">'abs max-min'</span>
+0034   mx = max(ev_tc, [], 1);
+0035   mn = min(ev_tc, [], 1);
+0036   i  = abs(mx) &gt; abs(mn);
+0037   d(i)  = mx(i)-mn(i);
+0038   d(~i) = mn(~i)-mx(~i);
+0039  <span class="keyword">case</span> <span class="string">'window'</span>
+0040   <span class="keyword">if</span> nargin &lt; 4, error(<span class="string">'Need window and dt'</span>); <span class="keyword">end</span>
+0041   w = round(varargin{1} / varargin{2}) + 1;
+0042   d = mean(ev_tc(w(1):w(2), :), 1);
+0043  <span class="keyword">otherwise</span>
+0044   error(sprintf(<span class="string">'What is this difference function: %s?'</span>, diff_func));
+0045 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

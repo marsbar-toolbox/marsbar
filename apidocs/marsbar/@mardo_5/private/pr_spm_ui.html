@@ -1,0 +1,1489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_ui</title>
+  <meta name="keywords" content="pr_spm_ui">
+  <meta name="description" content="MarsBaR: Setting up the general linear model for independent data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_ui.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_ui
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MarsBaR: Setting up the general linear model for independent data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = pr_spm_ui(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MarsBaR: Setting up the general linear model for independent data
+
+ MarsBaR version copied with minor edits from:
+ $Id: spm_spm_ui.m 372 2005-12-08 17:12:13Z karl $
+ See that (SPM5) file for comments and help
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_2/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="pr_spm_non_sphericity.html" class="code" title="function [xVi] = pr_spm_non_sphericity(xVi)">pr_spm_non_sphericity</a>	return error covariance constraints for basic ANOVA designs</li>
+<li><a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>	File selector</li>
+<li><a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_5/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_99/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../../marsbar/mars_vol_check.html" class="code" title="function [samef, msg, chgf] = mars_vol_check(varargin)">mars_vol_check</a>	FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)</li>
+<li><a href="../../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+<li><a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_2/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+<li><a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_5/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../../marsbar/@mardo_99/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function str = sf_estrrep(str,srstr)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = pr_spm_ui(varargin)</a>
+0002 <span class="comment">% MarsBaR: Setting up the general linear model for independent data</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% MarsBaR version copied with minor edits from:</span>
+0005 <span class="comment">% $Id: spm_spm_ui.m 372 2005-12-08 17:12:13Z karl $</span>
+0006 <span class="comment">% See that (SPM5) file for comments and help</span>
+0007 
+0008 <span class="comment">%-Condition arguments</span>
+0009 <span class="comment">%-----------------------------------------------------------------------</span>
+0010 <span class="keyword">if</span> (nargin==0), Action = <span class="string">'CFG'</span>; <span class="keyword">else</span>, Action = varargin{1}; <span class="keyword">end</span>
+0011 
+0012 
+0013 <span class="keyword">switch</span> lower(Action)
+0014 <span class="keyword">case</span> <span class="string">'cfg'</span>
+0015     <span class="comment">%===================================================================</span>
+0016     <span class="comment">% - C O N F I G U R E   D E S I G N</span>
+0017     <span class="comment">%===================================================================</span>
+0018     <span class="comment">% pr_spm_ui('CFG',D)</span>
+0019     <span class="keyword">if</span> nargin&lt;2, D = []; <span class="keyword">else</span>, D = varargin{2}; <span class="keyword">end</span>
+0020     
+0021     <span class="comment">%-GUI setup</span>
+0022     <span class="comment">%-------------------------------------------------------------------</span>
+0023     SPMid = spm(<span class="string">'FnBanner'</span>,mfilename, <a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>));
+0024     [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'Stats: Setup analysis'</span>,0);
+0025     spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0026     
+0027     
+0028     <span class="comment">%-Ask about overwriting files from previous analyses...</span>
+0029     <span class="comment">%-------------------------------------------------------------------</span>
+0030     <span class="keyword">if</span> exist(fullfile(<span class="string">'.'</span>,<span class="string">'SPM.mat'</span>))
+0031         str = {    <span class="string">'Current directory contains existing SPM file:'</span>,<span class="keyword">...</span>
+0032                 <span class="string">'Continuing will overwrite existing file!'</span>};
+0033         <span class="keyword">if</span> spm_input(str,1,<span class="string">'bd'</span>,<span class="string">'stop|continue'</span>,[1,0],1,mfilename);
+0034             fprintf(<span class="string">'%-40s: %30s\n\n'</span>,<span class="keyword">...</span>
+0035                 <span class="string">'Abort...   (existing SPM file)'</span>,spm(<span class="string">'time'</span>))
+0036             spm_clf(Finter)
+0037             <span class="keyword">return</span>
+0038         <span class="keyword">end</span>
+0039     <span class="keyword">end</span>
+0040     
+0041     
+0042     
+0043     <span class="comment">%-Option definitions</span>
+0044     <span class="comment">%-------------------------------------------------------------------</span>
+0045     <span class="comment">%-Generic factor names</span>
+0046     sF = {<span class="string">'sF1'</span>,<span class="string">'sF2'</span>,<span class="string">'sF3'</span>,<span class="string">'sF4'</span>};
+0047     
+0048     <span class="comment">%-Covariate by factor interaction options</span>
+0049     sCFI = {<span class="string">'&lt;none&gt;'</span>;<span class="keyword">...</span><span class="comment">                            %-1</span>
+0050             <span class="string">'with sF1'</span>;<span class="string">'with sF2'</span>;<span class="string">'with sF3'</span>;<span class="string">'with sF4'</span>;<span class="keyword">...</span><span class="comment">            %-2:5</span>
+0051             <span class="string">'with sF2 (within sF4)'</span>;<span class="string">'with sF3 (within sF4)'</span>};        <span class="comment">%-6,7</span>
+0052     
+0053     <span class="comment">%-DesMtx argument components for covariate by factor interaction options</span>
+0054     <span class="comment">% (Used for CFI's Covariate Centering (CC), GMscale &amp; Global normalisation)</span>
+0055     CFIforms = {    <span class="string">'[]'</span>,        <span class="string">'C'</span>,    <span class="string">'{}'</span>;<span class="keyword">...</span><span class="comment">            %-1</span>
+0056             <span class="string">'I(:,1)'</span>,        <span class="string">'FxC'</span>,    <span class="string">'{D.sF{1}}'</span>;<span class="keyword">...</span><span class="comment">            %-2</span>
+0057             <span class="string">'I(:,2)'</span>,        <span class="string">'FxC'</span>,    <span class="string">'{D.sF{2}}'</span>;<span class="keyword">...</span><span class="comment">            %-3</span>
+0058             <span class="string">'I(:,3)'</span>,        <span class="string">'FxC'</span>,    <span class="string">'{D.sF{3}}'</span>;<span class="keyword">...</span><span class="comment">            %-4</span>
+0059             <span class="string">'I(:,4)'</span>,        <span class="string">'FxC'</span>,    <span class="string">'{D.sF{4}}'</span>;<span class="keyword">...</span><span class="comment">            %-5</span>
+0060             <span class="string">'I(:,[4,2])'</span>,    <span class="string">'FxC'</span>,    <span class="string">'{D.sF{4},D.sF{2}}'</span>;<span class="keyword">...</span><span class="comment">    %-6</span>
+0061             <span class="string">'I(:,[4,3])'</span>,    <span class="string">'FxC'</span>,    <span class="string">'{D.sF{4},D.sF{3}}'</span>    };    <span class="comment">%-7</span>
+0062     
+0063     <span class="comment">%-Centre (mean correction) options for covariates &amp; globals            (CC)</span>
+0064     <span class="comment">% (options 9-12 are for centering of global when using AnCova GloNorm) (GC)</span>
+0065     sCC = {        <span class="string">'around overall mean'</span>;<span class="keyword">...</span><span class="comment">                %-1</span>
+0066             <span class="string">'around sF1 means'</span>;<span class="keyword">...</span><span class="comment">                    %-2</span>
+0067             <span class="string">'around sF2 means'</span>;<span class="keyword">...</span><span class="comment">                    %-3</span>
+0068             <span class="string">'around sF3 means'</span>;<span class="keyword">...</span><span class="comment">                    %-4</span>
+0069             <span class="string">'around sF4 means'</span>;<span class="keyword">...</span><span class="comment">                    %-5</span>
+0070             <span class="string">'around sF2 (within sF4) means'</span>;<span class="keyword">...</span><span class="comment">            %-6</span>
+0071             <span class="string">'around sF3 (within sF4) means'</span>;<span class="keyword">...</span><span class="comment">            %-7</span>
+0072             <span class="string">'&lt;no centering&gt;'</span>;<span class="keyword">...</span><span class="comment">                    %-8</span>
+0073             <span class="string">'around user specified value'</span>;<span class="keyword">...</span><span class="comment">            %-9</span>
+0074             <span class="string">'(as implied by AnCova)'</span>;<span class="keyword">...</span><span class="comment">                %-10</span>
+0075             <span class="string">'GM'</span>;<span class="keyword">...</span><span class="comment">                        %-11</span>
+0076             <span class="string">'(redundant: not doing AnCova)'</span>}';            <span class="comment">%-12</span>
+0077     <span class="comment">%-DesMtx I forms for covariate centering options</span>
+0078     CCforms = {<span class="string">'ones(nScan,1)'</span>,CFIforms{2:<span class="keyword">end</span>,1},<span class="string">''</span>}';
+0079     
+0080     
+0081     <span class="comment">%-Global normalization options (options 1-7 match CFIforms)       (GloNorm)</span>
+0082     sGloNorm = {    <span class="string">'AnCova'</span>;<span class="keyword">...</span><span class="comment">                        %-1</span>
+0083             <span class="string">'AnCova by sF1'</span>;<span class="keyword">...</span><span class="comment">                    %-2</span>
+0084             <span class="string">'AnCova by sF2'</span>;<span class="keyword">...</span><span class="comment">                    %-3</span>
+0085             <span class="string">'AnCova by sF3'</span>;<span class="keyword">...</span><span class="comment">                    %-4</span>
+0086             <span class="string">'AnCova by sF4'</span>;<span class="keyword">...</span><span class="comment">                    %-5</span>
+0087             <span class="string">'AnCova by sF2 (within sF4)'</span>;<span class="keyword">...</span><span class="comment">            %-6</span>
+0088             <span class="string">'AnCova by sF3 (within sF4)'</span>;<span class="keyword">...</span><span class="comment">            %-7</span>
+0089             <span class="string">'proportional scaling'</span>;<span class="keyword">...</span><span class="comment">                %-8</span>
+0090             <span class="string">'&lt;no global normalisation&gt;'</span>};                <span class="comment">%-9</span>
+0091     
+0092     <span class="comment">%-Grand mean scaling options                                        (GMsca)</span>
+0093     sGMsca = {    <span class="string">'scaling of overall grand mean'</span>;<span class="keyword">...</span><span class="comment">            %-1</span>
+0094             <span class="string">'scaling of sF1 grand means'</span>;<span class="keyword">...</span><span class="comment">            %-2</span>
+0095             <span class="string">'scaling of sF2 grand means'</span>;<span class="keyword">...</span><span class="comment">            %-3</span>
+0096             <span class="string">'scaling of sF3 grand means'</span>;<span class="keyword">...</span><span class="comment">            %-4</span>
+0097             <span class="string">'scaling of sF4 grand means'</span>;<span class="keyword">...</span><span class="comment">            %-5</span>
+0098             <span class="string">'scaling of sF2 (within sF4) grand means'</span>;<span class="keyword">...</span><span class="comment">        %-6</span>
+0099             <span class="string">'scaling of sF3 (within sF4) grand means'</span>;<span class="keyword">...</span><span class="comment">        %-7</span>
+0100             <span class="string">'(implicit in PropSca global normalisation)'</span>;<span class="keyword">...</span><span class="comment">    %-8</span>
+0101             <span class="string">'&lt;no grand Mean scaling&gt;'</span>    };            <span class="comment">%-9</span>
+0102     <span class="comment">%-NB: Grand mean scaling by subject is redundent for proportional scaling</span>
+0103     
+0104     
+0105     <span class="comment">%-Global calculation options                                       (GXcalc)</span>
+0106     sGXcalc  = {    <span class="string">'omit'</span>;<span class="keyword">...</span><span class="comment">                        %-1</span>
+0107             <span class="string">'user specified'</span>;<span class="keyword">...</span><span class="comment">                    %-2</span>
+0108             <span class="string">'mean voxel value (within per image fullmean/8 mask)'</span>};    <span class="comment">%-3</span>
+0109     
+0110     
+0111     
+0112     <span class="comment">%===================================================================</span>
+0113     <span class="comment">%-D E S I G N   P A R A M E T E R S</span>
+0114     <span class="comment">%===================================================================</span>
+0115     <span class="comment">%-Get design type</span>
+0116     <span class="comment">%-------------------------------------------------------------------</span>
+0117     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(D)
+0118         
+0119         D = <a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>( <span class="keyword">...</span>
+0120             char(spm_input(<span class="string">'Select design class...'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0121             {<span class="string">'Basic stats'</span>,<span class="string">'Standard PET designs'</span>,<span class="string">'SPM96 PET designs'</span>},<span class="keyword">...</span>
+0122             {<span class="string">'DesDefs_Stats'</span>,<span class="string">'DesDefs_PET'</span>,<span class="string">'DesDefs_PET96'</span>},2)));
+0123     <span class="keyword">end</span>
+0124     
+0125     D = D(spm_input(<span class="string">'Select design type...'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,{D.DesName}'));
+0126     
+0127     
+0128     <span class="comment">%-Set factor names for this design</span>
+0129     <span class="comment">%-------------------------------------------------------------------</span>
+0130     sCC      = <a href="#_sub1" class="code" title="subfunction str = sf_estrrep(str,srstr)">sf_estrrep</a>(sCC,[sF',D.sF']);
+0131     sCFI     = <a href="#_sub1" class="code" title="subfunction str = sf_estrrep(str,srstr)">sf_estrrep</a>(sCFI,[sF',D.sF']);
+0132     sGloNorm = <a href="#_sub1" class="code" title="subfunction str = sf_estrrep(str,srstr)">sf_estrrep</a>(sGloNorm,[sF',D.sF']);
+0133     sGMsca   = <a href="#_sub1" class="code" title="subfunction str = sf_estrrep(str,srstr)">sf_estrrep</a>(sGMsca,[sF',D.sF']);
+0134     
+0135     <span class="comment">%-Get filenames &amp; factor indicies</span>
+0136     <span class="comment">%-------------------------------------------------------------------</span>
+0137     [P,I]    = <a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>(<span class="string">'Files&amp;Indices'</span>,D.sF,D.n,D.b.aTime);
+0138     nScan    = size(I,1);                        <span class="comment">%-#obs</span>
+0139     
+0140     <span class="comment">%-Additional design parameters</span>
+0141     <span class="comment">%-------------------------------------------------------------------</span>
+0142     bL       = any(diff(I,1),1);     <span class="comment">%-Multiple factor levels?</span>
+0143     <span class="comment">% NB: bL(2) might be thrown by user specified f1 levels</span>
+0144     <span class="comment">%     (D.b.aTime &amp; D.n(2)&gt;1) - assumme user is consistent?</span>
+0145     bFI      = [bL(1),bL(2:3)&amp;~bL(4),bL(4),bL([2,3])&amp;bL(4)];
+0146     <span class="comment">%-Allowable interactions for covariates</span>
+0147     <span class="comment">%-Only offer interactions with multi-level factors, and</span>
+0148     <span class="comment">% don't offer by F2|F3 if bL(4)!</span>
+0149     
+0150     <span class="comment">%-Build Condition (H) and Block (B) partitions</span>
+0151     <span class="comment">%===================================================================</span>
+0152     H=[];Hnames=[];
+0153     B=[];Bnames=[];
+0154     eval([<span class="string">'[H,Hnames] = spm_DesMtx('</span>,D.Hform,<span class="string">');'</span>])
+0155     <span class="keyword">if</span> rank(H)==nScan, error(<span class="string">'unestimable condition effects'</span>), <span class="keyword">end</span>
+0156     eval([<span class="string">'[B,Bnames] = spm_DesMtx('</span>,D.Bform,<span class="string">');'</span>])
+0157     <span class="keyword">if</span> rank(B)==nScan, error(<span class="string">'unestimable block effects'</span>), <span class="keyword">end</span>
+0158     
+0159     <span class="comment">%-Drop a constant H partition if B partition can model constant</span>
+0160     <span class="keyword">if</span> size(H,2)&gt;0 &amp; all(H(:)==1) &amp; (rank([H B])==rank(B))
+0161         H = []; Hnames = {};
+0162         warning(<span class="string">'Dropping redundant constant H partition'</span>)
+0163     <span class="keyword">end</span>
+0164     
+0165     
+0166     <span class="comment">%-Covariate partition(s): interest (C) &amp; nuisance (G) excluding global</span>
+0167     <span class="comment">%===================================================================</span>
+0168     nC = D.nC;                         <span class="comment">%-Default #covariates</span>
+0169     C  = {[],[]}; Cnames = {{},{}};  <span class="comment">%-Covariate DesMtx partitions &amp; names</span>
+0170     xC = [];                         <span class="comment">%-Struct array to hold raw covariates</span>
+0171     
+0172     
+0173     dcname = {<span class="string">'CovInt'</span>,<span class="string">'NusCov'</span>};    <span class="comment">%-Default root names for covariates</span>
+0174     dstr   = {<span class="string">'covariate'</span>,<span class="string">'nuisance variable'</span>};
+0175     
+0176     GUIpos = spm_input(<span class="string">'!NextPos'</span>);
+0177     nc     = [0,0];
+0178     <span class="keyword">for</span> i  = 1:2            <span class="comment">% 1:covariates of interest, 2:nuisance variables</span>
+0179         
+0180         <span class="keyword">if</span> isinf(nC(i)), nC(i)=spm_input([<span class="string">'# '</span>,dstr{i},<span class="string">'s'</span>],GUIpos,<span class="string">'w1'</span>); <span class="keyword">end</span>
+0181         
+0182         <span class="keyword">while</span> nc(i) &lt; nC(i)
+0183             
+0184             <span class="comment">%-Create prompt, get covariate, get covariate name</span>
+0185             <span class="comment">%-----------------------------------------------------------</span>
+0186             <span class="keyword">if</span> nC(i)==1
+0187                 str=dstr{i};
+0188             <span class="keyword">else</span>
+0189                 str=sprintf(<span class="string">'%s %d'</span>,dstr{i},nc(i)+1);
+0190             <span class="keyword">end</span>
+0191             c      = spm_input(str,GUIpos,<span class="string">'r'</span>,[],[nScan,Inf]);
+0192             <span class="keyword">if</span> any(isnan(c(:))), <span class="keyword">break</span>, <span class="keyword">end</span>     <span class="comment">%-NaN is dummy value to exit</span>
+0193             nc(i)  = nc(i)+1;                   <span class="comment">%-#Covariates (so far)</span>
+0194             <span class="keyword">if</span> nC(i)&gt;1,    tstr = sprintf(<span class="string">'%s^{%d}'</span>,dcname{i},nc(i));
+0195             <span class="keyword">else</span>,        tstr = dcname{i}; <span class="keyword">end</span>
+0196             cname  = spm_input([str,<span class="string">' name?'</span>],<span class="string">'+1'</span>,<span class="string">'s'</span>,tstr);
+0197             rc     = c;                         <span class="comment">%-Save covariate value</span>
+0198             rcname = cname;                     <span class="comment">%-Save covariate name</span>
+0199             
+0200             <span class="comment">%-Interaction option? (if single covariate vector entered)?</span>
+0201             <span class="comment">%-----------------------------------------------------------</span>
+0202             <span class="keyword">if</span> size(c,2) == 1
+0203                 <span class="comment">%-User choice of interaction options, default is negative</span>
+0204                 <span class="comment">%-Only offer interactions for appropriate factor combinations</span>
+0205                 <span class="keyword">if</span> length(D.iCFI{i})&gt;1
+0206                     iCFI = intersect(abs(D.iCFI{i}),find([1,bFI]));
+0207                     dCFI = max([1,intersect(iCFI,-D.iCFI{i}(D.iCFI{i}&lt;0))]);
+0208                     iCFI = spm_input([str,<span class="string">': interaction?'</span>],<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0209                         sCFI(iCFI),iCFI,find(iCFI==dCFI));
+0210                 <span class="keyword">else</span>
+0211                     iCFI = abs(D.iCFI{i});     <span class="comment">%-AutoSelect default option</span>
+0212                 <span class="keyword">end</span>
+0213             <span class="keyword">else</span>
+0214                 iCFI = 1;
+0215             <span class="keyword">end</span>
+0216             
+0217             <span class="comment">%-Centre covariate(s)? (Default centring to correspond to CFI)</span>
+0218             <span class="comment">% Always offer &quot;no centering&quot; as default for design matrix blocks</span>
+0219             <span class="comment">%-----------------------------------------------------------</span>
+0220             DiCC = D.iCC{i};
+0221             <span class="keyword">if</span> size(c,2)&gt;1, DiCC = union(DiCC,-8); <span class="keyword">end</span>
+0222             <span class="keyword">if</span> length(DiCC)&gt;1
+0223                 <span class="comment">%-User has a choice of centering options</span>
+0224                 <span class="comment">%-Only offer factor specific for appropriate factor combinations</span>
+0225                 iCC = intersect(abs(DiCC),find([1,bFI,1]) );
+0226                 <span class="comment">%-Default is max -ve option in D, overridden by iCFI if CFI</span>
+0227                 <span class="keyword">if</span> iCFI == 1, dCC = -DiCC(DiCC&lt;0); <span class="keyword">else</span>, dCC = iCFI; <span class="keyword">end</span>
+0228                 dCC = max([1,intersect(iCC,dCC)]);
+0229                 iCC = spm_input([str,<span class="string">': centre?'</span>],<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0230                     sCC(iCC),iCC,find(iCC==dCC));
+0231             <span class="keyword">else</span>
+0232                 iCC = abs(DiCC);    <span class="comment">%-AutoSelect default option</span>
+0233             <span class="keyword">end</span>
+0234             <span class="comment">%-Centre within factor levels as appropriate</span>
+0235             <span class="keyword">if</span> any(iCC == [1:7]), c = c - spm_meanby(c,eval(CCforms{iCC})); <span class="keyword">end</span>
+0236             
+0237             <span class="comment">%-Do any interaction (only for single covariate vectors)</span>
+0238             <span class="comment">%-----------------------------------------------------------</span>
+0239             <span class="keyword">if</span> iCFI &gt; 1                <span class="comment">%-(NB:iCFI=1 if size(c,2)&gt;1)</span>
+0240                 tI        = [eval(CFIforms{iCFI,1}),c];
+0241                 tConst    = CFIforms{iCFI,2};
+0242                 tFnames   = [eval(CFIforms{iCFI,3}),{cname}];
+0243                 [c,cname] = spm_DesMtx(tI,tConst,tFnames);
+0244             <span class="keyword">elseif</span> size(c,2)&gt;1            <span class="comment">%-Design matrix block</span>
+0245                 [null,cname] = spm_DesMtx(c,<span class="string">'X'</span>,cname);
+0246             <span class="keyword">else</span>
+0247                 cname = {cname};
+0248             <span class="keyword">end</span>
+0249             
+0250             <span class="comment">%-Store raw covariate details in xC struct for reference</span>
+0251             <span class="comment">%-Pack c into appropriate DesMtx partition</span>
+0252             <span class="comment">%-----------------------------------------------------------</span>
+0253             <span class="comment">%-Construct description string for covariate</span>
+0254             str = {sprintf(<span class="string">'%s: %s'</span>,str,rcname)};
+0255             <span class="keyword">if</span> size(rc,2)&gt;1, str = {sprintf(<span class="string">'%s (block of %d covariates)'</span>,<span class="keyword">...</span>
+0256                         str{:},size(rc,2))}; <span class="keyword">end</span>
+0257             <span class="keyword">if</span> iCC &lt; 8, str=[str;{[<span class="string">'used centered '</span>,sCC{iCC}]}]; <span class="keyword">end</span>
+0258             <span class="keyword">if</span> iCFI&gt; 1, str=[str;{[<span class="string">'fitted as interaction '</span>,sCFI{iCFI}]}]; <span class="keyword">end</span>
+0259             
+0260             tmp       = struct(    <span class="string">'rc'</span>,rc,    <span class="string">'rcname'</span>,rcname,<span class="keyword">...</span>
+0261                 <span class="string">'c'</span>,c,        <span class="string">'cname'</span>,{cname},<span class="keyword">...</span>
+0262                 <span class="string">'iCC'</span>,iCC,    <span class="string">'iCFI'</span>,iCFI,<span class="keyword">...</span>
+0263                 <span class="string">'type'</span>,i,<span class="keyword">...</span>
+0264                 <span class="string">'cols'</span>,[1:size(c,2)] + <span class="keyword">...</span>
+0265                 size([H,C{1}],2) +  <span class="keyword">...</span>
+0266                 size([B,C{2}],2)*(i-1),<span class="keyword">...</span>
+0267                 <span class="string">'descrip'</span>,{str}                );
+0268             <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xC), xC = tmp; <span class="keyword">else</span>, xC = [xC,tmp]; <span class="keyword">end</span>
+0269             C{i}      = [C{i},c];
+0270             Cnames{i} = [Cnames{i}; cname];
+0271             
+0272         <span class="keyword">end</span>    <span class="comment">% (while)</span>
+0273         
+0274     <span class="keyword">end</span> <span class="comment">% (for)</span>
+0275     clear c tI tConst tFnames
+0276     spm_input(<span class="string">'!SetNextPos'</span>,GUIpos);
+0277     
+0278     <span class="comment">%-Unpack into C &amp; G design matrix sub-partitions</span>
+0279     G = C{2}; Gnames = Cnames{2};
+0280     C = C{1}; Cnames = Cnames{1};
+0281     
+0282     
+0283     <span class="comment">%-Options...</span>
+0284     <span class="comment">%===================================================================</span>
+0285     <span class="comment">%-Global normalization options                             (GloNorm)</span>
+0286     <span class="comment">%-------------------------------------------------------------------</span>
+0287     <span class="keyword">if</span> length(D.iGloNorm)&gt;1
+0288         <span class="comment">%-User choice of global normalisation options, default is negative</span>
+0289         <span class="comment">%-Only offer factor specific for appropriate factor combinations</span>
+0290         iGloNorm = intersect(abs(D.iGloNorm),find([1,bFI,1,1]));
+0291         dGloNorm = max([0,intersect(iGloNorm,-D.iGloNorm(D.iGloNorm&lt;0))]);
+0292         iGloNorm = spm_input(<span class="string">'GloNorm: Select global normalisation'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0293             sGloNorm(iGloNorm),iGloNorm,find(iGloNorm==dGloNorm));
+0294     <span class="keyword">else</span>
+0295         iGloNorm = abs(D.iGloNorm);
+0296     <span class="keyword">end</span>
+0297     
+0298     
+0299     <span class="comment">%-Grand mean scaling options                                 (GMsca)</span>
+0300     <span class="comment">%-------------------------------------------------------------------</span>
+0301     <span class="keyword">if</span> iGloNorm==8
+0302         iGMsca=8;    <span class="comment">%-grand mean scaling implicit in PropSca GloNorm</span>
+0303     <span class="keyword">elseif</span> length(D.iGMsca)==1
+0304         iGMsca = abs(D.iGMsca);
+0305     <span class="keyword">else</span>
+0306         <span class="comment">%-User choice of grand mean scaling options</span>
+0307         <span class="comment">%-Only offer factor specific for appropriate factor combinations</span>
+0308         iGMsca = intersect(abs(D.iGMsca),find([1,bFI,0,1]));
+0309         <span class="comment">%-Default is max -ve option in D, overridden by iGloNorm if AnCova</span>
+0310         <span class="keyword">if</span> iGloNorm==9, dGMsca=-D.iGMsca(D.iGMsca&lt;0); <span class="keyword">else</span>, dGMsca=iGloNorm; <span class="keyword">end</span>
+0311         dGMsca = max([0,intersect(iGMsca,dGMsca)]);
+0312         iGMsca = spm_input(<span class="string">'GMsca: grand mean scaling'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0313             sGMsca(iGMsca),iGMsca,find(iGMsca==dGMsca));
+0314     <span class="keyword">end</span>
+0315     
+0316     
+0317     <span class="comment">%-Value for PropSca / GMsca                                     (GM)</span>
+0318     <span class="comment">%-------------------------------------------------------------------</span>
+0319     <span class="keyword">if</span> iGMsca == 9                      <span class="comment">%-Not scaling (GMsca or PropSca)</span>
+0320         GM = 0;                         <span class="comment">%-Set GM to zero when not scaling</span>
+0321     <span class="keyword">else</span>                                <span class="comment">%-Ask user value of GM</span>
+0322         <span class="keyword">if</span> iGloNorm==8
+0323             str = <span class="string">'PropSca global mean to'</span>;
+0324         <span class="keyword">else</span>
+0325             str = [strrep(sGMsca{iGMsca},<span class="string">'scaling of'</span>,<span class="string">'scale'</span>),<span class="string">' to'</span>];
+0326         <span class="keyword">end</span>
+0327         GM = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,D.GM,1);
+0328         <span class="comment">%-If GM is zero then don't GMsca! or PropSca GloNorm</span>
+0329         <span class="keyword">if</span> GM==0, iGMsca=9; <span class="keyword">if</span> iGloNorm==8, iGloNorm=9; <span class="keyword">end</span>, <span class="keyword">end</span>
+0330     <span class="keyword">end</span>
+0331     
+0332     <span class="comment">%-Sort out description strings for GloNorm and GMsca</span>
+0333     <span class="comment">%-------------------------------------------------------------------</span>
+0334     sGloNorm = sGloNorm{iGloNorm};
+0335     sGMsca   = sGMsca{iGMsca};
+0336     <span class="keyword">if</span> iGloNorm==8
+0337         sGloNorm = sprintf(<span class="string">'%s to %-4g'</span>,sGloNorm,GM);
+0338     <span class="keyword">elseif</span> iGMsca&lt;8
+0339         sGMsca   = sprintf(<span class="string">'%s to %-4g'</span>,sGMsca,GM);
+0340     <span class="keyword">end</span>
+0341     
+0342     
+0343     <span class="comment">%-Global centering (for AnCova GloNorm)                         (GC)</span>
+0344     <span class="comment">%-------------------------------------------------------------------</span>
+0345     <span class="comment">%-Specify the centering option for the global covariate for AnCova</span>
+0346     <span class="comment">%-Basically, if 'GMsca'ling then should centre to GM (iGC=11). Otherwise,</span>
+0347     <span class="comment">% should centre in similar fashion to AnCova (i.e. by the same factor(s)),</span>
+0348     <span class="comment">% such that models are seperable (iGC=10). This is particularly important</span>
+0349     <span class="comment">% for subject specific condition effects if then passed on to a second-level</span>
+0350     <span class="comment">% model. (See also spm_adjmean_ui.m) SPM96 (&amp; earlier) used to just centre</span>
+0351     <span class="comment">% GX around its (overall) mean (iGC=1).</span>
+0352     
+0353     <span class="comment">%-This code allows more general options to be specified (but is complex)</span>
+0354     <span class="comment">%-Setting D.iGC=[-10,-11] gives the standard choices above</span>
+0355     
+0356     <span class="comment">%-If not doing AnCova then GC is irrelevant</span>
+0357     <span class="keyword">if</span> ~any(iGloNorm == [1:7])
+0358         iGC = 12;
+0359         gc  = [];
+0360     <span class="keyword">else</span>
+0361         <span class="comment">%-Annotate options 10 &amp; 11 with specific details</span>
+0362         <span class="comment">%---------------------------------------------------------------</span>
+0363         <span class="comment">%-Tag '(as implied by AnCova)' with actual AnCova situation</span>
+0364         sCC{10} = [sCC{iGloNorm},<span class="string">' (&lt;= '</span>,sGloNorm,<span class="string">')'</span>];
+0365         <span class="comment">%-Tag 'GM' case with actual GM &amp; GMsca case</span>
+0366         sCC{11} = sprintf(<span class="string">'around GM=%g (i.e. %s after grand mean scaling)'</span>,<span class="keyword">...</span>
+0367             GM,strrep(sCC{iGMsca},<span class="string">'around '</span>,<span class="string">''</span>));
+0368         
+0369         <span class="comment">%-Constuct vector of allowable iGC</span>
+0370         <span class="comment">%---------------------------------------------------------------</span>
+0371         <span class="comment">%-Weed out redundent factor combinations from pre-set allowable options</span>
+0372         iGC = intersect(abs(D.iGC),find([1,bFI,1,1,1,1]));
+0373         <span class="comment">%-Omit 'GM' option if didn't GMsca (iGMsca~=8 'cos doing AnCova)</span>
+0374         <span class="keyword">if</span> any(iGMsca==[8,9]), iGC = setdiff(iGC,11); <span class="keyword">end</span>
+0375         <span class="comment">%-Omit 'GM' option if same as '(as implied by AnCova)'</span>
+0376         <span class="keyword">if</span> iGloNorm==iGMsca, iGC = setdiff(iGC,11); <span class="keyword">end</span>
+0377         
+0378         <span class="comment">%-If there's a choice, set defaults (if any), &amp; get answer</span>
+0379         <span class="comment">%---------------------------------------------------------------</span>
+0380         <span class="keyword">if</span> length(iGC)&gt;1
+0381             dGC = max([0,intersect(iGC,-D.iGC(D.iGC&lt;0))]);
+0382             str = <span class="string">'Centre global covariate'</span>;
+0383             <span class="keyword">if</span> iGMsca&lt;8, str = [str,<span class="string">' (after grand mean scaling)'</span>]; <span class="keyword">end</span>
+0384             iGC = spm_input(str,<span class="string">'+1'</span>,<span class="string">'m'</span>,sCC(iGC),iGC,find(iGC==dGC));
+0385         <span class="keyword">elseif</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(iGC)
+0386             error(<span class="string">'Configuration error: empty iGC'</span>)
+0387         <span class="keyword">end</span>
+0388         
+0389         <span class="comment">%-If 'user specified' then get value</span>
+0390         <span class="comment">%---------------------------------------------------------------</span>
+0391         <span class="keyword">if</span> iGC==9
+0392             gc     = spm_input(<span class="string">'Centre globals around'</span>,<span class="string">'+0'</span>,<span class="string">'r'</span>,D.GM,1);
+0393             sCC{9} = sprintf(<span class="string">'%s of %g'</span>,sCC{iGC},gc);
+0394         <span class="keyword">else</span>
+0395             gc  = 0;
+0396         <span class="keyword">end</span>
+0397     <span class="keyword">end</span>
+0398     
+0399     
+0400     <span class="comment">%-Thresholds &amp; masks defining voxels to analyse               (MASK)</span>
+0401     <span class="comment">%===================================================================</span>
+0402     GUIpos = spm_input(<span class="string">'!NextPos'</span>);
+0403     
+0404     <span class="comment">%-Analysis threshold mask</span>
+0405     <span class="comment">%-------------------------------------------------------------------</span>
+0406     <span class="comment">%-Work out available options:</span>
+0407     <span class="comment">% -Inf=&gt;None, real=&gt;absolute, complex=&gt;proportional, (i.e. times global)</span>
+0408     M_T = D.M_.T; <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(M_T), M_T = [-Inf, 100, 0.8*sqrt(-1)]; <span class="keyword">end</span>
+0409     M_T = {    <span class="string">'none'</span>,        M_T(min(find(isinf(M_T))));<span class="keyword">...</span>
+0410             <span class="string">'absolute'</span>,    M_T(min(find(isfinite(M_T)&amp;(M_T==real(M_T)))));<span class="keyword">...</span>
+0411             <span class="string">'relative'</span>,    M_T(min(find(isfinite(M_T)&amp;(M_T~=real(M_T)))))    };
+0412     
+0413     <span class="comment">%-Work out available options</span>
+0414     <span class="comment">%-If there's a choice between proportional and absolute then ask</span>
+0415     <span class="comment">%-------------------------------------------------------------------</span>
+0416     q = ~[<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(M_T{1,2}), <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(M_T{2,2}), <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(M_T{3,2})];
+0417     
+0418     <span class="keyword">if</span> all(q(2:3))
+0419         tmp = spm_input(<span class="string">'Threshold masking'</span>,GUIpos,<span class="string">'b'</span>,M_T(q,1),find(q));
+0420         q(setdiff([1:3],tmp))=0;
+0421     <span class="keyword">end</span>
+0422     
+0423     <span class="comment">%-Get mask value - note that at most one of q(2:3) is true</span>
+0424     <span class="comment">%-------------------------------------------------------------------</span>
+0425     <span class="keyword">if</span> ~any(q)                <span class="comment">%-Oops - nothing specified!</span>
+0426         M_T = -Inf;
+0427     <span class="keyword">elseif</span> all(q==[1,0,0])            <span class="comment">%-no threshold masking</span>
+0428         M_T = -Inf;
+0429     <span class="keyword">else</span>                    <span class="comment">%-get mask value</span>
+0430         <span class="keyword">if</span> q(1),    args = {<span class="string">'br1'</span>,<span class="string">'None'</span>,-Inf,abs(M_T{1+find(q(2:3)),2})};
+0431         <span class="keyword">else</span>,        args = {<span class="string">'r'</span>,abs(M_T{1+find(q(2:3)),2})}; <span class="keyword">end</span>
+0432         <span class="keyword">if</span> q(2)
+0433             M_T = spm_input(<span class="string">'threshold'</span>,GUIpos,args{:});
+0434         <span class="keyword">elseif</span> q(3)
+0435             M_T = spm_input(<span class="string">'threshold (relative to global)'</span>,GUIpos,<span class="keyword">...</span>
+0436                 args{:});
+0437             <span class="keyword">if</span> isfinite(M_T) &amp; isreal(M_T), M_T=M_T*sqrt(-1); <span class="keyword">end</span>
+0438         <span class="keyword">else</span>
+0439             error(<span class="string">'Shouldn''t get here!'</span>)
+0440         <span class="keyword">end</span>
+0441     <span class="keyword">end</span>
+0442     
+0443     <span class="comment">%-Make a description string</span>
+0444     <span class="comment">%-------------------------------------------------------------------</span>
+0445     <span class="keyword">if</span> isinf(M_T)
+0446         xsM.Analysis_threshold = <span class="string">'None (-Inf)'</span>;
+0447     <span class="keyword">elseif</span> isreal(M_T)
+0448         xsM.Analysis_threshold = sprintf(<span class="string">'images thresholded at %6g'</span>,M_T);
+0449     <span class="keyword">else</span>
+0450         xsM.Analysis_threshold = sprintf([<span class="string">'images thresholded at %6g '</span>,<span class="keyword">...</span>
+0451                 <span class="string">'times global'</span>],imag(M_T));
+0452     <span class="keyword">end</span>
+0453     
+0454     
+0455     <span class="comment">%-Implicit masking: Ignore zero voxels in low data-types?</span>
+0456     <span class="comment">%-------------------------------------------------------------------</span>
+0457     <span class="comment">% (Implicit mask is NaN in higher data-types.)</span>
+0458     <a href="../../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a> = <a href="../../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'type'</span>, spm_vol(P{1,1}));
+0459     <span class="keyword">if</span> ~spm_type(<a href="../../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a>,<span class="string">'nanrep'</span>)
+0460         <span class="keyword">switch</span> D.M_.I
+0461         <span class="keyword">case</span> Inf,    M_I = spm_input(<span class="string">'Implicit mask (ignore zero''s)?'</span>,<span class="keyword">...</span>
+0462                 <span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1,0],1);        <span class="comment">%-Ask</span>
+0463         <span class="keyword">case</span> {0,1}, M_I = D.M_.I;            <span class="comment">%-Pre-specified</span>
+0464         <span class="keyword">otherwise</span>,  error(<span class="string">'unrecognised D.M_.I type'</span>)
+0465         <span class="keyword">end</span>
+0466         
+0467         <span class="keyword">if</span> M_I, xsM.Implicit_masking = <span class="string">'Yes: zero''s treated as missing'</span>;
+0468         <span class="keyword">else</span>,   xsm.Implicit_masking = <span class="string">'No'</span>; <span class="keyword">end</span>
+0469     <span class="keyword">else</span>
+0470         M_I = 1;
+0471         xsM.Implicit_masking = <span class="string">'Yes: NaN''s treated as missing'</span>;
+0472     <span class="keyword">end</span>
+0473     
+0474     
+0475     <span class="comment">%-Explicit mask images (map them later...)</span>
+0476     <span class="comment">%-------------------------------------------------------------------</span>
+0477     <span class="keyword">switch</span>(D.M_.X)
+0478     <span class="keyword">case</span> Inf,   M_X = spm_input(<span class="string">'explicitly mask images?'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1,0],2);
+0479     <span class="keyword">case</span> {0,1}, M_X = D.M_.X;
+0480     <span class="keyword">otherwise</span>,  error(<span class="string">'unrecognised D.M_.X type'</span>)
+0481     <span class="keyword">end</span>
+0482     <span class="keyword">if</span> M_X, M_P = <a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>(Inf,<span class="string">'image'</span>,<span class="string">'select mask images'</span>); <span class="keyword">else</span>, M_P = {}; <span class="keyword">end</span>
+0483     
+0484     
+0485     <span class="comment">%-Global calculation                                        (GXcalc)</span>
+0486     <span class="comment">%===================================================================</span>
+0487     iGXcalc = abs(D.iGXcalc);
+0488     <span class="comment">%-Only offer &quot;omit&quot; option if not doing any GloNorm, GMsca or PropTHRESH</span>
+0489     <span class="keyword">if</span> ~(iGloNorm==9 &amp; iGMsca==9 &amp; (isinf(M_T)|isreal(M_T)))
+0490         iGXcalc = intersect(iGXcalc,[2:size(sGXcalc,1)]);
+0491     <span class="keyword">end</span>
+0492     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(iGXcalc)
+0493         error(<span class="string">'no GXcalc options'</span>)
+0494     <span class="keyword">elseif</span> length(iGXcalc)&gt;1
+0495         <span class="comment">%-User choice of global calculation options, default is negative</span>
+0496         dGXcalc = max([1,intersect(iGXcalc,-D.iGXcalc(D.iGXcalc&lt;0))]);
+0497         iGXcalc = spm_input(<span class="string">'Global calculation'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0498             sGXcalc(iGXcalc),iGXcalc,find(iGXcalc==dGXcalc));
+0499     <span class="keyword">else</span>
+0500         iGXcalc = abs(D.iGXcalc);
+0501     <span class="keyword">end</span>
+0502     
+0503     <span class="keyword">if</span> iGXcalc==2                <span class="comment">%-Get user specified globals</span>
+0504         g = spm_input(<span class="string">'globals'</span>,<span class="string">'+0'</span>,<span class="string">'r'</span>,[],[nScan,1]);
+0505     <span class="keyword">end</span>
+0506     sGXcalc = sGXcalc{iGXcalc};
+0507     
+0508     
+0509     <span class="comment">% Non-sphericity correction (set xVi.var and .dep)</span>
+0510     <span class="comment">%===================================================================</span>
+0511     xVi.I   = I;
+0512     nL      = max(I);                                 <span class="comment">% number of levels</span>
+0513     mL      = find(nL &gt; 1);                             <span class="comment">% multilevel factors</span>
+0514     xVi.var = sparse(1,4);                           <span class="comment">% unequal variances</span>
+0515     xVi.dep = sparse(1,4);                           <span class="comment">% dependencies</span>
+0516 
+0517     <span class="keyword">if</span> length(mL) &gt; 1
+0518 
+0519         <span class="comment">% repeated measures design</span>
+0520         <span class="comment">%---------------------------------------------------------------</span>
+0521         <span class="keyword">if</span> spm_input(<span class="string">'non-sphericity correction?'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1,0],0)
+0522 
+0523             <span class="comment">% make menu strings</span>
+0524             <span class="comment">%-----------------------------------------------------------</span>
+0525             <span class="keyword">for</span> i = 1:4
+0526                 mstr{i} = sprintf(<span class="string">'%s (%i levels)'</span>,D.sF{i},nL(i));
+0527             <span class="keyword">end</span>
+0528             mstr = mstr(mL);
+0529             
+0530             <span class="comment">% are errors identical</span>
+0531             <span class="comment">%-----------------------------------------------------------</span>
+0532             <span class="keyword">if</span> spm_input(<span class="string">'are errors identical'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[0,1],0)
+0533                 str    = <span class="string">'unequal variances are between'</span>;
+0534                 [i j]  = min(nL(mL));
+0535                 i      = spm_input(str,<span class="string">'+0'</span>,<span class="string">'m'</span>,mstr,[],j);
+0536 
+0537                 <span class="comment">% set in xVi and eliminate from dependency option</span>
+0538                 <span class="comment">%-------------------------------------------------------</span>
+0539                 xVi.var(mL(i)) = 1;
+0540                 mL(i)          = [];
+0541                 mstr(i)        = [];
+0542             <span class="keyword">end</span>
+0543             
+0544             <span class="comment">% are errors independent</span>
+0545             <span class="comment">%-----------------------------------------------------------</span>
+0546             <span class="keyword">if</span> spm_input(<span class="string">'are errors independent'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[0,1],0)
+0547                 str        = <span class="string">' dependencies are within'</span>;
+0548                 [i j]      = max(nL(mL));
+0549                 i          = spm_input(str,<span class="string">'+0'</span>,<span class="string">'m'</span>,mstr,[],j);
+0550 
+0551                 <span class="comment">% set in xVi</span>
+0552                 <span class="comment">%-------------------------------------------------------</span>
+0553                 xVi.dep(mL(i)) = 1;
+0554             <span class="keyword">end</span>
+0555 
+0556         <span class="keyword">end</span>
+0557     <span class="keyword">end</span>
+0558     
+0559     <span class="comment">%-Place covariance components Q{:} in xVi.Vi</span>
+0560     <span class="comment">%-------------------------------------------------------------------</span>
+0561     xVi     = <a href="pr_spm_non_sphericity.html" class="code" title="function [xVi] = pr_spm_non_sphericity(xVi)">pr_spm_non_sphericity</a>(xVi);
+0562 
+0563     <span class="comment">%===================================================================</span>
+0564     <span class="comment">% - C O N F I G U R E   D E S I G N</span>
+0565     <span class="comment">%===================================================================</span>
+0566     spm(<span class="string">'FigName'</span>,<span class="string">'Stats: configuring'</span>,Finter,CmdLine);
+0567     spm(<span class="string">'Pointer'</span>,<span class="string">'Watch'</span>);
+0568     
+0569     
+0570     <span class="comment">%-Images &amp; image info: Map Y image files and check consistency of</span>
+0571     <span class="comment">% dimensions and orientation / voxel size</span>
+0572     <span class="comment">%===================================================================</span>
+0573     fprintf(<span class="string">'%-40s: '</span>,<span class="string">'Mapping files'</span>)                               <span class="comment">%-#</span>
+0574     VY    = spm_vol(char(P));
+0575     
+0576     
+0577     <span class="comment">%-Check compatability of images (Bombs for single image)</span>
+0578     <span class="comment">%-------------------------------------------------------------------</span>
+0579     [samef msg] = <a href="../../../marsbar/mars_vol_check.html" class="code" title="function [samef, msg, chgf] = mars_vol_check(varargin)">mars_vol_check</a>(VY);
+0580     <span class="keyword">if</span> ~samef, disp(char(msg)),error(<span class="string">'Cannot use images'</span>),<span class="keyword">end</span>;
+0581     
+0582     fprintf(<span class="string">'%30s\n'</span>,<span class="string">'...done'</span>)                                      <span class="comment">%-#</span>
+0583     
+0584     
+0585     <span class="comment">%-Global values, scaling and global normalisation</span>
+0586     <span class="comment">%===================================================================</span>
+0587     <span class="comment">%-Compute global values</span>
+0588     <span class="comment">%-------------------------------------------------------------------</span>
+0589     <span class="keyword">switch</span> iGXcalc, <span class="keyword">case</span> 1
+0590         <span class="comment">%-Don't compute =&gt; no GMsca (iGMsca==9) or GloNorm (iGloNorm==9)</span>
+0591         g = [];
+0592     <span class="keyword">case</span> 2
+0593         <span class="comment">%-User specified globals</span>
+0594     <span class="keyword">case</span> 3
+0595         <span class="comment">%-Compute as mean voxel value (within per image fullmean/8 mask)</span>
+0596         g     = zeros(nScan,1 );
+0597         fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Calculating globals'</span>,<span class="string">' '</span>)             <span class="comment">%-#</span>
+0598         <span class="keyword">for</span> i = 1:nScan
+0599             str = sprintf(<span class="string">'%3d/%-3d'</span>,i,nScan);
+0600             fprintf(<span class="string">'%s%30s'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),str)<span class="comment">%-#</span>
+0601             g(i) = spm_global(VY(i));
+0602         <span class="keyword">end</span>
+0603         fprintf(<span class="string">'%s%30s\n'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'...done'</span>)       <span class="comment">%-#</span>
+0604     <span class="keyword">otherwise</span>
+0605         error(<span class="string">'illegal iGXcalc'</span>)
+0606     <span class="keyword">end</span>
+0607     rg = g;
+0608     
+0609     
+0610     fprintf(<span class="string">'%-40s: '</span>,<span class="string">'Design configuration'</span>)                        <span class="comment">%-#</span>
+0611     
+0612     
+0613     <span class="comment">%-Scaling: compute global scaling factors gSF required to implement</span>
+0614     <span class="comment">% proportional scaling global normalisation (PropSca) or grand mean</span>
+0615     <span class="comment">% scaling (GMsca), as specified by iGMsca (&amp; iGloNorm)</span>
+0616     <span class="comment">%-------------------------------------------------------------------</span>
+0617     <span class="keyword">switch</span> iGMsca, <span class="keyword">case</span> 8
+0618         <span class="comment">%-Proportional scaling global normalisation</span>
+0619         <span class="keyword">if</span> iGloNorm~=8, error(<span class="string">'iGloNorm-iGMsca(8) mismatch for PropSca'</span>), <span class="keyword">end</span>
+0620         gSF    = GM./g;
+0621         g      = GM*ones(nScan,1);
+0622     <span class="keyword">case</span> {1,2,3,4,5,6,7}
+0623         <span class="comment">%-Grand mean scaling according to iGMsca</span>
+0624         gSF    = GM./spm_meanby(g,eval(CCforms{iGMsca}));
+0625         g      = g.*gSF;
+0626     <span class="keyword">case</span> 9
+0627         <span class="comment">%-No grand mean scaling</span>
+0628         gSF    = ones(nScan,1);
+0629     <span class="keyword">otherwise</span>
+0630         error(<span class="string">'illegal iGMsca'</span>)
+0631     <span class="keyword">end</span>
+0632     
+0633     
+0634     <span class="comment">%-Apply gSF to memory-mapped scalefactors to implement scaling</span>
+0635     <span class="comment">%-------------------------------------------------------------------</span>
+0636     <span class="keyword">for</span> i = 1:nScan
+0637         VY(i).pinfo(1:2,:) = VY(i).pinfo(1:2,:)*gSF(i);
+0638     <span class="keyword">end</span>
+0639     
+0640     
+0641     <span class="comment">%-AnCova: Construct global nuisance covariates partition (if AnCova)</span>
+0642     <span class="comment">%-------------------------------------------------------------------</span>
+0643     <span class="keyword">if</span> any(iGloNorm == [1:7])
+0644         
+0645         <span class="comment">%-Centre global covariate as requested</span>
+0646         <span class="comment">%---------------------------------------------------------------</span>
+0647         <span class="keyword">switch</span> iGC, <span class="keyword">case</span> {1,2,3,4,5,6,7}    <span class="comment">%-Standard sCC options</span>
+0648             gc = spm_meanby(g,eval(CCforms{iGC}));
+0649         <span class="keyword">case</span> 8                    <span class="comment">%-No centering</span>
+0650             gc = 0;
+0651         <span class="keyword">case</span> 9                    <span class="comment">%-User specified centre</span>
+0652             <span class="comment">%-gc set above</span>
+0653         <span class="keyword">case</span> 10                    <span class="comment">%-As implied by AnCova option</span>
+0654             gc = spm_meanby(g,eval(CCforms{iGloNorm}));
+0655         <span class="keyword">case</span> 11                    <span class="comment">%-Around GM</span>
+0656             gc = GM;
+0657         <span class="keyword">otherwise</span>                <span class="comment">%-unknown iGC</span>
+0658             error(<span class="string">'unexpected iGC value'</span>)
+0659         <span class="keyword">end</span>
+0660         
+0661         
+0662         <span class="comment">%-AnCova - add scaled centred global to DesMtx `G' partition</span>
+0663         <span class="comment">%---------------------------------------------------------------</span>
+0664         rcname     = <span class="string">'global'</span>; 
+0665         tI         = [eval(CFIforms{iGloNorm,1}),g - gc];
+0666         tConst     = CFIforms{iGloNorm,2};
+0667         tFnames    = [eval(CFIforms{iGloNorm,3}),{rcname}];
+0668         [f,gnames]  = spm_DesMtx(tI,tConst,tFnames);
+0669         clear tI tConst tFnames
+0670         
+0671         <span class="comment">%-Save GX info in xC struct for reference</span>
+0672         <span class="comment">%---------------------------------------------------------------</span>
+0673         str     = {sprintf(<span class="string">'%s: %s'</span>,dstr{2},rcname)};
+0674         <span class="keyword">if</span> any(iGMsca==[1:7]), str=[str;{[<span class="string">'(after '</span>,sGMsca,<span class="string">')'</span>]}]; <span class="keyword">end</span>
+0675         <span class="keyword">if</span> iGC ~= 8, str=[str;{[<span class="string">'used centered '</span>,sCC{iGC}]}]; <span class="keyword">end</span>
+0676         <span class="keyword">if</span> iGloNorm &gt; 1
+0677             str=[str;{[<span class="string">'fitted as interaction '</span>,sCFI{iGloNorm}]}]; 
+0678         <span class="keyword">end</span>
+0679         tmp  = struct(    <span class="string">'rc'</span>,rg.*gSF,        <span class="string">'rcname'</span>,rcname,<span class="keyword">...</span>
+0680             <span class="string">'c'</span>,f,            <span class="string">'cname'</span>    ,{gnames},<span class="keyword">...</span>
+0681             <span class="string">'iCC'</span>,iGC,        <span class="string">'iCFI'</span>    ,iGloNorm,<span class="keyword">...</span>
+0682             <span class="string">'type'</span>,            3,<span class="keyword">...</span>
+0683             <span class="string">'cols'</span>,[1:size(f,2)] + size([H C B G],2),<span class="keyword">...</span>
+0684             <span class="string">'descrip'</span>,        {str}        );
+0685         
+0686         G = [G,f]; Gnames = [Gnames; gnames];
+0687         <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xC), xC = tmp; <span class="keyword">else</span>, xC = [xC,tmp]; <span class="keyword">end</span>
+0688         
+0689         
+0690     <span class="keyword">elseif</span> iGloNorm==8 | iGXcalc&gt;1
+0691         
+0692         <span class="comment">%-Globals calculated, but not AnCova: Make a note of globals</span>
+0693         <span class="comment">%---------------------------------------------------------------</span>
+0694         <span class="keyword">if</span> iGloNorm==8
+0695             str = { <span class="string">'global values: (used for proportional scaling)'</span>;<span class="keyword">...</span>
+0696                     <span class="string">'(&quot;raw&quot; unscaled globals shown)'</span>};
+0697         <span class="keyword">elseif</span> isfinite(M_T) &amp; ~isreal(M_T)
+0698             str = { <span class="string">'global values: (used to compute analysis threshold)'</span>};
+0699         <span class="keyword">else</span>
+0700             str = { <span class="string">'global values: (computed but not used)'</span>};
+0701         <span class="keyword">end</span>
+0702         
+0703         rcname =<span class="string">'global'</span>;
+0704         tmp     = struct(    <span class="string">'rc'</span>,rg,    <span class="string">'rcname'</span>,rcname,<span class="keyword">...</span>
+0705             <span class="string">'c'</span>,{[]},    <span class="string">'cname'</span>    ,{{}},<span class="keyword">...</span>
+0706             <span class="string">'iCC'</span>,0,    <span class="string">'iCFI'</span>    ,0,<span class="keyword">...</span>
+0707             <span class="string">'type'</span>,        3,<span class="keyword">...</span>
+0708             <span class="string">'cols'</span>,        {[]},<span class="keyword">...</span>
+0709             <span class="string">'descrip'</span>,    {str}            );
+0710         
+0711         <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xC), xC = tmp; <span class="keyword">else</span>, xC = [xC,tmp]; <span class="keyword">end</span>
+0712     <span class="keyword">end</span>
+0713     
+0714     
+0715     <span class="comment">%-Save info on global calculation in xGX structure</span>
+0716     <span class="comment">%-------------------------------------------------------------------</span>
+0717     xGX = struct(<span class="keyword">...</span>
+0718         <span class="string">'iGXcalc'</span>,iGXcalc,    <span class="string">'sGXcalc'</span>,sGXcalc,    <span class="string">'rg'</span>,rg,<span class="keyword">...</span>
+0719         <span class="string">'iGMsca'</span>,iGMsca,    <span class="string">'sGMsca'</span>,sGMsca,    <span class="string">'GM'</span>,GM,<span class="string">'gSF'</span>,gSF,<span class="keyword">...</span>
+0720         <span class="string">'iGC'</span>,    iGC,        <span class="string">'sGC'</span>,    sCC{iGC},    <span class="string">'gc'</span>,    gc,<span class="keyword">...</span>
+0721         <span class="string">'iGloNorm'</span>,iGloNorm,    <span class="string">'sGloNorm'</span>,sGloNorm);
+0722     
+0723     
+0724     
+0725     <span class="comment">%-Construct masking information structure and compute actual analysis</span>
+0726     <span class="comment">% threshold using scaled globals (rg.*gSF)</span>
+0727     <span class="comment">%-------------------------------------------------------------------</span>
+0728     <span class="keyword">if</span> isreal(M_T),    M_TH =      M_T  * ones(nScan,1);    <span class="comment">%-NB: -Inf is real</span>
+0729     <span class="keyword">else</span>,        M_TH = imag(M_T) * (rg.*gSF); <span class="keyword">end</span>
+0730     
+0731     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(M_P)
+0732         VM  = spm_vol(char(M_P));
+0733         xsM.Explicit_masking = [{<span class="string">'Yes: mask images :'</span>};{VM.fname}'];
+0734     <span class="keyword">else</span>
+0735         VM  = [];
+0736         xsM.Explicit_masking = <span class="string">'No'</span>;
+0737     <span class="keyword">end</span>
+0738     xM     = struct(<span class="string">'T'</span>,M_T, <span class="string">'TH'</span>,M_TH, <span class="string">'I'</span>,M_I, <span class="string">'VM'</span>,{VM}, <span class="string">'xs'</span>,xsM);
+0739     
+0740     
+0741     <span class="comment">%-Construct full design matrix (X), parameter names and structure (xX)</span>
+0742     <span class="comment">%===================================================================</span>
+0743     X      = [H C B G];
+0744     tmp    = cumsum([size(H,2), size(C,2), size(B,2), size(G,2)]);
+0745     xX     = struct(    <span class="string">'X'</span>,        X,<span class="keyword">...</span>
+0746         <span class="string">'iH'</span>,        [1:size(H,2)],<span class="keyword">...</span>
+0747         <span class="string">'iC'</span>,        [1:size(C,2)] + tmp(1),<span class="keyword">...</span>
+0748         <span class="string">'iB'</span>,        [1:size(B,2)] + tmp(2),<span class="keyword">...</span>
+0749         <span class="string">'iG'</span>,        [1:size(G,2)] + tmp(3),<span class="keyword">...</span>
+0750         <span class="string">'name'</span>,        {[Hnames; Cnames; Bnames; Gnames]},<span class="keyword">...</span>
+0751         <span class="string">'I'</span>,        I,<span class="keyword">...</span>
+0752         <span class="string">'sF'</span>,        {D.sF});
+0753     
+0754     
+0755     <span class="comment">%-Design description (an nx2 cellstr) - for saving and display</span>
+0756     <span class="comment">%===================================================================</span>
+0757     tmp = {    sprintf(<span class="string">'%d condition, +%d covariate, +%d block, +%d nuisance'</span>,<span class="keyword">...</span>
+0758             size(H,2),size(C,2),size(B,2),size(G,2));<span class="keyword">...</span>
+0759             sprintf(<span class="string">'%d total, having %d degrees of freedom'</span>,<span class="keyword">...</span>
+0760             size(X,2),rank(X));<span class="keyword">...</span>
+0761             sprintf(<span class="string">'leaving %d degrees of freedom from %d images'</span>,<span class="keyword">...</span>
+0762             size(X,1)-rank(X),size(X,1))                };
+0763     xsDes = struct(    <span class="string">'Design'</span>,            {D.DesName},<span class="keyword">...</span>
+0764         <span class="string">'Global_calculation'</span>,        {sGXcalc},<span class="keyword">...</span>
+0765         <span class="string">'Grand_mean_scaling'</span>,        {sGMsca},<span class="keyword">...</span>
+0766         <span class="string">'Global_normalisation'</span>,        {sGloNorm},<span class="keyword">...</span>
+0767         <span class="string">'Parameters'</span>,            {tmp}            );
+0768     
+0769     
+0770     fprintf(<span class="string">'%30s\n'</span>,<span class="string">'...done'</span>)                                      <span class="comment">%-#</span>
+0771     
+0772     
+0773     
+0774     <span class="comment">%-Assemble SPM structure</span>
+0775     <span class="comment">%===================================================================</span>
+0776     SPM.xY.P    = P;            <span class="comment">% filenames</span>
+0777     SPM.xY.VY    = VY;            <span class="comment">% mapped data</span>
+0778     SPM.nscan    = size(xX.X,1); <span class="comment">% scan number</span>
+0779     SPM.xX        = xX;            <span class="comment">% design structure</span>
+0780     SPM.xC        = xC;            <span class="comment">% covariate structure</span>
+0781     SPM.xGX        = xGX;            <span class="comment">% global structure</span>
+0782     SPM.xVi        = xVi;            <span class="comment">% non-sphericity structure</span>
+0783     SPM.xM        = xM;            <span class="comment">% mask structure</span>
+0784     SPM.xsDes    = xsDes;        <span class="comment">% description</span>
+0785     SPM.SPMid    = SPMid;        <span class="comment">% version</span>
+0786     
+0787     <span class="comment">% set output argument</span>
+0788     <span class="comment">%-------------------------------------------------------------------</span>
+0789     varargout = {SPM};
+0790        
+0791     <span class="comment">%-End: Cleanup GUI</span>
+0792     <span class="comment">%===================================================================</span>
+0793     spm_clf(Finter)
+0794     spm(<span class="string">'Pointer'</span>,<span class="string">'Arrow'</span>)
+0795     fprintf(<span class="string">'%-40s: %30s\n'</span>,<span class="string">'Completed'</span>,spm(<span class="string">'time'</span>))                 <span class="comment">%-#</span>
+0796     spm(<span class="string">'FigName'</span>,<span class="string">'Stats: configured'</span>,Finter,CmdLine);
+0797     spm(<span class="string">'Pointer'</span>,<span class="string">'Arrow'</span>)
+0798     fprintf(<span class="string">'\n\n'</span>)
+0799     
+0800     
+0801     
+0802 <span class="keyword">case</span> <span class="string">'files&amp;indices'</span>
+0803     <span class="comment">%===================================================================</span>
+0804     <span class="comment">% - Get files and factor indices</span>
+0805     <span class="comment">%===================================================================</span>
+0806     <span class="comment">% [P,I] = pr_spm_ui('Files&amp;Indices',DsF,Dn,DbaTime,nV)</span>
+0807     <span class="comment">% DbaTime=D.b.aTime; Dn=D.n; DsF=D.sF;</span>
+0808     <span class="keyword">if</span> nargin&lt;5, nV = 1; <span class="keyword">else</span>, nV = varargin{5}; <span class="keyword">end</span>
+0809     <span class="keyword">if</span> nargin&lt;4, DbaTime = 1; <span class="keyword">else</span>, DbaTime = varargin{4}; <span class="keyword">end</span>
+0810     <span class="keyword">if</span> nargin&lt;3, Dn  = [Inf,Inf,Inf,Inf]; <span class="keyword">else</span>, Dn=varargin{3}; <span class="keyword">end</span>
+0811     <span class="keyword">if</span> nargin&lt;2, DsF = {<span class="string">'Fac1'</span>,<span class="string">'Fac2'</span>,<span class="string">'Fac3'</span>,<span class="string">'Fac4'</span>}; <span class="keyword">else</span>, DsF=varargin{2}; <span class="keyword">end</span>
+0812     
+0813     <span class="comment">%-Initialise variables</span>
+0814     <span class="comment">%-------------------------------------------------------------------</span>
+0815     i4 = [];        <span class="comment">% factor 4 index (usually group)</span>
+0816     i3 = [];        <span class="comment">% factor 3 index (usually subject), per f4</span>
+0817     i2 = [];        <span class="comment">% factor 2 index (usually condition), per f3/f4</span>
+0818     i1 = [];        <span class="comment">% factor 1 index (usually replication), per f2/f3/f4</span>
+0819     P  = {};        <span class="comment">% cell array of string filenames</span>
+0820     
+0821     <span class="comment">%-Accrue filenames and factor level indicator vectors</span>
+0822     <span class="comment">%-------------------------------------------------------------------</span>
+0823     bMV = nV&gt;1;
+0824     <span class="keyword">if</span> isinf(Dn(4)), n4 = spm_input([<span class="string">'#'</span>,DsF{4},<span class="string">'''s'</span>],<span class="string">'+1'</span>,<span class="string">'n1'</span>);
+0825     <span class="keyword">else</span>, n4 = Dn(4); <span class="keyword">end</span>
+0826     bL4 = n4&gt;1;
+0827     
+0828     ti2 = <span class="string">''</span>;
+0829     GUIpos = spm_input(<span class="string">'!NextPos'</span>);
+0830     <span class="keyword">for</span> j4  = 1:n4
+0831         spm_input(<span class="string">'!SetNextPos'</span>,GUIpos);
+0832         sF4P=<span class="string">''</span>; <span class="keyword">if</span> bL4, sF4P=[DsF{4},<span class="string">' '</span>,int2str(j4),<span class="string">': '</span>]; <span class="keyword">end</span>
+0833         <span class="keyword">if</span> isinf(Dn(3)), n3=spm_input([sF4P,<span class="string">'#'</span>,DsF{3},<span class="string">'''s'</span>],<span class="string">'+1'</span>,<span class="string">'n1'</span>);
+0834         <span class="keyword">else</span>, n3 = Dn(3); <span class="keyword">end</span>
+0835         bL3 = n3&gt;1;
+0836         
+0837         <span class="keyword">if</span> DbaTime &amp; Dn(2)&gt;1
+0838             <span class="comment">%disp('NB:selecting in time order - manually specify conditions')</span>
+0839             <span class="comment">%-NB: This means f2 levels might not be 1:n2</span>
+0840             GUIpos2 = spm_input(<span class="string">'!NextPos'</span>);
+0841             <span class="keyword">for</span> j3 = 1:n3
+0842                 sF3P=<span class="string">''</span>; <span class="keyword">if</span> bL3, sF3P=[DsF{3},<span class="string">' '</span>,int2str(j3),<span class="string">': '</span>]; <span class="keyword">end</span>
+0843                 str = [sF4P,sF3P];
+0844                 tP  = {};
+0845                 n21 = Dn(2)*Dn(1);
+0846                 <span class="keyword">for</span> v=1:nV
+0847                     vstr=<span class="string">''</span>; <span class="keyword">if</span> bMV, vstr=sprintf(<span class="string">' (var-%d)'</span>,v); <span class="keyword">end</span>
+0848                     ttP = cellstr(<a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>(n21,<span class="string">'image'</span>,[str,<span class="string">'select images'</span>,vstr]));
+0849                     n21 = length(ttP);
+0850                     tP  = [tP,ttP];
+0851                 <span class="keyword">end</span>
+0852                 ti2 = spm_input([str,<span class="string">' '</span>,DsF{2},<span class="string">'?'</span>],GUIpos2,<span class="string">'c'</span>,ti2',n21,Dn(2));
+0853                 <span class="comment">%-Work out i1 &amp; check</span>
+0854                 [tl2,null,j] = unique(ti2);
+0855                 tn1 = zeros(size(tl2)); ti1 = zeros(size(ti2));
+0856                 <span class="keyword">for</span> i=1:length(tl2)
+0857                     tn1(i)=sum(j==i); ti1(ti2==tl2(i))=1:tn1(i); <span class="keyword">end</span>
+0858                 <span class="keyword">if</span> isfinite(Dn(1)) &amp; any(tn1~=Dn(1))
+0859                     <span class="comment">%-#i1 levels mismatches specification in Dn(1)</span>
+0860                     error(sprintf(<span class="string">'#%s not %d as pre-specified'</span>,DsF{1},Dn(1)))
+0861                 <span class="keyword">end</span>
+0862                 P  = [P;tP];
+0863                 i4 = [i4; j4*ones(n21,1)];
+0864                 i3 = [i3; j3*ones(n21,1)];
+0865                 i2 = [i2; ti2];
+0866                 i1 = [i1; ti1];
+0867             <span class="keyword">end</span>
+0868             
+0869         <span class="keyword">else</span>
+0870             
+0871             <span class="keyword">if</span> isinf(Dn(2))
+0872                 n2 = spm_input([sF4P,<span class="string">'#'</span>,DsF{2},<span class="string">'''s'</span>],<span class="string">'+1'</span>,<span class="string">'n1'</span>);
+0873             <span class="keyword">else</span>
+0874                 n2 = Dn(2);
+0875             <span class="keyword">end</span>
+0876             bL2 = n2&gt;1;
+0877             
+0878             <span class="keyword">if</span> n2==1 &amp; Dn(1)==1 <span class="comment">%-single scan per f3 (subj)</span>
+0879                 <span class="comment">%disp('NB:single scan per f3')</span>
+0880                 str = [sF4P,<span class="string">'select images, '</span>,DsF{3},<span class="string">' 1-'</span>,int2str(n3)];
+0881                 tP = {};
+0882                 <span class="keyword">for</span> v=1:nV
+0883                     vstr=<span class="string">''</span>; <span class="keyword">if</span> bMV, vstr=sprintf(<span class="string">' (var-%d)'</span>,v); <span class="keyword">end</span>
+0884                     ttP = cellstr(<a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>(n3,<span class="string">'image'</span>,[str,vstr]));
+0885                     tP = [tP,ttP];
+0886                 <span class="keyword">end</span>
+0887                 P   = [P;tP];
+0888                 i4  = [i4; j4*ones(n3,1)];
+0889                 i3  = [i3; [1:n3]'];
+0890                 i2  = [i2; ones(n3,1)];
+0891                 i1  = [i1; ones(n3,1)];
+0892             <span class="keyword">else</span>
+0893                 <span class="comment">%-multi scan per f3 (subj) case</span>
+0894                 <span class="comment">%disp('NB:multi scan per f3')</span>
+0895                 <span class="keyword">for</span> j3 = 1:n3
+0896                     sF3P=<span class="string">''</span>; <span class="keyword">if</span> bL3, sF3P=[DsF{3},<span class="string">' '</span>,int2str(j3),<span class="string">': '</span>]; <span class="keyword">end</span>
+0897                     <span class="keyword">if</span> Dn(1)==1
+0898                         <span class="comment">%-No f1 (repl) within f2 (cond)</span>
+0899                         <span class="comment">%disp('NB:no f1 within f2')</span>
+0900                         str = [sF4P,sF3P,<span class="string">'select images: '</span>,DsF{2},<span class="keyword">...</span>
+0901                                 <span class="string">' 1-'</span>,int2str(n2)];
+0902                         tP = {};
+0903                         <span class="keyword">for</span> v=1:nV
+0904                             vstr=<span class="string">''</span>; <span class="keyword">if</span> bMV, vstr=sprintf(<span class="string">' (var-%d)'</span>,v); <span class="keyword">end</span>
+0905                             ttP = cellstr(<a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>(n2,<span class="string">'image'</span>,[str,vstr]));
+0906                             tP = [tP,ttP];
+0907                         <span class="keyword">end</span>
+0908                         P   = [P;tP];
+0909                         i4  = [i4; j4*ones(n2,1)];
+0910                         i3  = [i3; j3*ones(n2,1)];
+0911                         i2  = [i2; [1:n2]'];
+0912                         i1  = [i1; ones(n2,1)];
+0913                     <span class="keyword">else</span>
+0914                         <span class="comment">%-multi f1 (repl) within f2 (cond)</span>
+0915                         <span class="comment">%disp('NB:f1 within f2')</span>
+0916                         <span class="keyword">for</span> j2  = 1:n2
+0917                             sF2P=<span class="string">''</span>;
+0918                             <span class="keyword">if</span> bL2, sF2P=[DsF{2},<span class="string">' '</span>,int2str(j2),<span class="string">': '</span>]; <span class="keyword">end</span>
+0919                             str = [sF4P,sF3P,sF2P,<span class="string">' select images...'</span>];
+0920                             tP  = {};
+0921                             n1  = Dn(1);
+0922                             <span class="keyword">for</span> v=1:nV
+0923                                 vstr=<span class="string">''</span>; <span class="keyword">if</span> bMV, vstr=sprintf(<span class="string">' (var-%d)'</span>,v); <span class="keyword">end</span>
+0924                                 ttP = cellstr(<a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>(n1,<span class="string">'image'</span>,[str,vstr]));
+0925                                 n1  = length(ttP);
+0926                                 tP  = [tP,ttP];
+0927                             <span class="keyword">end</span>
+0928                             P   = [P;tP];
+0929                             i4  = [i4; j4*ones(n1,1)];
+0930                             i3  = [i3; j3*ones(n1,1)];
+0931                             i2  = [i2; j2*ones(n1,1)];
+0932                             i1  = [i1; [1:n1]'];
+0933                         <span class="keyword">end</span>                         <span class="comment">% (for j2)</span>
+0934                     <span class="keyword">end</span>                             <span class="comment">% (if Dn(1)==1)</span>
+0935                 <span class="keyword">end</span>                                 <span class="comment">% (for j3)</span>
+0936             <span class="keyword">end</span>                                     <span class="comment">% (if  n2==1 &amp;...)</span>
+0937         <span class="keyword">end</span>                                         <span class="comment">% (if DbaTime &amp; Dn(2)&gt;1)</span>
+0938     <span class="keyword">end</span>                                             <span class="comment">% (for j4)</span>
+0939     varargout = {P,[i1,i2,i3,i4]};
+0940     
+0941     
+0942 <span class="keyword">case</span> <span class="string">'desdefs_stats'</span>
+0943     
+0944     <span class="comment">%===================================================================</span>
+0945     <span class="comment">% - Basic Stats Design definitions...</span>
+0946     <span class="comment">%===================================================================</span>
+0947     <span class="comment">% D = pr_spm_ui('DesDefs_Stats');</span>
+0948     <span class="comment">% These are the basic Stats design definitions...</span>
+0949     
+0950     <span class="comment">%-Note: struct expands cell array values to give multiple records:</span>
+0951     <span class="comment">%       =&gt; must embed cell arrays within another cell array!</span>
+0952     <span class="comment">%-Negative indices indicate defaults (first used)</span>
+0953     
+0954     D = struct(<span class="keyword">...</span>
+0955         <span class="string">'DesName'</span>,<span class="string">'One sample t-test'</span>,<span class="keyword">...</span>
+0956         <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'obs'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+0957         <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''mean'''</span>,<span class="keyword">...</span>
+0958         <span class="string">'Bform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+0959         <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+0960         <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+0961         <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+0962         <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,-Inf,<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+0963         <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0));
+0964     
+0965     D = [D, struct(<span class="keyword">...</span>
+0966             <span class="string">'DesName'</span>,<span class="string">'Two sample t-test'</span>,<span class="keyword">...</span>
+0967             <span class="string">'n'</span>,    [Inf 2 1 1],    <span class="string">'sF'</span>,{{<span class="string">'obs'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+0968             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+0969             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+0970             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+0971             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+0972             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+0973             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+0974             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+0975     
+0976     D = [D, struct(<span class="keyword">...</span>
+0977             <span class="string">'DesName'</span>,<span class="string">'Paired t-test'</span>,<span class="keyword">...</span>
+0978             <span class="string">'n'</span>,    [1 2 Inf 1],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'cond'</span>,<span class="string">'pair'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+0979             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''condition'''</span>,<span class="keyword">...</span>
+0980             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\gamma'''</span>,<span class="keyword">...</span>
+0981             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+0982             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+0983             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+0984             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+0985             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+0986     
+0987     D = [D, struct(<span class="keyword">...</span>
+0988             <span class="string">'DesName'</span>,<span class="string">'One way Anova'</span>,<span class="keyword">...</span>
+0989             <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+0990             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+0991             <span class="string">'Bform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+0992             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+0993             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+0994             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+0995             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+0996             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+0997     
+0998     D = [D, struct(<span class="keyword">...</span>
+0999             <span class="string">'DesName'</span>,<span class="string">'One way Anova (with constant)'</span>,<span class="keyword">...</span>
+1000             <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1001             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+1002             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1003             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1004             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1005             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1006             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1007             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1008     
+1009     D = [D, struct(<span class="keyword">...</span>
+1010             <span class="string">'DesName'</span>,<span class="string">'One way Anova (Within-subjects)'</span>,<span class="keyword">...</span>
+1011             <span class="string">'n'</span>,    [1 Inf Inf 1],<span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1012             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1013             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1014             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1015             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1016             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1017             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1018             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1019     
+1020     D = [D, struct(<span class="keyword">...</span>
+1021             <span class="string">'DesName'</span>,<span class="string">'Simple regression (correlation)'</span>,<span class="keyword">...</span>
+1022             <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1023             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1024             <span class="string">'Bform'</span>,        <span class="string">'I(:,2),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1025             <span class="string">'nC'</span>,[1,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1026             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1027             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1028             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1029             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1030     
+1031     
+1032     D = [D, struct(<span class="keyword">...</span>
+1033             <span class="string">'DesName'</span>,<span class="string">'Multiple regression'</span>,<span class="keyword">...</span>
+1034             <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1035             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1036             <span class="string">'Bform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1037             <span class="string">'nC'</span>,[Inf,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1038             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1039             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1040             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1041             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1042     
+1043     D = [D, struct(<span class="keyword">...</span>
+1044             <span class="string">'DesName'</span>,<span class="string">'Multiple regression (with constant)'</span>,<span class="keyword">...</span>
+1045             <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1046             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1047             <span class="string">'Bform'</span>,        <span class="string">'I(:,2),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1048             <span class="string">'nC'</span>,[Inf,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1049             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1050             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1051             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1052             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1053     
+1054     D = [D, struct(<span class="keyword">...</span>
+1055             <span class="string">'DesName'</span>,<span class="string">'AnCova'</span>,<span class="keyword">...</span>
+1056             <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1057             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+1058             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1059             <span class="string">'nC'</span>,[0,1],<span class="string">'iCC'</span>,{{8,1}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1060             <span class="string">'iGXcalc'</span>,[-1,2,3],<span class="string">'iGMsca'</span>,[1,-9],<span class="string">'GM'</span>,[],<span class="keyword">...</span>
+1061             <span class="string">'iGloNorm'</span>,9,<span class="string">'iGC'</span>,12,<span class="keyword">...</span>
+1062             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1063             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1064     
+1065     varargout = {D};
+1066     
+1067     
+1068 <span class="keyword">case</span> <span class="string">'desdefs_pet'</span>
+1069     <span class="comment">%===================================================================</span>
+1070     <span class="comment">% - Standard (SPM99) PET/SPECT Design definitions...</span>
+1071     <span class="comment">%===================================================================</span>
+1072     <span class="comment">% D = pr_spm_ui('DesDefs_PET');</span>
+1073     <span class="comment">% These are the standard PET design definitions...</span>
+1074     
+1075     <span class="comment">%-Single subject</span>
+1076     <span class="comment">%-------------------------------------------------------------------</span>
+1077     D = struct(<span class="keyword">...</span>
+1078         <span class="string">'DesName'</span>,<span class="string">'Single-subject: conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1079         <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1080         <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1081         <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1082         <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[-1,3,8],[-1,8]}},<span class="string">'iCFI'</span>,{{[1,3],1}},<span class="keyword">...</span>
+1083         <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1084         <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1085         <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1086         <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1));
+1087     
+1088     D = [D, struct(<span class="keyword">...</span>
+1089             <span class="string">'DesName'</span>,<span class="string">'Single-subject: covariates only'</span>,<span class="keyword">...</span>
+1090             <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1091             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1092             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1093             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[-1,8],[-1,8]}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1094             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1095             <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1096             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1097             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+1098     
+1099     <span class="comment">%-Multi-subject</span>
+1100     <span class="comment">%-------------------------------------------------------------------</span>
+1101     D = [D, struct(<span class="keyword">...</span>
+1102             <span class="string">'DesName'</span>,<span class="string">'Multi-subj: conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1103             <span class="string">'n'</span>,[Inf Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1104             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1105             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1106             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[1,3,4,8],[1,4,8]}},<span class="string">'iCFI'</span>,{{[1,3,-4],[1,-4]}},<span class="keyword">...</span>
+1107             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-4,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1108             <span class="string">'iGloNorm'</span>,[4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1109             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1110             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+1111     
+1112     D = [D, struct(<span class="keyword">...</span>
+1113             <span class="string">'DesName'</span>,<span class="string">'Multi-subj: cond x subj  interaction &amp; covariates'</span>,<span class="keyword">...</span>
+1114             <span class="string">'n'</span>,[Inf Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1115             <span class="string">'Hform'</span>,        <span class="string">'I(:,[3,2]),''-'',{''subj'',''cond''}'</span>,<span class="keyword">...</span>
+1116             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1117             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[1,3,4,8],[1,4,8]}},<span class="string">'iCFI'</span>,{{[1,3,-4],[1,-4]}},<span class="keyword">...</span>
+1118             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-4,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1119             <span class="string">'iGloNorm'</span>,[4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1120             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1121             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+1122     
+1123     D = [D, struct(<span class="keyword">...</span>
+1124             <span class="string">'DesName'</span>,<span class="string">'Multi-subj: covariates only'</span>,<span class="keyword">...</span>
+1125             <span class="string">'n'</span>,[Inf 1 Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1126             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1127             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1128             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[1,4,8],[1,4,8]}},<span class="string">'iCFI'</span>,{{[1,-4],[1,-4]}},<span class="keyword">...</span>
+1129             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-4,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1130             <span class="string">'iGloNorm'</span>,[4,8:9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1131             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1132             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1133     
+1134     <span class="comment">%-Multi-group</span>
+1135     <span class="comment">%-------------------------------------------------------------------</span>
+1136     D = [D, struct(<span class="keyword">...</span>
+1137             <span class="string">'DesName'</span>,<span class="string">'Multi-group: conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1138             <span class="string">'n'</span>,[Inf Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">'group'</span>}},<span class="keyword">...</span>
+1139             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''stud'',''cond''}'</span>,<span class="keyword">...</span>
+1140             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''stud'',''subj''}'</span>,<span class="keyword">...</span>
+1141             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[5:8],[5,7,8]}},<span class="string">'iCFI'</span>,{{[1,5,6,-7],[1,5,-7]}},<span class="keyword">...</span>
+1142             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-7,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1143             <span class="string">'iGloNorm'</span>,[7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1144             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1145             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+1146     
+1147     D = [D, struct(<span class="keyword">...</span>
+1148             <span class="string">'DesName'</span>,<span class="string">'Multi-group: covariates only'</span>,<span class="keyword">...</span>
+1149             <span class="string">'n'</span>,[Inf 1 Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">'subject'</span>,<span class="string">'group'</span>}},<span class="keyword">...</span>
+1150             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1151             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''stud'',''subj''}'</span>,<span class="keyword">...</span>
+1152             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[5,7,8],[5,7,8]}},<span class="string">'iCFI'</span>,{{[1,5,-7],[1,5,-7]}},<span class="keyword">...</span>
+1153             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-7,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1154             <span class="string">'iGloNorm'</span>,[7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1155             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1156             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1157     
+1158     <span class="comment">%-Population comparisons</span>
+1159     <span class="comment">%-------------------------------------------------------------------</span>
+1160     D = [D, struct(<span class="keyword">...</span>
+1161             <span class="string">'DesName'</span>,<span class="keyword">...</span>
+1162             <span class="string">'Population main effect: 2 cond''s, 1 scan/cond (paired t-test)'</span>,<span class="keyword">...</span>
+1163             <span class="string">'n'</span>,[1 2 Inf 1],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1164             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1165             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1166             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1167             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1168             <span class="string">'iGloNorm'</span>,[8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1169             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1170             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1171     
+1172     D = [D, struct(<span class="keyword">...</span>
+1173             <span class="string">'DesName'</span>,<span class="keyword">...</span>
+1174             <span class="string">'Dodgy population main effect: &gt;2 cond''s, 1 scan/cond'</span>,<span class="keyword">...</span>
+1175             <span class="string">'n'</span>,[1 Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1176             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1177             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1178             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1179             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1180             <span class="string">'iGloNorm'</span>,[8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1181             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1182             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1183     
+1184     D = [D, struct(<span class="keyword">...</span>
+1185             <span class="string">'DesName'</span>,<span class="string">'Compare-populations: 1 scan/subject (two sample t-test)'</span>,<span class="keyword">...</span>
+1186             <span class="string">'n'</span>,[Inf 2 1 1],    <span class="string">'sF'</span>,{{<span class="string">'subject'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1187             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+1188             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1189             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1190             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1191             <span class="string">'iGloNorm'</span>,[8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1192             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1193             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1194     
+1195     D = [D, struct(<span class="keyword">...</span>
+1196             <span class="string">'DesName'</span>,<span class="string">'Compare-populations: 1 scan/subject (AnCova)'</span>,<span class="keyword">...</span>
+1197             <span class="string">'n'</span>,[Inf 2 1 1],    <span class="string">'sF'</span>,{{<span class="string">'subject'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1198             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+1199             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1200             <span class="string">'nC'</span>,[0,Inf],<span class="string">'iCC'</span>,{{8,1}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1201             <span class="string">'iGXcalc'</span>,[1,2,-3],<span class="string">'iGMsca'</span>,[-1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1202             <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1203             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0,0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1204             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1205     
+1206     <span class="comment">%-The Full Monty!</span>
+1207     <span class="comment">%-------------------------------------------------------------------</span>
+1208     D = [D, struct(<span class="keyword">...</span>
+1209             <span class="string">'DesName'</span>,<span class="string">'The Full Monty...'</span>,<span class="keyword">...</span>
+1210             <span class="string">'n'</span>,[Inf Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'cond'</span>,<span class="string">'subj'</span>,<span class="string">'group'</span>}},<span class="keyword">...</span>
+1211             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''stud'',''cond''}'</span>,<span class="keyword">...</span>
+1212             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''stud'',''subj''}'</span>,<span class="keyword">...</span>
+1213             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[1:8],[1:8]}},<span class="string">'iCFI'</span>,{{[1:7],[1:7]}},<span class="keyword">...</span>
+1214             <span class="string">'iGXcalc'</span>,[1,2,3],<span class="string">'iGMsca'</span>,[1:7],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1215             <span class="string">'iGloNorm'</span>,[1:9],<span class="string">'iGC'</span>,[1:11],<span class="keyword">...</span>
+1216             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[-Inf,0,0.8*sqrt(-1)],<span class="string">'I'</span>,Inf,<span class="string">'X'</span>,Inf),<span class="keyword">...</span>
+1217             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,1))];
+1218     
+1219     
+1220     varargout = {D};
+1221     
+1222 <span class="keyword">case</span> <span class="string">'desdefs_pet96'</span>
+1223     <span class="comment">%===================================================================</span>
+1224     <span class="comment">% - SPM96 PET/SPECT Design definitions...</span>
+1225     <span class="comment">%===================================================================</span>
+1226     <span class="comment">% D = pr_spm_ui('DesDefs_PET96');</span>
+1227     
+1228     <span class="comment">%-Single subject</span>
+1229     <span class="comment">%-------------------------------------------------------------------</span>
+1230     D = struct(<span class="keyword">...</span>
+1231         <span class="string">'DesName'</span>,<span class="string">'SPM96:Single-subject: replicated conditions'</span>,<span class="keyword">...</span>
+1232         <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1233         <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1234         <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1235         <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1236         <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1237         <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1238         <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1239         <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0));
+1240     
+1241     D = [D, struct(<span class="keyword">...</span>
+1242             <span class="string">'DesName'</span>,<span class="string">'SPM96:Single-subject: replicated conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1243             <span class="string">'n'</span>,    [Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1244             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1245             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1246             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1247             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1248             <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1249             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1250             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1251     
+1252     D = [D, struct(<span class="keyword">...</span>
+1253             <span class="string">'DesName'</span>,<span class="string">'SPM96:Single-subject: covariates only'</span>,<span class="keyword">...</span>
+1254             <span class="string">'n'</span>,    [Inf 1 1 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1255             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1256             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''\mu'''</span>,<span class="keyword">...</span>
+1257             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1258             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1259             <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1260             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1261             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1262     
+1263     <span class="comment">%-Multi-subject</span>
+1264     <span class="comment">%-------------------------------------------------------------------</span>
+1265     D = [D, struct(<span class="keyword">...</span>
+1266             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-subject: different conditions'</span>,<span class="keyword">...</span>
+1267             <span class="string">'n'</span>,    [1 Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1268             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''scancond'''</span>,<span class="keyword">...</span>
+1269             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1270             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1271             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1272             <span class="string">'iGloNorm'</span>,[1,4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1273             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1274             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1275     
+1276     D = [D, struct(<span class="keyword">...</span>
+1277             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-subject: replicated conditions'</span>,<span class="keyword">...</span>
+1278             <span class="string">'n'</span>,[Inf Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1279             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1280             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1281             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1282             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1283             <span class="string">'iGloNorm'</span>,[1,4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1284             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1285             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1286     
+1287     D = [D, struct(<span class="keyword">...</span>
+1288             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-subject: different conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1289             <span class="string">'n'</span>,    [1 Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1290             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''cond'''</span>,<span class="keyword">...</span>
+1291             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1292             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{[1,4],[1,4]}},<span class="keyword">...</span>
+1293             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1294             <span class="string">'iGloNorm'</span>,[1,4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1295             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1296             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1297     
+1298     D = [D, struct(<span class="keyword">...</span>
+1299             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-subject: replicated conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1300             <span class="string">'n'</span>,[Inf Inf Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'condition'</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1301             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''condition'''</span>,<span class="keyword">...</span>
+1302             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1303             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{[1,3,4],[1,4]}},<span class="keyword">...</span>
+1304             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1305             <span class="string">'iGloNorm'</span>,[1,4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1306             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1307             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1308     
+1309     D = [D, struct(<span class="keyword">...</span>
+1310             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-subject: covariates only'</span>,<span class="keyword">...</span>
+1311             <span class="string">'n'</span>,[Inf 1 Inf 1],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">'subject'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1312             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1313             <span class="string">'Bform'</span>,        <span class="string">'I(:,3),''-'',''subj'''</span>,<span class="keyword">...</span>
+1314             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{[1,4,8],[1,4,8]}},<span class="string">'iCFI'</span>,{{[1,4],[1,4]}},<span class="keyword">...</span>
+1315             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1316             <span class="string">'iGloNorm'</span>,[1,4,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1317             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1318             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1319     
+1320     <span class="comment">%-Multi-study</span>
+1321     <span class="comment">%-------------------------------------------------------------------</span>
+1322     D = [D, struct(<span class="keyword">...</span>
+1323             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-study: different conditions'</span>,<span class="keyword">...</span>
+1324             <span class="string">'n'</span>,[1 Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'cond'</span>,<span class="string">'subj'</span>,<span class="string">'study'</span>}},<span class="keyword">...</span>
+1325             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''study'',''cond''}'</span>,<span class="keyword">...</span>
+1326             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''study'',''subj''}'</span>,<span class="keyword">...</span>
+1327             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1328             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,5,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1329             <span class="string">'iGloNorm'</span>,[1,5,7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1330             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1331             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1332     
+1333     D = [D, struct(<span class="keyword">...</span>
+1334             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-study: replicated conditions'</span>,<span class="keyword">...</span>
+1335             <span class="string">'n'</span>,[Inf Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">'cond'</span>,<span class="string">'subj'</span>,<span class="string">'study'</span>}},<span class="keyword">...</span>
+1336             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''study'',''condition''}'</span>,<span class="keyword">...</span>
+1337             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''study'',''subj''}'</span>,<span class="keyword">...</span>
+1338             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1339             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,5,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1340             <span class="string">'iGloNorm'</span>,[1,5,7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1341             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1342             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1343     
+1344     D = [D, struct(<span class="keyword">...</span>
+1345             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-study: different conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1346             <span class="string">'n'</span>,[1 Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'cond'</span>,<span class="string">'subj'</span>,<span class="string">'study'</span>}},<span class="keyword">...</span>
+1347             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''study'',''cond''}'</span>,<span class="keyword">...</span>
+1348             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''study'',''subj''}'</span>,<span class="keyword">...</span>
+1349             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{[1,5,6,7],[1,5,7]}},<span class="keyword">...</span>
+1350             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,5,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1351             <span class="string">'iGloNorm'</span>,[1,5,7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1352             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1353             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1354     
+1355     D = [D, struct(<span class="keyword">...</span>
+1356             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-study: replicated conditions &amp; covariates'</span>,<span class="keyword">...</span>
+1357             <span class="string">'n'</span>,[Inf Inf Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">''</span>,<span class="string">'cond'</span>,<span class="string">'subj'</span>,<span class="string">'study'</span>}},<span class="keyword">...</span>
+1358             <span class="string">'Hform'</span>,        <span class="string">'I(:,[4,2]),''-'',{''study'',''condition''}'</span>,<span class="keyword">...</span>
+1359             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''study'',''subj''}'</span>,<span class="keyword">...</span>
+1360             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{[1,5,6,7],[1,5,7]}},<span class="keyword">...</span>
+1361             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,5,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1362             <span class="string">'iGloNorm'</span>,[1,5,7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1363             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1364             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1365     
+1366     D = [D, struct(<span class="keyword">...</span>
+1367             <span class="string">'DesName'</span>,<span class="string">'SPM96:Multi-study: covariates only'</span>,<span class="keyword">...</span>
+1368             <span class="string">'n'</span>,[Inf 1 Inf Inf],    <span class="string">'sF'</span>,{{<span class="string">'repl'</span>,<span class="string">''</span>,<span class="string">'subj'</span>,<span class="string">'study'</span>}},<span class="keyword">...</span>
+1369             <span class="string">'Hform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1370             <span class="string">'Bform'</span>,        <span class="string">'I(:,[4,3]),''-'',{''study'',''subj''}'</span>,<span class="keyword">...</span>
+1371             <span class="string">'nC'</span>,[Inf,Inf],<span class="string">'iCC'</span>,{{1,1}},<span class="string">'iCFI'</span>,{{[1,5,7],[1,5,7]}},<span class="keyword">...</span>
+1372             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,5,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1373             <span class="string">'iGloNorm'</span>,[1,5,7,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1374             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1375             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1376     
+1377     <span class="comment">%-Group comparisons</span>
+1378     <span class="comment">%-------------------------------------------------------------------</span>
+1379     D = [D, struct(<span class="keyword">...</span>
+1380             <span class="string">'DesName'</span>,<span class="string">'SPM96:Compare-groups: 1 scan per subject'</span>,<span class="keyword">...</span>
+1381             <span class="string">'n'</span>,[Inf Inf 1 1],    <span class="string">'sF'</span>,{{<span class="string">'subject'</span>,<span class="string">'group'</span>,<span class="string">''</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+1382             <span class="string">'Hform'</span>,        <span class="string">'I(:,2),''-'',''group'''</span>,<span class="keyword">...</span>
+1383             <span class="string">'Bform'</span>,        <span class="string">'[]'</span>,<span class="keyword">...</span>
+1384             <span class="string">'nC'</span>,[0,0],<span class="string">'iCC'</span>,{{8,8}},<span class="string">'iCFI'</span>,{{1,1}},<span class="keyword">...</span>
+1385             <span class="string">'iGXcalc'</span>,3,<span class="string">'iGMsca'</span>,[1,9],<span class="string">'GM'</span>,50,<span class="keyword">...</span>
+1386             <span class="string">'iGloNorm'</span>,[1,8,9],<span class="string">'iGC'</span>,10,<span class="keyword">...</span>
+1387             <span class="string">'M_'</span>,struct(<span class="string">'T'</span>,[0.8*sqrt(-1)],<span class="string">'I'</span>,0,<span class="string">'X'</span>,0),<span class="keyword">...</span>
+1388             <span class="string">'b'</span>,struct(<span class="string">'aTime'</span>,0))];
+1389     
+1390     varargout = {D};
+1391     
+1392     
+1393 <span class="keyword">otherwise</span>
+1394     <span class="comment">%===================================================================</span>
+1395     <span class="comment">% - U N K N O W N   A C T I O N</span>
+1396     <span class="comment">%===================================================================</span>
+1397     warning([<span class="string">'Illegal Action string: '</span>,Action])
+1398     
+1399     <span class="comment">%===================================================================</span>
+1400     <span class="comment">% - E N D</span>
+1401     <span class="comment">%===================================================================</span>
+1402 <span class="keyword">end</span>
+1403 
+1404 <span class="comment">%=======================================================================</span>
+1405 <span class="comment">%- S U B - F U N C T I O N S</span>
+1406 <span class="comment">%=======================================================================</span>
+1407 
+1408 <a name="_sub1" href="#_subfunctions" class="code">function str = sf_estrrep(str,srstr)</a>
+1409 <span class="comment">%=======================================================================</span>
+1410 <span class="keyword">for</span> i = 1:size(srstr,1)
+1411     str = strrep(str,srstr{i,1},srstr{i,2});
+1412 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

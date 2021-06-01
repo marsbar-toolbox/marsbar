@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of bf_dt</title>
+  <meta name="keywords" content="bf_dt">
+  <meta name="description" content="method returns length of time bin for basis functions">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; bf_dt.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>bf_dt
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method returns length of time bin for basis functions</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function d = bf_dt(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method returns length of time bin for basis functions
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+<li><a href="event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets (estimated) onsets and durations for event/session</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function d = bf_dt(D)</a>
+0002 <span class="comment">% method returns length of time bin for basis functions</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0007 d   = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, SPM, <span class="string">'xX'</span>, <span class="string">'dt'</span>);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

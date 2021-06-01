@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of loadobj</title>
+  <meta name="keywords" content="loadobj">
+  <meta name="description" content="loadobj method - reloads matrix from img file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_image</a> &gt; loadobj.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_image&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>loadobj
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>loadobj method - reloads matrix from img file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = loadobj(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> loadobj method - reloads matrix from img file
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@maroi_image/private/my_vol_func.html" class="code" title="function [img, errstr] = my_vol_func(vol, func)">my_vol_func</a>	checks vol and func, returns processed image matrix or error</li>
+<li><a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = loadobj(o)</a>
+0002 <span class="comment">% loadobj method - reloads matrix from img file</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="comment">% Note that the image needs full processing before</span>
+0007 <span class="comment">% setting into the matrix.  After this, the processed</span>
+0008 <span class="comment">% natrix data becomes an image snapshot for the memory</span>
+0009 <span class="comment">% lifetime of the object</span>
+0010   
+0011 [img errstr] = <a href="../../marsbar/@maroi_image/private/my_vol_func.html" class="code" title="function [img, errstr] = my_vol_func(vol, func)">my_vol_func</a>(o);
+0012 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(img)
+0013   <span class="keyword">if</span> strcmp(errstr, <span class="string">'Cant open image file.'</span>)
+0014     errstr = sprintf(<span class="string">'%s\nHas ROI image %s been moved?\n%s\n'</span>, <span class="keyword">...</span>
+0015              errstr, o.vol.fname,<span class="keyword">...</span>
+0016              <span class="string">'Try to reattach with marsbar(''attach_image'')'</span>);
+0017   <span class="keyword">end</span>
+0018   error(errstr);
+0019 <span class="keyword">end</span>
+0020 
+0021 <span class="comment">% set using maroi_matrix object to avoid object conversion</span>
+0022 o.maroi_matrix = <a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>(o.maroi_matrix,img); 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

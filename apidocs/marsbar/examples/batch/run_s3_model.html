@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of run_s3_model</title>
+  <meta name="keywords" content="run_s3_model">
+  <meta name="description" content="Run SPM 2-session model for MarsBaR ER sample data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; run_s3_model.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>run_s3_model
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Run SPM 2-session model for MarsBaR ER sample data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Run SPM 2-session model for MarsBaR ER sample data
+
+ You might want to define the path to the example data here, as in
+ subjroot = '/my/path/somewhere';
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>	batch script wrapper to configure model for MarsBaR ER data</li>
+<li><a href="estimate_er_model.html" class="code" title="function SPM = estimate_er_model(model_file, ev_con)">estimate_er_model</a>	SPM estimate of ER model, and add contrast to ER model</li>
+<li><a href="get_subjroot.html" class="code" title="function subjroot = get_subjroot()">get_subjroot</a>	FORMAT subjroot = get_subjroot()</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% Run SPM 2-session model for MarsBaR ER sample data</span>
+0002 <span class="comment">%</span>
+0003 <span class="comment">% You might want to define the path to the example data here, as in</span>
+0004 <span class="comment">% subjroot = '/my/path/somewhere';</span>
+0005 subjroot = <a href="get_subjroot.html" class="code" title="function subjroot = get_subjroot()">get_subjroot</a>();
+0006 
+0007 sesses = {<span class="string">'sess1'</span>,<span class="string">'sess2'</span>,<span class="string">'sess3'</span>};
+0008 
+0009 spm_v = spm(<span class="string">'ver'</span>);
+0010 sdirname = [spm_v <span class="string">'_ana'</span>];
+0011 <span class="keyword">if</span> ~strcmp(spm_v, <span class="string">'SPM99'</span>), spm_defaults; <span class="keyword">end</span>
+0012 
+0013 <span class="comment">% Make sure SPM modality-specific defaults are set</span>
+0014 spm(<span class="string">'defaults'</span>, <span class="string">'fmri'</span>);
+0015 
+0016 <span class="comment">% Run statistics, contrasts</span>
+0017 model_file = <a href="configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>(subjroot, sesses, sdirname);
+0018 <a href="estimate_er_model.html" class="code" title="function SPM = estimate_er_model(model_file, ev_con)">estimate_er_model</a>(model_file, [1 0]);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

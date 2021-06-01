@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of adjusted_data</title>
+  <meta name="keywords" content="adjusted_data">
+  <meta name="description" content="Return adjusted data for estimated design and contrast no">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; adjusted_data.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>adjusted_data
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Return adjusted data for estimated design and contrast no</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Ya = adjusted_data(D, Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Return adjusted data for estimated design and contrast no
+ FORMAT Ya = adjusted_data(D, Ic)
+ 
+ D      - Estimated marsbar design
+ Ic     - Contrast number to adjust for
+ 
+ Outputs
+ Ya     - Adjusted data, N by M, where N is number of time points
+          and M is number of regions in estimated marsbar design
+ 
+ e.g
+ E = estimate(D, Y);
+ [E Ic] = add_contrasts(E, 'task', 'T', [1 0 0]);
+ Ya = adjusted_data(E, Ic);
+ 
+ Matthew Brett
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Ya = adjusted_data(D, Ic)</a>
+0002 <span class="comment">% Return adjusted data for estimated design and contrast no</span>
+0003 <span class="comment">% FORMAT Ya = adjusted_data(D, Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D      - Estimated marsbar design</span>
+0006 <span class="comment">% Ic     - Contrast number to adjust for</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Outputs</span>
+0009 <span class="comment">% Ya     - Adjusted data, N by M, where N is number of time points</span>
+0010 <span class="comment">%          and M is number of regions in estimated marsbar design</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% e.g</span>
+0013 <span class="comment">% E = estimate(D, Y);</span>
+0014 <span class="comment">% [E Ic] = add_contrasts(E, 'task', 'T', [1 0 0]);</span>
+0015 <span class="comment">% Ya = adjusted_data(E, Ic);</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Matthew Brett</span>
+0018 
+0019 <span class="keyword">if</span> nargin &lt; 2
+0020   error(<span class="string">'Need contrast number'</span>);
+0021 <span class="keyword">end</span>
+0022 <span class="keyword">if</span> nargin &lt; 3
+0023   r_no = 1;
+0024 <span class="keyword">end</span>
+0025 Ya = [];
+0026 <span class="keyword">if</span> ~<a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(D)
+0027   error(<span class="string">'Need a MarsBaR estimated design'</span>);
+0028 <span class="keyword">end</span>
+0029 
+0030 SPM   = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0031 B = <a href="betas.html" class="code" title="function r = betas(o)">betas</a>(D);
+0032 xCon = <a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(D);
+0033 Ya = spm_FcUtil(<span class="string">'Yc'</span>, xCon(Ic),SPM.xX.xKXs, B);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

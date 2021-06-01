@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of image_names</title>
+  <meta name="keywords" content="image_names">
+  <meta name="description" content="method returning image file names for design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; image_names.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>image_names
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method returning image file names for design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function P = image_names(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method returning image file names for design
+ Returns cell array of same dimension of image list
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo_2/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	method for SPM2 design reporting</li>
+<li><a href="../../marsbar/@mardo_99/mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_99/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	mathod for SPM99 design reporting</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function P = image_names(D)</a>
+0002 <span class="comment">% method returning image file names for design</span>
+0003 <span class="comment">% Returns cell array of same dimension of image list</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% $Id$</span>
+0006   
+0007 P = {};
+0008 <span class="keyword">if</span> <a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(D)
+0009   VY = <a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(D);
+0010   P = reshape({VY.fname},size(VY));
+0011 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

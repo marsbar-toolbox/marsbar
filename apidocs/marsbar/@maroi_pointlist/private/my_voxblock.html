@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of my_voxblock</title>
+  <meta name="keywords" content="my_voxblock">
+  <meta name="description" content="returns voxel block and modified mat file for pointlist">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@maroi_pointlist</a> &gt; <a href="index.html">private</a> &gt; my_voxblock.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_pointlist/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>my_voxblock
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns voxel block and modified mat file for pointlist</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function vblock = my_voxblock(pts, mat, vals) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns voxel block and modified mat file for pointlist
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@maroi_pointlist/flip_lr.html" class="code" title="function o = flip_lr(o)">flip_lr</a>	flips ROI left / right</li>
+<li><a href="../../../marsbar/@maroi_pointlist/loadobj.html" class="code" title="function o = loadobj(o)">loadobj</a>	loadobj method - creates temporary voxel block</li>
+<li><a href="../../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function vblock = my_voxblock(pts, mat, vals)</a>
+0002 <span class="comment">% returns voxel block and modified mat file for pointlist</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vals)
+0007   vals = ones(1, size(pts,2));
+0008 <span class="keyword">end</span>
+0009 
+0010 <span class="comment">% dimensions of containing block</span>
+0011 st = min(pts, [], 2)';
+0012 fn = max(pts, [], 2)';
+0013 dsz = fn-st+1;
+0014 
+0015 <span class="comment">% reset mat according to voxel block</span>
+0016 newM = mat * spm_matrix(st-1);
+0017 
+0018 <span class="comment">% set voxels in block</span>
+0019 dat1 = zeros(dsz);
+0020 dpts = pts - (st'-1) * ones(1, size(pts,2)); 
+0021 dinds = dpts(1,:) + <span class="keyword">...</span>
+0022     (dpts(2,:)-1) * dsz(1) + <span class="keyword">...</span>
+0023     (dpts(3,:)-1) * dsz(1)*dsz(2);
+0024 dat1(dinds) = vals;
+0025 
+0026 <span class="comment">% add a shell of one voxel to isolate from interpolation 0s</span>
+0027 dat = zeros(dsz+2);
+0028 dat(2:end-1,2:end-1,2:end-1) = dat1;
+0029 mat = newM * spm_matrix([-1 -1 -1]);
+0030 
+0031 vblock = struct(<span class="string">'dat'</span>, dat, <span class="string">'mat'</span>, mat);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

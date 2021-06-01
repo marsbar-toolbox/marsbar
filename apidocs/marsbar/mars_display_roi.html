@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_display_roi</title>
+  <meta name="keywords" content="mars_display_roi">
+  <meta name="description" content="utility routines for display of ROIs in graphic window">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_display_roi.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_display_roi
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>utility routines for display of ROIs in graphic window</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout=mars_display_roi(action_str, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> utility routines for display of ROIs in graphic window
+ FORMAT varargout=mars_display_roi(action_str, varargin)
+
+ Usual call displays one or more ROIs on structural image:
+ FORMAT mars_display_roi('display', roi_obj, structv, cmap)
+ 
+ roi_obj   - single ROI object, or cell array of objects, or strings
+ structv   - structural image or spm_vol struct for image
+             [marsbar default structural if not passed]
+ cmap      - colormap to use for display
+
+ V0.2 - use of jet/specified colormap for display of many ROIs
+ V0.3 - string input allowed, actionstrs as first arg, service callback
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@maroi/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>	c_o_m method - calculates unweighted centre of mass</li>
+<li><a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>	label - returns / sets label value for object</li>
+<li><a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../marsbar/@maroi/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../marsbar/@maroi/realpts.html" class="code" title="function [pts, vals] = realpts(o,sp)">realpts</a>	realpts method - returns 3xN XYZ matrix in mm</li>
+<li><a href="../marsbar/@maroi/volume.html" class="code" title="function v = volume(obj)">volume</a>	volume method - returns volume of ROI in mm</li>
+<li><a href="../marsbar/@maroi_box/is_empty_roi.html" class="code" title="function tf = is_empty_roi(o)">is_empty_roi</a>	returns 1 if ROI contains no volume</li>
+<li><a href="../marsbar/@maroi_box/volume.html" class="code" title="function v = volume(obj)">volume</a>	volume method - returns volume of ROI in mm</li>
+<li><a href="../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../marsbar/@maroi_matrix/is_empty_roi.html" class="code" title="function tf = is_empty_roi(o)">is_empty_roi</a>	is_empty_roi - returns true if ROI contains no volume</li>
+<li><a href="../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+<li><a href="../marsbar/@maroi_matrix/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../marsbar/@maroi_pointlist/is_empty_roi.html" class="code" title="function tf = is_empty_roi(o)">is_empty_roi</a>	is_empty_roi - returns true if ROI contains no volume</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../marsbar/@maroi_pointlist/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../marsbar/@maroi_shape/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>	c_o_m method - calculates centre of mass</li>
+<li><a href="../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+<li><a href="../marsbar/@maroi_sphere/is_empty_roi.html" class="code" title="function tf = is_empty_roi(o)">is_empty_roi</a>	is_empty_roi - returns true if ROI contains no volume</li>
+<li><a href="../marsbar/@maroi_sphere/volume.html" class="code" title="function v = volume(obj)">volume</a>	volume method - returns volume of ROI in mm</li>
+<li><a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>	Display Orthogonal Views of a Normalized Image</li>
+<li><a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=mars_display_roi(action_str, varargin)</a>
+0002 <span class="comment">% utility routines for display of ROIs in graphic window</span>
+0003 <span class="comment">% FORMAT varargout=mars_display_roi(action_str, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Usual call displays one or more ROIs on structural image:</span>
+0006 <span class="comment">% FORMAT mars_display_roi('display', roi_obj, structv, cmap)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% roi_obj   - single ROI object, or cell array of objects, or strings</span>
+0009 <span class="comment">% structv   - structural image or spm_vol struct for image</span>
+0010 <span class="comment">%             [marsbar default structural if not passed]</span>
+0011 <span class="comment">% cmap      - colormap to use for display</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% V0.2 - use of jet/specified colormap for display of many ROIs</span>
+0014 <span class="comment">% V0.3 - string input allowed, actionstrs as first arg, service callback</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $Id$</span>
+0017   
+0018 <span class="keyword">global</span> st; <span class="comment">% global variable from spm_orthviews</span>
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 1
+0021   action_str = <span class="string">''</span>;
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(action_str), action_str = <span class="string">'display'</span>; <span class="keyword">end</span>
+0024 
+0025 <span class="keyword">switch</span> lower(action_str), <span class="keyword">case</span> <span class="string">'display'</span>             <span class="comment">%-Display ROIs</span>
+0026 <span class="keyword">if</span> nargin &lt; 2
+0027   roi_obj = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>([0 Inf],<span class="string">'*roi.mat'</span>,<span class="string">'Select ROI(s) to view'</span>);
+0028 <span class="keyword">else</span> 
+0029   roi_obj = varargin{1};
+0030 <span class="keyword">end</span>
+0031 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(roi_obj), <span class="keyword">return</span>, <span class="keyword">end</span>
+0032 
+0033 <span class="keyword">if</span> nargin &lt; 3
+0034   mb = spm(<span class="string">'getglobal'</span>, <span class="string">'MARS'</span>);
+0035   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(mb)
+0036     structv = mb.OPTIONS.structural.fname;
+0037   <span class="keyword">else</span>
+0038     structv = fullfile(spm(<span class="string">'dir'</span>), <span class="string">'canonical'</span>, <span class="keyword">...</span>
+0039                [<span class="string">'avg152T1'</span> <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'template_ext'</span>)]);
+0040   <span class="keyword">end</span>
+0041 <span class="keyword">else</span>
+0042   structv = varargin{2};
+0043 <span class="keyword">end</span>
+0044 <span class="keyword">if</span> ischar(structv)
+0045   structv = spm_vol(structv);
+0046 <span class="keyword">end</span>
+0047 <span class="keyword">if</span> nargin &lt; 4
+0048   cmap = jet;
+0049 <span class="keyword">else</span>
+0050   cmap = varargin{3};
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="comment">% Process filenames to roi objects</span>
+0054 roi_obj = <a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'load_cell'</span>, roi_obj);
+0055 
+0056 olen = prod(size(roi_obj));
+0057 <span class="keyword">if</span> olen &gt; 1
+0058   col_inds = round((0:(olen-1))*(size(cmap, 1)-1)/(olen-1))+1;
+0059 <span class="keyword">else</span>
+0060   col_inds = 1;
+0061 <span class="keyword">end</span>
+0062 
+0063 <span class="comment">% display with spm orthoviews</span>
+0064 spm_image(<span class="string">'init'</span>, structv.fname);
+0065 
+0066 <span class="comment">% space for object for which this is not defined</span>
+0067 sp = <a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(structv);
+0068 
+0069 mo = [];
+0070 roi_ctr = 1;
+0071 <span class="keyword">for</span> i = 1:olen
+0072   roi = roi_obj{i};
+0073   
+0074   <span class="comment">% check ROI contains something</span>
+0075   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(roi) 
+0076     warning(sprintf(<span class="string">'ROI %d is missing'</span>, i));
+0077   <span class="keyword">elseif</span> <a href="../marsbar/@maroi_box/is_empty_roi.html" class="code" title="function tf = is_empty_roi(o)">is_empty_roi</a>(roi)
+0078     warning(sprintf(<span class="string">'ROI %d:%s is empty'</span>, i, <a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(roi)));
+0079   <span class="keyword">else</span>
+0080     <span class="comment">% Define space for ROI</span>
+0081     nsp = <a href="../marsbar/@maroi/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(roi);
+0082     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(nsp)
+0083       nsp = sp;
+0084     <span class="keyword">end</span>
+0085     
+0086     <span class="comment">% convert ROI to matrix</span>
+0087     mo = <a href="../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(roi, nsp);
+0088     dat = <a href="../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>(mo);
+0089     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dat) | ~any(dat(:))
+0090       warning(sprintf(<span class="string">'ROI %d: %s  - contains no points to show'</span>,<span class="keyword">...</span>
+0091               i, <a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(roi)));
+0092     <span class="keyword">else</span>
+0093       dat(dat == 0) = NaN;
+0094       <span class="comment">% add to image to display</span>
+0095       <a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>(<span class="string">'AddColouredMatrix'</span>, 1, dat, nsp.mat, cmap(col_inds(i),:));
+0096   
+0097       <span class="comment">% Information for display</span>
+0098       XYZ = <a href="../marsbar/@maroi/realpts.html" class="code" title="function [pts, vals] = realpts(o,sp)">realpts</a>(roi,nsp);
+0099       mx = max(XYZ, [], 2); mn = min(XYZ, [], 2);
+0100       lbl = <a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(roi);
+0101       <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(lbl), lbl = <span class="string">'[No label]'</span>; <span class="keyword">end</span>
+0102       roi_info(roi_ctr) = struct(<span class="keyword">...</span>
+0103       <span class="string">'label'</span>, lbl,<span class="keyword">...</span>
+0104       <span class="string">'num'</span>, i,<span class="keyword">...</span>
+0105       <span class="string">'c_o_m'</span>, <a href="../marsbar/@maroi/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>(mo, nsp, <span class="string">'real'</span>),<span class="keyword">...</span>
+0106       <span class="string">'volume'</span>, <a href="../marsbar/@maroi/volume.html" class="code" title="function v = volume(obj)">volume</a>(mo),<span class="keyword">...</span>
+0107       <span class="string">'maxx'</span>, [mn(1) mx(1)],<span class="keyword">...</span>
+0108       <span class="string">'maxy'</span>, [mn(2) mx(2)],<span class="keyword">...</span>
+0109       <span class="string">'maxz'</span>, [mn(3) mx(3)] <span class="keyword">...</span>
+0110       );
+0111       roi_ctr = roi_ctr + 1;
+0112     <span class="keyword">end</span>
+0113   <span class="keyword">end</span>
+0114 <span class="keyword">end</span>
+0115 <span class="keyword">if</span> roi_ctr == 1
+0116   <span class="keyword">return</span>
+0117 <span class="keyword">end</span>
+0118 
+0119 <span class="comment">% ROI information panel</span>
+0120 <span class="comment">%-----------------------------------------------------------------------</span>
+0121 WS = spm(<span class="string">'WinScale'</span>);
+0122 fg = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0123 <span class="comment">% Frame for ROI info</span>
+0124 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Position'</span>,[305 360 280 240].*WS);
+0125 
+0126 <span class="comment">% ROI selection menu</span>
+0127 rl = length(roi_info); 
+0128 labs = [num2str([1:rl]') repmat(<span class="string">': '</span>, rl, 1) strvcat(roi_info(:).label)];
+0129 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'popupmenu'</span> ,<span class="string">'Position'</span>,[320 570 250 20].*WS,<span class="keyword">...</span>
+0130       <span class="string">'String'</span>, cellstr(labs),<span class="keyword">...</span>
+0131       <span class="string">'Callback'</span>,<span class="string">'mars_display_roi(''roi_menu'')'</span>, <span class="keyword">...</span>
+0132       <span class="string">'ToolTipString'</span>,<span class="string">'ROIs'</span>, <span class="string">'Userdata'</span>, roi_info);
+0133 
+0134 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 520 50 020].*WS,<span class="keyword">...</span>
+0135       <span class="string">'String'</span>,<span class="string">'Label:'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0136 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 490 110 020].*WS,<span class="keyword">...</span>
+0137       <span class="string">'String'</span>,<span class="string">'Centre of mass:'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0138 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 460 110 020].*WS,<span class="keyword">...</span>
+0139       <span class="string">'String'</span>,<span class="string">'Volume (mm):'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0140 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 430 110 020].*WS,<span class="keyword">...</span>
+0141       <span class="string">'String'</span>,<span class="string">'Max/min X(mm):'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0142 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 400 110 020].*WS,<span class="keyword">...</span>
+0143       <span class="string">'String'</span>,<span class="string">'Max/min Y(mm):'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0144 uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="string">'Position'</span>,[310 370 110 020].*WS,<span class="keyword">...</span>
+0145       <span class="string">'String'</span>,<span class="string">'Max/min Z(mm):'</span>,<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0146 
+0147 <span class="comment">% Text information</span>
+0148 st.mars.txt.label = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0149                   <span class="string">'Position'</span>,[360 520 220 020].*WS,<span class="keyword">...</span>
+0150                   <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0151                   <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0152                   <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0153 st.mars.txt.c_o_m = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0154                   <span class="string">'Position'</span>,[425 490 155 020].*WS,<span class="keyword">...</span>
+0155                   <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0156                   <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0157                   <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0158 st.mars.txt.volume = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0159                    <span class="string">'Position'</span>,[425 460 155 020].*WS,<span class="keyword">...</span>
+0160                    <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0161                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0162                    <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0163 st.mars.txt.maxx = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0164                  <span class="string">'Position'</span>,[425 430 155 020].*WS,<span class="keyword">...</span>
+0165                  <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0166                  <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0167                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0168 st.mars.txt.maxy = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0169                  <span class="string">'Position'</span>,[425 400 155 020].*WS,<span class="keyword">...</span>
+0170                  <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0171                  <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0172                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0173 st.mars.txt.maxz = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Text'</span>, <span class="keyword">...</span>
+0174                  <span class="string">'Position'</span>,[425 370 155 020].*WS,<span class="keyword">...</span>
+0175                  <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0176                  <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0177                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0178 
+0179 <span class="comment">% store ROI information is orthviews global structure</span>
+0180 st.mars.roi_info = roi_info;
+0181 
+0182 <span class="comment">% set our own callback for crosshair move</span>
+0183 st.callback = <span class="string">'mars_display_roi(''orthcb'');'</span>;
+0184 
+0185 <span class="comment">% Move to centre of mass of last ROI in list</span>
+0186 <a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>(<span class="string">'Reposition'</span>, roi_info(end).c_o_m);
+0187 <a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>(<span class="string">'show_info'</span>, length(roi_info));
+0188 
+0189 <span class="keyword">case</span> <span class="string">'roi_menu'</span>         <span class="comment">% callback service from ROI menu</span>
+0190 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'mars'</span>)
+0191   v = get(gco, <span class="string">'Value'</span>);
+0192   <a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>(<span class="string">'Reposition'</span>, st.mars.roi_info(v).c_o_m);
+0193   <a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>(<span class="string">'show_info'</span>, v);
+0194 <span class="keyword">end</span>
+0195  
+0196 <span class="keyword">case</span> <span class="string">'show_info'</span>    <span class="comment">% show info for ROI, from ROI info structure</span>
+0197 v = varargin{1};  
+0198 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'mars'</span>)
+0199   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(v)
+0200     set(st.mars.txt.label, <span class="string">'String'</span>, <span class="keyword">...</span>
+0201               st.mars.roi_info(v).label);
+0202     set(st.mars.txt.c_o_m, <span class="string">'String'</span>, <span class="keyword">...</span>
+0203               sprintf(<span class="string">'%.3g  %.3g %.3g'</span>, <span class="keyword">...</span>
+0204                   st.mars.roi_info(v).c_o_m));
+0205     set(st.mars.txt.volume, <span class="string">'String'</span>, <span class="keyword">...</span>
+0206               sprintf(<span class="string">'%8.2f'</span>, st.mars.roi_info(v).volume));
+0207     set(st.mars.txt.maxx, <span class="string">'String'</span>, <span class="keyword">...</span>
+0208               sprintf(<span class="string">'%.3g %.3g'</span>, st.mars.roi_info(v).maxx));
+0209     set(st.mars.txt.maxy, <span class="string">'String'</span>, <span class="keyword">...</span>
+0210               sprintf(<span class="string">'%.3g %.3g'</span>, st.mars.roi_info(v).maxy));
+0211     set(st.mars.txt.maxz, <span class="string">'String'</span>, <span class="keyword">...</span>
+0212               sprintf(<span class="string">'%.3g %.3g'</span>, st.mars.roi_info(v).maxz));
+0213   <span class="keyword">else</span>
+0214     set(st.mars.txt.label, <span class="string">'String'</span>,<span class="string">''</span>);
+0215     set(st.mars.txt.c_o_m, <span class="string">'String'</span>,<span class="string">''</span>);
+0216     set(st.mars.txt.volume, <span class="string">'String'</span>,<span class="string">''</span>);
+0217     set(st.mars.txt.maxx, <span class="string">'String'</span>,<span class="string">''</span>);
+0218     set(st.mars.txt.maxy, <span class="string">'String'</span>,<span class="string">''</span>);
+0219     set(st.mars.txt.maxz, <span class="string">'String'</span>,<span class="string">''</span>);
+0220   <span class="keyword">end</span> 
+0221 <span class="keyword">end</span>
+0222 
+0223 <span class="keyword">case</span> <span class="string">'orthcb'</span>           <span class="comment">% callback service from mars_orthviews</span>
+0224   
+0225 <span class="comment">% This copied from mars_orthviews 'shopos' function</span>
+0226 
+0227 <span class="comment">% The position of the crosshairs has been moved.</span>
+0228 <span class="comment">%-----------------------------------------------------------------------</span>
+0229 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st,<span class="string">'mp'</span>),
+0230   fg = spm_figure(<span class="string">'Findwin'</span>,<span class="string">'Graphics'</span>);
+0231   <span class="keyword">if</span> any(findobj(fg) == st.mp),
+0232     set(st.mp,<span class="string">'String'</span>,sprintf(<span class="string">'%.1f %.1f %.1f'</span>,<a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>(<span class="string">'pos'</span>)));
+0233     pos = <a href="mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>(<span class="string">'pos'</span>,1);
+0234     set(st.vp,<span class="string">'String'</span>,sprintf(<span class="string">'%.1f %.1f %.1f'</span>,pos));
+0235     
+0236     <span class="comment">% Set intensity to ROI list</span>
+0237     in_str = <span class="string">''</span>;
+0238     roi_p = [];
+0239     V1 = st.vols{1};
+0240     <span class="keyword">for</span> r = 1:length(V1.blobs)
+0241       p2 = V1.blobs{r}.mat \ V1.mat * [pos; 1];
+0242       rval = spm_sample_vol(V1.blobs{r}.vol,<span class="keyword">...</span>
+0243             p2(1),p2(2),p2(3), <span class="keyword">...</span>
+0244             0);
+0245       <span class="keyword">if</span> ~isnan(rval) &amp; rval ~= 0
+0246     roi_p = [roi_p r];
+0247     in_str = [in_str num2str(r) <span class="string">' '</span>];
+0248       <span class="keyword">end</span>
+0249     <span class="keyword">end</span>
+0250     set(st.in,<span class="string">'String'</span>,in_str);
+0251     
+0252     <span class="comment">% find, and show info for ROI</span>
+0253     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(roi_p)
+0254       v = find(roi_p(end) == [st.mars.roi_info(:).num]);
+0255       <a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>(<span class="string">'show_info'</span>, v);
+0256     <span class="keyword">else</span>
+0257       <a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>(<span class="string">'show_info'</span>, []);
+0258     <span class="keyword">end</span>      
+0259     
+0260   <span class="keyword">else</span>,
+0261     st.Callback = <span class="string">';'</span>;
+0262     rmfield(st,{<span class="string">'mp'</span>,<span class="string">'vp'</span>,<span class="string">'in'</span>});
+0263   <span class="keyword">end</span>;
+0264 <span class="keyword">else</span>,
+0265   st.Callback = <span class="string">';'</span>;
+0266 <span class="keyword">end</span>;
+0267 
+0268 <span class="keyword">otherwise</span>
+0269   error([<span class="string">'Unknown action strig: '</span> action_str]);
+0270 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

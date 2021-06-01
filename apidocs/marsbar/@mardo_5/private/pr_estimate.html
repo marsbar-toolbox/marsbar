@@ -1,0 +1,501 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_estimate</title>
+  <meta name="keywords" content="pr_estimate">
+  <meta name="description" content="Estimation of a General Linear Model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_estimate.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_estimate
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Estimation of a General Linear Model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function SPM = pr_estimate(SPM, marsY) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Estimation of a General Linear Model
+ FORMAT SPM = pr_estimate(SPM, marsY)
+ Inputs 
+ SPM      - SPM design structure
+ marsY    - marsY data object, or 2D data (Y) matrix
+
+ Outputs
+ SPM      - modified estimated design structure, with data contained as
+            field marsY
+
+ Based on spm_spm from spm2:
+ @(#)spm_spm.m    2.66 Andrew Holmes, Jean-Baptiste Poline, Karl Friston 03/03/27
+
+ There are some changes in this version
+ 1) The specified Vi field, can contain either
+ a cell array, in which case it is standard SPM covariance components,
+ or a struct array, in which case it can specify other methods of
+ estimating the covariance, in particular, real AR(n) estimation
+ 
+ 2) The design will specify if the covariance should be calculated from
+ the summarized time course(s), or from the component voxels, then
+ averaged.  Voxel time courses are used by default, and if
+ SPM.xVi.cov_calc is set to 'vox', but summary time
+ courses can be used by setting SPM.xVi.cov_calc to 'summary'. 
+ 
+ 3) Normally, if the W matrix is present, the V matrix should also be
+ present.  Because it is boring to calculate the V matrix and then WVW,
+ if we know WVW is I, V can be present, but empty, in which case WVW is
+ assumed to be I.  It just saves time.
+ 
+ $Id: pr_estimate.m 543 2004-12-14 08:58:05Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_fmristat_ar.html" class="code" title="function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)">pr_fmristat_ar</a>	function returns estimated AR coefficients using fmristat algorithm</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_reml.html" class="code" title="function [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL);">pr_spm_reml</a>	REML estimation of covariance components from Cov{y}</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_svd.html" class="code" title="function [U,S,V] = spm_svd(X,U)">pr_spm_svd</a>	computationally efficient SVD (that can handle sparse arguments)</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="pr_fmristat_ar.html" class="code" title="function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)">pr_fmristat_ar</a>	function returns estimated AR coefficients using fmristat algorithm</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="pr_spm_reml.html" class="code" title="function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT);">pr_spm_reml</a>	ReML estimation of covariance components from y*y'</li>
+<li><a href="pr_spm_svd.html" class="code" title="function [U,S,V] = pr_spm_svd(X,U,T)">pr_spm_svd</a>	computationally efficient SVD (that can handle sparse arguments)</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="../../../marsbar/@marsy/n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>	get number of regions</li>
+<li><a href="../../../marsbar/@marsy/region_data.html" class="code" title="function res = region_data(varargin)">region_data</a>	method gets or sets data for region(s) as cell array</li>
+<li><a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_99/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM99 model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function SPM = pr_estimate(SPM, marsY)</a>
+0002 <span class="comment">% Estimation of a General Linear Model</span>
+0003 <span class="comment">% FORMAT SPM = pr_estimate(SPM, marsY)</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">% SPM      - SPM design structure</span>
+0006 <span class="comment">% marsY    - marsY data object, or 2D data (Y) matrix</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Outputs</span>
+0009 <span class="comment">% SPM      - modified estimated design structure, with data contained as</span>
+0010 <span class="comment">%            field marsY</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Based on spm_spm from spm2:</span>
+0013 <span class="comment">% @(#)spm_spm.m    2.66 Andrew Holmes, Jean-Baptiste Poline, Karl Friston 03/03/27</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% There are some changes in this version</span>
+0016 <span class="comment">% 1) The specified Vi field, can contain either</span>
+0017 <span class="comment">% a cell array, in which case it is standard SPM covariance components,</span>
+0018 <span class="comment">% or a struct array, in which case it can specify other methods of</span>
+0019 <span class="comment">% estimating the covariance, in particular, real AR(n) estimation</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% 2) The design will specify if the covariance should be calculated from</span>
+0022 <span class="comment">% the summarized time course(s), or from the component voxels, then</span>
+0023 <span class="comment">% averaged.  Voxel time courses are used by default, and if</span>
+0024 <span class="comment">% SPM.xVi.cov_calc is set to 'vox', but summary time</span>
+0025 <span class="comment">% courses can be used by setting SPM.xVi.cov_calc to 'summary'.</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% 3) Normally, if the W matrix is present, the V matrix should also be</span>
+0028 <span class="comment">% present.  Because it is boring to calculate the V matrix and then WVW,</span>
+0029 <span class="comment">% if we know WVW is I, V can be present, but empty, in which case WVW is</span>
+0030 <span class="comment">% assumed to be I.  It just saves time.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% $Id: pr_estimate.m 543 2004-12-14 08:58:05Z matthewbrett $</span>
+0033 
+0034 <span class="comment">%-Say hello</span>
+0035 <span class="comment">%-----------------------------------------------------------------------</span>
+0036 Finter   = spm(<span class="string">'FigName'</span>,<span class="string">'Stats: estimation...'</span>); spm(<span class="string">'Pointer'</span>,<span class="string">'Watch'</span>)
+0037 
+0038 <span class="comment">%=======================================================================</span>
+0039 <span class="comment">% - A N A L Y S I S   P R E L I M I N A R I E S</span>
+0040 <span class="comment">%=======================================================================</span>
+0041 
+0042 <span class="comment">%-Initialise</span>
+0043 <span class="comment">%=======================================================================</span>
+0044 fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Initialising parameters'</span>,<span class="string">'...computing'</span>)    <span class="comment">%-#</span>
+0045 xX            = SPM.xX;
+0046 [nScan nBeta] = size(xX.X);
+0047 
+0048 <span class="comment">%-Check confounds (xX.K) and non-sphericity (xVi)</span>
+0049 <span class="comment">%-----------------------------------------------------------------------</span>
+0050 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'K'</span>)
+0051   xX.K  = 1;
+0052 <span class="keyword">end</span>
+0053 <span class="keyword">try</span>
+0054   <span class="comment">%-If covariance components are specified use them</span>
+0055   <span class="comment">%---------------------------------------------------------------</span>
+0056   xVi   = SPM.xVi;
+0057 <span class="keyword">catch</span>
+0058   
+0059   <span class="comment">%-otherwise assume i.i.d.</span>
+0060   <span class="comment">%---------------------------------------------------------------</span>
+0061   xVi   = struct(    <span class="string">'form'</span>,  <span class="string">'i.i.d.'</span>,<span class="keyword">...</span>
+0062             <span class="string">'V'</span>,     speye(nScan,nScan));
+0063 
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="comment">% Work out what we are going to do</span>
+0067 have_W     = <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX, <span class="string">'W'</span>);
+0068 have_V     = <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xVi, <span class="string">'V'</span>);
+0069 
+0070 <span class="comment">% Work out type of covariance modelling. We get Vi, cov_type (as a string):</span>
+0071 <span class="comment">% one of 'SPM' or 'fmristat' and cov_vox, which is a flag set to 1 if all</span>
+0072 <span class="comment">% the voxel time courses should be used to calculate the resdiduals and</span>
+0073 <span class="comment">% covariance.</span>
+0074 <span class="keyword">if</span> ~have_V
+0075   <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xVi, <span class="string">'Vi'</span>)
+0076     error(<span class="string">'No covariance specified, and no priors to calculate it'</span>);
+0077   <span class="keyword">end</span>
+0078   Vi = xVi.Vi;
+0079   <span class="keyword">if</span> iscell(Vi)
+0080     cov_type = <span class="string">'SPM'</span>;
+0081   <span class="keyword">elseif</span> ~isstruct(Vi)
+0082     error(<span class="string">'Vi field should be cell or struct type'</span>)
+0083   <span class="keyword">elseif</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(Vi, <span class="string">'type'</span>)
+0084     error(<span class="string">'Vi should have field specifying type'</span>);
+0085   <span class="keyword">else</span>
+0086     cov_type = Vi.type;
+0087   <span class="keyword">end</span>
+0088   
+0089   <span class="comment">% Covariance calculated on summary or voxel time courses</span>
+0090   cov_vox = 1;
+0091   <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xVi, <span class="string">'cov_calc'</span>)
+0092     cov_vox = strcmpi(xVi.cov_calc, <span class="string">'vox'</span>);
+0093   <span class="keyword">end</span>
+0094 <span class="keyword">else</span> cov_vox = 0; <span class="keyword">end</span>
+0095 
+0096 <span class="comment">%-Get non-sphericity V</span>
+0097 <span class="comment">%=======================================================================</span>
+0098 <span class="keyword">if</span> have_V
+0099   <span class="comment">%-If xVi.V is specified proceed directly to parameter estimation</span>
+0100   <span class="comment">%---------------------------------------------------------------</span>
+0101   V     = xVi.V;
+0102   str   = <span class="string">'parameter estimation'</span>;
+0103 <span class="keyword">else</span>
+0104   <span class="comment">% otherwise invoke ReML selecting voxels under i.i.d assumptions</span>
+0105   <span class="comment">%---------------------------------------------------------------</span>
+0106   V     = speye(nScan,nScan);
+0107   str   = <span class="string">'[hyper]parameter estimation'</span>;
+0108 <span class="keyword">end</span>
+0109 
+0110 <span class="comment">%-Get whitening/Weighting matrix: If xX.W exists we will save WLS</span>
+0111 <span class="comment">% estimates. Get WVW also, which can be assumed if W is a whitening</span>
+0112 <span class="comment">% matrix</span>
+0113 <span class="comment">%-----------------------------------------------------------------------</span>
+0114 <span class="keyword">if</span> have_W
+0115   <span class="comment">%-If W is specified, use it</span>
+0116   <span class="comment">%-------------------------------------------------------</span>
+0117   W     = xX.W;
+0118   <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(V)  <span class="comment">% V is only inv(W*W')</span>
+0119     WVW = eye(nScan);
+0120   <span class="keyword">else</span>
+0121     WVW = W*V*W';
+0122   <span class="keyword">end</span>
+0123 <span class="keyword">else</span>
+0124   <span class="keyword">if</span> have_V
+0125     <span class="comment">% otherwise make W a whitening filter W*W' = inv(V)</span>
+0126     <span class="comment">%-------------------------------------------------------</span>
+0127     [u s] = <a href="pr_spm_svd.html" class="code" title="function [U,S,V] = pr_spm_svd(X,U,T)">pr_spm_svd</a>(xVi.V);
+0128     s     = spdiags(1./sqrt(diag(s)),0,nScan,nScan);
+0129     W     = u*s*u';
+0130     W     = W.*(abs(W) &gt; 1e-6);
+0131     xX.W  = W;
+0132     WVW   = eye(nScan);
+0133   <span class="keyword">else</span>
+0134     <span class="comment">% unless xVi.V has not been estimated - requiring 2 passes</span>
+0135     <span class="comment">%-------------------------------------------------------</span>
+0136     W     = eye(nScan);
+0137     str   = <span class="string">'hyperparameter estimation (1st pass)'</span>;
+0138   <span class="keyword">end</span>
+0139 <span class="keyword">end</span>
+0140 
+0141 <span class="comment">%-Design space and projector matrix [pseudoinverse] for WLS</span>
+0142 <span class="comment">%=======================================================================</span>
+0143 xX.xKXs = spm_sp(<span class="string">'Set'</span>,<a href="pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(xX.K,W*xX.X));        <span class="comment">% KWX</span>
+0144 xX.pKX  = spm_sp(<span class="string">'x-'</span>,xX.xKXs);                <span class="comment">% projector</span>
+0145 
+0146 <span class="comment">%-If xVi.V is not defined compute Hsqr</span>
+0147 <span class="comment">%-----------------------------------------------------------------------</span>
+0148 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xVi,<span class="string">'V'</span>)
+0149   Fcname = <span class="string">'effects of interest'</span>;
+0150   iX0    = [SPM.xX.iB SPM.xX.iG];
+0151   xCon   = spm_FcUtil(<span class="string">'Set'</span>,Fcname,<span class="string">'F'</span>,<span class="string">'iX0'</span>,iX0,xX.xKXs);
+0152   X1o    = spm_FcUtil(<span class="string">'X1o'</span>, xCon(1),xX.xKXs);
+0153   Hsqr   = spm_FcUtil(<span class="string">'Hsqr'</span>,xCon(1),xX.xKXs);
+0154   trRV   = spm_SpUtil(<span class="string">'trRV'</span>,xX.xKXs);
+0155   trMV   = spm_SpUtil(<span class="string">'trMV'</span>,X1o);
+0156 <span class="keyword">end</span>
+0157 
+0158 fprintf(<span class="string">'%s%30s\n'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'...done'</span>)               <span class="comment">%-#</span>
+0159 
+0160 <span class="comment">%=======================================================================</span>
+0161 <span class="comment">% - F I T   M O D E L   &amp;   W R I T E   P A R A M E T E R    I M A G E S</span>
+0162 <span class="comment">%=======================================================================</span>
+0163 
+0164 <span class="comment">% Select whether to work with all voxel data in ROIs, or summary data</span>
+0165 <span class="comment">% Using all data only makes sense for intial estimation of whitening</span>
+0166 <span class="keyword">if</span> ~have_W &amp; cov_vox
+0167   str = <span class="string">'voxelwise'</span>;
+0168   Y = <a href="../../../marsbar/@marsy/region_data.html" class="code" title="function res = region_data(varargin)">region_data</a>(marsY);
+0169   Y = [Y{:}];
+0170 <span class="keyword">else</span>
+0171   str = <span class="string">'pooled'</span>;
+0172   Y = <a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(marsY);
+0173 <span class="keyword">end</span>
+0174 
+0175 <span class="comment">% Eliminate columns with zero variance</span>
+0176 in_cols = any(diff(Y));
+0177 <span class="keyword">if</span> ~any(in_cols), error(<span class="string">'No variance to estimate model'</span>); <span class="keyword">end</span>
+0178 Y = Y(:, in_cols);
+0179 
+0180 fprintf(<span class="string">'%-40s: %30s\n'</span>,<span class="string">'Covariance estimate'</span>,[<span class="string">'...'</span> str])               <span class="comment">%-#</span>
+0181 fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Model'</span>,<span class="string">'...start'</span>)    <span class="comment">%-#</span>
+0182 
+0183 n_roi = <a href="../../../marsbar/@marsy/n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>(marsY);
+0184 
+0185 <span class="comment">%-Intialise variables used in the loop</span>
+0186 <span class="comment">%=======================================================================</span>
+0187 [n S] = size(Y);                                    <span class="comment">% no of time courses</span>
+0188 Cy    = 0;                        <span class="comment">% &lt;Y*Y'&gt; spatially whitened</span>
+0189 CY    = 0;                        <span class="comment">% &lt;Y*Y'&gt; for ReML</span>
+0190 EY    = 0;                        <span class="comment">% &lt;Y&gt;    for ReML</span>
+0191 <span class="comment">%-Whiten/Weight data and remove filter confounds</span>
+0192 <span class="comment">%-------------------------------------------------------</span>
+0193 fprintf(<span class="string">'%s%30s'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'filtering'</span>)    <span class="comment">%-#</span>
+0194 
+0195 KWY   = <a href="pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(xX.K,W*Y);
+0196 
+0197 <span class="comment">%-General linear model: Weighted least squares estimation</span>
+0198 <span class="comment">%------------------------------------------------------</span>
+0199 fprintf(<span class="string">'%s%30s'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'estimation'</span>) <span class="comment">%-#</span>
+0200 
+0201 beta  = xX.pKX*KWY;            <span class="comment">%-Parameter estimates</span>
+0202 res   = spm_sp(<span class="string">'r'</span>,xX.xKXs,KWY);    <span class="comment">%-Residuals</span>
+0203 ResSS = sum(res.^2);            <span class="comment">%-Residual SSQ</span>
+0204 clear KWY                <span class="comment">%-Clear to save memory</span>
+0205 
+0206 
+0207 <span class="comment">%-If ReML hyperparameters are needed for xVi.V</span>
+0208 <span class="comment">%-------------------------------------------------------</span>
+0209 <span class="keyword">if</span> ~have_V
+0210   <span class="keyword">if</span> n_roi &gt; 1
+0211     wstr = {<span class="string">'Pooling covariance estimate across ROIs'</span>,<span class="keyword">...</span>
+0212         <span class="string">'This is unlikely to be valid; A better approach'</span>,<span class="keyword">...</span>
+0213         <span class="string">'is to run estimation separately for each ROI'</span>};
+0214     fprintf(<span class="string">'\n'</span>);
+0215     warning(sprintf(<span class="string">'%s\n'</span>, wstr{:}));
+0216   <span class="keyword">end</span>
+0217   <span class="comment">% Cy is whitened covariance matrix; only needed for SPM REML method</span>
+0218   <span class="keyword">if</span> strcmp(cov_type, <span class="string">'SPM'</span>)
+0219     q  = diag(sqrt(trRV./ResSS'),0); <span class="comment">% spatial whitening</span>
+0220     Y  = Y * q;
+0221     Cy = Y*Y';
+0222   <span class="keyword">end</span>
+0223 <span class="keyword">end</span> <span class="comment">% have_V</span>
+0224         
+0225 <span class="comment">%-if we are saving the WLS parameters</span>
+0226 <span class="comment">%-------------------------------------------------------</span>
+0227 <span class="keyword">if</span> have_W
+0228 
+0229   <span class="comment">%-sample covariance and mean of Y (all voxels)</span>
+0230   <span class="comment">%-----------------------------------------------</span>
+0231   CY         = Y*Y';
+0232   EY         = sum(Y,2);
+0233     
+0234 <span class="keyword">end</span> <span class="comment">% have_W</span>
+0235 clear Y                <span class="comment">%-Clear to save memory</span>
+0236 
+0237 fprintf(<span class="string">'\n'</span>)                                                        <span class="comment">%-#</span>
+0238 spm_progress_bar(<span class="string">'Clear'</span>)
+0239 
+0240 <span class="comment">%=======================================================================</span>
+0241 <span class="comment">% - P O S T   E S T I M A T I O N   C L E A N U P</span>
+0242 <span class="comment">%=======================================================================</span>
+0243 <span class="keyword">if</span> S == 0, warning(<span class="string">'No time courses - empty analysis!'</span>), <span class="keyword">end</span>
+0244 
+0245 <span class="comment">%-average sample covariance and mean of Y (over voxels)</span>
+0246 <span class="comment">%-----------------------------------------------------------------------</span>
+0247 CY          = CY/S;
+0248 EY          = EY/S;
+0249 CY          = CY - EY*EY';
+0250 
+0251 <span class="comment">%-If not defined, compute non-sphericity V using ReML Hyperparameters</span>
+0252 <span class="comment">%=======================================================================</span>
+0253 <span class="keyword">if</span> ~have_V
+0254 
+0255   <span class="comment">%-Estimate of residual correlations through hyperparameters</span>
+0256   <span class="comment">%---------------------------------------------------------------</span>
+0257   str    = <span class="string">'Temporal non-sphericity (over voxels)'</span>;
+0258   fprintf(<span class="string">'%-40s: %30s\n'</span>,str,<span class="string">'...estimation'</span>) <span class="comment">%-#</span>
+0259   Cy            = Cy/S;
+0260   
+0261   <span class="comment">% Estimate for separable designs and covariance components</span>
+0262   <span class="comment">%---------------------------------------------------------------</span>
+0263   <span class="keyword">if</span> isstruct(xX.K)
+0264     
+0265     <span class="keyword">switch</span> cov_type
+0266      <span class="keyword">case</span> <span class="string">'SPM'</span>
+0267       <span class="comment">% Store hyperparameters</span>
+0268       m     = length(Vi);
+0269       h     = zeros(m,1);
+0270      <span class="keyword">case</span> <span class="string">'fmristat'</span>
+0271       <span class="comment">% Store AR coefficients</span>
+0272       h     = zeros(length(xX.K), Vi.order);
+0273      <span class="keyword">otherwise</span> 
+0274       error([<span class="string">'Did not recognize covariance type: '</span> cov_type]);
+0275     <span class="keyword">end</span>
+0276     
+0277     V     = sparse(nScan,nScan); 
+0278     <span class="keyword">for</span> i = 1:length(xX.K)
+0279       
+0280       <span class="comment">% extract blocks from bases</span>
+0281       <span class="comment">%-----------------------------------------------</span>
+0282       q     = xX.K(i).row;
+0283       
+0284       <span class="comment">% design space for estimation (with confounds in filter)</span>
+0285       <span class="comment">%-----------------------------------------------</span>
+0286       Xp         = xX.X(q,:);
+0287       <span class="keyword">try</span>
+0288     Xp = [Xp xX.K(i).X0];
+0289       <span class="keyword">end</span>
+0290       
+0291       <span class="keyword">switch</span> cov_type
+0292        <span class="keyword">case</span> <span class="string">'SPM'</span>
+0293     <span class="comment">% REML: extract blocks from bases</span>
+0294     <span class="comment">%-----------------------------------------------</span>
+0295     p     = [];
+0296     Qp    = {};
+0297     <span class="keyword">for</span> j = 1:m
+0298       <span class="keyword">if</span> nnz(xVi.Vi{j}(q,q))
+0299         Qp{end + 1} = xVi.Vi{j}(q,q);
+0300         p           = [p j];
+0301       <span class="keyword">end</span>
+0302     <span class="keyword">end</span>
+0303 
+0304     <span class="comment">% ReML itself</span>
+0305     <span class="comment">%-----------------------------------------------</span>
+0306     fprintf(<span class="string">'%-30s- %i\n'</span>,<span class="string">'  ReML Block'</span>,i);
+0307     [Vp,hp]  = <a href="pr_spm_reml.html" class="code" title="function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT);">pr_spm_reml</a>(Cy(q,q),Xp,Qp);
+0308     V(q,q)   = V(q,q) + Vp;
+0309     h(p)     = hp;
+0310        
+0311        <span class="keyword">case</span> <span class="string">'fmristat'</span>
+0312     <span class="comment">% AR estimation</span>
+0313     [h(i,:) W(q,q)]  = <a href="pr_fmristat_ar.html" class="code" title="function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)">pr_fmristat_ar</a>(res(q,:),Xp,Vi.order);
+0314 
+0315       <span class="keyword">end</span>
+0316     <span class="keyword">end</span>
+0317   <span class="keyword">else</span>
+0318     [V,h] = <a href="pr_spm_reml.html" class="code" title="function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT);">pr_spm_reml</a>(Cy,xX.X,xVi.Vi);
+0319   <span class="keyword">end</span>
+0320   
+0321   <span class="keyword">switch</span> cov_type
+0322    <span class="keyword">case</span> <span class="string">'SPM'</span>
+0323     <span class="comment">% normalize non-sphericity and save hyperparameters</span>
+0324     <span class="comment">%---------------------------------------------------------------</span>
+0325     V           = V*nScan/trace(V);
+0326    <span class="keyword">case</span> <span class="string">'fmristat'</span>
+0327     <span class="comment">% Set covariance matrix to empty, we have already calculated W</span>
+0328     <span class="comment">%---------------------------------------------------------------</span>
+0329     V           = [];
+0330     SPM.xX.W    = W;
+0331   <span class="keyword">end</span>
+0332   
+0333   xVi.h       = h;
+0334   xVi.V       = V;            <span class="comment">% Save non-sphericity xVi.V</span>
+0335   xVi.Cy      = Cy;            <span class="comment">%-spatially whitened &lt;Y*Y'&gt;</span>
+0336   SPM.xVi     = xVi;            <span class="comment">% non-sphericity structure</span>
+0337   
+0338   <span class="comment">% If xX.W is not specified use W*W' = inv(V) to give ML estimators</span>
+0339   <span class="comment">%---------------------------------------------------------------</span>
+0340   <span class="keyword">if</span> ~have_W
+0341     <span class="comment">% clear everything except SPM, marsY;</span>
+0342     vnames = who;
+0343     vnames = vnames(~ismember(vnames, {<span class="string">'SPM'</span>,<span class="string">'marsY'</span>}));
+0344     clear(vnames{:});
+0345     SPM = <a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>(SPM,marsY);
+0346     <span class="keyword">return</span>
+0347   <span class="keyword">end</span>
+0348 <span class="keyword">end</span>
+0349 
+0350 
+0351 <span class="comment">%-Use non-sphericity xVi.V to compute [effective] degrees of freedom</span>
+0352 <span class="comment">%=======================================================================</span>
+0353 xX.V            = <a href="pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(xX.K,<a href="pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(xX.K,WVW)');    <span class="comment">% KWVW'K'</span>
+0354 [trRV trRVRV]   = spm_SpUtil(<span class="string">'trRV'</span>,xX.xKXs,xX.V);        <span class="comment">% trRV (for X)</span>
+0355 xX.trRV         = trRV;                        <span class="comment">% &lt;R'*y'*y*R&gt;</span>
+0356 xX.trRVRV       = trRVRV;                    <span class="comment">%-Satterthwaite</span>
+0357 xX.erdf         = trRV^2/trRVRV;                <span class="comment">% approximation</span>
+0358 xX.Bcov         = xX.pKX*xX.V*xX.pKX';                <span class="comment">% Cov(beta)</span>
+0359 
+0360 
+0361 <span class="comment">%-scale ResSS by 1/trRV</span>
+0362 <span class="comment">%-----------------------------------------------------------------------</span>
+0363 ResMS           = ResSS/xX.trRV;
+0364 
+0365 <span class="comment">%-Create 1st contrast for 'effects of interest' (all if not specified)</span>
+0366 <span class="comment">%=======================================================================</span>
+0367 Fcname          = <span class="string">'effects of interest'</span>;
+0368 <span class="keyword">try</span>
+0369   iX0     = [xX.iB xX.iG];
+0370 <span class="keyword">catch</span>
+0371   iX0     = [];
+0372 <span class="keyword">end</span>
+0373 xCon            = spm_FcUtil(<span class="string">'Set'</span>,Fcname,<span class="string">'F'</span>,<span class="string">'iX0'</span>,iX0,xX.xKXs);
+0374 
+0375 <span class="comment">%-Compute scaled design matrix for display purposes</span>
+0376 <span class="comment">%-----------------------------------------------------------------------</span>
+0377 xX.nKX        = spm_DesMtx(<span class="string">'sca'</span>,xX.xKXs.X,xX.name);
+0378 
+0379 <span class="comment">%-place fields in SPM</span>
+0380 <span class="comment">%-----------------------------------------------------------------------</span>
+0381 SPM.betas                = ones(nBeta, n_roi) + NaN;
+0382 SPM.betas(:, in_cols)    = beta;    
+0383 SPM.ResidualMS           = ones(1, n_roi) + NaN;
+0384 SPM.ResidualMS(in_cols)  = ResMS;    
+0385 
+0386 SPM.xVi        = xVi;                <span class="comment">% non-sphericity structure</span>
+0387 SPM.xVi.CY     = CY;                <span class="comment">%-&lt;(Y - &lt;Y&gt;)*(Y - &lt;Y&gt;)'&gt;</span>
+0388 
+0389 SPM.xX         = xX;                <span class="comment">%-design structure</span>
+0390 
+0391 SPM.xCon       = xCon;                <span class="comment">%-contrast structure</span>
+0392 
+0393 <span class="comment">%=======================================================================</span>
+0394 <span class="comment">%- E N D: Cleanup GUI</span>
+0395 <span class="comment">%=======================================================================</span>
+0396 fprintf(<span class="string">'%s%30s\n'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'...done'</span>)               <span class="comment">%-#</span>
+0397 spm(<span class="string">'FigName'</span>,<span class="string">'Stats: done'</span>,Finter); spm(<span class="string">'Pointer'</span>,<span class="string">'Arrow'</span>)
+0398 fprintf(<span class="string">'%-40s: %30s\n'</span>,<span class="string">'Completed'</span>,spm(<span class="string">'time'</span>))                     <span class="comment">%-#</span>
+0399 fprintf(<span class="string">'...use the results section for assessment\n\n'</span>)             <span class="comment">%-#</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

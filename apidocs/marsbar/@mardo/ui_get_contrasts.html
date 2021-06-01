@@ -1,0 +1,1781 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_get_contrasts</title>
+  <meta name="keywords" content="ui_get_contrasts">
+  <meta name="description" content="SPM contrast UI, wrapped for MarsBaR">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; ui_get_contrasts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_get_contrasts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>SPM contrast UI, wrapped for MarsBaR</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout=ui_get_contrasts(D, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> SPM contrast UI, wrapped for MarsBaR
+
+=======================================================================
+ - FORMAT specifications
+=======================================================================
+( This is a multi function function: If the first argument is a string,)
+( then this is the action string, specifying the particular action     )
+( function to take.                                                    )
+
+ FORMAT [I,D,changef] = ui_get_contrasts(D,STATmode,n,Prompt,Mcstr,OK2chg)
+
+ Takes design, offers contrast GUI, returns possibly modified design
+ Fields used in design are:
+   xX         - Design Matrix structure
+              - (see spm_spm.m for structure)
+              - fields used directly are:
+   .xKXs      - space structure of smoothed design matrix
+   .name|xNames - cellstr of parameter names
+
+   xCon     - Contrast definitions structure array
+                (see spm_FcUtil.m for structure, rules &amp; handling)
+              - defaults to empty contrast structure
+              - fields used directly are:
+   .name      - contrast name string
+   .STAT      - character describing statistic required: 'T' or 'F'
+   .c         - contrast weights (column) vector / matrix
+
+ STATmode   - string indicating STAT modes to allow contrast 
+              selection/definition for:
+            - 'T' to limit to (1-dimensional) contrasts defined for SPM{t}
+            - 'F' to limit to contrasts defined for SPM{F}
+            - 'T|F' to allow either contrasts for SPM{t} or SPM{F}
+              (both may be defined, but only one type may be selected)
+            - 'T&amp;F' to allow both contrasts for SPM{t} and SPM{F}
+            - defaults to 'T|F'
+
+ n          - Number of contrasts to select, Inf for unlimited
+
+ Prompt     - Prompt string
+
+ Mcstr      - string to describe multiple contrast selection
+              E.g. ' for conjunction' will result in the status message
+                   reading 'Selected 2 contrasts for conjunction' when
+                   two contrasts are selected.
+
+ OK2chg     - logical, specifying whether the contrast structure can be
+              changed. If false, then new contrasts cannot be defined, and
+              existing contrasts cannot be renamed.
+
+ I          - Index (or indices) of contrasts selected
+
+ D (out)    - Design with modified contrast definitions structure array 
+ changef    - flag set to 1 if contrast definitions have changed
+
+                           ----------------
+
+ [F,cF] = ui_get_contrasts(D, 'Initialise',...
+                              Vis,STATmode,n,Prompt,Mcstr,OK2chg)
+ Initialise mConMan GUI for contrast selection/definition
+ Vis        - Initialisation action:
+              'close' - closes mConMan window
+              'off'   - hides mConMan window
+              'reset' - hides and resets mConMan window
+              'on'    - initialises mConMan window using arguments given
+ STATmode   - string indicating STAT modes to allow contrast 
+ n          - number of contrasts to select, Inf for unlimited
+ Prompt     - Prompt string
+ Mcstr      - string to describe multiple contrast selection
+ OK2chg     - logical, specifying whether contrast structure can be changed
+ F          - figure used for contrast manager window
+ cF         - Figure which was current before function call
+
+ FORMAT ui_get_contrasts(D, 'ListCon',hConList,STAT,I)
+ Utility function to list contrasts in ListBox
+ hConList   - handle of GUI ListBox object
+ STAT       - STAT character: 'T' or 'F' or empty (show all)
+ I          - indices of currently selected contrasts
+ 
+ FORMAT ui_get_contrasts(D, 'GraphCons',xCon,I,F)
+ Utility function to display contrast image/bar-graph &amp; setup &quot;surfing&quot;
+ xCon       - contrast definitions structure array
+ I          - indicies of contrasts to display
+ F          - handle of 'mConMan' figure
+
+ FORMAT ui_get_contrasts(D, 'StatusLine',F,str,col)
+ Utility function to update mConMan window statusline
+ F          - handle of 'mConMan' figure
+ str        - string to display
+              (defaults to status of contrast selection)
+ col        - colour to use [defaults to 'w' - white
+
+ FORMAT ui_get_contrasts(D, 'Done_CB')
+ CallBack for &quot;Done&quot; button on mConMan contrast selection interface
+
+ FORMAT ui_get_contrasts(D, 'ConList_CB')
+ CallBack for contrast selection ListBox
+
+ FORMAT STAT = ui_get_contrasts(D, 'TFA')
+ CallBack for 'T','F' or 'any' STAT selection RadioButtons
+ FORMAT STAT = ui_get_contrasts(D, 'TFA',F,STAT)
+ Initialisation of 'T','F' or 'any' STAT selection RadioButtons
+ FORMAT STAT = ui_get_contrasts(D, 'TFA',F,STAT,STATmode)
+ Function to set STAT &amp; STATmode
+ Initialisation of 'T','F' or 'any' STAT selection RadioButtons &amp; STATmode
+ F          - handle of 'mConMan' figure
+ STAT       - STAT character: 'T' or 'F' of empty (all)
+ STATmode   - string indicating STAT modes to allow contrast 
+
+ FORMAT ui_get_contrasts(D, 'FConMenu_CB')
+ CallBack to set state of mConMan contrast selection figure context menu
+
+ FORMAT ui_get_contrasts(D, 'Rename_CB')
+ CallBack to handle contrast renaming
+
+ FORMAT [c,I,emsg,imsg,msg] = ui_get_contrasts(D, 'ParseCon',cstr,X,STAT)
+ Contrast weights parser: Catch evaluation errors and invalid contrasts
+ cstr       - string (or cellstr) to evaluate to get contrast(s)
+ X          - design matrix
+ STAT       - 'T' or 'F' (for contrast checking)
+ c          - contrast weights matrix
+ I          - logical validity indicator: indicates which rows of 
+              cellstr(cstr) generated valid contrasts which were 
+              included in c
+ emsg       - cellstr of error messages produced during parsing
+ imsg       - cellstr of information messages for valid contrasts 
+ msg        - cellstr of all messages produced during parsing,
+              one cell per string in cstr
+ 
+ FORMAT [iX0,I,emsg,imsg] = ui_get_contrasts(D, 'ParseIStr',str,max)
+ DesMtx column index parser: Catch eval errors and invalid indices
+ str        - string for evaluation to get column indices
+ max        - number of columns in design matrix
+ iX0        - vector of column indices: '!' if evaluation error
+ I          - 0 if evaluation error, 1 if evaluated OK
+ emsg       - error message
+              (evaluation errors, non-integer indices, out of range indices)
+ imsg       - information message (valid indices)
+
+ FORMAT ui_get_contrasts(D, 'Reset_CB')
+ CallBack handler for &quot;reset&quot; button on contrast selection interface
+
+ FORMAT ui_get_contrasts(D, 'D_Setup_CB')
+ CallBack handler for &quot;Define new&quot; button:
+ Initialises Contrast Definition interface for use
+
+ FORMAT ui_get_contrasts(D, 'D_ConMtx_CB')
+ CallBack handler for contrast weights definition widget
+ FORMAT ui_get_contrasts(D, 'D_X1cols_CB')
+ Callback handler for F-contrast &quot;columns for reduced design&quot; widget
+
+ FORMAT ui_get_contrasts(D, 'D_Reset_CB')
+ CallBack handler for &quot;reset&quot; button on contrast definition interface
+
+ FORMAT ui_get_contrasts(D, 'D_Cancel_CB')
+ CallBack handler for &quot;cancel&quot; button on contrast definition interface
+
+ FORMAT ui_get_contrasts(D, 'D_OK_CB')
+ CallBack handler for &quot;OK&quot; button on contrast definiton interface
+
+ FORMAT ui_get_contrasts(D, 'D_Status',F)
+ Set status line of contrast definition interface
+ F          - Handle of mConMan figure [defaults gcbf]
+
+ FORMAT [F,H] = ui_get_contrasts(D, 'CreateFig')
+ Creates mConMan dialog figure (definition interface initially hidden)
+ F          - Handle of mConMan figure created
+ H          - Stricture of Handles:
+ .hConList  - handle of contrast selection ListBox
+ .hDesMtxAx - handle of axes for design matrix imaging
+ .hPrompt   - handle of prompt text object
+ .hSTATmode - handle of frame containing &quot;T/F/All&quot; radio buttons
+ .hStatLin  - handle of status line text object (in selection interface)
+ .hNew      - handle of &quot;Define new contrast&quot; pushbutton
+_______________________________________________________________________
+
+
+ MarsBaR edits
+ -------------
+ The contrasts are stored in a stripped down mardo design structure, to
+ allow this function to be called using object methods.  We need to return
+ a flag (changef) to tell us if the contrasts have been changed by the GUI.
+ This is stored in the D_Reset tagged handle (which is attached to the
+ reset button).
+
+ Edited from @(#)spm_conman.m    2.18 Andrew Holmes 02/09/10
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>	method to set contrasts into design object</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>	method to add contrast definitions to design</li>
+<li><a href="stat_table.html" class="code" title="function [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic)">stat_table</a>	gets Mars statistics and creates statistic table as cell array</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function sf_ImDesMtx(xX, h)</a></li>
+<li><a href="#_sub2" class="code">function sf_ImParEst(xX, h)</a></li>
+<li><a href="#_sub3" class="code">function sf_SetD(D, changef, F)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=ui_get_contrasts(D, varargin)</a>
+0002 <span class="comment">% SPM contrast UI, wrapped for MarsBaR</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%=======================================================================</span>
+0005 <span class="comment">% - FORMAT specifications</span>
+0006 <span class="comment">%=======================================================================</span>
+0007 <span class="comment">%( This is a multi function function: If the first argument is a string,)</span>
+0008 <span class="comment">%( then this is the action string, specifying the particular action     )</span>
+0009 <span class="comment">%( function to take.                                                    )</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% FORMAT [I,D,changef] = ui_get_contrasts(D,STATmode,n,Prompt,Mcstr,OK2chg)</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Takes design, offers contrast GUI, returns possibly modified design</span>
+0014 <span class="comment">% Fields used in design are:</span>
+0015 <span class="comment">%   xX         - Design Matrix structure</span>
+0016 <span class="comment">%              - (see spm_spm.m for structure)</span>
+0017 <span class="comment">%              - fields used directly are:</span>
+0018 <span class="comment">%   .xKXs      - space structure of smoothed design matrix</span>
+0019 <span class="comment">%   .name|xNames - cellstr of parameter names</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%   xCon     - Contrast definitions structure array</span>
+0022 <span class="comment">%                (see spm_FcUtil.m for structure, rules &amp; handling)</span>
+0023 <span class="comment">%              - defaults to empty contrast structure</span>
+0024 <span class="comment">%              - fields used directly are:</span>
+0025 <span class="comment">%   .name      - contrast name string</span>
+0026 <span class="comment">%   .STAT      - character describing statistic required: 'T' or 'F'</span>
+0027 <span class="comment">%   .c         - contrast weights (column) vector / matrix</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% STATmode   - string indicating STAT modes to allow contrast</span>
+0030 <span class="comment">%              selection/definition for:</span>
+0031 <span class="comment">%            - 'T' to limit to (1-dimensional) contrasts defined for SPM{t}</span>
+0032 <span class="comment">%            - 'F' to limit to contrasts defined for SPM{F}</span>
+0033 <span class="comment">%            - 'T|F' to allow either contrasts for SPM{t} or SPM{F}</span>
+0034 <span class="comment">%              (both may be defined, but only one type may be selected)</span>
+0035 <span class="comment">%            - 'T&amp;F' to allow both contrasts for SPM{t} and SPM{F}</span>
+0036 <span class="comment">%            - defaults to 'T|F'</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% n          - Number of contrasts to select, Inf for unlimited</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% Prompt     - Prompt string</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% Mcstr      - string to describe multiple contrast selection</span>
+0043 <span class="comment">%              E.g. ' for conjunction' will result in the status message</span>
+0044 <span class="comment">%                   reading 'Selected 2 contrasts for conjunction' when</span>
+0045 <span class="comment">%                   two contrasts are selected.</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% OK2chg     - logical, specifying whether the contrast structure can be</span>
+0048 <span class="comment">%              changed. If false, then new contrasts cannot be defined, and</span>
+0049 <span class="comment">%              existing contrasts cannot be renamed.</span>
+0050 <span class="comment">%</span>
+0051 <span class="comment">% I          - Index (or indices) of contrasts selected</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% D (out)    - Design with modified contrast definitions structure array</span>
+0054 <span class="comment">% changef    - flag set to 1 if contrast definitions have changed</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">%                           ----------------</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% [F,cF] = ui_get_contrasts(D, 'Initialise',...</span>
+0059 <span class="comment">%                              Vis,STATmode,n,Prompt,Mcstr,OK2chg)</span>
+0060 <span class="comment">% Initialise mConMan GUI for contrast selection/definition</span>
+0061 <span class="comment">% Vis        - Initialisation action:</span>
+0062 <span class="comment">%              'close' - closes mConMan window</span>
+0063 <span class="comment">%              'off'   - hides mConMan window</span>
+0064 <span class="comment">%              'reset' - hides and resets mConMan window</span>
+0065 <span class="comment">%              'on'    - initialises mConMan window using arguments given</span>
+0066 <span class="comment">% STATmode   - string indicating STAT modes to allow contrast</span>
+0067 <span class="comment">% n          - number of contrasts to select, Inf for unlimited</span>
+0068 <span class="comment">% Prompt     - Prompt string</span>
+0069 <span class="comment">% Mcstr      - string to describe multiple contrast selection</span>
+0070 <span class="comment">% OK2chg     - logical, specifying whether contrast structure can be changed</span>
+0071 <span class="comment">% F          - figure used for contrast manager window</span>
+0072 <span class="comment">% cF         - Figure which was current before function call</span>
+0073 <span class="comment">%</span>
+0074 <span class="comment">% FORMAT ui_get_contrasts(D, 'ListCon',hConList,STAT,I)</span>
+0075 <span class="comment">% Utility function to list contrasts in ListBox</span>
+0076 <span class="comment">% hConList   - handle of GUI ListBox object</span>
+0077 <span class="comment">% STAT       - STAT character: 'T' or 'F' or empty (show all)</span>
+0078 <span class="comment">% I          - indices of currently selected contrasts</span>
+0079 <span class="comment">%</span>
+0080 <span class="comment">% FORMAT ui_get_contrasts(D, 'GraphCons',xCon,I,F)</span>
+0081 <span class="comment">% Utility function to display contrast image/bar-graph &amp; setup &quot;surfing&quot;</span>
+0082 <span class="comment">% xCon       - contrast definitions structure array</span>
+0083 <span class="comment">% I          - indicies of contrasts to display</span>
+0084 <span class="comment">% F          - handle of 'mConMan' figure</span>
+0085 <span class="comment">%</span>
+0086 <span class="comment">% FORMAT ui_get_contrasts(D, 'StatusLine',F,str,col)</span>
+0087 <span class="comment">% Utility function to update mConMan window statusline</span>
+0088 <span class="comment">% F          - handle of 'mConMan' figure</span>
+0089 <span class="comment">% str        - string to display</span>
+0090 <span class="comment">%              (defaults to status of contrast selection)</span>
+0091 <span class="comment">% col        - colour to use [defaults to 'w' - white</span>
+0092 <span class="comment">%</span>
+0093 <span class="comment">% FORMAT ui_get_contrasts(D, 'Done_CB')</span>
+0094 <span class="comment">% CallBack for &quot;Done&quot; button on mConMan contrast selection interface</span>
+0095 <span class="comment">%</span>
+0096 <span class="comment">% FORMAT ui_get_contrasts(D, 'ConList_CB')</span>
+0097 <span class="comment">% CallBack for contrast selection ListBox</span>
+0098 <span class="comment">%</span>
+0099 <span class="comment">% FORMAT STAT = ui_get_contrasts(D, 'TFA')</span>
+0100 <span class="comment">% CallBack for 'T','F' or 'any' STAT selection RadioButtons</span>
+0101 <span class="comment">% FORMAT STAT = ui_get_contrasts(D, 'TFA',F,STAT)</span>
+0102 <span class="comment">% Initialisation of 'T','F' or 'any' STAT selection RadioButtons</span>
+0103 <span class="comment">% FORMAT STAT = ui_get_contrasts(D, 'TFA',F,STAT,STATmode)</span>
+0104 <span class="comment">% Function to set STAT &amp; STATmode</span>
+0105 <span class="comment">% Initialisation of 'T','F' or 'any' STAT selection RadioButtons &amp; STATmode</span>
+0106 <span class="comment">% F          - handle of 'mConMan' figure</span>
+0107 <span class="comment">% STAT       - STAT character: 'T' or 'F' of empty (all)</span>
+0108 <span class="comment">% STATmode   - string indicating STAT modes to allow contrast</span>
+0109 <span class="comment">%</span>
+0110 <span class="comment">% FORMAT ui_get_contrasts(D, 'FConMenu_CB')</span>
+0111 <span class="comment">% CallBack to set state of mConMan contrast selection figure context menu</span>
+0112 <span class="comment">%</span>
+0113 <span class="comment">% FORMAT ui_get_contrasts(D, 'Rename_CB')</span>
+0114 <span class="comment">% CallBack to handle contrast renaming</span>
+0115 <span class="comment">%</span>
+0116 <span class="comment">% FORMAT [c,I,emsg,imsg,msg] = ui_get_contrasts(D, 'ParseCon',cstr,X,STAT)</span>
+0117 <span class="comment">% Contrast weights parser: Catch evaluation errors and invalid contrasts</span>
+0118 <span class="comment">% cstr       - string (or cellstr) to evaluate to get contrast(s)</span>
+0119 <span class="comment">% X          - design matrix</span>
+0120 <span class="comment">% STAT       - 'T' or 'F' (for contrast checking)</span>
+0121 <span class="comment">% c          - contrast weights matrix</span>
+0122 <span class="comment">% I          - logical validity indicator: indicates which rows of</span>
+0123 <span class="comment">%              cellstr(cstr) generated valid contrasts which were</span>
+0124 <span class="comment">%              included in c</span>
+0125 <span class="comment">% emsg       - cellstr of error messages produced during parsing</span>
+0126 <span class="comment">% imsg       - cellstr of information messages for valid contrasts</span>
+0127 <span class="comment">% msg        - cellstr of all messages produced during parsing,</span>
+0128 <span class="comment">%              one cell per string in cstr</span>
+0129 <span class="comment">%</span>
+0130 <span class="comment">% FORMAT [iX0,I,emsg,imsg] = ui_get_contrasts(D, 'ParseIStr',str,max)</span>
+0131 <span class="comment">% DesMtx column index parser: Catch eval errors and invalid indices</span>
+0132 <span class="comment">% str        - string for evaluation to get column indices</span>
+0133 <span class="comment">% max        - number of columns in design matrix</span>
+0134 <span class="comment">% iX0        - vector of column indices: '!' if evaluation error</span>
+0135 <span class="comment">% I          - 0 if evaluation error, 1 if evaluated OK</span>
+0136 <span class="comment">% emsg       - error message</span>
+0137 <span class="comment">%              (evaluation errors, non-integer indices, out of range indices)</span>
+0138 <span class="comment">% imsg       - information message (valid indices)</span>
+0139 <span class="comment">%</span>
+0140 <span class="comment">% FORMAT ui_get_contrasts(D, 'Reset_CB')</span>
+0141 <span class="comment">% CallBack handler for &quot;reset&quot; button on contrast selection interface</span>
+0142 <span class="comment">%</span>
+0143 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_Setup_CB')</span>
+0144 <span class="comment">% CallBack handler for &quot;Define new&quot; button:</span>
+0145 <span class="comment">% Initialises Contrast Definition interface for use</span>
+0146 <span class="comment">%</span>
+0147 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_ConMtx_CB')</span>
+0148 <span class="comment">% CallBack handler for contrast weights definition widget</span>
+0149 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_X1cols_CB')</span>
+0150 <span class="comment">% Callback handler for F-contrast &quot;columns for reduced design&quot; widget</span>
+0151 <span class="comment">%</span>
+0152 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_Reset_CB')</span>
+0153 <span class="comment">% CallBack handler for &quot;reset&quot; button on contrast definition interface</span>
+0154 <span class="comment">%</span>
+0155 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_Cancel_CB')</span>
+0156 <span class="comment">% CallBack handler for &quot;cancel&quot; button on contrast definition interface</span>
+0157 <span class="comment">%</span>
+0158 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_OK_CB')</span>
+0159 <span class="comment">% CallBack handler for &quot;OK&quot; button on contrast definiton interface</span>
+0160 <span class="comment">%</span>
+0161 <span class="comment">% FORMAT ui_get_contrasts(D, 'D_Status',F)</span>
+0162 <span class="comment">% Set status line of contrast definition interface</span>
+0163 <span class="comment">% F          - Handle of mConMan figure [defaults gcbf]</span>
+0164 <span class="comment">%</span>
+0165 <span class="comment">% FORMAT [F,H] = ui_get_contrasts(D, 'CreateFig')</span>
+0166 <span class="comment">% Creates mConMan dialog figure (definition interface initially hidden)</span>
+0167 <span class="comment">% F          - Handle of mConMan figure created</span>
+0168 <span class="comment">% H          - Stricture of Handles:</span>
+0169 <span class="comment">% .hConList  - handle of contrast selection ListBox</span>
+0170 <span class="comment">% .hDesMtxAx - handle of axes for design matrix imaging</span>
+0171 <span class="comment">% .hPrompt   - handle of prompt text object</span>
+0172 <span class="comment">% .hSTATmode - handle of frame containing &quot;T/F/All&quot; radio buttons</span>
+0173 <span class="comment">% .hStatLin  - handle of status line text object (in selection interface)</span>
+0174 <span class="comment">% .hNew      - handle of &quot;Define new contrast&quot; pushbutton</span>
+0175 <span class="comment">%_______________________________________________________________________</span>
+0176 <span class="comment">%</span>
+0177 <span class="comment">%</span>
+0178 <span class="comment">% MarsBaR edits</span>
+0179 <span class="comment">% -------------</span>
+0180 <span class="comment">% The contrasts are stored in a stripped down mardo design structure, to</span>
+0181 <span class="comment">% allow this function to be called using object methods.  We need to return</span>
+0182 <span class="comment">% a flag (changef) to tell us if the contrasts have been changed by the GUI.</span>
+0183 <span class="comment">% This is stored in the D_Reset tagged handle (which is attached to the</span>
+0184 <span class="comment">% reset button).</span>
+0185 <span class="comment">%</span>
+0186 <span class="comment">% Edited from @(#)spm_conman.m    2.18 Andrew Holmes 02/09/10</span>
+0187 <span class="comment">%</span>
+0188 <span class="comment">% $Id$</span>
+0189   
+0190 <span class="comment">% simplify access to design</span>
+0191 xCon = <a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(D);
+0192 
+0193 <span class="comment">%-Parameters</span>
+0194 <span class="comment">%=======================================================================</span>
+0195 COLOUR   = [.8,.8,1];    <span class="comment">%-Question background colour</span>
+0196 PJump    = 1;        <span class="comment">%-Jumping of pointer to mConMan window</span>
+0197 
+0198 
+0199 <span class="keyword">if</span> (nargin&lt;2) | ismember(varargin{1}, {<span class="string">'T'</span>, <span class="string">'F'</span>, <span class="string">'T|F'</span>, <span class="string">'T&amp;F'</span>})
+0200 <span class="comment">%=======================================================================</span>
+0201 <span class="comment">% [I,D,changef] = ui_get_contrasts(D,STATmode,n,Prompt,Mcstr,OK2chg)</span>
+0202 
+0203 <span class="comment">%-Condition arguments</span>
+0204 <span class="comment">%-----------------------------------------------------------------------</span>
+0205 <span class="keyword">if</span> nargin&lt;6, OK2chg = 0; <span class="keyword">else</span>, OK2chg=varargin{5}; <span class="keyword">end</span>
+0206 <span class="keyword">if</span> nargin&lt;5, Mcstr = <span class="string">''</span>; <span class="keyword">else</span>, Mcstr=varargin{4}; <span class="keyword">end</span>
+0207 <span class="keyword">if</span> nargin&lt;4, Prompt=<span class="string">'Select contrast(s)...'</span>; <span class="keyword">else</span>, Prompt=varargin{3}; <span class="keyword">end</span>
+0208 <span class="keyword">if</span> nargin&lt;3, n=1; <span class="keyword">else</span>, n=varargin{2}; <span class="keyword">end</span>
+0209 <span class="keyword">if</span> nargin&lt;2, STATmode=<span class="string">'T|F'</span>; <span class="keyword">else</span>, STATmode=varargin{1}; <span class="keyword">end</span>
+0210 
+0211 <span class="comment">%-----------------------------------------------------------------------</span>
+0212 
+0213 <span class="comment">%-Setup mConMan window &amp; jump cursor</span>
+0214 [F,cF] = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'Initialise'</span>,<span class="string">'on'</span>,STATmode,n,Prompt,Mcstr,OK2chg);
+0215 <span class="keyword">if</span> PJump
+0216     PLoc = get(0,<span class="string">'PointerLocation'</span>);
+0217     FRec = get(F,<span class="string">'Position'</span>);
+0218     set(0,<span class="string">'PointerLocation'</span>,[FRec(1)+FRec(3)/2, FRec(2)+FRec(2)/2])
+0219 <span class="keyword">end</span>
+0220 
+0221 <span class="comment">%-Wait until filenames have been selected</span>
+0222 hDone = findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>);
+0223 waitfor(hDone,<span class="string">'UserData'</span>)
+0224 
+0225 <span class="comment">%-Exit with error if mConManWin deleted</span>
+0226 <span class="keyword">if</span> ~ishandle(hDone), error(<span class="string">'Contrast Manager was quit!'</span>), <span class="keyword">end</span>
+0227 
+0228 <span class="comment">%-Get xCon, I &amp; exit status</span>
+0229 status   = get(hDone,<span class="string">'UserData'</span>);
+0230 hConList = findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>);
+0231 Q        = get(hConList,<span class="string">'UserData'</span>);
+0232 I        = Q(get(hConList,<span class="string">'Value'</span>));
+0233 changef  = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_Reset'</span>), <span class="string">'UserData'</span>);
+0234 
+0235 <span class="comment">% Set new contrasts, if modified</span>
+0236 <span class="keyword">if</span> changef
+0237     D = <a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>(D, <a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(get(F,<span class="string">'UserData'</span>)), 0);
+0238 <span class="keyword">end</span>
+0239 
+0240 <span class="comment">%-Reset and hide SelFileWin</span>
+0241 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'Initialise'</span>,<span class="string">'off'</span>);
+0242 
+0243 <span class="comment">%-Return focus to previous figure (if any)</span>
+0244 set(0,<span class="string">'CurrentFigure'</span>,cF)
+0245 
+0246 <span class="comment">%-Jump cursor back to previous location</span>
+0247 <span class="keyword">if</span> PJump, set(0,<span class="string">'PointerLocation'</span>,PLoc), <span class="keyword">end</span>
+0248 
+0249 <span class="comment">%-Exit with error if reset (status=-1)</span>
+0250 <span class="keyword">if</span> status == -1, error([<span class="string">'reset: '</span>,mfilename,<span class="string">' bailing out!'</span>]), <span class="keyword">end</span>
+0251 
+0252 <span class="comment">%-Output arguments</span>
+0253 varargout={I,D,changef};
+0254 
+0255 <span class="keyword">return</span>
+0256 <span class="keyword">end</span>
+0257 
+0258 <span class="comment">%=======================================================================</span>
+0259 <span class="comment">% - Callbacks &amp; Utility embedded functions</span>
+0260 <span class="comment">%=======================================================================</span>
+0261 
+0262 <span class="comment">%=======================================================================</span>
+0263 <span class="keyword">switch</span> lower(varargin{1}), <span class="keyword">case</span> <span class="string">'initialise'</span>
+0264 <span class="comment">%=======================================================================</span>
+0265 <span class="comment">% [F,cF] = ui_get_contrasts(D,'Initialise',Vis,STATmode,n,Prompt,Mcstr,OK2chg)</span>
+0266 
+0267 <span class="keyword">if</span> nargin&lt;2, Vis=<span class="string">'on'</span>; <span class="keyword">else</span>, Vis=varargin{2}; <span class="keyword">end</span>
+0268 
+0269 <span class="comment">%-Recover mConMan figure number (if it exists)</span>
+0270 F  = findobj(get(0,<span class="string">'Children'</span>),<span class="string">'Flat'</span>,<span class="string">'Tag'</span>,<span class="string">'mConMan'</span>);
+0271 
+0272 cF = get(0,<span class="string">'CurrentFigure'</span>);                <span class="comment">%-Save current figure</span>
+0273 
+0274 <span class="keyword">switch</span> lower(Vis), <span class="keyword">case</span> <span class="string">'close'</span>
+0275     close(F)
+0276     varargout = {[],cF};
+0277     <span class="keyword">return</span>
+0278 <span class="keyword">case</span> {<span class="string">'off'</span>,<span class="string">'reset'</span>}
+0279     varargout = {F,cF};                <span class="comment">%-Return figure handles</span>
+0280     <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F), <span class="keyword">return</span>, <span class="keyword">end</span>            <span class="comment">%-Return if no mConMan win</span>
+0281     set(F,<span class="string">'Visible'</span>,<span class="string">'off'</span>)                <span class="comment">%-Make window Invisible</span>
+0282     <span class="keyword">if</span> strcmp(lower(Vis),<span class="string">'reset'</span>)
+0283         set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>),<span class="string">'UserData'</span>,-1)
+0284     <span class="keyword">end</span>
+0285     <span class="keyword">return</span>
+0286 <span class="keyword">case</span> <span class="string">'on'</span>
+0287     <span class="comment">%-Sort out arguments</span>
+0288     <span class="comment">%---------------------------------------------------------------</span>
+0289     <span class="keyword">if</span> nargin&lt;8, OK2chg = 0; <span class="keyword">else</span>, OK2chg=varargin{7}; <span class="keyword">end</span>
+0290     <span class="keyword">if</span> nargin&lt;7, Mcstr = <span class="string">''</span>; <span class="keyword">else</span>, Mcstr=varargin{6}; <span class="keyword">end</span>
+0291     Mcstr = cellstr(Mcstr); <span class="keyword">if</span> length(Mcstr)&lt;2, Mcstr{2}=<span class="string">''</span>; <span class="keyword">end</span>
+0292     <span class="keyword">if</span> nargin&lt;6, Prompt=<span class="string">'Select contrast(s)'</span>; <span class="keyword">else</span>, Prompt=varargin{5}; <span class="keyword">end</span>
+0293     <span class="keyword">if</span> nargin&lt;5, n=Inf; <span class="keyword">else</span>, n=varargin{4}; <span class="keyword">end</span>
+0294     <span class="keyword">if</span> nargin&lt;4, STATmode=<span class="string">'T&amp;F'</span>; <span class="keyword">else</span>, STATmode=varargin{3}; <span class="keyword">end</span>
+0295 
+0296     <span class="comment">%-Create/find mConMan window</span>
+0297     <span class="comment">%---------------------------------------------------------------</span>
+0298     <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F)                    <span class="comment">%-Create mConMan win</span>
+0299         [F,H] = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'CreateFig'</span>);
+0300     <span class="keyword">else</span>                        <span class="comment">%-Get handles</span>
+0301         H.hDesMtxAx = findobj(F,<span class="string">'Tag'</span>,<span class="string">'DesMtxAx'</span>);
+0302         H.hParEstAx = findobj(F,<span class="string">'Tag'</span>,<span class="string">'ParEstAx'</span>);
+0303         H.hConList  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>);
+0304         H.hPrompt   = findobj(F,<span class="string">'Tag'</span>,<span class="string">'Prompt'</span>);
+0305         H.hTFAf     = findobj(F,<span class="string">'Tag'</span>,<span class="string">'TFAf'</span>);
+0306         H.hSTATmode = findobj(F,<span class="string">'Tag'</span>,<span class="string">'STATmode'</span>);
+0307         H.hStatLin  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'StatusLine'</span>);
+0308         H.hNew      = findobj(F,<span class="string">'Tag'</span>,<span class="string">'New'</span>);
+0309     <span class="keyword">end</span>
+0310     varargout = {F,cF};                <span class="comment">%-Return figure handles</span>
+0311     
+0312     <span class="comment">%-Set up xX for display etc</span>
+0313     <span class="comment">%---------------------------------------------------------------</span>
+0314     SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0315     xX   = SPM.xX;
+0316 
+0317     <span class="comment">%-Store required parameters in UserData of various objects</span>
+0318     <span class="comment">%---------------------------------------------------------------</span>
+0319     tmpD = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, struct(<span class="string">'xCon'</span>, xCon));
+0320     <a href="#_sub3" class="code" title="subfunction sf_SetD(D, changef, F)">sf_SetD</a>(tmpD, 0, F);
+0321     set(H.hStatLin,        <span class="string">'UserData'</span>, Mcstr)    <span class="comment">%-**</span>
+0322 
+0323 
+0324     <span class="comment">% A little hack to make designs compatible between SPM 99 and 2</span>
+0325     <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX, <span class="string">'Xnames'</span>), xX.name = xX.Xnames; <span class="keyword">end</span>
+0326 
+0327     <span class="comment">%-Initialise interface</span>
+0328     <span class="comment">%---------------------------------------------------------------</span>
+0329     set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>),<span class="string">'UserData'</span>,0)    <span class="comment">%-Init. Done UserData</span>
+0330     STAT = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'TFA'</span>,F,<span class="string">''</span>,STATmode);<span class="comment">%-Init. TFA buttons</span>
+0331     set(H.hPrompt,<span class="string">'String'</span>,Prompt,<span class="string">'UserData'</span>,n)    <span class="comment">%-Set prompt</span>
+0332     <a href="#_sub1" class="code" title="subfunction sf_ImDesMtx(xX, h)">sf_ImDesMtx</a>(xX, H.hDesMtxAx)                <span class="comment">%-Depict DesMtx</span>
+0333     <a href="#_sub2" class="code" title="subfunction sf_ImParEst(xX, h)">sf_ImParEst</a>(xX, H.hParEstAx)                <span class="comment">%-Parameter estimability</span>
+0334     <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'ListCon'</span>,H.hConList,STAT,[])    <span class="comment">%-List contrasts</span>
+0335     <span class="keyword">if</span> OK2chg, tmp=<span class="string">'on'</span>; <span class="keyword">else</span>, tmp=<span class="string">'off'</span>; <span class="keyword">end</span>    <span class="comment">%-OK to change xCon?</span>
+0336     set(H.hNew,<span class="string">'Enable'</span>,tmp)            <span class="comment">%-En/dis-able change UI</span>
+0337 <span class="comment">%-****    if isempty(xCon), ui_get_contrasts(D); end    %-Go straight to DNewUI</span>
+0338 
+0339     <span class="comment">%-Popup figure, retaining CurrentFigure</span>
+0340     <span class="comment">%---------------------------------------------------------------</span>
+0341     set(get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>),<span class="string">'UserData'</span>),<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+0342                             <span class="comment">%-Hide define UI</span>
+0343     figure(F)                    <span class="comment">%-PopUp figure</span>
+0344     set(0,<span class="string">'CurrentFigure'</span>,cF)            <span class="comment">%-Return to prev. figure</span>
+0345     <span class="keyword">return</span>
+0346 
+0347 <span class="keyword">otherwise</span>
+0348     error(<span class="string">'Unrecognised ''Vis'' option'</span>)
+0349 <span class="keyword">end</span>
+0350 
+0351 
+0352 <span class="comment">%=======================================================================</span>
+0353 <span class="keyword">case</span> <span class="string">'listcon'</span>
+0354 <span class="comment">%=======================================================================</span>
+0355 <span class="comment">% ui_get_contrasts(D,'ListCon',hConList,STAT,I)</span>
+0356 
+0357 hConList = varargin{2};
+0358 STAT     = varargin{3};
+0359 <span class="keyword">if</span> nargin&lt;5
+0360     Q = get(hConList,<span class="string">'UserData'</span>);
+0361     I = Q(get(hConList,<span class="string">'Value'</span>));
+0362 <span class="keyword">else</span>
+0363     I = varargin{4};
+0364 <span class="keyword">end</span>
+0365 
+0366 <span class="comment">%-Sort out list, filtering by STAT, and display</span>
+0367 <span class="comment">%-----------------------------------------------------------------------</span>
+0368 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xCon)
+0369     Q = [];
+0370 <span class="keyword">elseif</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(STAT)
+0371     Q = 1:length(xCon);
+0372 <span class="keyword">else</span>
+0373     Q = find(strcmp({xCon(:).STAT},STAT));
+0374 <span class="keyword">end</span>
+0375 
+0376 q = find(ismember(Q,I));
+0377 
+0378 <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Q)
+0379     str        = cell(0);
+0380     <span class="keyword">for</span> i=1:length(Q)
+0381         str{i} = sprintf(<span class="string">'%03d {%c} : %s'</span>,<span class="keyword">...</span>
+0382                 Q(i),xCon(Q(i)).STAT,xCon(Q(i)).name);
+0383     <span class="keyword">end</span>
+0384     FontAngle  = <span class="string">'Normal'</span>;
+0385     FontWeight = <span class="string">'Normal'</span>;
+0386     Enable     = <span class="string">'on'</span>;
+0387 <span class="keyword">else</span>
+0388     str        = [<span class="string">'no'</span>,deblank([<span class="string">' '</span>,STAT]),<span class="string">' contrasts defined'</span>];
+0389     FontAngle  = <span class="string">'Italic'</span>;
+0390     FontWeight = <span class="string">'Bold'</span>;
+0391     Enable     = <span class="string">'off'</span>;
+0392 <span class="keyword">end</span>
+0393 
+0394 set(hConList,<span class="string">'String'</span>,str,<span class="keyword">...</span>
+0395     <span class="string">'UserData'</span>,Q,<span class="keyword">...</span>
+0396     <span class="string">'Value'</span>,q,<span class="keyword">...</span>
+0397     <span class="string">'FontAngle'</span>,FontAngle,<span class="string">'FontWeight'</span>,FontWeight,<span class="keyword">...</span>
+0398     <span class="string">'Enable'</span>,Enable)
+0399 
+0400 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'GraphCons'</span>,xCon,Q(q),get(hConList,<span class="string">'Parent'</span>))
+0401 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'StatusLine'</span>,get(hConList,<span class="string">'Parent'</span>))
+0402 
+0403 
+0404 <span class="comment">%=======================================================================</span>
+0405 <span class="keyword">case</span> <span class="string">'graphcons'</span>
+0406 <span class="comment">%=======================================================================</span>
+0407 <span class="comment">% ui_get_contrasts(D, 'GraphCons',xCon,I,F)</span>
+0408 
+0409 <span class="keyword">if</span> nargin&gt;2, xCon=varargin{2}; <span class="keyword">end</span>
+0410 <span class="keyword">if</span> nargin&lt;4, I=[1:length(xCon)]; <span class="keyword">else</span>, I=varargin{3}; <span class="keyword">end</span>
+0411 <span class="keyword">if</span> nargin&lt;5, F=[]; <span class="keyword">else</span>, F=varargin{4}; <span class="keyword">end</span>
+0412 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F), F=spm_figure(<span class="string">'FindWin'</span>,<span class="string">'mConMan'</span>); <span class="keyword">end</span>
+0413 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F), error(<span class="string">'can''t find mConMan win'</span>), <span class="keyword">end</span>
+0414 
+0415 cF = get(0,<span class="string">'CurrentFigure'</span>);        <span class="comment">%-Save current figure</span>
+0416 set(0,<span class="string">'CurrentFigure'</span>,F);        <span class="comment">%-Make F current</span>
+0417 
+0418 delete(findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConGrphAx'</span>));
+0419 
+0420 
+0421 <span class="comment">%-Display contrasts</span>
+0422 <span class="comment">%-----------------------------------------------------------------------</span>
+0423 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(I)
+0424     axes(<span class="string">'Position'</span>,[0.65 (0.7 + .1*(1-0.9)) 0.3 .1*.9],<span class="keyword">...</span>
+0425         <span class="string">'Tag'</span>,<span class="string">'ConGrphAx'</span>,<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+0426     text(0.5,0.5,<span class="string">'no contrast(s)'</span>,<span class="keyword">...</span>
+0427         <span class="string">'FontSize'</span>,spm(<span class="string">'FontSize'</span>,8),<span class="keyword">...</span>
+0428         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+0429         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+0430         <span class="string">'VerticalAlignment'</span>,<span class="string">'Middle'</span>)
+0431 
+0432 <span class="keyword">else</span>
+0433 
+0434     nPar   = size(xCon(1).c,1);
+0435     xx     = [repmat([0:nPar-1],2,1);repmat([1:nPar],2,1)];
+0436     nCon   = length(I);
+0437     dy     = 0.2/max(nCon,2);
+0438     hConAx = axes(<span class="string">'Position'</span>,[0.65 (0.70 + dy*.1) 0.30 dy*(nCon-.1)],<span class="keyword">...</span>
+0439             <span class="string">'Tag'</span>,<span class="string">'ConGrphAx'</span>,<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0440     title(<span class="string">'contrast(s)'</span>)
+0441     htxt   = get(hConAx,<span class="string">'title'</span>); set(htxt,<span class="string">'Visible'</span>,<span class="string">'on'</span>)
+0442 
+0443     <span class="keyword">for</span> ii = nCon:-1:1
+0444         i  = abs(I(ii));
+0445         axes(<span class="string">'Position'</span>,[0.65 (0.7 + dy*(nCon-ii+.1)) 0.3 dy*.9])
+0446         <span class="keyword">if</span> xCon(i).STAT == <span class="string">'T'</span> &amp; size(xCon(i).c,2)==1
+0447         <span class="comment">%-Single vector contrast for SPM{t} - bar</span>
+0448         yy = [zeros(1,nPar);repmat(xCon(i).c',2,1);zeros(1,nPar)];
+0449         h = patch(xx,yy,[1,1,1]*.5);
+0450         set(gca,<span class="string">'Tag'</span>,<span class="string">'ConGrphAx'</span>,<span class="keyword">...</span>
+0451             <span class="string">'Box'</span>,<span class="string">'off'</span>,<span class="string">'TickDir'</span>,<span class="string">'out'</span>,<span class="keyword">...</span>
+0452             <span class="string">'XTick'</span>,[],<span class="keyword">...</span>
+0453             <span class="string">'XLim'</span>,    [0,nPar],<span class="keyword">...</span>
+0454             <span class="string">'YTick'</span>,[-1,0,+1],<span class="string">'YTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0455             <span class="string">'YLim'</span>,    [min(xCon(i).c),max(xCon(i).c)] + <span class="keyword">...</span>
+0456                 [-1 +1] * max(abs(xCon(i).c))/10    )
+0457         <span class="keyword">else</span>
+0458         <span class="comment">%-F-contrast - image</span>
+0459         h = image((xCon(i).c'/max(abs(xCon(i).c(:)))+1)*32);
+0460         set(gca,<span class="string">'Tag'</span>,<span class="string">'ConGrphAx'</span>,<span class="keyword">...</span>
+0461             <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="string">'TickDir'</span>,<span class="string">'out'</span>,<span class="keyword">...</span>
+0462             <span class="string">'XTick'</span>,[],<span class="keyword">...</span>
+0463             <span class="string">'XLim'</span>,    [0,nPar]+0.5,<span class="keyword">...</span>
+0464             <span class="string">'YTick'</span>,[0:size(xCon(i).c,2)]+0.5,<span class="string">'YTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0465             <span class="string">'YLim'</span>,    [0,size(xCon(i).c,2)]+0.5    )
+0466         <span class="keyword">end</span>
+0467         <span class="keyword">if</span> I(ii)&gt;0, ylabel(num2str(i)), <span class="keyword">end</span>
+0468         set(h,<span class="string">'ButtonDownFcn'</span>,<span class="string">'spm_DesRep(''SurfCon_CB'')'</span>,<span class="keyword">...</span>
+0469           <span class="string">'UserData'</span>,    struct(    <span class="string">'i'</span>,        I(ii),<span class="keyword">...</span>
+0470                     <span class="string">'h'</span>,        htxt,<span class="keyword">...</span>
+0471                     <span class="string">'xCon'</span>,        xCon(i)))
+0472     <span class="keyword">end</span>
+0473 <span class="keyword">end</span>
+0474 
+0475 set(0,<span class="string">'CurrentFigure'</span>,cF)        <span class="comment">%-Reset CurrentFigure to previous figure</span>
+0476 
+0477 
+0478 <span class="comment">%=======================================================================</span>
+0479 <span class="keyword">case</span> <span class="string">'statusline'</span>
+0480 <span class="comment">%=======================================================================</span>
+0481 <span class="comment">% ui_get_contrasts(D, 'StatusLine',F,str,col)</span>
+0482 
+0483 <span class="keyword">if</span> nargin&lt;3,    F = findobj(get(0,<span class="string">'Children'</span>),<span class="string">'Flat'</span>,<span class="string">'Tag'</span>,<span class="string">'mConMan'</span>);
+0484     <span class="keyword">else</span>,    F = varargin{2}; <span class="keyword">end</span>
+0485 
+0486 <span class="keyword">if</span> nargin&lt;4
+0487     n = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Prompt'</span>),<span class="string">'UserData'</span>);
+0488     m = length(get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>),<span class="string">'Value'</span>));
+0489     
+0490     str = sprintf(<span class="string">'Selected %d contrast'</span>,m);
+0491     <span class="keyword">if</span> m~=1, str=[str,<span class="string">'s'</span>]; <span class="keyword">end</span>
+0492     
+0493     Mcstr = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'StatusLine'</span>),<span class="string">'UserData'</span>);
+0494     <span class="keyword">if</span> m&gt;1, str=[str,Mcstr{1}]; <span class="keyword">else</span>, str=[str,Mcstr{2}]; <span class="keyword">end</span>
+0495     
+0496     <span class="keyword">if</span> m==0
+0497         <span class="keyword">if</span> n&lt;0
+0498             str = [str,<span class="string">', press &quot;Done&quot; when finished.'</span>];
+0499         <span class="keyword">else</span>
+0500             str = [str,<span class="string">'.'</span>];
+0501         <span class="keyword">end</span>
+0502     <span class="keyword">else</span>
+0503         <span class="keyword">if</span> n==1
+0504             str = [str,<span class="string">', press &quot;Done&quot;.'</span>];
+0505         <span class="keyword">else</span>
+0506             str = [str,<span class="string">', press &quot;Done&quot; when finished.'</span>];
+0507         <span class="keyword">end</span>
+0508     <span class="keyword">end</span>
+0509 <span class="keyword">else</span>
+0510     str = varargin{3};
+0511 <span class="keyword">end</span>
+0512 
+0513 <span class="keyword">if</span> nargin&lt;5, col=<span class="string">'w'</span>; <span class="keyword">else</span>, col=varargin{4}; <span class="keyword">end</span>
+0514 
+0515 set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'StatusLine'</span>),<span class="string">'String'</span>,str,<span class="string">'ForegroundColor'</span>,col)
+0516 
+0517 
+0518 <span class="comment">%=======================================================================</span>
+0519 <span class="keyword">case</span> <span class="string">'done_cb'</span>
+0520 <span class="comment">%=======================================================================</span>
+0521 <span class="comment">% ui_get_contrasts(D, 'Done_CB')</span>
+0522 
+0523 F = gcbf;
+0524 
+0525 n = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Prompt'</span>),<span class="string">'UserData'</span>);
+0526 q = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>),<span class="string">'Value'</span>);
+0527 
+0528 
+0529 <span class="keyword">if</span> n&gt;0 &amp; <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(q)         <span class="comment">%-Contrast(s) required, but none selected</span>
+0530     <span class="keyword">if</span> n==1,            str = <span class="string">'Select a contrast!'</span>;
+0531     <span class="keyword">elseif</span> isfinite(n), str = sprintf(<span class="string">'Select %d contrasts!'</span>,n);
+0532     <span class="keyword">else</span>,               str = <span class="string">'Select at least one contrast!'</span>;
+0533     <span class="keyword">end</span>
+0534 <span class="keyword">elseif</span> length(q)&gt;abs(n)     <span class="comment">%-Too many contrasts selected</span>
+0535     <span class="keyword">if</span> n&lt;0, tstr=<span class="string">'at most'</span>; <span class="keyword">else</span>, tstr=<span class="string">'only'</span>; <span class="keyword">end</span>
+0536     <span class="keyword">if</span> abs(n)==1,       str = [<span class="string">'Select'</span>,tstr,<span class="string">' one contrast!'</span>];
+0537     <span class="keyword">else</span>,               str = sprintf(<span class="string">'Select %s %d contrasts!'</span>,tstr,abs(n));
+0538     <span class="keyword">end</span>
+0539 <span class="keyword">elseif</span> n&gt;0 &amp; isfinite(n) &amp; length(q)&lt;n
+0540     <span class="keyword">if</span> n==1,            str = <span class="string">'Select a contrast!'</span>;
+0541     <span class="keyword">else</span>,               str = sprintf(<span class="string">'Select %d contrasts!'</span>,n);
+0542     <span class="keyword">end</span>
+0543 <span class="keyword">else</span>
+0544     str = <span class="string">''</span>;
+0545 <span class="keyword">end</span>
+0546 
+0547 <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(str)             <span class="comment">%-error: display error dialog box</span>
+0548     spm(<span class="string">'Beep'</span>)
+0549     msgbox(str,sprintf(<span class="string">'%s%s: %s...'</span>,spm(<span class="string">'ver'</span>),<span class="keyword">...</span>
+0550         spm(<span class="string">'GetUser'</span>,<span class="string">' (%s)'</span>),mfilename),<span class="string">'error'</span>,<span class="string">'modal'</span>)
+0551 <span class="keyword">else</span>                         <span class="comment">%-OK, set Done UserData tag for handling</span>
+0552     set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'Done'</span>),<span class="string">'UserData'</span>,1)
+0553 <span class="keyword">end</span>
+0554 
+0555 
+0556 <span class="comment">%=======================================================================</span>
+0557 <span class="keyword">case</span> <span class="string">'conlist_cb'</span>
+0558 <span class="comment">%=======================================================================</span>
+0559 <span class="comment">% ui_get_contrasts(D, 'ConList_CB')</span>
+0560 
+0561 F        = gcbf;
+0562 hConList = gcbo;
+0563 
+0564 Q        = get(hConList,<span class="string">'UserData'</span>);
+0565 I        = Q(get(hConList,<span class="string">'Value'</span>));
+0566 
+0567 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'GraphCons'</span>,xCon,I,F)
+0568 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'StatusLine'</span>,get(hConList,<span class="string">'Parent'</span>))
+0569 
+0570 <span class="keyword">if</span> strcmp(get(F,<span class="string">'SelectionType'</span>),<span class="string">'open'</span>), <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'Done_CB'</span>), <span class="keyword">end</span>
+0571 
+0572 
+0573 <span class="comment">%=======================================================================</span>
+0574 <span class="keyword">case</span> {<span class="string">'tfa'</span>,<span class="string">'d_tf'</span>}
+0575 <span class="comment">%=======================================================================</span>
+0576 <span class="comment">% STAT = ui_get_contrasts(D, 'TFA')</span>
+0577 <span class="comment">% STAT = ui_get_contrasts(D, 'TFA',F,STAT)</span>
+0578 <span class="comment">% STAT = ui_get_contrasts(D, 'TFA',F,STAT,STATmode)</span>
+0579 
+0580 DefNew = strcmp(lower(varargin{1}),<span class="string">'d_tf'</span>);        <span class="comment">%-Handling DefineNew UI?</span>
+0581 
+0582 <span class="keyword">if</span> nargin&lt;3, F = gcbf; <span class="keyword">else</span>, F=varargin{2}; <span class="keyword">end</span>
+0583 
+0584 <span class="keyword">if</span> nargin&lt;4                   <span class="comment">%-Called as CallBack of T or F RadioButton</span>
+0585 <span class="comment">%-----------------------------------------------------------------------</span>
+0586     h = gcbo;
+0587     <span class="keyword">if</span> get(h,<span class="string">'Value'</span>)==0
+0588         <span class="comment">%-Was selected - don't allow unselection</span>
+0589         set(h,<span class="string">'Value'</span>,1)
+0590         varargout={get(h,<span class="string">'UserData'</span>)};
+0591         <span class="keyword">return</span>
+0592     <span class="keyword">else</span>
+0593         <span class="comment">%-Get new STAT</span>
+0594         STAT = get(h,<span class="string">'UserData'</span>);
+0595     <span class="keyword">end</span>
+0596 <span class="keyword">else</span>
+0597     STAT = varargin{3};
+0598 <span class="keyword">end</span>
+0599 
+0600 <span class="keyword">if</span> ~(nargin&lt;5)                           <span class="comment">%-Called to set STAT &amp; STATmode</span>
+0601 <span class="comment">%-----------------------------------------------------------------------</span>
+0602     STATmode = varargin{4};
+0603     b_set = 1;
+0604 <span class="keyword">else</span>
+0605     STATmode = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'STATmode'</span>),<span class="string">'UserData'</span>);
+0606     b_set = 0;
+0607 <span class="keyword">end</span>
+0608 
+0609 
+0610 <span class="comment">%-Check STATmode &amp; STAT, set temporary STATmode &amp; STAT indicies</span>
+0611 <span class="comment">%-----------------------------------------------------------------------</span>
+0612 STATinfo = struct(<span class="keyword">...</span><span class="comment">                    %-STAT info structure</span>
+0613         <span class="string">'mode'</span>,        { <span class="string">'T'</span>,  <span class="string">'F'</span>,  <span class="string">'T|F'</span>,    <span class="string">'T&amp;F'</span>},<span class="keyword">...</span>
+0614         <span class="string">'vSTAT'</span>,    {{<span class="string">'T'</span>},{<span class="string">'F'</span>},{<span class="string">'T'</span>,<span class="string">'F'</span>},{<span class="string">'T'</span>,<span class="string">'F'</span>,<span class="string">''</span>}},<span class="keyword">...</span>
+0615         <span class="string">'defSTAT'</span>,    { <span class="string">'T'</span>,  <span class="string">'F'</span>,  <span class="string">'T'</span>,      <span class="string">''</span>},<span class="keyword">...</span>
+0616         <span class="string">'Enable'</span>,    {    {<span class="string">'on'</span>, <span class="string">'off'</span>,<span class="string">'off'</span>},<span class="keyword">...</span>
+0617                     {<span class="string">'off'</span>,<span class="string">'on'</span> ,<span class="string">'off'</span>},<span class="keyword">...</span>
+0618                     {<span class="string">'on'</span>, <span class="string">'on'</span>, <span class="string">'off'</span>},<span class="keyword">...</span>
+0619                     {<span class="string">'on'</span>, <span class="string">'on'</span>, <span class="string">'on'</span> }}    );
+0620 i        = find(strcmp(STATmode,{STATinfo.mode}));    <span class="comment">%-STATmode index</span>
+0621 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(i), error(<span class="string">'unknown STATmode'</span>), <span class="keyword">end</span>        <span class="comment">%-Check STATmode valid</span>
+0622 <span class="keyword">if</span> DefNew &amp; i==4, i=3; <span class="keyword">end</span>                    <span class="comment">%-Treat 'T&amp;F' as 'T|F'?</span>
+0623 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(STAT), STAT=STATinfo(i).defSTAT; <span class="keyword">end</span>        <span class="comment">%-Set STAT as default(?)</span>
+0624 j        = find(strcmp(STAT,{<span class="string">'T'</span>,<span class="string">'F'</span>,<span class="string">''</span>}));        <span class="comment">%-STAT index</span>
+0625 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(j), error(<span class="string">'unknown STAT'</span>); <span class="keyword">end</span>        <span class="comment">%-Check known STAT</span>
+0626 <span class="keyword">if</span> ~any(strcmp(STAT,STATinfo(i).vSTAT))            <span class="comment">%-Check STAT is</span>
+0627     error(<span class="string">'Invalid STAT for this STATmode'</span>)        <span class="comment">% valid for</span>
+0628 <span class="keyword">end</span>                            <span class="comment">% this STATmode</span>
+0629 
+0630 
+0631 <span class="comment">%-Set STAT buttons (&amp; Dis/Enable according to STATmode if b_setEnable)</span>
+0632 <span class="comment">%-----------------------------------------------------------------------</span>
+0633 <span class="keyword">if</span> ~DefNew, Tag=<span class="string">'TFA'</span>; <span class="keyword">else</span>, Tag=<span class="string">'D_TF'</span>; <span class="keyword">end</span>
+0634 H = flipud(findobj(F,<span class="string">'Tag'</span>,Tag));
+0635 set(H(j),            <span class="string">'Value'</span>,1)
+0636 set(H(setdiff([1:length(H)],j)),<span class="string">'Value'</span>,0)
+0637 <span class="keyword">if</span> b_set
+0638     <span class="comment">%-Set RadioButton 'Enable' &amp; store STATmode</span>
+0639     set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'STATmode'</span>),<span class="string">'UserData'</span>,STATmode)
+0640     <span class="keyword">for</span> k=1:length(H), set(H(k),<span class="string">'Enable'</span>,STATinfo(i).Enable{k}), <span class="keyword">end</span>
+0641 <span class="keyword">end</span>
+0642 
+0643 
+0644 <span class="keyword">if</span> ~DefNew                    <span class="comment">%-Additional UI setup for main contrast manager</span>
+0645 <span class="comment">%-----------------------------------------------------------------------</span>
+0646 
+0647     <span class="comment">%-Reset ConList for new STAT if callback for TFA button</span>
+0648     <span class="comment">%-------------------------------------------------------------------</span>
+0649     <span class="keyword">if</span> nargin&lt;3
+0650         <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'ListCon'</span>,findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>),STAT)
+0651     <span class="keyword">end</span>
+0652 
+0653 <span class="keyword">else</span>     <span class="comment">%-Additional UI setup for  DNew contrast definition interface</span>
+0654 <span class="comment">%-----------------------------------------------------------------------</span>
+0655 
+0656     <span class="comment">%-Get handles of control objects</span>
+0657     <span class="comment">%-------------------------------------------------------------------</span>
+0658     hD_ConMtx  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>);
+0659     hD_X1cols  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_X1cols'</span>);
+0660     hD_ConErrs = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConErrs'</span>);
+0661     hD_ConInfo = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConInfo'</span>);
+0662     HD_Ttxt    = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_Ttxt'</span>);
+0663     HD_Ftxt    = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_Ftxt'</span>);
+0664     
+0665     <span class="comment">%-Set interface for new STAT</span>
+0666     <span class="comment">%-------------------------------------------------------------------</span>
+0667     set(hD_ConMtx,<span class="string">'String'</span>,{},<span class="string">'UserData'</span>,[])            <span class="comment">%-Clear ConMtx box</span>
+0668     set(hD_X1cols,<span class="string">'String'</span>,<span class="string">''</span>)                          <span class="comment">%-Clear X1cols box</span>
+0669     set([hD_ConErrs,hD_ConInfo],<span class="string">'String'</span>,{},<span class="string">'Value'</span>,[]) <span class="comment">%-Clear parsing boxes</span>
+0670     <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'GraphCons'</span>,[],[],F)                     <span class="comment">%-Clear contrast plot</span>
+0671     <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'D_Status'</span>,F)                            <span class="comment">%-Set StatusLine</span>
+0672     
+0673     <span class="keyword">switch</span> STAT
+0674     <span class="keyword">case</span> <span class="string">'T'</span>
+0675         set(hD_ConMtx,<span class="string">'Max'</span>,1)
+0676         set(HD_Ttxt,<span class="string">'Visible'</span>,<span class="string">'on'</span>)
+0677         set([hD_X1cols;HD_Ftxt],<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+0678     <span class="keyword">case</span> <span class="string">'F'</span>
+0679         set(hD_ConMtx,<span class="string">'Max'</span>,2)
+0680         set(HD_Ttxt,<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+0681         set([hD_X1cols;HD_Ftxt],<span class="string">'Visible'</span>,<span class="string">'on'</span>)
+0682     <span class="keyword">otherwise</span>
+0683         error(<span class="string">'illegal case'</span>)
+0684     <span class="keyword">end</span>
+0685 
+0686 <span class="keyword">end</span>
+0687 
+0688 <span class="comment">%-Return STAT</span>
+0689 <span class="comment">%-----------------------------------------------------------------------</span>
+0690 varargout = {STAT};
+0691 
+0692 
+0693 
+0694 <span class="comment">%=======================================================================</span>
+0695 <span class="keyword">case</span> <span class="string">'fconmenu_cb'</span>
+0696 <span class="comment">%=======================================================================</span>
+0697 <span class="comment">% ui_get_contrasts(D, 'FConMenu_CB')</span>
+0698 
+0699 <span class="keyword">if</span> strcmp(get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'New'</span>),<span class="string">'Enable'</span>),<span class="string">'off'</span>)
+0700     set(findobj(gcbo,<span class="string">'Tag'</span>,<span class="string">'CM_New'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+0701     set(findobj(gcbo,<span class="string">'Tag'</span>,<span class="string">'CM_Ren'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+0702 <span class="keyword">else</span>
+0703     set(findobj(gcbo,<span class="string">'Tag'</span>,<span class="string">'CM_New'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>)
+0704     <span class="keyword">if</span> length(get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>),<span class="string">'Value'</span>))==1
+0705             set(findobj(gcbo,<span class="string">'Tag'</span>,<span class="string">'CM_Ren'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>)
+0706     <span class="keyword">else</span>
+0707             set(findobj(gcbo,<span class="string">'Tag'</span>,<span class="string">'CM_Ren'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>)
+0708     <span class="keyword">end</span>
+0709 <span class="keyword">end</span>
+0710 
+0711 
+0712 
+0713 <span class="comment">%=======================================================================</span>
+0714 <span class="keyword">case</span> <span class="string">'rename_cb'</span>
+0715 <span class="comment">%=======================================================================</span>
+0716 <span class="comment">% ui_get_contrasts(D, 'Rename_CB')</span>
+0717 
+0718 F = gcbf;
+0719 
+0720 hConList = findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>);
+0721 Q        = get(hConList,<span class="string">'UserData'</span>);
+0722 i        = get(hConList,<span class="string">'Value'</span>);
+0723 
+0724 <span class="comment">%-Make sure there's only one selected contrast</span>
+0725 <span class="comment">%-----------------------------------------------------------------------</span>
+0726 <span class="keyword">if</span> length(i)~=1
+0727     msgbox(<span class="string">'Can only rename a single contrast!'</span>,<span class="keyword">...</span>
+0728         sprintf(<span class="string">'%s%s: %s...'</span>,spm(<span class="string">'ver'</span>),<span class="keyword">...</span>
+0729         spm(<span class="string">'GetUser'</span>,<span class="string">' (%s)'</span>),mfilename),<span class="string">'error'</span>,<span class="string">'modal'</span>)
+0730     <span class="keyword">return</span>
+0731 <span class="keyword">end</span>
+0732 
+0733 <span class="comment">%-Get indices of current contrast</span>
+0734 <span class="comment">%-----------------------------------------------------------------------</span>
+0735 I      = Q(i);
+0736 
+0737 <span class="comment">%-Get new name</span>
+0738 <span class="comment">%-----------------------------------------------------------------------</span>
+0739 str = sprintf(<span class="string">'Enter new name for contrast %d (currently &quot;%s&quot;):'</span>,I,xCon(I).name);
+0740 nname  = inputdlg(str,<span class="string">'SPM: Rename contrast'</span>,1,{<span class="string">''</span>},<span class="string">'off'</span>);
+0741 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(nname), <span class="keyword">return</span>, <span class="keyword">end</span>
+0742 
+0743 <span class="comment">%-Change name in ConList</span>
+0744 <span class="comment">%-----------------------------------------------------------------------</span>
+0745 tmp    = get(hConList,<span class="string">'String'</span>);
+0746 tmp{i} = strrep(tmp{i},xCon(I).name,nname{1});
+0747 set(hConList,<span class="string">'String'</span>,tmp)
+0748 
+0749 <span class="comment">%-Change name in contrast structure</span>
+0750 <span class="comment">%-----------------------------------------------------------------------</span>
+0751 xCon(I).name = nname{1};
+0752 D = <a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>(D, xCon, 0);
+0753 <a href="#_sub3" class="code" title="subfunction sf_SetD(D, changef, F)">sf_SetD</a>(D, 1, F);
+0754 
+0755 
+0756 <span class="comment">%=======================================================================</span>
+0757 <span class="keyword">case</span> <span class="string">'parsecon'</span>                       <span class="comment">%-Parse (cell)string into contrast</span>
+0758 <span class="comment">%=======================================================================</span>
+0759 <span class="comment">% [c,I,emsg,imsg,msg] = ui_get_contrasts(D, 'ParseCon',cstr,X,STAT)</span>
+0760 <span class="comment">% X is raw DesMtx or space structure</span>
+0761 
+0762 <span class="comment">%-Sort out parameters</span>
+0763 <span class="comment">%-----------------------------------------------------------------------</span>
+0764 <span class="keyword">if</span> nargin&lt;5, STAT=<span class="string">'F'</span>; <span class="keyword">else</span>, STAT=varargin{4}; <span class="keyword">end</span>
+0765 cstr = varargin{2};
+0766 X    = varargin{3};
+0767 p    = spm_SpUtil(<span class="string">'size'</span>,X,2);
+0768 
+0769 <span class="comment">%-Preliminary parsing of contrast string (cstr) into cellstr</span>
+0770 <span class="comment">%-----------------------------------------------------------------------</span>
+0771 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cstr)
+0772     varargout = {[],0,{<span class="string">'    &lt;- !empty input'</span>},{},{}};
+0773     <span class="keyword">return</span>
+0774 <span class="keyword">elseif</span> iscell(cstr)
+0775     <span class="keyword">if</span> size(cstr,1)~=1, cstr=cstr(:); <span class="keyword">end</span>
+0776     c    = cstr;
+0777 <span class="keyword">elseif</span> isstr(cstr)
+0778     cstr = cellstr(cstr);
+0779     c    = cstr;
+0780 <span class="keyword">elseif</span> isnumeric(cstr)
+0781     <span class="keyword">if</span> ndims(cstr)&gt;2, error(<span class="string">'matrices only!'</span>), <span class="keyword">end</span>
+0782     c    = num2cell(cstr,2);
+0783     cstr = cell(size(c));
+0784     <span class="keyword">for</span> i=1:prod(size(c)), cstr{i}=num2str(c{i}); <span class="keyword">end</span>
+0785 <span class="keyword">else</span>
+0786     error(<span class="string">'contrast input must be string or number'</span>)
+0787 <span class="keyword">end</span>
+0788 
+0789 
+0790 <span class="comment">%-Evaluate individual lines of contrast matrix input</span>
+0791 <span class="comment">%-----------------------------------------------------------------------</span>
+0792 I   = zeros(size(c,1),1);
+0793 msg = cell(size(c)); [msg{:}] = deal(<span class="string">' (OK)'</span>);
+0794 <span class="keyword">for</span> i=1:size(c,1)
+0795     <span class="keyword">if</span> isstr(c{i})
+0796         c{i} = evalin(<span class="string">'base'</span>,[<span class="string">'['</span>,c{i},<span class="string">']'</span>],<span class="string">'''!'''</span>);
+0797     <span class="keyword">end</span>
+0798     <span class="keyword">if</span> isstr(c{i})
+0799         msg{i} = <span class="string">'!evaluation error'</span>;
+0800     <span class="keyword">else</span>
+0801         <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(c{i})
+0802             msg{i}=<span class="string">' (empty line  - ignored)'</span>;
+0803         <span class="keyword">elseif</span> all(c{i}(:)==0)
+0804             <span class="keyword">if</span> size(c{i},1)==1, str=<span class="string">'vector'</span>; <span class="keyword">else</span>, str=<span class="string">'matrix'</span>; <span class="keyword">end</span>
+0805             c{i}=[]; msg{i}=[<span class="string">' (zero '</span>,str,<span class="string">' - ignored)'</span>];
+0806         <span class="keyword">elseif</span> STAT==<span class="string">'T'</span> &amp; size(c{i},1)&gt;1
+0807             c{i}=<span class="string">'!'</span>; msg{i}=<span class="string">'!vector required'</span>;
+0808         <span class="keyword">elseif</span> size(c{i},2)&gt;p
+0809             c{i}=<span class="string">'!'</span>; msg{i}=sprintf(<span class="string">'!too long - only %d prams'</span>,p);
+0810         <span class="keyword">else</span>
+0811             <span class="keyword">if</span> size(c{i},2)&lt;p
+0812                 tmp = p-size(c{i},2);
+0813                 c{i}=[c{i}, zeros(size(c{i},1),tmp)];
+0814                 <span class="keyword">if</span> size(c{i},1)&gt;1, str=<span class="string">' column'</span>; <span class="keyword">else</span>, str=<span class="string">''</span>; <span class="keyword">end</span>
+0815                 <span class="keyword">if</span> tmp&gt;1,          str=[str,<span class="string">'s'</span>]; <span class="keyword">end</span>
+0816                 msg{i} = sprintf(<span class="string">' (right padded with %d zero%s)'</span>,tmp,str);
+0817             <span class="keyword">end</span>
+0818             <span class="keyword">if</span> ~spm_SpUtil(<span class="string">'allCon'</span>,X,c{i}')
+0819                 c{i}=<span class="string">'!'</span>; msg{i}=<span class="string">'!invalid contrast'</span>;
+0820             <span class="keyword">end</span>
+0821         <span class="keyword">end</span>
+0822     <span class="keyword">end</span>
+0823     I(i)=~isstr(c{i});
+0824 <span class="keyword">end</span>
+0825 
+0826 <span class="comment">%-Construct contrast matrix, validity indicator, and collate parsing messages</span>
+0827 <span class="comment">%-----------------------------------------------------------------------</span>
+0828 c    = cat(1,c{find(I)});
+0829 msg  = [char(cstr), repmat(<span class="string">'  &lt;-  '</span>,size(msg,1),1), char(msg)];
+0830 emsg = msg(find(~I),:);
+0831 imsg = msg(find( I),:);
+0832 
+0833 <span class="keyword">if</span> all(I) &amp; STAT==<span class="string">'T'</span> &amp; size(c,1)&gt;1      <span class="comment">%-Check for vector t-contrasts!</span>
+0834     I=zeros(size(I)); emsg={<span class="string">'!vector required'</span>}; imsg={};
+0835 <span class="keyword">end</span>
+0836 
+0837 <span class="comment">%-Return arguments</span>
+0838 <span class="comment">%-----------------------------------------------------------------------</span>
+0839 varargout = {c',I,emsg,imsg,msg};
+0840 
+0841 
+0842 
+0843 <span class="comment">%=======================================================================</span>
+0844 <span class="keyword">case</span> <span class="string">'parseistr'</span>                     <span class="comment">%-Parse index string</span>
+0845 <span class="comment">%=======================================================================</span>
+0846 <span class="comment">% [iX0,I,emsg,imsg] = ui_get_contrasts(D, 'ParseIStr',str,max)</span>
+0847 <span class="comment">% str should be a string (row)vector</span>
+0848 
+0849 
+0850 <span class="comment">%-Sort out parameters</span>
+0851 <span class="comment">%-----------------------------------------------------------------------</span>
+0852 str = varargin{2};
+0853 mx  = varargin{3};
+0854 
+0855 
+0856 <span class="comment">%-Process input string</span>
+0857 <span class="comment">%-----------------------------------------------------------------------</span>
+0858 I = evalin(<span class="string">'base'</span>,[<span class="string">'['</span>,str,<span class="string">']'</span>],<span class="string">'''!'''</span>);
+0859 
+0860 <span class="keyword">if</span> isstr(I)
+0861     varargout = {<span class="string">'!'</span>,0,[str,<span class="string">'  &lt;- !evaluation error'</span>],<span class="string">''</span>};
+0862     <span class="keyword">return</span>
+0863 <span class="keyword">end</span>
+0864 
+0865 <span class="comment">%-Construct list of valid indicies</span>
+0866 <span class="comment">%-----------------------------------------------------------------------</span>
+0867 ok  = ismember(I(:)',[1:mx]);
+0868 iX0 = I(ok);
+0869 
+0870 <span class="comment">%-Construct diagnostic info messages</span>
+0871 <span class="comment">%-----------------------------------------------------------------------</span>
+0872 str = <span class="string">''</span>; msg=<span class="string">''</span>;
+0873 <span class="keyword">if</span> any(ok)
+0874     str = strvcat(str,num2str(I(ok)));
+0875     msg = strvcat(msg,<span class="string">'  &lt;-  (OK)'</span>);
+0876 <span class="keyword">end</span>
+0877 tmp = ( I&lt;1 | I&gt;mx );            <span class="comment">%-Out of range</span>
+0878 <span class="keyword">if</span> any(tmp)
+0879     str = strvcat(str,num2str(I(tmp)));
+0880     msg = strvcat(msg,sprintf(<span class="string">'  &lt;-  (ignored - not in [1:%d]'</span>,mx));
+0881 <span class="keyword">end</span>
+0882 tmp = ( ~tmp &amp; ~ok );            <span class="comment">%-Non integer in range</span>
+0883 <span class="keyword">if</span> any(tmp)
+0884     str = strvcat(str,num2str(I(tmp)));
+0885     msg = strvcat(msg,<span class="string">'  &lt;-  (ignored - non-integer)'</span>);
+0886 <span class="keyword">end</span>
+0887 
+0888 <span class="comment">%-Return arguments</span>
+0889 <span class="comment">%-----------------------------------------------------------------------</span>
+0890 varargout = {iX0,1,<span class="string">''</span>,cellstr([str,msg])};
+0891 
+0892 
+0893 <span class="comment">%=======================================================================</span>
+0894 <span class="keyword">case</span> <span class="string">'reset_cb'</span>
+0895 <span class="comment">%=======================================================================</span>
+0896 <span class="comment">% ui_get_contrasts(D, 'Reset_CB')</span>
+0897 
+0898 hConList = findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>);
+0899 STAT     = get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="string">'Value'</span>,1),<span class="string">'UserData'</span>);
+0900 
+0901 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D,<span class="string">'ListCon'</span>,hConList,STAT,[])
+0902 
+0903 
+0904 <span class="comment">%=======================================================================</span>
+0905 <span class="keyword">case</span> <span class="string">'d_setup_cb'</span>
+0906 <span class="comment">%=======================================================================</span>
+0907 <span class="comment">% ui_get_contrasts(D, 'D_Setup_CB')</span>
+0908 
+0909 F        = gcbf;
+0910 STAT     = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="string">'Value'</span>,1),<span class="string">'UserData'</span>);
+0911 STATmode = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'STATmode'</span>),<span class="string">'UserData'</span>);
+0912 
+0913 set(F,<span class="string">'UIContextMenu'</span>,[])                <span class="comment">%-Disable Fig ContextMenu</span>
+0914 H = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>),<span class="string">'UserData'</span>);    <span class="comment">%-Get define UI handles</span>
+0915 set(findobj(H,<span class="string">'flat'</span>,<span class="string">'Tag'</span>,<span class="string">'D_name'</span>),<span class="string">'String'</span>,<span class="string">''</span>)    <span class="comment">%-Clear name</span>
+0916 <span class="comment">%set(findobj(H,'flat','Tag','D_ConMtx'),'UserData',[])    %-Clear con definition</span>
+0917 set(H,<span class="string">'Visible'</span>,<span class="string">'on'</span>)                    <span class="comment">%-Show UI</span>
+0918 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'D_TF'</span>,F,STAT,STATmode);            <span class="comment">%-Setup rest of define UI</span>
+0919 
+0920 
+0921 <span class="comment">%=======================================================================</span>
+0922 <span class="keyword">case</span> {<span class="string">'d_conmtx_cb'</span>,<span class="string">'d_x1cols_cb'</span>}
+0923 <span class="comment">%=======================================================================</span>
+0924 <span class="comment">% ui_get_contrasts(D, 'D_ConMtx_CB')</span>
+0925 <span class="comment">% ui_get_contrasts(D, 'D_X1cols_CB')</span>
+0926 
+0927 fcn = find(strcmp(lower(varargin{1}),{<span class="string">'d_conmtx_cb'</span>,<span class="string">'d_x1cols_cb'</span>}));
+0928 
+0929 F   = gcbf;
+0930 h   = gcbo;
+0931 str = get(h,<span class="string">'String'</span>);
+0932 
+0933 hD_ConMtx  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>);
+0934 hD_X1cols  = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_X1cols'</span>);
+0935 
+0936 
+0937 <span class="comment">%-Extract info from holding objects</span>
+0938 <span class="comment">%-----------------------------------------------------------------------</span>
+0939 xX   = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'DesMtxAx'</span>),<span class="string">'UserData'</span>);
+0940 STAT = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_TF'</span>,<span class="string">'Value'</span>,1),<span class="string">'UserData'</span>);
+0941 
+0942 
+0943 <span class="keyword">if</span> fcn==1                              <span class="comment">%-Parse string from ConMtx widget</span>
+0944 <span class="comment">%-----------------------------------------------------------------------</span>
+0945 
+0946     set(hD_X1cols,<span class="string">'String'</span>,<span class="string">''</span>)
+0947     [c,I,emsg,imsg] = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'ParseCon'</span>,str,xX.xKXs,STAT);
+0948     <span class="keyword">if</span> all(I)
+0949         DxCon = spm_FcUtil(<span class="string">'Set'</span>,<span class="string">''</span>,STAT,<span class="string">'c'</span>,c,xX.xKXs);
+0950     <span class="keyword">else</span>
+0951         DxCon = [];
+0952     <span class="keyword">end</span>
+0953 
+0954 <span class="keyword">elseif</span> fcn==2               <span class="comment">%-Process column indicies from X1cols widget</span>
+0955 <span class="comment">%-----------------------------------------------------------------------</span>
+0956     set(hD_ConMtx,<span class="string">'String'</span>,<span class="string">''</span>)
+0957 
+0958     nPar              = spm_SpUtil(<span class="string">'size'</span>,xX.xKXs,2);
+0959     [iX0,I,emsg,imsg] = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'ParseIStr'</span>,str,nPar);
+0960 
+0961     <span class="keyword">if</span> I
+0962         <span class="keyword">try</span>    <span class="comment">%-try-catch block for any errors in spm_FcUtil!</span>
+0963             DxCon = spm_FcUtil(<span class="string">'Set'</span>,<span class="string">''</span>,STAT,<span class="string">'iX0'</span>,iX0,xX.xKXs);
+0964             <span class="keyword">if</span> STAT==<span class="string">'T'</span> &amp; size(DxCon.c,2)&gt;1
+0965                 I = 0; emsg = {<span class="string">'! t-contrasts must be vectors'</span>};
+0966             <span class="keyword">end</span>
+0967         <span class="keyword">catch</span>
+0968             I    = 0;
+0969             emsg = lasterr;
+0970         <span class="keyword">end</span>
+0971     <span class="keyword">end</span>
+0972 <span class="keyword">end</span>
+0973 
+0974 
+0975 <span class="comment">%-Define the contrast or report errors...</span>
+0976 <span class="comment">%-----------------------------------------------------------------------</span>
+0977 set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConErrs'</span>),<span class="string">'String'</span>,emsg,<span class="string">'Value'</span>,[])
+0978 set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConInfo'</span>),<span class="string">'String'</span>,imsg,<span class="string">'Value'</span>,[])
+0979 <span class="keyword">if</span> all(I)
+0980     set(hD_ConMtx,<span class="string">'UserData'</span>,DxCon);        <span class="comment">%-Store contrast</span>
+0981     <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'GraphCons'</span>,DxCon,-1,F)        <span class="comment">%-Depict contrast</span>
+0982 <span class="keyword">else</span>
+0983     set(hD_ConMtx,<span class="string">'UserData'</span>,[]);            <span class="comment">%-Clear contrast store</span>
+0984     <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'GraphCons'</span>,[],[],F)            <span class="comment">%-Clear contrast plot</span>
+0985 <span class="keyword">end</span>
+0986 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'D_Status'</span>,F)                <span class="comment">%-Set StatusLine</span>
+0987 
+0988 
+0989 <span class="comment">%=======================================================================</span>
+0990 <span class="keyword">case</span> <span class="string">'d_reset_cb'</span>
+0991 <span class="comment">%=======================================================================</span>
+0992 <span class="comment">% ui_get_contrasts(D, 'D_Reset_CB')</span>
+0993 
+0994 STAT = get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="string">'Value'</span>,1),<span class="string">'UserData'</span>);
+0995 set(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'D_name'</span>),<span class="string">'String'</span>,<span class="string">''</span>)        <span class="comment">%-Clear name</span>
+0996 set(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>),<span class="string">'UserData'</span>,[])    <span class="comment">%-Contrast definition</span>
+0997 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'D_TF'</span>,gcbf,STAT);                <span class="comment">%-Setup rest of define UI</span>
+0998 
+0999 
+1000 <span class="comment">%=======================================================================</span>
+1001 <span class="keyword">case</span> <span class="string">'d_cancel_cb'</span>
+1002 <span class="comment">%=======================================================================</span>
+1003 <span class="comment">% ui_get_contrasts(D, 'D_Cancel_CB')</span>
+1004 
+1005 set(get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>),<span class="string">'UserData'</span>),<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+1006 set(gcbf,<span class="string">'UIContextMenu'</span>,findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'mConMan_ConMen'</span>))
+1007 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'StatusLine'</span>)
+1008 
+1009 
+1010 <span class="comment">%=======================================================================</span>
+1011 <span class="keyword">case</span> <span class="string">'d_ok_cb'</span>
+1012 <span class="comment">%=======================================================================</span>
+1013 <span class="comment">% ui_get_contrasts(D, 'D_OK_CB')</span>
+1014 
+1015 F = gcbf;
+1016 
+1017 name  = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_name'</span>),<span class="string">'String'</span>);
+1018 DxCon = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>),<span class="string">'UserData'</span>);
+1019 STAT  = get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_TF'</span>,<span class="string">'Value'</span>,1),<span class="string">'UserData'</span>);
+1020 
+1021 dNam = ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(name);
+1022 dCon = ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(DxCon);
+1023 
+1024 <span class="keyword">if</span> ~(dNam &amp; dCon)
+1025     spm(<span class="string">'Beep'</span>)
+1026     str = {    <span class="string">'contrast name not defined!'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+1027         <span class="string">'no valid contrast defined!'</span>,<span class="string">''</span>};
+1028     msgbox(str([dNam+1,dCon+3]),<span class="keyword">...</span>
+1029         sprintf(<span class="string">'%s%s: %s...'</span>,spm(<span class="string">'ver'</span>),<span class="keyword">...</span>
+1030         spm(<span class="string">'GetUser'</span>,<span class="string">' (%s)'</span>),mfilename),<span class="string">'error'</span>,<span class="string">'modal'</span>)
+1031     <span class="keyword">return</span>
+1032 <span class="keyword">end</span>
+1033 
+1034 
+1035 <span class="comment">%-Append new contrast to xCon structure of mConMan figure 'UserData'</span>
+1036 <span class="comment">%-----------------------------------------------------------------------</span>
+1037 DxCon.name = name;
+1038 <span class="keyword">if</span> ~strcmp(DxCon.STAT,STAT), error(<span class="string">'STAT &amp; DxCon.STAT mismatch!'</span>), <span class="keyword">end</span>
+1039 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xCon)
+1040     xCon = DxCon;
+1041 <span class="keyword">else</span>
+1042     xCon = [xCon, DxCon];
+1043 <span class="keyword">end</span>
+1044 D = <a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>(D, xCon, 0);
+1045 <a href="#_sub3" class="code" title="subfunction sf_SetD(D, changef, F)">sf_SetD</a>(D, 1, F);
+1046 
+1047 
+1048 <span class="comment">%-Redisplay the new list of contrasts, with the new one selected</span>
+1049 <span class="comment">%-----------------------------------------------------------------------</span>
+1050 hConList = findobj(F,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>);
+1051 I = length(xCon);
+1052 
+1053 <span class="comment">%-Use this code to add the new contrast to a multiple selection, if allowed</span>
+1054 <span class="comment">% Q        = get(hConList,'UserData');</span>
+1055 <span class="comment">% I        = Q(get(hConList,'Value'));</span>
+1056 <span class="comment">% n        = get(findobj(F,'Tag','Prompt'),'UserData');</span>
+1057 <span class="comment">% if abs(n)&gt;1, I=[I,length(xCon)]; else, I=length(xCon); end</span>
+1058 
+1059 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'TFA'</span>,F,xCon(end).STAT);            <span class="comment">%-Set STAT</span>
+1060 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'ListCon'</span>,hConList,xCon(end).STAT,I)    <span class="comment">%-ListCon</span>
+1061 
+1062 <span class="comment">%-Hide the DefineNew UI</span>
+1063 <span class="comment">%-----------------------------------------------------------------------</span>
+1064 set(get(findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>),<span class="string">'UserData'</span>),<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+1065 set(gcbf,<span class="string">'UIContextMenu'</span>,findobj(gcbf,<span class="string">'Tag'</span>,<span class="string">'mConMan_ConMen'</span>))
+1066 
+1067 
+1068 <span class="comment">%=======================================================================</span>
+1069 <span class="keyword">case</span> <span class="string">'d_status'</span>
+1070 <span class="comment">%=======================================================================</span>
+1071 <span class="comment">% ui_get_contrasts(D, 'D_Status',F)</span>
+1072 
+1073 <span class="keyword">if</span> nargin&lt;3, F=gcbf; <span class="keyword">else</span>, F=varargin{2}; <span class="keyword">end</span>
+1074 str  = {<span class="string">' not'</span>,<span class="string">''</span>};
+1075 dNam = ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_name'</span>),<span class="string">'String'</span>));
+1076 dCon = ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(get(findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>),<span class="string">'UserData'</span>));
+1077 <span class="keyword">if</span> dNam &amp; dCon, ok=<span class="string">'on'</span>; col=<span class="string">'g'</span>; <span class="keyword">else</span>, ok=<span class="string">'off'</span>; col=<span class="string">'w'</span>; <span class="keyword">end</span>
+1078 <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D, <span class="string">'StatusLine'</span>,F,<span class="keyword">...</span>
+1079     sprintf(<span class="string">'name%s defined, contrast%s defined'</span>,str{dNam+1},str{dCon+1}),<span class="keyword">...</span>
+1080     col)
+1081 <span class="comment">%set(findobj(F,'Tag','D_OK'),'Enable',ok)        %-Enable &quot;OK&quot; button?</span>
+1082 
+1083 
+1084 <span class="comment">%=======================================================================</span>
+1085 <span class="keyword">case</span> <span class="string">'createfig'</span>
+1086 <span class="comment">%=======================================================================</span>
+1087 <span class="comment">% [F,H] = ui_get_contrasts(D, 'CreateFig')</span>
+1088 <span class="comment">% Handle Structure - H.{hConList,hDesMtxAx,hPrompt,hSTATmode,hStatLin,hNew}</span>
+1089 
+1090 cF = get(0,<span class="string">'CurrentFigure'</span>);        <span class="comment">%-Save current figure</span>
+1091 
+1092 <span class="comment">%-Generic callBack code.  Fetches object for method calls in callbacks</span>
+1093 <span class="comment">%-----------------------------------------------------------------------</span>
+1094 cb = <span class="string">'conD = get(findobj(''Tag'', ''mConMan''),''UserData''); '</span>;
+1095 
+1096 <span class="comment">%-Create window, compute scaling for screen size</span>
+1097 <span class="comment">%-----------------------------------------------------------------------</span>
+1098 WS = spm(<span class="string">'WinScale'</span>);                <span class="comment">%-Window scaling factors</span>
+1099 FS = spm(<span class="string">'FontSizes'</span>);                <span class="comment">%-Scaled font sizes</span>
+1100 PF = spm_platform(<span class="string">'fonts'</span>);            <span class="comment">%-Font names (for this platform)</span>
+1101 S0 = get(0,<span class="string">'ScreenSize'</span>);            <span class="comment">%-Screen size</span>
+1102 
+1103 F = figure(<span class="string">'IntegerHandle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+1104         <span class="string">'Tag'</span>,<span class="string">'mConMan'</span>,<span class="keyword">...</span>
+1105         <span class="string">'Name'</span>,<span class="string">'SPM contrast manager'</span>,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+1106         <span class="string">'Position'</span>,[S0(3)/2,S0(4)/2,0,0] + [-250,-200,500,400].*WS,<span class="keyword">...</span>
+1107         <span class="string">'Resize'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+1108         <span class="string">'Color'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+1109         <span class="string">'MenuBar'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+1110         <span class="string">'DefaultTextColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1111         <span class="string">'DefaultTextFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+1112         <span class="string">'DefaultTextFontSize'</span>,FS(10),<span class="keyword">...</span>
+1113         <span class="string">'DefaultAxesFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+1114         <span class="string">'DefaultUicontrolBackgroundColor'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+1115         <span class="string">'DefaultUicontrolFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+1116         <span class="string">'DefaultUicontrolFontSize'</span>,FS(10),<span class="keyword">...</span>
+1117         <span class="string">'DefaultUicontrolInterruptible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+1118         <span class="string">'Colormap'</span>,gray(64),<span class="keyword">...</span>
+1119         <span class="string">'Renderer'</span>,<span class="string">'painters'</span>,<span class="keyword">...</span>
+1120         <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+1121 
+1122 <span class="comment">%-Draw GUI objects</span>
+1123 <span class="comment">%-----------------------------------------------------------------------</span>
+1124 hPrompt = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'Tag'</span>,<span class="string">'Prompt'</span>,<span class="string">'UserData'</span>,[],<span class="keyword">...</span>
+1125         <span class="string">'String'</span>,<span class="string">'&lt;Prompt not set yet&gt;'</span>,<span class="keyword">...</span>
+1126         <span class="string">'FontName'</span>,PF.times,<span class="keyword">...</span>
+1127         <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+1128         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1129         <span class="string">'FontSize'</span>,FS(16),<span class="keyword">...</span>
+1130         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1131         <span class="string">'BackgroundColor'</span>,[1,1,1]*.7,<span class="keyword">...</span>
+1132         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1133         <span class="string">'Position'</span>,[020 370 280 025].*WS);
+1134 
+1135 <span class="comment">%                           ----------------</span>
+1136 <span class="comment">%-T/F/all buttons...</span>
+1137 
+1138 hSTATmode = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Tag'</span>,<span class="string">'STATmode'</span>,<span class="keyword">...</span>
+1139         <span class="string">'Position'</span>,[040 340 260 028].*WS);
+1140 uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'show'</span>,<span class="keyword">...</span>
+1141         <span class="string">'FontName'</span>,PF.times,<span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="string">'FontSize'</span>,FS(8),<span class="keyword">...</span>
+1142         <span class="string">'ForegroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1143         <span class="string">'Position'</span>,[045 365 030 010].*WS);
+1144 hT = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'RadioButton'</span>,<span class="string">'String'</span>,<span class="string">'t-contrasts'</span>,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="keyword">...</span>
+1145         <span class="string">'ToolTipString'</span>,<span class="string">'...to show only contrasts for SPM{t}'</span>,<span class="keyword">...</span>
+1146         <span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+1147         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1148         <span class="string">'UserData'</span>,<span class="string">'T'</span>,<span class="keyword">...</span>
+1149         <span class="string">'Position'</span>,[044 343 105 020].*WS);
+1150 hF = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'RadioButton'</span>,<span class="string">'String'</span>,<span class="string">'F-contrasts'</span>,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="keyword">...</span>
+1151         <span class="string">'ToolTipString'</span>,<span class="string">'...to show only contrasts for SPM{F}'</span>,<span class="keyword">...</span>
+1152         <span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+1153         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1154         <span class="string">'UserData'</span>,<span class="string">'F'</span>,<span class="keyword">...</span>
+1155         <span class="string">'Position'</span>,[149 343 105 020].*WS);
+1156 hA = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'RadioButton'</span>,<span class="string">'String'</span>,<span class="string">'all'</span>,<span class="string">'Tag'</span>,<span class="string">'TFA'</span>,<span class="keyword">...</span>
+1157         <span class="string">'ToolTipString'</span>,<span class="string">'...to show all defined contrasts'</span>,<span class="keyword">...</span>
+1158         <span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+1159         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1160         <span class="string">'UserData'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+1161         <span class="string">'Position'</span>,[254 343 041 020].*WS);
+1162 set([hT,hF,hA],<span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''TFA'');'</span>],<span class="keyword">...</span>
+1163         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>)
+1164 
+1165 
+1166 <span class="comment">%                           ----------------</span>
+1167 <span class="comment">%-Contrast list...</span>
+1168 
+1169 uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'Tag'</span>,<span class="string">'ConListHdr'</span>,<span class="keyword">...</span>
+1170         <span class="string">'String'</span>,<span class="string">'### {type} : name'</span>,<span class="keyword">...</span>
+1171         <span class="string">'FontSize'</span>,FS(8),<span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1172         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1173         <span class="string">'BackgroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1174         <span class="string">'Position'</span>,[042 320 256 016].*WS);
+1175 
+1176 hConList = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'ListBox'</span>,<span class="string">'Tag'</span>,<span class="string">'ConList'</span>,<span class="keyword">...</span>
+1177         <span class="string">'ToolTipString'</span>,[<span class="string">'Select contrast(s) - drag/shift-click'</span>,<span class="keyword">...</span>
+1178             <span class="string">'/ctrl-click to select multiple contrasts'</span>],<span class="keyword">...</span>
+1179         <span class="string">'String'</span>,{<span class="string">'list'</span>,<span class="string">'not'</span>,<span class="string">'set'</span>,<span class="string">'yet'</span>},<span class="keyword">...</span>
+1180         <span class="string">'Max'</span>,2,<span class="keyword">...</span>
+1181         <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''ConList_CB'')'</span>],<span class="keyword">...</span>
+1182         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>,<span class="keyword">...</span>
+1183         <span class="string">'BackgroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1184         <span class="string">'Position'</span>,[040 080 260 240].*WS);
+1185 
+1186 <span class="comment">%                           ----------------</span>
+1187 <span class="comment">%-Control buttons &amp; status area...</span>
+1188 
+1189 hNew = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Define new contrast...'</span>,<span class="keyword">...</span>
+1190         <span class="string">'Tag'</span>,<span class="string">'New'</span>,<span class="keyword">...</span>
+1191         <span class="string">'ToolTipString'</span>,<span class="string">'define new contrast'</span>,<span class="keyword">...</span>
+1192         <span class="string">'ForegroundColor'</span>,<span class="string">'b'</span>,<span class="keyword">...</span>
+1193         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_Setup_CB'')'</span>],<span class="keyword">...</span>
+1194         <span class="string">'Enable'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+1195         <span class="string">'Position'</span>,[040 050 150 022].*WS);
+1196 
+1197 uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Reset'</span>,<span class="keyword">...</span>
+1198         <span class="string">'ToolTipString'</span>,<span class="string">'reset selection'</span>,<span class="keyword">...</span>
+1199         <span class="string">'ForegroundColor'</span>,<span class="string">'r'</span>,<span class="keyword">...</span>
+1200         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Reset_CB'')'</span>],<span class="keyword">...</span>
+1201         <span class="string">'Position'</span>,[195 050 050 022].*WS);
+1202 
+1203 uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Done'</span>,<span class="keyword">...</span>
+1204         <span class="string">'ToolTipString'</span>,<span class="string">'done - press when selected contrast(s)'</span>,<span class="keyword">...</span>
+1205         <span class="string">'ForegroundColor'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+1206         <span class="string">'Tag'</span>,<span class="string">'Done'</span>,<span class="string">'UserData'</span>,1,<span class="keyword">...</span>
+1207         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Done_CB'')'</span>],<span class="keyword">...</span>
+1208         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+1209         <span class="string">'Position'</span>,[250 050 050 022].*WS);
+1210 
+1211 uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Tag'</span>,<span class="string">'StatusArea'</span>,<span class="keyword">...</span>
+1212     <span class="string">'Position'</span>,[010 010 480 030].*WS);
+1213 
+1214 <span class="keyword">if</span> exist(<span class="string">'spm_help.m'</span>)==2
+1215     uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'?'</span>,<span class="keyword">...</span>
+1216         <span class="string">'ToolTipString'</span>,<span class="string">'help on contrasts and the contrast manager'</span>,<span class="keyword">...</span>
+1217         <span class="string">'ForegroundColor'</span>,<span class="string">'g'</span>,<span class="keyword">...</span>
+1218         <span class="string">'Callback'</span>,<span class="string">'spm_help(''spm_conman.m'')'</span>,<span class="keyword">...</span>
+1219         <span class="string">'Position'</span>,[460 015 020 020].*WS);
+1220 <span class="keyword">end</span>
+1221 
+1222 hStatLin = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'Tag'</span>,<span class="string">'StatusLine'</span>,<span class="keyword">...</span>
+1223     <span class="string">'String'</span>,<span class="string">'&lt;Not set yet&gt;'</span>,<span class="keyword">...</span>
+1224     <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1225     <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1226     <span class="string">'ForegroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1227     <span class="string">'Position'</span>,[020 015 430 020].*WS);
+1228 
+1229 <span class="comment">%                           ----------------</span>
+1230 <span class="comment">%-Axes for design matrix and parameter estimability...</span>
+1231 
+1232 hDesMtxAx = axes(<span class="string">'Parent'</span>,F,<span class="string">'Tag'</span>,<span class="string">'DesMtxAx'</span>,<span class="keyword">...</span>
+1233         <span class="string">'Position'</span>,[0.65 0.30 0.30 0.40],<span class="keyword">...</span>
+1234         <span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1235         <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+1236 
+1237 hParEstAx = axes(<span class="string">'Parent'</span>,F,<span class="string">'Tag'</span>,<span class="string">'ParEstAx'</span>,<span class="keyword">...</span>
+1238         <span class="string">'Position'</span>,[0.65 0.18 0.30 0.05],<span class="keyword">...</span>
+1239         <span class="string">'Color'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1240         <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+1241 
+1242 <span class="comment">%                           ----------------</span>
+1243 <span class="comment">%-Figure UICOntextMenu</span>
+1244 
+1245 h = uicontextmenu(<span class="string">'Tag'</span>,<span class="string">'mConMan_ConMen'</span>);
+1246 set(F,<span class="string">'UIContextMenu'</span>,h)
+1247 uimenu(h,<span class="string">'Label'</span>,<span class="string">'Define new contrast...'</span>,<span class="keyword">...</span>
+1248     <span class="string">'Tag'</span>,<span class="string">'CM_New'</span>,<span class="keyword">...</span>
+1249     <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_Setup_CB'')'</span>],<span class="keyword">...</span>
+1250     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1251 uimenu(h,<span class="string">'Label'</span>,<span class="string">'Rename selected contrast...'</span>,<span class="keyword">...</span>
+1252     <span class="string">'Tag'</span>,<span class="string">'CM_Ren'</span>,<span class="keyword">...</span>
+1253     <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Rename_CB'')'</span>],<span class="keyword">...</span>
+1254     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1255 uimenu(h,<span class="string">'Label'</span>,<span class="string">'Reset'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+1256     <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Reset_CB'')'</span>],<span class="keyword">...</span>
+1257     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1258 uimenu(h,<span class="string">'Label'</span>,<span class="string">'Done'</span>,<span class="keyword">...</span>
+1259     <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Done_CB'')'</span>],<span class="keyword">...</span>
+1260     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1261 uimenu(h,<span class="string">'Label'</span>,<span class="string">'help'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+1262     <span class="string">'CallBack'</span>,<span class="string">'spm_help(''spm_conman'')'</span>,<span class="keyword">...</span>
+1263     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1264 uimenu(h,<span class="string">'Label'</span>,<span class="string">'crash out'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+1265     <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''Initialise'',''reset'');'</span>],<span class="keyword">...</span>
+1266     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1267 set(h,<span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''FConMenu_CB'')'</span>],<span class="keyword">...</span>
+1268     <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>);
+1269     
+1270 
+1271 <span class="comment">%-Draw contrast definition GUI</span>
+1272 <span class="comment">%-----------------------------------------------------------------------</span>
+1273 H = [];                <span class="comment">%-Save handles for visibility switching</span>
+1274 
+1275 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>,<span class="keyword">...</span>
+1276     <span class="string">'Position'</span>,[010 045 300 350].*WS);
+1277 H = [H,h];
+1278 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Prompt'</span>,<span class="string">'UserData'</span>,[],<span class="keyword">...</span>
+1279         <span class="string">'String'</span>,<span class="string">'define contrast...'</span>,<span class="keyword">...</span>
+1280         <span class="string">'FontName'</span>,PF.times,<span class="keyword">...</span>
+1281         <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+1282         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1283         <span class="string">'FontSize'</span>,FS(14),<span class="keyword">...</span>
+1284         <span class="string">'ForegroundColor'</span>,<span class="string">'b'</span>,<span class="keyword">...</span>
+1285         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1286         <span class="string">'Position'</span>,[020 360 280 030].*WS);
+1287 H = [H,h];
+1288 
+1289 <span class="comment">%                           ----------------</span>
+1290 <span class="comment">%-name</span>
+1291 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Position'</span>,[020 335 280 033].*WS);
+1292 H = [H,h];
+1293 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'name'</span>,<span class="keyword">...</span>
+1294         <span class="string">'FontSize'</span>,FS(10),<span class="keyword">...</span>
+1295         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1296         <span class="string">'ForegroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1297         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1298         <span class="string">'Position'</span>,[025 355 045 020].*WS);
+1299 H = [H,h];
+1300 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Edit'</span>,<span class="string">'Tag'</span>,<span class="string">'D_name'</span>,<span class="keyword">...</span>
+1301         <span class="string">'ToolTipString'</span>,<span class="string">'enter name for contrast'</span>,<span class="keyword">...</span>
+1302         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1303         <span class="string">'BackgroundColor'</span>,COLOUR,<span class="keyword">...</span>
+1304             <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_Status'')'</span>],<span class="keyword">...</span>
+1305             <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+1306         <span class="string">'Position'</span>,[080 340 215 022].*WS);
+1307 H = [H,h];
+1308 
+1309 <span class="comment">%                           ----------------</span>
+1310 <span class="comment">%-type</span>
+1311 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Position'</span>,[020 295 280 033].*WS);
+1312 H = [H,h];
+1313 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'type'</span>,<span class="keyword">...</span>
+1314         <span class="string">'FontSize'</span>,FS(10),<span class="keyword">...</span>
+1315         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1316         <span class="string">'ForegroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1317         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1318         <span class="string">'Position'</span>,[025 315 040 020].*WS);
+1319 H = [H,h];
+1320 
+1321 hDT = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'RadioButton'</span>,<span class="string">'String'</span>,<span class="string">'t-contrast'</span>,<span class="string">'Tag'</span>,<span class="string">'D_TF'</span>,<span class="keyword">...</span>
+1322         <span class="string">'ToolTipString'</span>,<span class="string">'...to define contrast for SPM{t}'</span>,<span class="keyword">...</span>
+1323         <span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+1324         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1325         <span class="string">'UserData'</span>,<span class="string">'T'</span>,<span class="keyword">...</span>
+1326         <span class="string">'Position'</span>,[080 300 105 022].*WS);
+1327 hDF = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'RadioButton'</span>,<span class="string">'String'</span>,<span class="string">'F-contrast'</span>,<span class="string">'Tag'</span>,<span class="string">'D_TF'</span>,<span class="keyword">...</span>
+1328         <span class="string">'ToolTipString'</span>,<span class="string">'...to define contrast for SPM{F}'</span>,<span class="keyword">...</span>
+1329         <span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+1330         <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+1331         <span class="string">'UserData'</span>,<span class="string">'F'</span>,<span class="keyword">...</span>
+1332         <span class="string">'Position'</span>,[190 300 105 022].*WS);
+1333 set([hDT,hDF],<span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_TF'');'</span>],<span class="keyword">...</span>
+1334         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>)
+1335 H = [H,hDT,hDF];
+1336 
+1337 <span class="comment">%                           ----------------</span>
+1338 <span class="comment">%-contrast</span>
+1339 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Frame'</span>,<span class="string">'Position'</span>,[020 080 280 208].*WS);
+1340 H = [H,h];
+1341 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'contrast'</span>,<span class="keyword">...</span>
+1342         <span class="string">'FontSize'</span>,FS(10),<span class="keyword">...</span>
+1343         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1344         <span class="string">'ForegroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+1345         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+1346         <span class="string">'Position'</span>,[025 275 055 020].*WS);
+1347 H = [H,h];
+1348 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'contrast'</span>,<span class="keyword">...</span>
+1349         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1350         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1351         <span class="string">'Position'</span>,[030 255 045 008].*WS);
+1352 H = [H,h];
+1353 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'weights'</span>,<span class="keyword">...</span>
+1354         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1355         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1356         <span class="string">'Position'</span>,[030 245 045 008].*WS);
+1357 H = [H,h];
+1358 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'vector'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Ttxt'</span>,<span class="keyword">...</span>
+1359         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1360         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1361         <span class="string">'Position'</span>,[030 235 045 008].*WS);
+1362 H = [H,h];
+1363 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'matrix'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Ftxt'</span>,<span class="keyword">...</span>
+1364         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1365         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1366         <span class="string">'Position'</span>,[030 235 045 008].*WS);
+1367 H = [H,h];
+1368 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Edit'</span>,<span class="string">'Tag'</span>,<span class="string">'D_ConMtx'</span>,<span class="keyword">...</span>
+1369         <span class="string">'ToolTipString'</span>,<span class="string">'enter contrast'</span>,<span class="keyword">...</span>
+1370         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1371         <span class="string">'BackgroundColor'</span>,COLOUR,<span class="keyword">...</span>
+1372         <span class="string">'Max'</span>,2,<span class="keyword">...</span>
+1373         <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_ConMtx_CB'')'</span>],<span class="keyword">...</span>
+1374         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>,<span class="keyword">...</span>
+1375         <span class="string">'UserData'</span>,[],<span class="keyword">...</span>
+1376         <span class="string">'Position'</span>,[080 200 215 082].*WS);
+1377 H = [H,h];
+1378 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'or'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Ftxt'</span>,<span class="keyword">...</span>
+1379         <span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>,<span class="keyword">...</span>
+1380         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1381         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1382         <span class="string">'Position'</span>,[025 205 030 008].*WS);
+1383 H = [H,h];
+1384 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'columns for'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Ftxt'</span>,<span class="keyword">...</span>
+1385         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1386         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1387         <span class="string">'Position'</span>,[022 190 070 008].*WS);
+1388 H = [H,h];
+1389 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Text'</span>,<span class="string">'String'</span>,<span class="string">'reduced design'</span>,<span class="string">'Tag'</span>,<span class="string">'D_Ftxt'</span>,<span class="keyword">...</span>
+1390         <span class="string">'FontSize'</span>,FS(6),<span class="keyword">...</span>
+1391         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+1392         <span class="string">'Position'</span>,[022 180 070 008].*WS);
+1393 H = [H,h];
+1394 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Edit'</span>,<span class="string">'Tag'</span>,<span class="string">'D_X1cols'</span>,<span class="keyword">...</span>
+1395         <span class="string">'ToolTipString'</span>,<span class="keyword">...</span>
+1396             <span class="string">'enter column indicies of reduced design matrix X0'</span>,<span class="keyword">...</span>
+1397         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1398         <span class="string">'BackgroundColor'</span>,COLOUR,<span class="keyword">...</span>
+1399         <span class="string">'CallBack'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_X1cols_CB'')'</span>],<span class="keyword">...</span>
+1400         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>,<span class="keyword">...</span>
+1401         <span class="string">'Position'</span>,[090 180 155 020].*WS);
+1402 H = [H,h];
+1403 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'...submit'</span>,<span class="keyword">...</span>
+1404         <span class="string">'FontSize'</span>,FS(8),<span class="keyword">...</span>
+1405         <span class="string">'ForegroundColor'</span>,<span class="string">'c'</span>,<span class="keyword">...</span>
+1406         <span class="string">'Position'</span>,[245 180 050 020].*WS);
+1407 H = [H,h];
+1408 
+1409 <span class="comment">%-Errors &amp; info boxes...</span>
+1410 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'ListBox'</span>,<span class="string">'Tag'</span>,<span class="string">'D_ConErrs'</span>,<span class="keyword">...</span>
+1411         <span class="string">'ToolTipString'</span>,<span class="string">'contrast parsing errors'</span>,<span class="keyword">...</span>
+1412         <span class="string">'FontName'</span>,PF.courier,<span class="string">'FontSize'</span>,FS(7),<span class="keyword">...</span>
+1413         <span class="string">'ForegroundColor'</span>,<span class="string">'r'</span>,<span class="keyword">...</span>
+1414         <span class="string">'BackgroundColor'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+1415         <span class="string">'Enable'</span>,<span class="string">'on'</span>,<span class="string">'Max'</span>,2,<span class="string">'Value'</span>,[],<span class="keyword">...</span>
+1416         <span class="string">'Position'</span>,[027 127 268 042].*WS);
+1417 H = [H,h];
+1418 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'ListBox'</span>,<span class="string">'Tag'</span>,<span class="string">'D_ConInfo'</span>,<span class="keyword">...</span>
+1419         <span class="string">'ToolTipString'</span>,<span class="string">'contrast parsing info'</span>,<span class="keyword">...</span>
+1420         <span class="string">'FontName'</span>,PF.courier,<span class="string">'FontSize'</span>,FS(7),<span class="keyword">...</span>
+1421         <span class="string">'ForegroundColor'</span>,<span class="string">'g'</span>,<span class="keyword">...</span>
+1422         <span class="string">'BackgroundColor'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+1423         <span class="string">'Enable'</span>,<span class="string">'on'</span>,<span class="string">'Max'</span>,2,<span class="string">'Value'</span>,[],<span class="keyword">...</span>
+1424         <span class="string">'Position'</span>,[027 085 268 042].*WS);
+1425 H = [H,h];
+1426 
+1427 <span class="comment">%                           ----------------</span>
+1428 <span class="comment">%-Control buttons &amp; status area...</span>
+1429 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Reset'</span>,<span class="keyword">...</span>
+1430         <span class="string">'Tag'</span>,<span class="string">'D_Reset'</span>,<span class="keyword">...</span>
+1431         <span class="string">'ToolTipString'</span>,<span class="string">'reset definition interface'</span>,<span class="keyword">...</span>
+1432         <span class="string">'ForegroundColor'</span>,<span class="string">'b'</span>,<span class="keyword">...</span>
+1433         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_Reset_CB'')'</span>],<span class="keyword">...</span>
+1434         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+1435         <span class="string">'Position'</span>,[140 053 050 022].*WS);
+1436 H = [H,h];
+1437 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+1438         <span class="string">'Tag'</span>,<span class="string">'D_Cancel'</span>,<span class="keyword">...</span>
+1439         <span class="string">'ToolTipString'</span>,<span class="string">'cancel contrast definition'</span>,<span class="keyword">...</span>
+1440         <span class="string">'ForegroundColor'</span>,<span class="string">'r'</span>,<span class="keyword">...</span>
+1441         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_Cancel_CB'')'</span>],<span class="keyword">...</span>
+1442         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+1443         <span class="string">'Position'</span>,[195 053 050 022].*WS);
+1444 H = [H,h];
+1445 h = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'OK'</span>,<span class="keyword">...</span>
+1446         <span class="string">'Tag'</span>,<span class="string">'D_OK'</span>,<span class="keyword">...</span>
+1447         <span class="string">'ToolTipString'</span>,<span class="string">'OK - press to accept newly defined contrast'</span>,<span class="keyword">...</span>
+1448         <span class="string">'ForegroundColor'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+1449         <span class="string">'Callback'</span>,[cb <span class="string">'ui_get_contrasts(conD, ''D_OK_CB'')'</span>],<span class="keyword">...</span>
+1450         <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+1451         <span class="string">'Position'</span>,[250 053 050 022].*WS);
+1452 H = [H,h];
+1453 set(findobj(H,<span class="string">'flat'</span>,<span class="string">'Tag'</span>,<span class="string">'DefineNew'</span>),<span class="string">'UserData'</span>,H)
+1454 
+1455 
+1456 <span class="comment">%-Finish up</span>
+1457 <span class="comment">%-----------------------------------------------------------------------</span>
+1458 set(0,<span class="string">'CurrentFigure'</span>,cF)
+1459 varargout = {F,struct(    <span class="string">'hConList'</span>,    hConList,<span class="keyword">...</span>
+1460             <span class="string">'hDesMtxAx'</span>,    hDesMtxAx,<span class="keyword">...</span>
+1461             <span class="string">'hParEstAx'</span>,    hParEstAx,<span class="keyword">...</span>
+1462             <span class="string">'hPrompt'</span>,    hPrompt,<span class="keyword">...</span>
+1463             <span class="string">'hSTATmode'</span>,    hSTATmode,<span class="keyword">...</span>
+1464             <span class="string">'hStatLin'</span>,    hStatLin,<span class="keyword">...</span>
+1465             <span class="string">'hNew'</span>,        hNew    )};
+1466 
+1467 
+1468 <span class="comment">%=======================================================================</span>
+1469 <span class="keyword">otherwise</span>                                               <span class="comment">%-unknown action</span>
+1470 <span class="comment">%=======================================================================</span>
+1471 error([<span class="string">'Illegal Action string: '</span>,varargin{1}])
+1472 
+1473 
+1474 <span class="comment">%=======================================================================</span>
+1475 <span class="keyword">end</span>                                                            <span class="comment">% - E N D</span>
+1476 <span class="keyword">return</span>
+1477 <span class="comment">%=======================================================================</span>
+1478 
+1479 
+1480 <span class="comment">%=======================================================================</span>
+1481 <span class="comment">% Subfunctions</span>
+1482 <span class="comment">%=======================================================================</span>
+1483 <a name="_sub1" href="#_subfunctions" class="code">function sf_ImDesMtx(xX, h)</a>
+1484 <span class="comment">%-Picture design matrix</span>
+1485 
+1486 axes(h)
+1487 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'nKX'</span>) &amp; ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.nKX)
+1488     hDesMtxIm = image((xX.nKX+1)*32);
+1489 <span class="keyword">else</span>
+1490     hDesMtxIm = image(<span class="keyword">...</span>
+1491         (spm_DesMtx(<span class="string">'sca'</span>,xX.xKXs.X,xX.name)+1)*32);
+1492 <span class="keyword">end</span>
+1493 set(h,<span class="string">'YTick'</span>,[],<span class="string">'XTick'</span>,[])            <span class="comment">%-No Tick marks</span>
+1494 set(h,<span class="string">'Tag'</span>,<span class="string">'DesMtxAx'</span>,<span class="string">'UserData'</span>,xX)    <span class="comment">%-Reset axis UserData after image</span>
+1495 xlabel(<span class="string">'Design matrix'</span>)
+1496 set(hDesMtxIm,<span class="string">'UserData'</span>,<span class="keyword">...</span>
+1497     struct(<span class="string">'X'</span>,xX.xKXs.X,<span class="string">'Xnames'</span>,{xX.name}))
+1498 set(hDesMtxIm,<span class="string">'ButtonDownFcn'</span>,<span class="string">'spm_DesRep(''SurfDesMtx_CB'')'</span>)
+1499 <span class="keyword">return</span>
+1500 
+1501 <a name="_sub2" href="#_subfunctions" class="code">function sf_ImParEst(xX, h)</a>
+1502 <span class="comment">%-Picture design parameter estimability</span>
+1503 
+1504 axes(h)
+1505 est  = spm_SpUtil(<span class="string">'IsCon'</span>,xX.xKXs);
+1506 nPar = length(est);
+1507 
+1508 hParEstIm = image((est+1)*32);
+1509 set(h,    <span class="string">'XLim'</span>,[0,nPar]+.5,<span class="string">'XTick'</span>,[1:nPar-1]+.5,<span class="string">'XTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+1510     <span class="string">'YLim'</span>,[0,1]+.5,<span class="string">'YDir'</span>,<span class="string">'reverse'</span>,<span class="string">'YTick'</span>,[],<span class="keyword">...</span>
+1511     <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="string">'TickDir'</span>,<span class="string">'in'</span>,<span class="string">'XGrid'</span>,<span class="string">'on'</span>,<span class="string">'GridLineStyle'</span>,<span class="string">'-'</span>);
+1512 xlabel(<span class="string">'parameter estimability'</span>)
+1513 set(h,<span class="string">'Tag'</span>,<span class="string">'ParEstAx'</span>)            <span class="comment">%-Reset 'Tag' after image cleared it</span>
+1514 set(hParEstIm,<span class="string">'UserData'</span>,struct(<span class="string">'est'</span>,est,<span class="string">'Xnames'</span>,{xX.name}))
+1515 set(hParEstIm,<span class="string">'ButtonDownFcn'</span>,<span class="string">'spm_DesRep(''SurfEstIm_CB'')'</span>)
+1516 <span class="keyword">return</span>
+1517 
+1518 <a name="_sub3" href="#_subfunctions" class="code">function sf_SetD(D, changef, F)</a>
+1519 <span class="comment">% Sets new data into figure</span>
+1520 <span class="keyword">if</span> nargin &lt; 2, changef = 0; <span class="keyword">end</span>
+1521 <span class="keyword">if</span> nargin &lt; 3, F = get(findobj(<span class="string">'Tag'</span>, <span class="string">'mConMan'</span>),<span class="string">'UserData'</span>); <span class="keyword">end</span>
+1522 
+1523 hD_Reset = findobj(F,<span class="string">'Tag'</span>,<span class="string">'D_Reset'</span>);
+1524 set(F, <span class="string">'UserData'</span>, D);
+1525 set(hD_Reset, <span class="string">'UserData'</span>, changef);
+1526 <span class="keyword">return</span>  
+1527   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

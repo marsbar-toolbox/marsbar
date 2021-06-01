@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of add_contrasts</title>
+  <meta name="keywords" content="add_contrasts">
+  <meta name="description" content="method to add contrast definitions to design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; add_contrasts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>add_contrasts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to add contrast definitions to design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [D,Ic,changef] = add_contrasts(D, C, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to add contrast definitions to design
+
+ The function has many different formats
+
+ FORMAT [D Ic changef] = add_contrasts(D, D2 [,Ic])
+
+ where D2 is a design. If there is no third argument, all the contrasts in
+ D2 will be added.  If third argument (Ic) is passed, specifies which
+ contrasts in D2 to add. If Ic passed, and empty, or contains the string
+ 'ui', contrasts to add are fetched using the GUI
+
+ OR
+ FORMAT [D Ic changef] = add_contrasts(D, xCon)
+
+ where xCon is a structure in SPM contrast format containing contrasts to
+ add.  If there is no third argument, all the contrasts in xCon will be
+ added.  If third argument (Ic) is passed, specifies which contrasts in xCon
+ to add. If Ic passed, and empty, or contains the string 'ui', contrasts to
+ add are fetched using the GUI
+
+ OR
+ FORMAT [D Ic changef] = add_contrasts(D, stat_struct)
+ where stat_struct has fields
+      'names',       string, or cell array of strings
+      'types',       string ('T' or 'F'), or cell array
+      'set_actions', string ('c', 'X0' or 'iX0') or array
+                     (see spm_FcUtil)
+                     (field is optional, defaults to 'c')
+      'values',      matrix of values
+
+ OR
+ FORMAT [D Ic changef] = add_contrasts(D, names, types, values)
+ where names, types, values are cell arrays of values, or values
+ (defined as above)
+
+ OR
+ FORMAT [D Ic  changef] = add_contrasts(D, names, types, set_actions, values)
+ where names, types, set_actions, values are cell arrays of values, or
+ values (defined as above)
+
+ Returns
+ D       - possibly modified SPM design
+ Ic      - indices of specified contrasts as stored in D
+ changef - 1 if D has changed during call else 0
+
+ Contrast will not be added if it is already present, but the correct
+ index will be returned in Ic
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>	method to set contrasts into design object</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>	method to set contrasts into design object</li>
+<li><a href="../../marsbar/@mardo_2/add_trial_f.html" class="code" title="function [D, changef] = add_trial_f(D)">add_trial_f</a>	method to add trial-specific F contrasts</li>
+<li><a href="../../marsbar/@mardo_99/add_trial_f.html" class="code" title="function [D, changef] = add_trial_f(D)">add_trial_f</a>	method to add trial-specific F contrasts</li>
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function xcon_re_entry = refresh_con(xcon_entry, sX)</a></li>
+<li><a href="#_sub2" class="code">function C = sf_cell_to_conset(names, types, varargin)</a></li>
+<li><a href="#_sub3" class="code">function C = sf_conset_to_xcon(con_set, sX)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [D,Ic,changef] = add_contrasts(D, C, varargin)</a>
+0002 <span class="comment">% method to add contrast definitions to design</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% The function has many different formats</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% FORMAT [D Ic changef] = add_contrasts(D, D2 [,Ic])</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% where D2 is a design. If there is no third argument, all the contrasts in</span>
+0009 <span class="comment">% D2 will be added.  If third argument (Ic) is passed, specifies which</span>
+0010 <span class="comment">% contrasts in D2 to add. If Ic passed, and empty, or contains the string</span>
+0011 <span class="comment">% 'ui', contrasts to add are fetched using the GUI</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% OR</span>
+0014 <span class="comment">% FORMAT [D Ic changef] = add_contrasts(D, xCon)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% where xCon is a structure in SPM contrast format containing contrasts to</span>
+0017 <span class="comment">% add.  If there is no third argument, all the contrasts in xCon will be</span>
+0018 <span class="comment">% added.  If third argument (Ic) is passed, specifies which contrasts in xCon</span>
+0019 <span class="comment">% to add. If Ic passed, and empty, or contains the string 'ui', contrasts to</span>
+0020 <span class="comment">% add are fetched using the GUI</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% OR</span>
+0023 <span class="comment">% FORMAT [D Ic changef] = add_contrasts(D, stat_struct)</span>
+0024 <span class="comment">% where stat_struct has fields</span>
+0025 <span class="comment">%      'names',       string, or cell array of strings</span>
+0026 <span class="comment">%      'types',       string ('T' or 'F'), or cell array</span>
+0027 <span class="comment">%      'set_actions', string ('c', 'X0' or 'iX0') or array</span>
+0028 <span class="comment">%                     (see spm_FcUtil)</span>
+0029 <span class="comment">%                     (field is optional, defaults to 'c')</span>
+0030 <span class="comment">%      'values',      matrix of values</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% OR</span>
+0033 <span class="comment">% FORMAT [D Ic changef] = add_contrasts(D, names, types, values)</span>
+0034 <span class="comment">% where names, types, values are cell arrays of values, or values</span>
+0035 <span class="comment">% (defined as above)</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% OR</span>
+0038 <span class="comment">% FORMAT [D Ic  changef] = add_contrasts(D, names, types, set_actions, values)</span>
+0039 <span class="comment">% where names, types, set_actions, values are cell arrays of values, or</span>
+0040 <span class="comment">% values (defined as above)</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">% Returns</span>
+0043 <span class="comment">% D       - possibly modified SPM design</span>
+0044 <span class="comment">% Ic      - indices of specified contrasts as stored in D</span>
+0045 <span class="comment">% changef - 1 if D has changed during call else 0</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% Contrast will not be added if it is already present, but the correct</span>
+0048 <span class="comment">% index will be returned in Ic</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% $Id$</span>
+0051 
+0052 <span class="keyword">if</span> nargin &lt; 2
+0053   error(<span class="string">'Need contrasts to add'</span>);
+0054 <span class="keyword">end</span>
+0055 
+0056 <span class="comment">% Get parameters from current design</span>
+0057 SPM  = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0058 sX   = SPM.xX.xKXs;
+0059 xCon = SPM.xCon;
+0060 v_f  = <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D);
+0061 
+0062 <span class="comment">% process inputs</span>
+0063 <span class="comment">% The ``C`` variable will hold the xCon structure for the contrasts to add</span>
+0064 <span class="keyword">if</span> isa(C, <span class="string">'mardo'</span>)        <span class="comment">% design</span>
+0065   C = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(C);
+0066 <span class="keyword">end</span>
+0067 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(C, <span class="string">'xCon'</span>)     <span class="comment">% design structure</span>
+0068   C = C.xCon;
+0069 <span class="keyword">end</span>
+0070 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(C, <span class="string">'STAT'</span>)     <span class="comment">% xCon structure</span>
+0071   <span class="comment">% parse Ic input</span>
+0072   <span class="keyword">if</span> nargin &gt; 2 <span class="comment">% There is Ic input</span>
+0073     Ic_in = varargin{1};
+0074     <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ic_in) | strcmp(Ic_in,<span class="string">'ui'</span>)
+0075       D2 = <a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>(D, C, 0);
+0076       Ic_in = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(D2,<span class="string">'T&amp;F'</span>,Inf,<span class="keyword">...</span>
+0077         <span class="string">'Select contrasts to merge'</span>,<span class="string">''</span>,1);
+0078     <span class="keyword">end</span>
+0079     C = C(Ic_in);
+0080   <span class="keyword">end</span>
+0081 <span class="keyword">else</span> <span class="comment">% contrast setting structure or values or cells</span>
+0082   <span class="keyword">if</span> ~isstruct(C) <span class="comment">% make stat_struct structure if not already passed</span>
+0083     C = <a href="#_sub2" class="code" title="subfunction C = sf_cell_to_conset(names, types, varargin)">sf_cell_to_conset</a>(C, varargin{:});
+0084   <span class="keyword">end</span>
+0085   <span class="comment">% make xCon structure from stat_struct</span>
+0086   C = <a href="#_sub3" class="code" title="subfunction C = sf_conset_to_xcon(con_set, sX)">sf_conset_to_xcon</a>(C, sX);
+0087 <span class="keyword">end</span>
+0088 <span class="comment">% Initial xCon before adding new contrasts</span>
+0089 xc_len = length(xCon);
+0090 old_xc_len = xc_len;
+0091 <span class="comment">% C contains the contrasts to add</span>
+0092 <span class="keyword">for</span> i=1:length(C)
+0093   <span class="comment">% Update this contrast using our own filtered design</span>
+0094   c_i  = <a href="#_sub1" class="code" title="subfunction xcon_re_entry = refresh_con(xcon_entry, sX)">refresh_con</a>(C(i), sX);
+0095   <span class="keyword">if</span> xc_len == 0 <span class="comment">% the xCon to add to is empty</span>
+0096     xCon = c_i;
+0097     xc_len = 1;
+0098     Ic(1) = 1;
+0099     <span class="keyword">continue</span>
+0100   <span class="keyword">end</span>
+0101   <span class="comment">% Check if we have this contrast already</span>
+0102   Ic(i) = spm_FcUtil(<span class="string">'In'</span>, c_i, sX, xCon);
+0103   <span class="keyword">if</span> Ic(i) == 0
+0104     xc_len = xc_len+1;
+0105     xCon(xc_len) = c_i;
+0106     Ic(i) = xc_len;
+0107   <span class="keyword">elseif</span> v_f
+0108     fprintf(<span class="string">'\nContrast %s (type %s) already in xCon\n'</span>, <span class="keyword">...</span>
+0109             c_i.name, c_i.STAT);
+0110   <span class="keyword">end</span>
+0111 <span class="keyword">end</span>
+0112 changef =  xc_len ~= old_xc_len;
+0113 <span class="keyword">if</span> changef
+0114   SPM.xCon = xCon;
+0115   D = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, SPM);
+0116 <span class="keyword">end</span>
+0117 <span class="keyword">return</span>
+0118 
+0119 <a name="_sub1" href="#_subfunctions" class="code">function xcon_re_entry = refresh_con(xcon_entry, sX)</a>
+0120 <span class="comment">% Rebuild contrast structure from our own filtered design</span>
+0121 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xcon_entry.c)
+0122     error(<span class="string">'Empty c matrix for contrast, crashing because confused'</span>)
+0123 <span class="keyword">end</span>
+0124 xcon_re_entry = spm_FcUtil(<span class="string">'Set'</span>,<span class="keyword">...</span>
+0125         xcon_entry.name,<span class="keyword">...</span>
+0126         xcon_entry.STAT,<span class="keyword">...</span>
+0127         <span class="string">'c'</span>,<span class="keyword">...</span>
+0128         xcon_entry.c,<span class="keyword">...</span>
+0129         sX);
+0130 
+0131 <a name="_sub2" href="#_subfunctions" class="code">function C = sf_cell_to_conset(names, types, varargin)</a>
+0132 <span class="comment">% makes contrast setting structure from cell input</span>
+0133 <span class="keyword">if</span> nargin &lt; 3
+0134   error(<span class="string">'Need at least names, statistic types and values'</span>);
+0135 <span class="keyword">end</span>
+0136 C = struct(<span class="keyword">...</span>
+0137     <span class="string">'names'</span>, names,<span class="keyword">...</span>
+0138     <span class="string">'types'</span>, types);
+0139 <span class="keyword">if</span> nargin &lt; 4 <span class="comment">% values call</span>
+0140   values = varargin{1};
+0141   set_actions = <span class="string">'c'</span>;
+0142 <span class="keyword">else</span> <span class="comment">% contrast types, values call</span>
+0143   set_actions = deal(varargin{1});
+0144   values      = deal(varargin{2});
+0145 <span class="keyword">end</span>
+0146 C = struct(<span class="keyword">...</span>
+0147     <span class="string">'names'</span>, names,<span class="keyword">...</span>
+0148     <span class="string">'types'</span>, types,<span class="keyword">...</span>
+0149     <span class="string">'set_actions'</span>, set_actions,<span class="keyword">...</span>
+0150     <span class="string">'values'</span>, values);
+0151 <span class="keyword">return</span>
+0152 
+0153 <a name="_sub3" href="#_subfunctions" class="code">function C = sf_conset_to_xcon(con_set, sX)</a>
+0154 <span class="comment">% make xCon structure from cell or struct setting parameters</span>
+0155 <span class="keyword">if</span> ~<a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(con_set, <span class="string">'set_actions'</span>)
+0156   [con_set.set_actions] = deal(<span class="string">'c'</span>);
+0157 <span class="keyword">end</span>
+0158 n_e = size(sX.X, 2);
+0159 <span class="keyword">for</span> c = 1:length(con_set)
+0160   c1 = con_set(c);
+0161   <span class="keyword">if</span> size(c1.values, 1) ~= n_e &amp; <span class="keyword">...</span>
+0162       size(c1.values, 2) == n_e
+0163       c1.values = c1.values';
+0164   <span class="keyword">end</span>
+0165   C(c) = spm_FcUtil(<span class="string">'Set'</span>,<span class="keyword">...</span>
+0166     c1.names,<span class="keyword">...</span>
+0167     c1.types,<span class="keyword">...</span>
+0168     c1.set_actions,<span class="keyword">...</span>
+0169     c1.values,<span class="keyword">...</span>
+0170     sX);
+0171 <span class="keyword">end</span>
+0172 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

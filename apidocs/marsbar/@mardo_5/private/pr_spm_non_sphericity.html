@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_non_sphericity</title>
+  <meta name="keywords" content="pr_spm_non_sphericity">
+  <meta name="description" content="return error covariance constraints for basic ANOVA designs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_non_sphericity.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_non_sphericity
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>return error covariance constraints for basic ANOVA designs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [xVi] = pr_spm_non_sphericity(xVi) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> return error covariance constraints for basic ANOVA designs
+ FORMAT [xVi] = pr_spm_non_sphericity(xVi)
+
+ required fields:
+ xVi.I    - n x 4 matrix of factor level indicators
+              I(n,i) is the level of factor i for observation n
+ xVi.var  - 1 x 4 vector of flags
+              var(i) = 1; different variance among levels of factor i
+ xVi.dep  - 1 x 4 vector of flags
+              dep(i) = 1;      dependencies within levels of factor i
+
+ Output:
+ xVi.Vi   -  cell of covariance components
+ or
+ xVi.V    -  speye(n,n)
+
+ See also; <a href="pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_Ce</a>.m &amp; <a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>.m
+___________________________________________________________________________
+ Non-sphericity specification
+ =========================
+
+ In some instances the i.i.d. assumptions about the errors do not hold:
+
+ Identity assumption:
+ The identity assumption, of equal error variance (homoscedasticity), can
+ be violated if the levels of a factor do not have the same error variance.
+ For example, in a 2nd-level analysis of variance, one contrast may be scaled
+ differently from another.  Another example would be the comparison of
+ qualitatively different dependant variables (e.g. normals vs. patients).  If
+ You say no to identity assumptions, you will be asked whether the error
+ variance is the same over levels of each factor.  Different variances
+ (heteroscedasticy) induce different error covariance components that
+ are estimated using restricted maximum likelihood (see below).
+
+ Independence assumption.
+ In some situations, certain factors may contain random effects.  These induce
+ dependencies or covariance components in the error terms.   If you say no
+ to independence assumptions, you will be asked whether random effects
+ should be modelled for each factor.  A simple example of this would be
+ modelling the random effects of subject.  These cause correlations among the
+ error terms of observation from the same subject.  For simplicity, it is
+ assumed that the random effects of each factor are i.i.d.
+
+ ReML
+ The ensuing covariance components will be estimated using ReML in spm_spm
+ (assuming the same for all responsive voxels) and used to adjust the
+ statistics and degrees of freedom during inference. By default spm_spm
+ will use weighted least squares to produce Gauss-Markov or Maximum
+ likelihood estimators using the non-sphericity structure specified at this
+ stage. The components will be found in xX.xVi and enter the estimation
+ procedure exactly as the serial correlations in fMRI models.
+
+___________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [xVi] = pr_spm_non_sphericity(xVi)</a>
+0002 <span class="comment">% return error covariance constraints for basic ANOVA designs</span>
+0003 <span class="comment">% FORMAT [xVi] = pr_spm_non_sphericity(xVi)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% required fields:</span>
+0006 <span class="comment">% xVi.I    - n x 4 matrix of factor level indicators</span>
+0007 <span class="comment">%              I(n,i) is the level of factor i for observation n</span>
+0008 <span class="comment">% xVi.var  - 1 x 4 vector of flags</span>
+0009 <span class="comment">%              var(i) = 1; different variance among levels of factor i</span>
+0010 <span class="comment">% xVi.dep  - 1 x 4 vector of flags</span>
+0011 <span class="comment">%              dep(i) = 1;      dependencies within levels of factor i</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Output:</span>
+0014 <span class="comment">% xVi.Vi   -  cell of covariance components</span>
+0015 <span class="comment">% or</span>
+0016 <span class="comment">% xVi.V    -  speye(n,n)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% See also; pr_spm_Ce.m &amp; pr_spm_ui.m</span>
+0019 <span class="comment">%___________________________________________________________________________</span>
+0020 <span class="comment">% Non-sphericity specification</span>
+0021 <span class="comment">% =========================</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% In some instances the i.i.d. assumptions about the errors do not hold:</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Identity assumption:</span>
+0026 <span class="comment">% The identity assumption, of equal error variance (homoscedasticity), can</span>
+0027 <span class="comment">% be violated if the levels of a factor do not have the same error variance.</span>
+0028 <span class="comment">% For example, in a 2nd-level analysis of variance, one contrast may be scaled</span>
+0029 <span class="comment">% differently from another.  Another example would be the comparison of</span>
+0030 <span class="comment">% qualitatively different dependant variables (e.g. normals vs. patients).  If</span>
+0031 <span class="comment">% You say no to identity assumptions, you will be asked whether the error</span>
+0032 <span class="comment">% variance is the same over levels of each factor.  Different variances</span>
+0033 <span class="comment">% (heteroscedasticy) induce different error covariance components that</span>
+0034 <span class="comment">% are estimated using restricted maximum likelihood (see below).</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">% Independence assumption.</span>
+0037 <span class="comment">% In some situations, certain factors may contain random effects.  These induce</span>
+0038 <span class="comment">% dependencies or covariance components in the error terms.   If you say no</span>
+0039 <span class="comment">% to independence assumptions, you will be asked whether random effects</span>
+0040 <span class="comment">% should be modelled for each factor.  A simple example of this would be</span>
+0041 <span class="comment">% modelling the random effects of subject.  These cause correlations among the</span>
+0042 <span class="comment">% error terms of observation from the same subject.  For simplicity, it is</span>
+0043 <span class="comment">% assumed that the random effects of each factor are i.i.d.</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% ReML</span>
+0046 <span class="comment">% The ensuing covariance components will be estimated using ReML in spm_spm</span>
+0047 <span class="comment">% (assuming the same for all responsive voxels) and used to adjust the</span>
+0048 <span class="comment">% statistics and degrees of freedom during inference. By default spm_spm</span>
+0049 <span class="comment">% will use weighted least squares to produce Gauss-Markov or Maximum</span>
+0050 <span class="comment">% likelihood estimators using the non-sphericity structure specified at this</span>
+0051 <span class="comment">% stage. The components will be found in xX.xVi and enter the estimation</span>
+0052 <span class="comment">% procedure exactly as the serial correlations in fMRI models.</span>
+0053 <span class="comment">%</span>
+0054 <span class="comment">%___________________________________________________________________________</span>
+0055 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0056 
+0057 <span class="comment">% Karl Friston</span>
+0058 <span class="comment">% $Id: spm_non_sphericity.m 112 2005-05-04 18:20:52Z john $</span>
+0059 
+0060 
+0061 <span class="comment">% create covariance components Q{:}</span>
+0062 <span class="comment">%===========================================================================</span>
+0063 [n f] = size(xVi.I);            <span class="comment">% # observations, % # Factors</span>
+0064 l     = max(xVi.I);                     <span class="comment">% levels</span>
+0065 
+0066 <span class="comment">% if var(i): add variance component for each level of factor i,</span>
+0067 <span class="comment">%---------------------------------------------------------------------------</span>
+0068 Q     = {};
+0069 <span class="keyword">for</span> i = find(xVi.var)
+0070     <span class="keyword">for</span> j = 1:l(i)
+0071         u          = xVi.I(:,i) == j;
+0072         q          = spdiags(u,0,n,n);
+0073         Q{end + 1} = q;
+0074     <span class="keyword">end</span>
+0075 <span class="keyword">end</span>
+0076 
+0077 <span class="comment">% effects (discounting factors with dependencies) as defined by interactions</span>
+0078 <span class="comment">%---------------------------------------------------------------------------</span>
+0079 X     = ones(n,1);
+0080 <span class="keyword">for</span> i = find(~xVi.dep &amp; (l &gt; 1))
+0081     Xi    = sparse(1:n,xVi.I(:,i),1,n,l(i));
+0082     Xj    = X;
+0083     X     = sparse(n,0);
+0084     <span class="keyword">for</span> j = 1:size(Xi,2)
+0085         <span class="keyword">for</span> k = 1:size(Xj,2)
+0086             X(:,end + 1) = Xi(:,j) &amp; Xj(:,k);
+0087         <span class="keyword">end</span>
+0088     <span class="keyword">end</span>
+0089 <span class="keyword">end</span>
+0090 
+0091 <span class="comment">% dependencies among repeated measures created by the hadamrad product %---------------------------------------------------------------------------</span>
+0092 <span class="keyword">for</span> i = find(xVi.dep)
+0093     q     = sparse(1:n,xVi.I(:,i),1,n,l(i));
+0094     P     = q*q';
+0095     <span class="keyword">for</span> j = 1:size(X,2)
+0096         <span class="keyword">for</span> k = (j + 1):size(X,2)
+0097             Q{end + 1} = (X(:,j)*X(:,k)' + X(:,k)*X(:,j)').*P;
+0098         <span class="keyword">end</span>
+0099     <span class="keyword">end</span>
+0100 <span class="keyword">end</span>
+0101 
+0102 <span class="comment">% set Q in non-sphericity structure</span>
+0103 <span class="comment">%---------------------------------------------------------------------------</span>
+0104 
+0105 
+0106 <span class="comment">% if i.i.d nonsphericity (V) is known otherwise there are components {Vi}</span>
+0107 <span class="comment">%---------------------------------------------------------------------------</span>
+0108 <span class="keyword">if</span> length(Q) &gt; 1
+0109     xVi.Vi = Q;
+0110 <span class="keyword">else</span>
+0111     xVi.V  = speye(n,n);
+0112 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

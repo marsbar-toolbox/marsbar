@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get_contrast_by_name</title>
+  <meta name="keywords" content="get_contrast_by_name">
+  <meta name="description" content="get named contrast(s) from design contrast structure">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; get_contrast_by_name.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>get_contrast_by_name
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>get named contrast(s) from design contrast structure</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [xc, ic] = get_contrast_by_name(D, cname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> get named contrast(s) from design contrast structure
+ FORMAT [xc, ic] = get_contrast_by_name(D, cname)
+ 
+ D      - design object
+ cname  - contrast name(s) (string or cell array)
+ 
+ Returns
+ xc     - xCon structure containing only named contrast
+ ic     - index of contrast in design contrast structure
+
+ e.g. [con ic] = get_named_contrasts(D, 'effects of interest');
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [xc, ic] = get_contrast_by_name(D, cname)</a>
+0002 <span class="comment">% get named contrast(s) from design contrast structure</span>
+0003 <span class="comment">% FORMAT [xc, ic] = get_contrast_by_name(D, cname)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D      - design object</span>
+0006 <span class="comment">% cname  - contrast name(s) (string or cell array)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Returns</span>
+0009 <span class="comment">% xc     - xCon structure containing only named contrast</span>
+0010 <span class="comment">% ic     - index of contrast in design contrast structure</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% e.g. [con ic] = get_named_contrasts(D, 'effects of interest');</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015 
+0016 <span class="keyword">if</span> nargin &lt; 2
+0017   error(<span class="string">'Need contrast name(s)'</span>);
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> ischar(cname)
+0020   cname = cellstr(cname);
+0021 <span class="keyword">end</span>
+0022 
+0023 xc = <a href="get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(D); 
+0024 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xc)
+0025   ic = [];
+0026 <span class="keyword">else</span>
+0027   ic = find(ismember({xc(:).name}, cname));
+0028 <span class="keyword">end</span>
+0029 xc = xc(ic);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

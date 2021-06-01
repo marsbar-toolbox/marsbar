@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_hrf</title>
+  <meta name="keywords" content="pr_spm_hrf">
+  <meta name="description" content="returns a hemodynamic response function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_spm_hrf.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_hrf
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns a hemodynamic response function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [hrf,p] = pr_spm_hrf(RT,P); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns a hemodynamic response function
+ FORMAT [hrf,p] = pr_spm_hrf(RT,[p]);
+ RT   - scan repeat time
+ p    - parameters of the response function (two gamma functions)
+
+                            defaults
+                            (seconds)
+    p(1) - delay of response (relative to onset)       6
+    p(2) - delay of undershoot (relative to onset)    16
+    p(3) - dispersion of response               1
+    p(4) - dispersion of undershoot               1
+    p(5) - ratio of response to undershoot           6
+    p(6) - onset (seconds)                   0
+    p(7) - length of kernel (seconds)          32
+
+ hrf  - hemodynamic response function
+ p    - parameters of the response function
+_______________________________________________________________________
+ @(#)spm_hrf.m    2.7 Karl Friston 99/05/17
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>	creates basis functions for each trial type {i} in struct BF{i}</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [hrf,p] = pr_spm_hrf(RT,P);</a>
+0002 <span class="comment">% returns a hemodynamic response function</span>
+0003 <span class="comment">% FORMAT [hrf,p] = pr_spm_hrf(RT,[p]);</span>
+0004 <span class="comment">% RT   - scan repeat time</span>
+0005 <span class="comment">% p    - parameters of the response function (two gamma functions)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%                            defaults</span>
+0008 <span class="comment">%                            (seconds)</span>
+0009 <span class="comment">%    p(1) - delay of response (relative to onset)       6</span>
+0010 <span class="comment">%    p(2) - delay of undershoot (relative to onset)    16</span>
+0011 <span class="comment">%    p(3) - dispersion of response               1</span>
+0012 <span class="comment">%    p(4) - dispersion of undershoot               1</span>
+0013 <span class="comment">%    p(5) - ratio of response to undershoot           6</span>
+0014 <span class="comment">%    p(6) - onset (seconds)                   0</span>
+0015 <span class="comment">%    p(7) - length of kernel (seconds)          32</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% hrf  - hemodynamic response function</span>
+0018 <span class="comment">% p    - parameters of the response function</span>
+0019 <span class="comment">%_______________________________________________________________________</span>
+0020 <span class="comment">% @(#)spm_hrf.m    2.7 Karl Friston 99/05/17</span>
+0021 
+0022 <span class="comment">% global parameter</span>
+0023 <span class="comment">%-----------------------------------------------------------------------</span>
+0024 <span class="keyword">global</span> fMRI_T; 
+0025 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fMRI_T), fMRI_T = 16; <span class="keyword">end</span>;
+0026 
+0027 <span class="comment">% default parameters</span>
+0028 <span class="comment">%-----------------------------------------------------------------------</span>
+0029 p     = [6 16 1 1 6 0 32];
+0030 <span class="keyword">if</span> nargin &gt; 1
+0031       p(1:length(P)) = P;
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="comment">% modelled hemodynamic response function - {mixture of Gammas}</span>
+0035 <span class="comment">%-----------------------------------------------------------------------</span>
+0036 dt    = RT/fMRI_T;
+0037 u     = [0:(p(7)/dt)] - p(6)/dt;
+0038 hrf   = spm_Gpdf(u,p(1)/p(3),dt/p(3)) - spm_Gpdf(u,p(2)/p(4),dt/p(4))/p(5);
+0039 hrf   = hrf([0:(p(7)/RT)]*fMRI_T + 1);
+0040 hrf   = hrf'/sum(hrf);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

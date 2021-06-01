@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of block_rows</title>
+  <meta name="keywords" content="block_rows">
+  <meta name="description" content="returns cell array of rows for each (subject/session) block">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; block_rows.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>block_rows
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>returns cell array of rows for each (subject/session) block</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function rows = block_rows(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns cell array of rows for each (subject/session) block
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+<li><a href="modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+<li><a href="../../marsbar/@mardo_99/modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+<li><a href="../../marsbar/@mardo/residuals.html" class="code" title="function r = residuals(D)">residuals</a>	method returns residuals from model</li>
+<li><a href="../../marsbar/@mardo/ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+<li><a href="apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+<li><a href="../../marsbar/@marsy/n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>	method returns number of subjects/sessions in data</li>
+<li><a href="../../marsbar/@marsy/summary_block_means.html" class="code" title="function mus = summary_block_means(Y)">summary_block_means</a>	return raw means over blocks in summary data</li>
+<li><a href="../../marsbar/@marsy/ui_plot.html" class="code" title="function r = ui_plot(o, plot_spec, plot_params)">ui_plot</a>	method plots data in various formats</li>
+<li><a href="../../marsbar/mars_image_scaling.html" class="code" title="function [VY,row] = mars_image_scaling(marsD)">mars_image_scaling</a>	get image scaling data for images, maybe via SPM design</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function rows = block_rows(D)</a>
+0002 <span class="comment">% returns cell array of rows for each (subject/session) block</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0007 <span class="keyword">if</span> strcmp(<a href="modality.html" class="code" title="function mod_str = modality(D)">modality</a>(D), <span class="string">'fmri'</span>)
+0008   Sess = SPM.Sess;
+0009   rows = {Sess(:).row};
+0010 <span class="keyword">else</span> <span class="comment">% PET I guess</span>
+0011   xX = SPM.xX;
+0012   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX, <span class="string">'I'</span>)
+0013     error(<span class="string">'Expecting I field in SPM design'</span>);
+0014   <span class="keyword">end</span>
+0015   scol = xX.I(:, 3); <span class="comment">% the subject column</span>
+0016   subjnos = unique(scol);
+0017   <span class="keyword">for</span> s = 1:length(subjnos);
+0018     rows{s} = find(scol == subjnos(s));
+0019   <span class="keyword">end</span>
+0020 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

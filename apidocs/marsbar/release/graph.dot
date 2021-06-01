@@ -1,0 +1,8 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  pre_release -> make_contents;
+
+  make_contents [URL="make_contents.html"];
+  pre_release [URL="pre_release.html"];
+  test_rig [URL="test_rig.html"];
+}

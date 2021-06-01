@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of cd_images</title>
+  <meta name="keywords" content="cd_images">
+  <meta name="description" content="method for changing path to image files in design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; cd_images.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>cd_images
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method for changing path to image files in design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = cd_images(D, newpath, byteswap) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method for changing path to image files in design
+ FORMAT D = cd_images(D, newpath [, byteswap])
+
+ Synopsis
+ D = cd_images(D); % get new path from GUI
+ D = cd_images(D, '/new/root/path'); 
+ D = cd_images(D, '/new/root/path', 1); % force byteswap
+ D = cd_images(D, '/new/root/path', 1); % prevent byteswap  
+  
+ D          - mardo design
+ newpath    - path to replace common path of files in analysis [GUI]
+ byteswap   - whether to indicate byte swapping in vol structs 
+              [determined from images by default]
+             
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols to design</li>
+<li><a href="../../marsbar/@mardo_99/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols into design</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+<li><a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = cd_images(D, newpath, byteswap)</a>
+0002 <span class="comment">% method for changing path to image files in design</span>
+0003 <span class="comment">% FORMAT D = cd_images(D, newpath [, byteswap])</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Synopsis</span>
+0006 <span class="comment">% D = cd_images(D); % get new path from GUI</span>
+0007 <span class="comment">% D = cd_images(D, '/new/root/path');</span>
+0008 <span class="comment">% D = cd_images(D, '/new/root/path', 1); % force byteswap</span>
+0009 <span class="comment">% D = cd_images(D, '/new/root/path', 1); % prevent byteswap</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% D          - mardo design</span>
+0012 <span class="comment">% newpath    - path to replace common path of files in analysis [GUI]</span>
+0013 <span class="comment">% byteswap   - whether to indicate byte swapping in vol structs</span>
+0014 <span class="comment">%              [determined from images by default]</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $Id$</span>
+0017   
+0018 <span class="keyword">if</span> nargin &lt; 2
+0019   newpath = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(-1, <span class="string">''</span>, <span class="string">'New directory root for files'</span>);
+0020 <span class="keyword">end</span>
+0021 <span class="keyword">if</span> nargin &lt; 3
+0022   byteswap=[];
+0023 <span class="keyword">end</span>
+0024 
+0025 <span class="comment">% get images</span>
+0026 <span class="keyword">if</span> ~<a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(D)
+0027   warning(<span class="string">'Design does not contain images'</span>);
+0028   <span class="keyword">return</span>
+0029 <span class="keyword">end</span>
+0030 VY = <a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(D);
+0031 
+0032 <span class="comment">% now change directory</span>
+0033 newpath = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'cpath'</span>, newpath);
+0034 <span class="keyword">if</span> filesep == <span class="string">'\'</span>, other_filesep=<span class="string">'/'</span>;<span class="keyword">else</span> other_filesep=<span class="string">'\'</span>;<span class="keyword">end</span>
+0035 n = length(VY);
+0036 strout = strvcat(VY(:).fname);
+0037 msk    = diff(strout+0)~=0; <span class="comment">% common path</span>
+0038 d1     = min(find(sum(msk,1))); 
+0039 d1     = max([find(strout(1,1:d1) == other_filesep | strout(1,1:d1) == filesep) 0]);
+0040 ffnames = strout(:,d1+1:end); <span class="comment">% common path removed</span>
+0041 tmp = ffnames == other_filesep; <span class="comment">% filesep exchanged for this platform</span>
+0042 ffnames(tmp) = filesep;
+0043 nfnames = cellstr(<span class="keyword">...</span>
+0044     strcat(repmat(newpath,n,1),filesep,ffnames));
+0045 [VY(:).fname] = deal(nfnames{:});
+0046 
+0047 <span class="comment">% do the files exist here then?</span>
+0048 <span class="keyword">if</span> ~exist(nfnames{1}, <span class="string">'file'</span>)
+0049   error([<span class="string">'Cannot find first file here: '</span> nfnames{1}]);
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(byteswap) 
+0052   byteswap = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'is_swapped_wrong'</span>, VY(1));
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">% do byteswap as necessary</span>
+0056 <span class="keyword">if</span> byteswap
+0057   VY = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'byte_swap'</span>, VY);
+0058   <span class="keyword">if</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D)
+0059     disp(<span class="string">'Images vols byteswapped'</span>);
+0060   <span class="keyword">end</span>
+0061 <span class="keyword">end</span>    
+0062 
+0063 D = <a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>(D, VY);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

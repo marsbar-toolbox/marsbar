@@ -1,0 +1,7 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+
+  pr_ev_diff [URL="pr_ev_diff.html"];
+  pr_refresh_et [URL="pr_refresh_et.html"];
+  pr_sort_evs [URL="pr_sort_evs.html"];
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_reml</title>
+  <meta name="keywords" content="pr_spm_reml">
+  <meta name="description" content="REML estimation of covariance components from Cov{y}">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_reml.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_reml
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>REML estimation of covariance components from Cov{y}</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> REML estimation of covariance components from Cov{y}
+ FORMAT [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL);
+
+ Cy  - (m x m) data covariance matrix y*y'  {y = (m x n) data matrix}
+ X   - (m x p) design matrix
+ Q   - {1 x q} covariance components
+ TOL - Tolerance {default = 1e-6}
+
+ Ce  - (m x m) estimated errors = h(1)*Q{1} + h(2)*Q{2} + ...
+ h   - (q x 1) hyperparameters
+ W   - (q x q) W*n = precision of hyperparameter estimates
+ u   - {1 x p} estimable components C{i} = u(1,i)*Q{1} + u(2,i)*Q{2} +...
+___________________________________________________________________________
+ @(#)spm_reml.m    2.22 John Ashburner, Karl Friston 03/03/26
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_svd.html" class="code" title="function [U,S,V] = spm_svd(X,U)">pr_spm_svd</a>	computationally efficient SVD (that can handle sparse arguments)</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_svd.html" class="code" title="function [U,S,V] = pr_spm_svd(X,U,T)">pr_spm_svd</a>	computationally efficient SVD (that can handle sparse arguments)</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL);</a>
+0002 <span class="comment">% REML estimation of covariance components from Cov{y}</span>
+0003 <span class="comment">% FORMAT [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL);</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Cy  - (m x m) data covariance matrix y*y'  {y = (m x n) data matrix}</span>
+0006 <span class="comment">% X   - (m x p) design matrix</span>
+0007 <span class="comment">% Q   - {1 x q} covariance components</span>
+0008 <span class="comment">% TOL - Tolerance {default = 1e-6}</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Ce  - (m x m) estimated errors = h(1)*Q{1} + h(2)*Q{2} + ...</span>
+0011 <span class="comment">% h   - (q x 1) hyperparameters</span>
+0012 <span class="comment">% W   - (q x q) W*n = precision of hyperparameter estimates</span>
+0013 <span class="comment">% u   - {1 x p} estimable components C{i} = u(1,i)*Q{1} + u(2,i)*Q{2} +...</span>
+0014 <span class="comment">%___________________________________________________________________________</span>
+0015 <span class="comment">% @(#)spm_reml.m    2.22 John Ashburner, Karl Friston 03/03/26</span>
+0016 
+0017 <span class="comment">% set tolerance if not specified</span>
+0018 <span class="comment">%---------------------------------------------------------------------------</span>
+0019 <span class="keyword">if</span> nargin &lt; 4, TOL = 1e-6; <span class="keyword">end</span>
+0020 
+0021 <span class="comment">% ensure X is not rank deficient</span>
+0022 <span class="comment">%---------------------------------------------------------------------------</span>
+0023 X     = full(X);
+0024 X     = orth(X);
+0025 X     = sparse(X);
+0026 
+0027 <span class="comment">% find estimable components (encoded in the precision matrix W)</span>
+0028 <span class="comment">%---------------------------------------------------------------------------</span>
+0029 m     = length(Q);
+0030 n     = length(Cy);
+0031 W     = zeros(m,m);
+0032 <span class="keyword">for</span> i = 1:m
+0033     RQ{i}  = Q{i} - X*(X'*Q{i});
+0034 <span class="keyword">end</span>
+0035 <span class="keyword">for</span> i = 1:m
+0036 <span class="keyword">for</span> j = i:m
+0037     dFdhh  = sum(sum(RQ{i}.*RQ{j}'));
+0038     W(i,j) = dFdhh;
+0039     W(j,i) = dFdhh;
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="comment">% eliminate inestimable components</span>
+0044 <span class="comment">% NB: The threshold for normalized eigenvalues is 1e-6 in spm_svd</span>
+0045 <span class="comment">%---------------------------------------------------------------------------</span>
+0046 u     = <a href="pr_spm_svd.html" class="code" title="function [U,S,V] = spm_svd(X,U)">pr_spm_svd</a>(W);
+0047 <span class="keyword">for</span> i = 1:size(u,2)
+0048     C{i}  = sparse(n,n);
+0049     <span class="keyword">for</span> j = 1:m
+0050         C{i} = C{i} + Q{j}*u(j,i);
+0051     <span class="keyword">end</span>
+0052 <span class="keyword">end</span>
+0053 Q     = C;
+0054 
+0055 <span class="comment">% initialize hyperparameters (assuming Cov{e} = 1}</span>
+0056 <span class="comment">%---------------------------------------------------------------------------</span>
+0057 m     = length(Q);
+0058 dFdh  = zeros(m,1);
+0059 W     = zeros(m,m); 
+0060 C     = [];
+0061 <span class="keyword">for</span> i = 1:m
+0062     C = [C Q{i}(:)];
+0063 <span class="keyword">end</span>
+0064 I     = speye(n,n);
+0065 h     = inv(C'*C)*(C'*I(:));
+0066 
+0067 <span class="comment">% Iterative EM</span>
+0068 <span class="comment">%---------------------------------------------------------------------------</span>
+0069 <span class="keyword">for</span> k = 1:32
+0070 
+0071     <span class="comment">% Q are variance components</span>
+0072     <span class="comment">%------------------------------------------------------------------</span>
+0073     Ce    = sparse(n,n);
+0074     <span class="keyword">for</span> i = 1:m
+0075         Ce = Ce + h(i)*Q{i};
+0076     <span class="keyword">end</span>
+0077     iCe   = inv(Ce);
+0078 
+0079     <span class="comment">% E-step: conditional covariance cov(B|y) {Cby}</span>
+0080     <span class="comment">%===================================================================</span>
+0081         iCeX  = iCe*X;
+0082         Cby   = inv(X'*iCeX);
+0083 
+0084     <span class="comment">% M-step: ReML estimate of hyperparameters</span>
+0085     <span class="comment">%===================================================================</span>
+0086 
+0087     <span class="comment">% Gradient dFd/h (first derivatives)</span>
+0088     <span class="comment">%-------------------------------------------------------------------</span>
+0089     P     = iCe  - iCeX*Cby*iCeX';
+0090     PCy   = Cy*P'- speye(n,n);
+0091     <span class="keyword">for</span> i = 1:m
+0092 
+0093         <span class="comment">% dF/dh = -trace(dF/diCe*iCe*Q{i}*iCe) =</span>
+0094         <span class="comment">%---------------------------------------------------</span>
+0095         PQ{i}   = P*Q{i};
+0096         dFdh(i) = sum(sum(PCy.*PQ{i}))/2;
+0097 
+0098     <span class="keyword">end</span>
+0099 
+0100     <span class="comment">% Expected curvature E{ddF/dhh} (second derivatives)</span>
+0101     <span class="comment">%-------------------------------------------------------------------</span>
+0102     <span class="keyword">for</span> i = 1:m
+0103         <span class="keyword">for</span> j = i:m
+0104 
+0105             <span class="comment">% ddF/dhh = -trace{P*Q{i}*P*Q{j}}</span>
+0106             <span class="comment">%---------------------------------------------------</span>
+0107             dFdhh  = sum(sum(PQ{i}.*PQ{j}))/2;
+0108             W(i,j) = dFdhh;
+0109             W(j,i) = dFdhh;
+0110         <span class="keyword">end</span>
+0111     <span class="keyword">end</span>
+0112 
+0113     <span class="comment">% Fisher scoring: update dh = -inv(ddF/dhh)*dF/dh</span>
+0114     <span class="comment">%-------------------------------------------------------------------</span>
+0115     dh    = inv(W)*dFdh;
+0116     h     = h + dh;
+0117 
+0118     <span class="comment">% Convergence (or break if there is only one hyperparameter)</span>
+0119     <span class="comment">%===================================================================</span>
+0120     w     = dFdh'*dFdh;
+0121     <span class="keyword">if</span> w &lt; TOL | m == 1, <span class="keyword">break</span>, <span class="keyword">end</span>
+0122     fprintf(<span class="string">'%-30s: %i %30s%e\n'</span>,<span class="string">'  ReML Iteration'</span>,k,<span class="string">'...'</span>,full(w));
+0123 <span class="keyword">end</span>
+0124 
+0125 <span class="comment">% estimate of cov{e}</span>
+0126 <span class="comment">%---------------------------------------------------------------------------</span>
+0127 Ce    = sparse(n,n);
+0128 <span class="keyword">for</span> i = 1:m
+0129     Ce = Ce + h(i)*Q{i};
+0130 <span class="keyword">end</span>
+0131 
+0132 <span class="comment">% rotate hyperparameter esimates and precision back</span>
+0133 <span class="comment">%---------------------------------------------------------------------------</span>
+0134 h     = u*h;
+0135 W     = u*W*u';
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Working with marsbar source code &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with <em>marsbar</em> source code</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="working-with-marsbar-source-code">
+<span id="using-git"></span><h1>Working with <em>marsbar</em> source code<a class="headerlink" href="#working-with-marsbar-source-code" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="git_intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="git_install.html">Install git</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="git_install.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_install.html#in-detail">In detail</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="following_latest.html">Following the latest source</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="following_latest.html#get-the-local-copy-of-the-code">Get the local copy of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="following_latest.html#updating-the-code">Updating the code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="patching.html">Making a patch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="patching.html#making-patches">Making patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patching.html#moving-from-patching-to-development">Moving from patching to development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="git_development.html">Git for development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forking_hell.html">Making your own copy (fork) of marsbar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="set_up_fork.html">Set up your fork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_git.html">Configure git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html">Development workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="git_resources.html">git resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="git_resources.html#tutorials-and-summaries">Tutorials and summaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_resources.html#advanced-git-workflow">Advanced git workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_resources.html#manual-pages-online">Manual pages online</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/development/gitwash/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with <em>marsbar</em> source code</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

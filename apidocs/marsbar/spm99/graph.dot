@@ -1,0 +1,15 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  mars_blob_ui -> mars_blob_ui;
+  spm_write_vol -> spm_close_vol;
+  spm_write_vol -> spm_create_vol;
+  spm_write_vol -> spm_write_plane;
+
+  mars_blob_ui [URL="mars_blob_ui.html"];
+  mars_veropts [URL="mars_veropts.html"];
+  spm_close_vol [URL="spm_close_vol.html"];
+  spm_create_vol [URL="spm_create_vol.html"];
+  spm_read_hdr [URL="spm_read_hdr.html"];
+  spm_write_plane [URL="spm_write_plane.html"];
+  spm_write_vol [URL="spm_write_vol.html"];
+}

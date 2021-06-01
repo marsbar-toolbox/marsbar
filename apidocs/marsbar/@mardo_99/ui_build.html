@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_build</title>
+  <meta name="keywords" content="ui_build">
+  <meta name="description" content="method to create / fill design via GUI">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; ui_build.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_build
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to create / fill design via GUI</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = ui_build(D, dtype) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to create / fill design via GUI
+ FORMAT D = ui_build(D, dtype)
+
+ D      - design object
+ dtype  - one of 'PET', 'FMRI', 'Basic')
+ 
+ Returns
+ D      - design object with new design
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = ui_build(D, dtype)</a>
+0002 <span class="comment">% method to create / fill design via GUI</span>
+0003 <span class="comment">% FORMAT D = ui_build(D, dtype)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D      - design object</span>
+0006 <span class="comment">% dtype  - one of 'PET', 'FMRI', 'Basic')</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Returns</span>
+0009 <span class="comment">% D      - design object with new design</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $Id$</span>
+0012 
+0013 <span class="keyword">if</span> nargin &lt; 2
+0014   error(<span class="string">'Need design type'</span>);
+0015 <span class="keyword">end</span>
+0016 
+0017 <span class="keyword">switch</span> lower(dtype)
+0018  <span class="keyword">case</span> <span class="string">'pet'</span>
+0019   SPM = <a href="../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>(<span class="string">'cfg'</span>,spm_spm_ui(<span class="string">'DesDefs_PET'</span>));
+0020  <span class="keyword">case</span> <span class="string">'basic'</span>
+0021   SPM = <a href="../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>(<span class="string">'cfg'</span>,spm_spm_ui(<span class="string">'DesDefs_Stats'</span>));
+0022  <span class="keyword">case</span> <span class="string">'fmri'</span>
+0023   SPM = <a href="../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>;
+0024  <span class="keyword">otherwise</span>
+0025   error([<span class="string">'Did not recognize design type: '</span> dtype]);
+0026 <span class="keyword">end</span>
+0027 D = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, SPM);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

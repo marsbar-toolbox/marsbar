@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_blob_menu</title>
+  <meta name="keywords" content="mars_blob_menu">
+  <meta name="description" content="puts up ROI menu to add to SPM results interface">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_blob_menu.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_blob_menu
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>puts up ROI menu to add to SPM results interface</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function hC = mars_blob_menu </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> puts up ROI menu to add to SPM results interface
+ FORMAT hC = mars_blob_menu
+ 
+ Returns 
+ hC              - handle of menu
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/spm2/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm5/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm99/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function hC = mars_blob_menu</a>
+0002 <span class="comment">% puts up ROI menu to add to SPM results interface</span>
+0003 <span class="comment">% FORMAT hC = mars_blob_menu</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Returns</span>
+0006 <span class="comment">% hC              - handle of menu</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id$</span>
+0009   
+0010 <span class="comment">% Tag</span>
+0011 tg = <span class="string">'blob_menu'</span>;
+0012 
+0013 <span class="comment">%-Get Interactive window and delete any previous DesRepUI menu</span>
+0014 <span class="comment">%-----------------------------------------------------------------------</span>
+0015 Finter = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Interactive'</span>);
+0016 delete(findobj(get(Finter,<span class="string">'Children'</span>),<span class="string">'flat'</span>,<span class="string">'Tag'</span>,tg))
+0017 
+0018 hC      = uimenu(Finter,<span class="string">'Label'</span>,<span class="string">'Write ROI(s)'</span>,<span class="keyword">...</span>
+0019         <span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0020         <span class="string">'Tag'</span>,tg,<span class="keyword">...</span>
+0021         <span class="string">'UserData'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0022         <span class="string">'HandleVisibility'</span>,<span class="string">'on'</span>);
+0023 
+0024 <span class="comment">%-Write one blob</span>
+0025 <span class="comment">%-----------------------------------------------------------------------</span>
+0026 hWo = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Write one cluster'</span>,<span class="string">'Accelerator'</span>,<span class="string">'O'</span>,<span class="keyword">...</span>
+0027         <span class="string">'CallBack'</span>,<span class="string">'mars_blob_ui(''save_one'')'</span>,<span class="keyword">...</span>
+0028         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0029         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0030 
+0031 <span class="comment">%-Write all blobs</span>
+0032 <span class="comment">%-----------------------------------------------------------------------</span>
+0033 hWo = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Write all clusters'</span>,<span class="string">'Accelerator'</span>,<span class="string">'A'</span>,<span class="keyword">...</span>
+0034         <span class="string">'CallBack'</span>,<span class="string">'mars_blob_ui(''save_many'')'</span>,<span class="keyword">...</span>
+0035         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0036         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0037 
+0038 <span class="comment">%-Rerun results ui</span>
+0039 <span class="comment">%-----------------------------------------------------------------------</span>
+0040 hWo = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Rerun results UI'</span>,<span class="string">'Accelerator'</span>,<span class="string">'R'</span>,<span class="keyword">...</span>
+0041         <span class="string">'CallBack'</span>,<span class="string">'mars_blob_ui(''reinit'')'</span>,<span class="keyword">...</span>
+0042         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0043         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0044 <span class="comment">%-Clear</span>
+0045 <span class="comment">%-----------------------------------------------------------------------</span>
+0046 uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Clear'</span>,<span class="string">'Accelerator'</span>,<span class="string">'L'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0047     <span class="string">'CallBack'</span>,<span class="string">'spm_results_ui(''Clear'')'</span>,<span class="keyword">...</span>
+0048     <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0049 
+0050 <span class="comment">%-Pop open 'Interactive' window</span>
+0051 <span class="comment">%-----------------------------------------------------------------------</span>
+0052 figure(Finter)
+0053 
+0054 <span class="comment">%-Return handle of menu</span>
+0055 <span class="comment">%-----------------------------------------------------------------------</span>
+0056 varargout = {hC};
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of save_item_data_ui</title>
+  <meta name="keywords" content="save_item_data_ui">
+  <meta name="description" content="save data for item to file using GUI">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; save_item_data_ui.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>save_item_data_ui
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>save data for item to file using GUI</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [saved_f, o] = save_item_data_ui(o, item, flags, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> save data for item to file using GUI
+ FORMAT [saved_f o] = save_item_data_ui(o, item, flags, filename)
+
+ o        - object
+ item     - name of item
+ flags    - flags for save; see save_item_data.m for details
+ filename - filename for save
+ 
+ Returns
+ saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel
+            Note that, if saving with more than one item, then the value
+            is from the last value saved/not saved.  Cancel aborts the
+            attempt to save.
+ o        - possibly modified object (changed filename, maybe data is
+            left as a file, and data field made empty) 
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="save_item_data.html" class="code" title="function [saved_f, o] = save_item_data(o, item, flags, filename)">save_item_data</a>	save data for item to file</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+<li><a href="../../marsbar/mars_arm_call.html" class="code" title="function [o,errf,msg] = mars_arm_call(action, o, item, old_o)">mars_arm_call</a>	services callbacks from marmoire object set functions</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [saved_f, o] = save_item_data_ui(o, item, flags, filename)</a>
+0002 <span class="comment">% save data for item to file using GUI</span>
+0003 <span class="comment">% FORMAT [saved_f o] = save_item_data_ui(o, item, flags, filename)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o        - object</span>
+0006 <span class="comment">% item     - name of item</span>
+0007 <span class="comment">% flags    - flags for save; see save_item_data.m for details</span>
+0008 <span class="comment">% filename - filename for save</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Returns</span>
+0011 <span class="comment">% saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel</span>
+0012 <span class="comment">%            Note that, if saving with more than one item, then the value</span>
+0013 <span class="comment">%            is from the last value saved/not saved.  Cancel aborts the</span>
+0014 <span class="comment">%            attempt to save.</span>
+0015 <span class="comment">% o        - possibly modified object (changed filename, maybe data is</span>
+0016 <span class="comment">%            left as a file, and data field made empty)</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 2
+0021   error(<span class="string">'Need item'</span>);
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> nargin &lt; 3
+0024   flags = NaN;
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> nargin &lt; 4
+0027   filename = NaN;
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">if</span> ~isstruct(flags), flags = []; <span class="keyword">end</span>
+0031 flags.ui = 1;
+0032 
+0033 [saved_f o] = <a href="save_item_data.html" class="code" title="function [saved_f, o] = save_item_data(o, item, flags, filename)">save_item_data</a>(o, item, flags, filename);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get_contrasts</title>
+  <meta name="keywords" content="get_contrasts">
+  <meta name="description" content="method to get contrasts from design object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; get_contrasts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>get_contrasts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get contrasts from design object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function xCon = get_contrasts(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get contrasts from design object
+ FORMAT xCon = get_contrasts(D)
+ 
+ Returns contrast structure from design
+ See ui_get_contrasts for UI to get individual contrasts
+  
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="adjusted_data.html" class="code" title="function Ya = adjusted_data(D, Ic)">adjusted_data</a>	Return adjusted data for estimated design and contrast no</li>
+<li><a href="contrasts.html" class="code" title="function r = contrasts(o, xcon)">contrasts</a>	method to get or set contrasts</li>
+<li><a href="get_contrast_by_name.html" class="code" title="function [xc, ic] = get_contrast_by_name(D, cname)">get_contrast_by_name</a>	get named contrast(s) from design contrast structure</li>
+<li><a href="refresh_contrasts.html" class="code" title="function o = refresh_contrasts(o)">refresh_contrasts</a>	method to refresh contrasts to match design</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="unfiltered_efficiency.html" class="code" title="function e = unfiltered_efficiency(D, Ic)">unfiltered_efficiency</a>	Calculate unfiltered efficiency for given SPM design and contrast</li>
+<li><a href="../../marsbar/@mardo_2/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_5/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function xCon = get_contrasts(D)</a>
+0002 <span class="comment">% method to get contrasts from design object</span>
+0003 <span class="comment">% FORMAT xCon = get_contrasts(D)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Returns contrast structure from design</span>
+0006 <span class="comment">% See ui_get_contrasts for UI to get individual contrasts</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id$</span>
+0009   
+0010 SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0011 xCon = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, SPM, <span class="string">'xCon'</span>);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

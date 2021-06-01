@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of maroi_matrix</title>
+  <meta name="keywords" content="maroi_matrix">
+  <meta name="description" content="maroi_matrix method - converts maroi_image to maroi_matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_image</a> &gt; maroi_matrix.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_image&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>maroi_matrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>maroi_matrix method - converts maroi_image to maroi_matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = maroi_matrix(o, sp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> maroi_matrix method - converts maroi_image to maroi_matrix
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/are_same.html" class="code" title="function tf = are_same(roi1, roi2, sp)">are_same</a>	returns 1 if rois are the same</li>
+<li><a href="../../marsbar/@maroi/back2base.html" class="code" title="function o = back2base(o)">back2base</a>	back2base method - check for spacebase, transform thereto</li>
+<li><a href="../../marsbar/@maroi/rle.html" class="code" title="function rlem = rle(o, sp)">rle</a>	run length encoding method</li>
+<li><a href="../../marsbar/@maroi/save_as_image.html" class="code" title="function v = save_as_image(o, fname, sp)">save_as_image</a>	method save_as_image - saves ROI as image</li>
+<li><a href="flip_lr.html" class="code" title="function o = flip_lr(o)">flip_lr</a>	flips ROI left / right</li>
+<li><a href="maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_pointlist/voxpts.html" class="code" title="function [pts, vals] = voxpts(o, sp)">voxpts</a>	voxpts method - returns 3xN ijk matrix in voxels</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = maroi_matrix(o, sp)</a>
+0002 <span class="comment">% maroi_matrix method - converts maroi_image to maroi_matrix</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 o = o.maroi_matrix;
+0007 <span class="keyword">if</span> nargin &gt; 1
+0008   o = <a href="maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>(o, sp);
+0009 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_filter</title>
+  <meta name="keywords" content="pr_spm_filter">
+  <meta name="description" content="Removes low frequency confounds X0">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_filter.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_filter
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Removes low frequency confounds X0</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [vargout] = pr_spm_filter(K,Y) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Removes low frequency confounds X0
+ FORMAT [Y] = pr_spm_filter(K,Y)
+ FORMAT [K] = pr_spm_filter(K)
+
+ K           - filter matrix or:
+ K(s)        - struct array containing partition-specific specifications
+
+ K(s).RT     - observation interval in seconds
+ K(s).row    - row of Y constituting block/partition s
+ K(s).LChoice  - Low-pass  filtering {'hrf' 'Gaussian' 'none'}
+ K(s).LParam   - Gaussian parameter in seconds
+ K(s).HParam - cut-off period in seconds
+
+ K(s).X0     - low frequencies to be removed (DCT)
+ 
+ Y           - data matrix
+
+ K           - filter structure
+ Y           - filtered data
+___________________________________________________________________________
+
+ pr_spm_filter implements high-pass filtering in an efficient way by
+ using the residual forming matrix of X0 - low frequency confounds
+.pr_spm_filter also configures the filter structure in accord with the 
+ specification fields if called with one argument
+___________________________________________________________________________
+ @(#)pr_spm_filter.m    2.10 Karl Friston 03/03/04
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../../marsbar/@mardo_99/event_regressor.html" class="code" title="function [X, dt] = event_regressor(D, e_spec, dur)">event_regressor</a>	method gets estimated regressor for single event</li>
+<li><a href="../../../marsbar/@mardo_99/mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+<li><a href="../../../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_get_filter.html" class="code" title="function [K, LFstr, HFstr] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [vargout] = pr_spm_filter(K,Y)</a>
+0002 <span class="comment">% Removes low frequency confounds X0</span>
+0003 <span class="comment">% FORMAT [Y] = pr_spm_filter(K,Y)</span>
+0004 <span class="comment">% FORMAT [K] = pr_spm_filter(K)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% K           - filter matrix or:</span>
+0007 <span class="comment">% K(s)        - struct array containing partition-specific specifications</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% K(s).RT     - observation interval in seconds</span>
+0010 <span class="comment">% K(s).row    - row of Y constituting block/partition s</span>
+0011 <span class="comment">% K(s).LChoice  - Low-pass  filtering {'hrf' 'Gaussian' 'none'}</span>
+0012 <span class="comment">% K(s).LParam   - Gaussian parameter in seconds</span>
+0013 <span class="comment">% K(s).HParam - cut-off period in seconds</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% K(s).X0     - low frequencies to be removed (DCT)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Y           - data matrix</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% K           - filter structure</span>
+0020 <span class="comment">% Y           - filtered data</span>
+0021 <span class="comment">%___________________________________________________________________________</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% pr_spm_filter implements high-pass filtering in an efficient way by</span>
+0024 <span class="comment">% using the residual forming matrix of X0 - low frequency confounds</span>
+0025 <span class="comment">%.pr_spm_filter also configures the filter structure in accord with the</span>
+0026 <span class="comment">% specification fields if called with one argument</span>
+0027 <span class="comment">%___________________________________________________________________________</span>
+0028 <span class="comment">% @(#)pr_spm_filter.m    2.10 Karl Friston 03/03/04</span>
+0029 
+0030 
+0031 <span class="comment">% set or apply</span>
+0032 <span class="comment">%---------------------------------------------------------------------------</span>
+0033 <span class="keyword">if</span> nargin == 1 &amp; isstruct(K)
+0034 
+0035     <span class="comment">% set K.X0</span>
+0036     <span class="comment">%-------------------------------------------------------------------</span>
+0037     <span class="keyword">for</span> s = 1:length(K)
+0038 
+0039         <span class="comment">% make high pass filter</span>
+0040         <span class="comment">%-----------------------------------------------------------</span>
+0041         k       = length(K(s).row);
+0042         n       = fix(2*(k*K(s).RT)/K(s).HParam + 1);
+0043         X0      = spm_dctmtx(k,n);
+0044         K(s).X0 = X0(:,2:end);
+0045         
+0046         <span class="comment">% make low pass filter</span>
+0047         <span class="comment">%-----------------------------------------------------------</span>
+0048         <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(K(s), <span class="string">'LChoice'</span>)
+0049         <span class="keyword">switch</span> K(s).LChoice
+0050 
+0051             <span class="keyword">case</span> <span class="string">'none'</span>
+0052             <span class="comment">%---------------------------------------------------</span>
+0053             h       = 1;
+0054             d       = 0;
+0055 
+0056             <span class="keyword">case</span> <span class="string">'hrf'</span>
+0057             <span class="comment">%---------------------------------------------------</span>
+0058             h       = spm_hrf(K(s).RT);
+0059             h       = [h; zeros(size(h))];
+0060             g       = abs(fft(h));
+0061             h       = real(ifft(g));
+0062             h       = fftshift(h)';
+0063             n       = length(h);
+0064             d       = [1:n] - n/2 - 1;
+0065 
+0066             <span class="keyword">case</span> <span class="string">'Gaussian'</span>
+0067             <span class="comment">%---------------------------------------------------</span>
+0068             sigma   = K(s).LParam/K(s).RT;
+0069             h       = round(4*sigma);
+0070             h       = exp(-[-h:h].^2/(2*sigma^2));
+0071             n       = length(h);
+0072             d       = [1:n] - (n + 1)/2;
+0073             <span class="keyword">if</span>      n == 1, h = 1; <span class="keyword">end</span>
+0074 
+0075             <span class="keyword">otherwise</span>
+0076             <span class="comment">%---------------------------------------------------</span>
+0077             error(<span class="string">'Low pass Filter option unknown'</span>);
+0078             <span class="keyword">return</span>
+0079         <span class="keyword">end</span>
+0080         <span class="comment">% create and normalize low pass filter</span>
+0081         <span class="comment">%-----------------------------------------------------------</span>
+0082         K(s).KL = spdiags(ones(k,1)*h,d,k,k);
+0083         K(s).KL = spdiags(1./sum(K(s).KL')',0,k,k)*K(s).KL;
+0084 
+0085         <span class="keyword">end</span>
+0086     <span class="keyword">end</span>
+0087 
+0088     <span class="comment">% return structure</span>
+0089     <span class="comment">%-------------------------------------------------------------------</span>
+0090     vargout = K;
+0091 
+0092 <span class="keyword">else</span>
+0093     <span class="comment">% apply</span>
+0094     <span class="comment">%-------------------------------------------------------------------</span>
+0095     <span class="keyword">if</span> isstruct(K)
+0096 
+0097         <span class="comment">% ensure requisite feilds are present</span>
+0098         <span class="comment">%-----------------------------------------------------------</span>
+0099         <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(K(1),<span class="string">'X0'</span>) | <span class="keyword">...</span>
+0100               (<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(K(1),<span class="string">'LChoice'</span>) &amp; ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(K(1), <span class="string">'KL'</span>))
+0101             K = <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(K);
+0102         <span class="keyword">end</span>
+0103 
+0104         <span class="keyword">for</span> s = 1:length(K)
+0105 
+0106             <span class="comment">% select data</span>
+0107             <span class="comment">%---------------------------------------------------</span>
+0108             y = Y(K(s).row,:);
+0109             
+0110             <span class="comment">% apply low pass filter</span>
+0111             <span class="comment">%---------------------------------------------------</span>
+0112             <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(K(s), <span class="string">'KL'</span>)
+0113                 y = K(s).KL*y;
+0114             <span class="keyword">end</span>
+0115 
+0116             <span class="comment">% apply high pass filter</span>
+0117             <span class="comment">%---------------------------------------------------</span>
+0118             y = y - K(s).X0*(K(s).X0'*y);
+0119 
+0120             <span class="comment">% reset filtered data in Y</span>
+0121             <span class="comment">%---------------------------------------------------</span>
+0122             Y(K(s).row,:) = y;
+0123 
+0124         <span class="keyword">end</span>
+0125 
+0126     <span class="comment">% K is simply a filter matrix</span>
+0127     <span class="comment">%-------------------------------------------------------------------</span>
+0128     <span class="keyword">else</span>
+0129         Y = K*Y;
+0130     <span class="keyword">end</span>
+0131 
+0132     <span class="comment">% return filtered data</span>
+0133     <span class="comment">%-------------------------------------------------------------------</span>
+0134     vargout   = Y;
+0135 
+0136 <span class="keyword">end</span>
+0137 
+0138 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

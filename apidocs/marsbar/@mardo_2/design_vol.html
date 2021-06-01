@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of design_vol</title>
+  <meta name="keywords" content="design_vol">
+  <meta name="description" content="returns vols in appropriate format for saving in design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; design_vol.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>design_vol
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>returns vols in appropriate format for saving in design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function V = design_vol(D, imgs) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns vols in appropriate format for saving in design
+ FORMAT V = design_vol(D, imgs)
+
+ Input 
+ D           - mardo design object
+ imgs        - image names or vol structs
+ 
+ Output
+ V           - paths relative to swd
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/full_vol.html" class="code" title="function V = full_vol(D, imgs)">full_vol</a>	returns vol with full path, from vols, or image names</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/set_vol_field.html" class="code" title="function D = set_vol_field(D, fieldn, imgs)">set_vol_field</a>	method to set named field, containing or referring to vol structs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function V = design_vol(D, imgs)</a>
+0002 <span class="comment">% returns vols in appropriate format for saving in design</span>
+0003 <span class="comment">% FORMAT V = design_vol(D, imgs)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% D           - mardo design object</span>
+0007 <span class="comment">% imgs        - image names or vol structs</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Output</span>
+0010 <span class="comment">% V           - paths relative to swd</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013 
+0014 <span class="keyword">if</span> nargin &lt; 2
+0015   error(<span class="string">'Need image information'</span>);
+0016 <span class="keyword">end</span>
+0017 
+0018 <span class="keyword">if</span> iscell(imgs)
+0019   imgs = char(imgs);
+0020 <span class="keyword">end</span>
+0021 <span class="keyword">if</span> ischar(imgs)
+0022   imgs = <a href="../../marsbar/@mardo/full_vol.html" class="code" title="function V = full_vol(D, imgs)">full_vol</a>(D, imgs);
+0023 <span class="keyword">end</span>
+0024 <span class="keyword">if</span> isstruct(imgs)
+0025   V = imgs;
+0026   fnames = spm_str_manip(strvcat(imgs(:).fname), <span class="string">'t'</span>);
+0027   <span class="keyword">for</span> i = 1:prod(size(imgs))
+0028     V(i).fname = deblank(fnames(i,:));
+0029   <span class="keyword">end</span>
+0030 <span class="keyword">else</span>
+0031   error(<span class="string">'Odd input format for images'</span>);
+0032 <span class="keyword">end</span>
+0033 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of isfield</title>
+  <meta name="keywords" content="isfield">
+  <meta name="description" content="method to overload isfield for mardo objects">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; isfield.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>isfield
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to overload isfield for mardo objects</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function result = isfield(this, fieldn) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to overload isfield for mardo objects
+ isfield for mardo objects replies according to the contents of
+ the des_struct field
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>	method to add contrast definitions to design</li>
+<li><a href="descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+<li><a href="get_data.html" class="code" title="function d = get_data(D)">get_data</a>	method to get data from design object</li>
+<li><a href="get_vol_field.html" class="code" title="function V = get_vol_field(D, fieldn)">get_vol_field</a>	method to get named field, containing or referring to vol structs</li>
+<li><a href="has_contrasts.html" class="code" title="function tf = has_contrasts(D)">has_contrasts</a>	method returns 1 if design has contrasts</li>
+<li><a href="has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="is_marsed.html" class="code" title="function tf = is_marsed(o)">is_marsed</a>	returns 1 if design has been processed with MarsBaR</li>
+<li><a href="is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>	returns 1 if design has been estimated in SPM</li>
+<li><a href="is_valid.html" class="code" title="function tf = is_valid(o)">is_valid</a>	returns 1 if object contains valid SPM/MarsBaR design</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="mars_tag.html" class="code" title="function res = mars_tag(o, data)">mars_tag</a>	returns, or sets, Mars tagging structure in design</li>
+<li><a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>	Refreshes data and display of event type window after edit</li>
+<li><a href="savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct as variables in .mat file</li>
+<li><a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>	method to set contrasts into design object</li>
+<li><a href="ui_event_types.html" class="code" title="function [D, ic, status] = ui_event_types(D)">ui_event_types</a>	ui method for selection / editing of event types</li>
+<li><a href="ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/add_trial_f.html" class="code" title="function [D, changef] = add_trial_f(D)">add_trial_f</a>	method to add trial-specific F contrasts</li>
+<li><a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_2/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_2/has_autocorr.html" class="code" title="function tf = has_autocorr(o)">has_autocorr</a>	returns 1 if object contains autocorrelation specification</li>
+<li><a href="../../marsbar/@mardo_2/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/has_whitener.html" class="code" title="function tf = has_whitener(D)">has_whitener</a>	returns 1 if design has whitening filter</li>
+<li><a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_2/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM99 type</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../marsbar/@mardo_2/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct into .mat file with variable name SPM</li>
+<li><a href="../../marsbar/@mardo_2/ui_get_filter.html" class="code" title="function [D,descrip] = ui_get_filter(D)">ui_get_filter</a>	method to get filter via GUI</li>
+<li><a href="../../marsbar/@mardo_2/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	method for SPM2 design reporting</li>
+<li><a href="../../marsbar/@mardo_5/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_5/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM5 / 8 type</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>	File selector</li>
+<li><a href="../../marsbar/@mardo_99/add_trial_f.html" class="code" title="function [D, changef] = add_trial_f(D)">add_trial_f</a>	method to add trial-specific F contrasts</li>
+<li><a href="../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_99/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM99 type</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_get_filter.html" class="code" title="function [K, LFstr, HFstr] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="../../marsbar/@mardo_99/ui_get_filter.html" class="code" title="function [D,descrip] = ui_get_filter(D)">ui_get_filter</a>	method to get filter via GUI</li>
+<li><a href="../../marsbar/@mardo_99/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	mathod for SPM99 design reporting</li>
+<li><a href="../../marsbar/@mardo_99/ui_report_fmri.html" class="code" title="function ui_report_fmri(D,s,i)">ui_report_fmri</a>	Interactive review of fMRI design matrix</li>
+<li><a href="../../marsbar/@marmoire/do_save.html" class="code" title="function [res, o] = do_save(o, item, flags, filename)">do_save</a>	method  to save data for item</li>
+<li><a href="../../marsbar/@marmoire/do_set.html" class="code" title="function [o, errf] = do_set(o, item, flags, data, filename)">do_set</a>	private function to set data into item</li>
+<li><a href="../../marsbar/@maroi/loadobj.html" class="code" title="function o = loadobj(o)">loadobj</a>	loadobj method - fills fields needed for backwards compatibility</li>
+<li><a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>	my_classdata method - sets/gets class data</li>
+<li><a href="../../marsbar/@maroi/private/my_loadroi.html" class="code" title="function o = my_loadroi(fname)">my_loadroi</a>	my_loadroi function - loads ROI from file, sets source field</li>
+<li><a href="../../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="../../marsbar/@maroi_image/private/my_vol_func.html" class="code" title="function [img, errstr] = my_vol_func(vol, func)">my_vol_func</a>	checks vol and func, returns processed image matrix or error</li>
+<li><a href="../../marsbar/@maroi_matrix/loadobj.html" class="code" title="function o = loadobj(o)">loadobj</a>	loadobj function - undoes run length encoding if appropriate</li>
+<li><a href="../../marsbar/@marsy/as_summary_only.html" class="code" title="function out_o = as_summary_only(o)">as_summary_only</a>	returns object with region data removed</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@marsy/is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>	returns 1 if object contains calculated summary data</li>
+<li><a href="../../marsbar/@marsy/is_summary_only.html" class="code" title="function tf = is_summary_only(o)">is_summary_only</a>	method returns 1 if object only contains summary data</li>
+<li><a href="../../marsbar/@marsy/is_valid.html" class="code" title="function tf = is_valid(o)">is_valid</a>	method returns 1 if object contains valid data</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/region.html" class="code" title="function [rs,r_nos] = region(o, r_nos, new_data, fieldname)">region</a>	gets / sets data for region or regions</li>
+<li><a href="../../marsbar/@marsy/region_size.html" class="code" title="function [m,n] = region_size(o, r_no, dim)">region_size</a>	method to get size of specified region data</li>
+<li><a href="../../marsbar/@marsy/split.html" class="code" title="function o_arr = split(o)">split</a>	method splits regions in object into separate objects</li>
+<li><a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="../../marsbar/@marsy/summary_descrip.html" class="code" title="function res = summary_descrip(o, descrip)">summary_descrip</a>	get/set method for summary data description</li>
+<li><a href="../../marsbar/@marsy/summary_info.html" class="code" title="function res = summary_info(o, descrip)">summary_info</a>	get/set method for summary data info</li>
+<li><a href="../../marsbar/@marsy/summary_size.html" class="code" title="function [m,n] = summary_size(o, dim)">summary_size</a>	method returns number of time points x number of regions</li>
+<li><a href="../../marsbar/@marsy/ui_plot.html" class="code" title="function r = ui_plot(o, plot_spec, plot_params)">ui_plot</a>	method plots data in various formats</li>
+<li><a href="../../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>	gets XYZ coordinates for region</li>
+<li><a href="../../marsbar/examples/batch/estimate_er_model.html" class="code" title="function SPM = estimate_er_model(model_file, ev_con)">estimate_er_model</a>	SPM estimate of ER model, and add contrast to ER model</li>
+<li><a href="../../marsbar/mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+<li><a href="../../marsbar/mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>	multifunction function to get/set various stores of stuff</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="../../marsbar/mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>	Display Orthogonal Views of a Normalized Image</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/spm99/spm_write_plane.html" class="code" title="function V = spm_write_plane(V,A,p)">spm_write_plane</a>	Write a transverse plane of image data.</li>
+<li><a href="../../marsbar/spm99/spm_write_vol.html" class="code" title="function V = spm_write_vol(V,Y)">spm_write_vol</a>	Write an image volume to disk, setting scales and offsets as appropriate</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function result = isfield(this, fieldn)</a>
+0002 <span class="comment">% method to overload isfield for mardo objects</span>
+0003 <span class="comment">% isfield for mardo objects replies according to the contents of</span>
+0004 <span class="comment">% the des_struct field</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% $Id$</span>
+0007 
+0008 result =<a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(this.des_struct, fieldn);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

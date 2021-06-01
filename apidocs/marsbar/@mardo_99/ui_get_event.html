@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_get_event</title>
+  <meta name="keywords" content="ui_get_event">
+  <meta name="description" content="method to select an event">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; ui_get_event.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_get_event
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to select an event</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [e_spec, e_name] = ui_get_event(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to select an event 
+ FORMAT [e_spec, e_name] = ui_get_event(D)
+ D      - design
+ 
+ Returns
+ e_spec - 2 by 1 matrix with 
+          e_epec(1) - session number
+          e_spec(2) - event number in session
+ e_name - name of event
+
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [e_spec, e_name] = ui_get_event(D)</a>
+0002 <span class="comment">% method to select an event</span>
+0003 <span class="comment">% FORMAT [e_spec, e_name] = ui_get_event(D)</span>
+0004 <span class="comment">% D      - design</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% Returns</span>
+0007 <span class="comment">% e_spec - 2 by 1 matrix with</span>
+0008 <span class="comment">%          e_epec(1) - session number</span>
+0009 <span class="comment">%          e_spec(2) - event number in session</span>
+0010 <span class="comment">% e_name - name of event</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013 
+0014 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0015   error(<span class="string">'Need FMRI design'</span>);
+0016 <span class="keyword">end</span>
+0017 SPM  = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0018 Sess = SPM.Sess;
+0019 
+0020 <span class="comment">% get session</span>
+0021 <span class="comment">%--------------------------------------------------------------</span>
+0022 s     = length(Sess);
+0023 <span class="keyword">if</span>  s &gt; 1
+0024   s   = spm_input(<span class="string">'which session'</span>,<span class="string">'+1'</span>,<span class="string">'n1'</span>,1,s);
+0025 <span class="keyword">end</span>
+0026   
+0027 u = length(Sess{s}.name);
+0028 Uname = {};
+0029 <span class="keyword">for</span> i = 1:u
+0030   Uname{i} = Sess{s}.name{i};
+0031 <span class="keyword">end</span>
+0032 
+0033 <span class="comment">% get effect</span>
+0034 <span class="comment">%--------------------------------------------------------------</span>
+0035 str   = sprintf(<span class="string">'which effect'</span>);
+0036 u     = spm_input(str,<span class="string">'+1'</span>,<span class="string">'m'</span>,Uname);
+0037 
+0038 e_spec = [s u]';
+0039 e_name = Uname{u};
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

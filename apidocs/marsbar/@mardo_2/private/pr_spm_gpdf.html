@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_gpdf</title>
+  <meta name="keywords" content="pr_spm_gpdf">
+  <meta name="description" content="Probability Density Function (PDF) of Gamma distribution">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_gpdf.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_gpdf
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Probability Density Function (PDF) of Gamma distribution</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function f = spm_Gpdf(x,h,l) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Probability Density Function (PDF) of Gamma distribution
+ FORMAT f = spm_Gpdf(g,h,l)
+
+ x - Gamma-variate   (Gamma has range [0,Inf) )
+ h - Shape parameter (h&gt;0)
+ l - Scale parameter (l&gt;0)
+ f - PDF of Gamma-distribution with shape &amp; scale parameters h &amp; l
+_______________________________________________________________________
+
+ spm_Gpdf implements the Probability Density Function of the Gamma
+ distribution.
+
+ Definition:
+-----------------------------------------------------------------------
+ The PDF of the Gamma distribution with shape parameter h and scale l
+ is defined for h&gt;0 &amp; l&gt;0 and for x in [0,Inf) by: (See Evans et al.,
+ Ch18, but note that this reference uses the alternative
+ parameterisation of the Gamma with scale parameter c=1/l)
+
+           l^h * x^(h-1) exp(-lx)
+    f(x) = ---------------------
+                gamma(h)
+
+ Variate relationships: (Evans et al., Ch18 &amp; Ch8)
+-----------------------------------------------------------------------
+ For natural (strictly +ve integer) shape h this is an Erlang distribution.
+
+ The Standard Gamma distribution has a single parameter, the shape h.
+ The scale taken as l=1.
+
+ The Chi-squared distribution with v degrees of freedom is equivalent
+ to the Gamma distribution with scale parameter 1/2 and shape parameter v/2.
+
+ Algorithm:
+-----------------------------------------------------------------------
+ Direct computation using logs to avoid roundoff errors.
+
+ References:
+-----------------------------------------------------------------------
+ Evans M, Hastings N, Peacock B (1993)
+       &quot;Statistical Distributions&quot;
+        2nd Ed. Wiley, New York
+
+ Abramowitz M, Stegun IA, (1964)
+       &quot;Handbook of Mathematical Functions&quot;
+        US Government Printing Office
+
+ Press WH, Teukolsky SA, Vetterling AT, Flannery BP (1992)
+       &quot;Numerical Recipes in C&quot;
+        Cambridge
+_______________________________________________________________________
+ @(#)spm_Gpdf.m    2.2 Andrew Holmes 99/04/26
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>	returns a hemodynamic response function</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function f = spm_Gpdf(x,h,l)</a>
+0002 <span class="comment">% Probability Density Function (PDF) of Gamma distribution</span>
+0003 <span class="comment">% FORMAT f = spm_Gpdf(g,h,l)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% x - Gamma-variate   (Gamma has range [0,Inf) )</span>
+0006 <span class="comment">% h - Shape parameter (h&gt;0)</span>
+0007 <span class="comment">% l - Scale parameter (l&gt;0)</span>
+0008 <span class="comment">% f - PDF of Gamma-distribution with shape &amp; scale parameters h &amp; l</span>
+0009 <span class="comment">%_______________________________________________________________________</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% spm_Gpdf implements the Probability Density Function of the Gamma</span>
+0012 <span class="comment">% distribution.</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Definition:</span>
+0015 <span class="comment">%-----------------------------------------------------------------------</span>
+0016 <span class="comment">% The PDF of the Gamma distribution with shape parameter h and scale l</span>
+0017 <span class="comment">% is defined for h&gt;0 &amp; l&gt;0 and for x in [0,Inf) by: (See Evans et al.,</span>
+0018 <span class="comment">% Ch18, but note that this reference uses the alternative</span>
+0019 <span class="comment">% parameterisation of the Gamma with scale parameter c=1/l)</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%           l^h * x^(h-1) exp(-lx)</span>
+0022 <span class="comment">%    f(x) = ---------------------</span>
+0023 <span class="comment">%                gamma(h)</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Variate relationships: (Evans et al., Ch18 &amp; Ch8)</span>
+0026 <span class="comment">%-----------------------------------------------------------------------</span>
+0027 <span class="comment">% For natural (strictly +ve integer) shape h this is an Erlang distribution.</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% The Standard Gamma distribution has a single parameter, the shape h.</span>
+0030 <span class="comment">% The scale taken as l=1.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% The Chi-squared distribution with v degrees of freedom is equivalent</span>
+0033 <span class="comment">% to the Gamma distribution with scale parameter 1/2 and shape parameter v/2.</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% Algorithm:</span>
+0036 <span class="comment">%-----------------------------------------------------------------------</span>
+0037 <span class="comment">% Direct computation using logs to avoid roundoff errors.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% References:</span>
+0040 <span class="comment">%-----------------------------------------------------------------------</span>
+0041 <span class="comment">% Evans M, Hastings N, Peacock B (1993)</span>
+0042 <span class="comment">%       &quot;Statistical Distributions&quot;</span>
+0043 <span class="comment">%        2nd Ed. Wiley, New York</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% Abramowitz M, Stegun IA, (1964)</span>
+0046 <span class="comment">%       &quot;Handbook of Mathematical Functions&quot;</span>
+0047 <span class="comment">%        US Government Printing Office</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% Press WH, Teukolsky SA, Vetterling AT, Flannery BP (1992)</span>
+0050 <span class="comment">%       &quot;Numerical Recipes in C&quot;</span>
+0051 <span class="comment">%        Cambridge</span>
+0052 <span class="comment">%_______________________________________________________________________</span>
+0053 <span class="comment">% @(#)spm_Gpdf.m    2.2 Andrew Holmes 99/04/26</span>
+0054 
+0055 <span class="comment">%-Format arguments, note &amp; check sizes</span>
+0056 <span class="comment">%-----------------------------------------------------------------------</span>
+0057 <span class="keyword">if</span> nargin&lt;3, error(<span class="string">'Insufficient arguments'</span>), <span class="keyword">end</span>
+0058 
+0059 ad = [ndims(x);ndims(h);ndims(l)];
+0060 rd = max(ad);
+0061 as = [    [size(x),ones(1,rd-ad(1))];<span class="keyword">...</span>
+0062     [size(h),ones(1,rd-ad(2))];<span class="keyword">...</span>
+0063     [size(l),ones(1,rd-ad(3))]     ];
+0064 rs = max(as);
+0065 xa = prod(as,2)&gt;1;
+0066 <span class="keyword">if</span> sum(xa)&gt;1 &amp; any(any(diff(as(xa,:)),1))
+0067     error(<span class="string">'non-scalar args must match in size'</span>), <span class="keyword">end</span>
+0068 
+0069 <span class="comment">%-Computation</span>
+0070 <span class="comment">%-----------------------------------------------------------------------</span>
+0071 <span class="comment">%-Initialise result to zeros</span>
+0072 f = zeros(rs);
+0073 
+0074 <span class="comment">%-Only defined for strictly positive h &amp; l. Return NaN if undefined.</span>
+0075 md = ( ones(size(x))  &amp;  h&gt;0  &amp;  l&gt;0 );
+0076 <span class="keyword">if</span> any(~md(:)), f(~md) = NaN;
+0077     warning(<span class="string">'Returning NaN for out of range arguments'</span>), <span class="keyword">end</span>
+0078 
+0079 <span class="comment">%-Degenerate cases at x==0: h&lt;1 =&gt; f=Inf; h==1 =&gt; f=l; h&gt;1 =&gt; f=0</span>
+0080 ml = ( md  &amp;  x==0  &amp;  h&lt;1 );
+0081 f(ml) = Inf;
+0082 ml = ( md  &amp;  x==0  &amp;  h==1 ); <span class="keyword">if</span> xa(3), mll=ml; <span class="keyword">else</span> mll=1; <span class="keyword">end</span>
+0083 f(ml) = l(mll);
+0084 
+0085 <span class="comment">%-Compute where defined and x&gt;0</span>
+0086 Q  = find( md  &amp;  x&gt;0 );
+0087 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Q), <span class="keyword">return</span>, <span class="keyword">end</span>
+0088 <span class="keyword">if</span> xa(1), Qx=Q; <span class="keyword">else</span> Qx=1; <span class="keyword">end</span>
+0089 <span class="keyword">if</span> xa(2), Qh=Q; <span class="keyword">else</span> Qh=1; <span class="keyword">end</span>
+0090 <span class="keyword">if</span> xa(3), Ql=Q; <span class="keyword">else</span> Ql=1; <span class="keyword">end</span>
+0091 
+0092 <span class="comment">%-Compute</span>
+0093 f(Q) = exp( (h(Qh)-1).*log(x(Qx)) +h(Qh).*log(l(Ql)) - l(Ql).*x(Qx)<span class="keyword">...</span>
+0094         -gammaln(h(Qh)) );
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

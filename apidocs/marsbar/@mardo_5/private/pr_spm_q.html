@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_q</title>
+  <meta name="keywords" content="pr_spm_q">
+  <meta name="description" content="returns an (n x n) autocorrelation matrix for an AR(p) process">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_q.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_q
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns an (n x n) autocorrelation matrix for an AR(p) process</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Q] = pr_spm_q(A,n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns an (n x n) autocorrelation matrix for an AR(p) process
+ FORMAT [Q] = pr_spm_q(A,n)
+
+ A  - vector pf p AR coeficients
+ n  - size of Q
+__________________________________________________________________________
+ spm_Q uses a Yule-Walker device to compute K where:
+ 
+ y = K*z
+ 
+ such that y is an AR(n) process generated from an i.i.d innovation 
+ z.  This means
+ 
+ cov(y) = &lt;K*z*z'*K&gt; = K*K'
+ 
+ Critically, this is not the correlation because if cov(z) = eye(n) 
+ then trace(cov(y)) ~= n.  This is why the normalization is required
+ 
+ corr(y) = D*K*K'*D';
+ 
+ The reason the diagonals of corr(y)  are not constant is that we 
+ are modeling finite length AR sequences, which incur boundary effects 
+ at the beginning and end of the sequence.
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Q] = pr_spm_q(A,n)</a>
+0002 <span class="comment">% returns an (n x n) autocorrelation matrix for an AR(p) process</span>
+0003 <span class="comment">% FORMAT [Q] = pr_spm_q(A,n)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% A  - vector pf p AR coeficients</span>
+0006 <span class="comment">% n  - size of Q</span>
+0007 <span class="comment">%__________________________________________________________________________</span>
+0008 <span class="comment">% spm_Q uses a Yule-Walker device to compute K where:</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% y = K*z</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% such that y is an AR(n) process generated from an i.i.d innovation</span>
+0013 <span class="comment">% z.  This means</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% cov(y) = &lt;K*z*z'*K&gt; = K*K'</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Critically, this is not the correlation because if cov(z) = eye(n)</span>
+0018 <span class="comment">% then trace(cov(y)) ~= n.  This is why the normalization is required</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% corr(y) = D*K*K'*D';</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% The reason the diagonals of corr(y)  are not constant is that we</span>
+0023 <span class="comment">% are modeling finite length AR sequences, which incur boundary effects</span>
+0024 <span class="comment">% at the beginning and end of the sequence.</span>
+0025 <span class="comment">%__________________________________________________________________________</span>
+0026 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0027 
+0028 <span class="comment">% Karl Friston</span>
+0029 <span class="comment">% $Id: spm_Q.m 372 2005-12-08 17:12:13Z karl $</span>
+0030 
+0031 
+0032 <span class="comment">% compute Q</span>
+0033 <span class="comment">%--------------------------------------------------------------------------</span>
+0034 p    = length(A);
+0035 A    = [1 -A(:)'];
+0036 K    = inv(spdiags(ones(n,1)*A,-[0:p],n,n));
+0037 K    = K.*(abs(K) &gt; 1e-4);
+0038 Q    = K*K';
+0039 D    = spdiags(sqrt(1./diag(Q)),0,n,n);
+0040 Q    = D*Q*D;
+0041 Q    = Q.*(abs(Q) &gt; 1e-4);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

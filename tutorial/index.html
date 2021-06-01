@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarsBaR tutorial &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting started" href="gettingstarted.html" />
+    <link rel="prev" title="Download and install" href="../download.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../download.html" title="Download and install"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MarsBaR tutorial</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="marsbar-tutorial">
+<span id="tutorial"></span><h1>MarsBaR tutorial<a class="headerlink" href="#marsbar-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This is a short introduction to MarsBaR, a region of interest toolbox
+for SPM. It takes the form of a guided tour, showing the usage of
+MarsBaR with a standard dataset.</p>
+<p>The tutorial assumes you have some experience using <a class="reference external" href="http://www.fil.ion.ucl.ac.uk/spm">SPM</a></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#how-to-read-the-tutorial">How to read the tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#gearing-up">Gearing up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#plan-of-campaign">Plan of campaign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#defining-a-functional-roi">Defining a functional ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#functional-rois-usually-need-independent-data">Functional ROIs usually need independent data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.html#starting-the-tutorial">Starting the tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">The MarsBaR / SPM interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define.html">Defining ROIs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define.html#defining-a-functional-roi">Defining a functional ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define.html#review-the-roi">Review the ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define.html#refining-the-roi">Refining the ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="define.html#writing-the-roi-as-an-image">Writing the ROI as an image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">Running the ROI analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="estimate.html#stage-1-choosing-the-design">Stage 1: choosing the design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimate.html#stage-2-extracting-the-data">Stage 2: extracting the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimate.html#stage-3-estimating-the-model">Stage 3: estimating the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Basic results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="results.html#comparing-fast-and-slow-events">Comparing fast and slow events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="andmore.html">Using a structural ROI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="andmore.html#running-an-analysis-using-structural-rois">Running an analysis using structural ROIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="andmore.html#batch-mode">Batch mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="andmore.html#the-end">The end</a></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../download.html"
+                        title="previous chapter">Download and install</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gettingstarted.html"
+                        title="next chapter">Getting started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../download.html" title="Download and install"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MarsBaR tutorial</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

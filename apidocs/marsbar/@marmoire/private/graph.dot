@@ -1,0 +1,10 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  pr_is_nix -> pr_is_nan;
+  pr_needs_save -> pr_isempty;
+
+  pr_is_nan [URL="pr_is_nan.html"];
+  pr_is_nix [URL="pr_is_nix.html"];
+  pr_isempty [URL="pr_isempty.html"];
+  pr_needs_save [URL="pr_needs_save.html"];
+}

@@ -1,0 +1,461 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_vol_utils</title>
+  <meta name="keywords" content="mars_vol_utils">
+  <meta name="description" content="collection of useful utility functions for vol structs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_vol_utils.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_vol_utils
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>collection of useful utility functions for vol structs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout=mars_vol_utils(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> collection of useful utility functions for vol structs
+ 
+ tf = mars_vol_utils('is_vol', V)
+    Returns 1 if V may be a vol struct (right fields)
+
+ [t,be,sw] = mars_vol_utils('type', V)
+    Returns type number for vol struct - see spm_type, spm_vol
+    Second output t = 1 if vol seems to be little-endian
+    Third output sw = 1 if vol swapped relative to this platform
+
+ V = mars_vol_utils('set_type', V, type_info)
+    Sets type of vol struct, using type_info
+    type_info can be a number, or a string (see spm_type)
+  
+ tf = mars_vol_utils('is_swapped', V)
+    Returns 1 if V contains data that has opposite endianness from
+    current platform (as given by spm_platform('bigendian')
+
+ ver = mars_vol_utils('ver', V)
+    Returns version string for vol struct
+    '99' if appears to be spm99 format, '5' for spm5
+
+ ver = mars_vol_utils('current_ver')
+    Returns '99' if current spm_vols returns 99 vol type, else '5'
+
+ tf = mars_vol_utils('is_swapped_wrong', V)
+    Returns 1 if the vol struct V has the different swapping
+    information from a fresh mapping from the same file, and thus might
+    have to be remapped. 
+
+ V = mars_vol_utils('byte_swap', V)
+    Returns new vols for opposite byte ordering to current spec
+
+ V = mars_vol_utils('convert', V, ver)
+    Return vol struct(s) V converted to type specified in ver
+    If ver not specified, convert to current ver type
+ 
+ V = mars_vol_utils('def_vol', ver)
+    Return default structure for type ver
+    If ver not specified, use current ver type
+
+ $Id: mars_vol_utils.m 581 2005-06-21 15:40:17Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>	overloaded xor function</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/cd_images.html" class="code" title="function D = cd_images(D, newpath, byteswap)">cd_images</a>	method for changing path to image files in design</li>
+<li><a href="../marsbar/@mardo/full_vol.html" class="code" title="function V = full_vol(D, imgs)">full_vol</a>	returns vol with full path, from vols, or image names</li>
+<li><a href="../marsbar/@mardo/prefix_images.html" class="code" title="function D = prefix_images(D, action, prefix, flags)">prefix_images</a>	method for adding or removing prefix from file names in design</li>
+<li><a href="../marsbar/@mardo_2/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../marsbar/@mardo_5/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_5/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+<li><a href="../marsbar/@mardo_99/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../marsbar/@maroi/getdata.html" class="code" title="function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)">getdata</a>	getdata method - fetches time series data for ROI from images</li>
+<li><a href="../marsbar/@maroi_matrix/do_write_image.html" class="code" title="function v = do_write_image(o, fname)">do_write_image</a>	method saves matrix as image and returns spm_vol</li>
+<li><a href="mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+<li><a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function tf = sf_is_vol(V)</a></li>
+<li><a href="#_sub2" class="code">function sf_die_no_vol(V)</a></li>
+<li><a href="#_sub3" class="code">function [t, be, sw] = sf_type(V)</a></li>
+<li><a href="#_sub4" class="code">function V = sf_set_type(V, type_info)</a></li>
+<li><a href="#_sub5" class="code">function ver = sf_ver(V)</a></li>
+<li><a href="#_sub6" class="code">function ver = sf_current_ver;</a></li>
+<li><a href="#_sub7" class="code">function V = sf_def_vol_99;</a></li>
+<li><a href="#_sub8" class="code">function V = sf_def_vol_5;</a></li>
+<li><a href="#_sub9" class="code">function Vo = sf_99_to_5(Vi)</a></li>
+<li><a href="#_sub10" class="code">function Vo = sf_5_to_99(Vi)</a></li>
+<li><a href="#_sub11" class="code">function tf = sf_same_ver(V, ver)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=mars_vol_utils(varargin)</a>
+0002 <span class="comment">% collection of useful utility functions for vol structs</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% tf = mars_vol_utils('is_vol', V)</span>
+0005 <span class="comment">%    Returns 1 if V may be a vol struct (right fields)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% [t,be,sw] = mars_vol_utils('type', V)</span>
+0008 <span class="comment">%    Returns type number for vol struct - see spm_type, spm_vol</span>
+0009 <span class="comment">%    Second output t = 1 if vol seems to be little-endian</span>
+0010 <span class="comment">%    Third output sw = 1 if vol swapped relative to this platform</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% V = mars_vol_utils('set_type', V, type_info)</span>
+0013 <span class="comment">%    Sets type of vol struct, using type_info</span>
+0014 <span class="comment">%    type_info can be a number, or a string (see spm_type)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% tf = mars_vol_utils('is_swapped', V)</span>
+0017 <span class="comment">%    Returns 1 if V contains data that has opposite endianness from</span>
+0018 <span class="comment">%    current platform (as given by spm_platform('bigendian')</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% ver = mars_vol_utils('ver', V)</span>
+0021 <span class="comment">%    Returns version string for vol struct</span>
+0022 <span class="comment">%    '99' if appears to be spm99 format, '5' for spm5</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% ver = mars_vol_utils('current_ver')</span>
+0025 <span class="comment">%    Returns '99' if current spm_vols returns 99 vol type, else '5'</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% tf = mars_vol_utils('is_swapped_wrong', V)</span>
+0028 <span class="comment">%    Returns 1 if the vol struct V has the different swapping</span>
+0029 <span class="comment">%    information from a fresh mapping from the same file, and thus might</span>
+0030 <span class="comment">%    have to be remapped.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% V = mars_vol_utils('byte_swap', V)</span>
+0033 <span class="comment">%    Returns new vols for opposite byte ordering to current spec</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% V = mars_vol_utils('convert', V, ver)</span>
+0036 <span class="comment">%    Return vol struct(s) V converted to type specified in ver</span>
+0037 <span class="comment">%    If ver not specified, convert to current ver type</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% V = mars_vol_utils('def_vol', ver)</span>
+0040 <span class="comment">%    Return default structure for type ver</span>
+0041 <span class="comment">%    If ver not specified, use current ver type</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% $Id: mars_vol_utils.m 581 2005-06-21 15:40:17Z matthewbrett $</span>
+0044 
+0045 nout = max(nargout,1);
+0046 varargout = cell(1, nout);
+0047 <span class="keyword">if</span> nargin &lt; 1
+0048   error(<span class="string">'Need action'</span>);
+0049 <span class="keyword">end</span>
+0050 Action = lower(varargin{1});
+0051 <span class="keyword">if</span> nargin &gt; 1
+0052   V = varargin{2};
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="keyword">switch</span>(Action)
+0056 
+0057 <span class="comment">%=======================================================================</span>
+0058 <span class="keyword">case</span> <span class="string">'is_vol'</span>             <span class="comment">% Returns 1 if this appears to be a vol struct</span>
+0059 <span class="comment">%=======================================================================</span>
+0060 <span class="keyword">if</span> nargin &lt; 2
+0061   error(<span class="string">'Need vol struct to check'</span>);
+0062 <span class="keyword">end</span>
+0063 varargout = {<a href="#_sub1" class="code" title="subfunction tf = sf_is_vol(V)">sf_is_vol</a>(V)};
+0064   
+0065 <span class="comment">%=======================================================================</span>
+0066 <span class="keyword">case</span> <span class="string">'type'</span>                                    <span class="comment">% Returns vol type number</span>
+0067 <span class="comment">%=======================================================================</span>
+0068 <span class="keyword">if</span> nargin &lt; 2
+0069   error(<span class="string">'Need vol struct to give type'</span>);
+0070 <span class="keyword">end</span>
+0071 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0072 varargout{:} = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(V);
+0073 
+0074 <span class="comment">%=======================================================================</span>
+0075 <span class="keyword">case</span> <span class="string">'set_type'</span>                                          <span class="comment">% Sets vol type</span>
+0076 <span class="comment">%=======================================================================</span>
+0077 <span class="keyword">if</span> nargin &lt; 2
+0078   error(<span class="string">'Need vol struct to set type'</span>);
+0079 <span class="keyword">end</span>
+0080 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0081 <span class="keyword">if</span> nargin &lt; 3
+0082   error(<span class="string">'Need type to set'</span>);
+0083 <span class="keyword">end</span>
+0084 type_info = varargin{3};
+0085 varargout = {<a href="#_sub4" class="code" title="subfunction V = sf_set_type(V, type_info)">sf_set_type</a>(V, type_info)};
+0086 
+0087 <span class="comment">%=======================================================================</span>
+0088 <span class="keyword">case</span> <span class="string">'is_swapped'</span> <span class="comment">% Returns 1 if vol swapped relative to this platform</span>
+0089 <span class="comment">%=======================================================================</span>
+0090 <span class="keyword">if</span> nargin &lt; 2
+0091   error(<span class="string">'Need vol struct to check swapping'</span>);
+0092 <span class="keyword">end</span>
+0093 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0094 [t be sw] = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(V);
+0095 varargout = {sw};
+0096 
+0097 <span class="comment">%=======================================================================</span>
+0098 <span class="keyword">case</span> <span class="string">'ver'</span>                                    <span class="comment">% Returns vol type version</span>
+0099 <span class="comment">%=======================================================================</span>
+0100 <span class="keyword">if</span> nargin &lt; 2
+0101   error(<span class="string">'Need vol struct to give version'</span>);
+0102 <span class="keyword">end</span>
+0103 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0104 varargout = {<a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)};
+0105 
+0106 <span class="comment">%=======================================================================</span>
+0107 <span class="keyword">case</span> <span class="string">'current_ver'</span>               <span class="comment">% Returns vol type from spm_vol on path</span>
+0108 <span class="comment">%=======================================================================</span>
+0109 varargout = {sf_current_ver};
+0110 
+0111 <span class="comment">%=======================================================================</span>
+0112 <span class="keyword">case</span> <span class="string">'is_swapped_wrong'</span>    <span class="comment">% Returns 1 for if vol is incorrectly swapped</span>
+0113 <span class="comment">%=======================================================================</span>
+0114 <span class="keyword">if</span> nargin &lt; 2
+0115   error(<span class="string">'Need vol struct to test'</span>);
+0116 <span class="keyword">end</span>
+0117 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0118 V2 = spm_vol(V.fname);
+0119 [t be] = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(V);
+0120 [t be2] = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(V2);
+0121 varargout = {be ~= be2};
+0122 
+0123 <span class="comment">%=======================================================================</span>
+0124 <span class="keyword">case</span> <span class="string">'byte_swap'</span>      <span class="comment">% return vols with opposite recorded byte ordering</span>
+0125 <span class="comment">%=======================================================================</span>
+0126 <span class="keyword">if</span> nargin &lt; 2
+0127   error(<span class="string">'Need vol struct to swap'</span>);
+0128 <span class="keyword">end</span>
+0129 <a href="#_sub2" class="code" title="subfunction sf_die_no_vol(V)">sf_die_no_vol</a>(V);
+0130 <span class="keyword">switch</span> <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)
+0131  <span class="keyword">case</span> <span class="string">'99'</span>
+0132   <span class="keyword">for</span> i = 1:numel(V)
+0133     <span class="keyword">if</span> V(i).dim(4) &lt; 256, scf = 256; <span class="keyword">else</span> scf = 1/256; <span class="keyword">end</span>
+0134     V(i).dim(4) = V(i).dim(4) * scf;
+0135   <span class="keyword">end</span>
+0136  <span class="keyword">case</span> <span class="string">'5'</span>
+0137   <span class="keyword">for</span> i = 1:numel(V)
+0138     V(i).dt(2) = 1-V(i).dt(2);
+0139   <span class="keyword">end</span>
+0140  <span class="keyword">otherwise</span>
+0141   error([<span class="string">'Don''t often see those '</span> <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)]);
+0142 <span class="keyword">end</span>
+0143 varargout = {V};
+0144 
+0145 <span class="comment">%=======================================================================</span>
+0146 <span class="keyword">case</span> <span class="string">'convert'</span>              <span class="comment">% Returns vols converted to alternative type</span>
+0147 <span class="comment">%=======================================================================</span>
+0148 <span class="keyword">if</span> nargin &lt; 2
+0149   error(<span class="string">'Need vol struct to convert'</span>);
+0150 <span class="keyword">end</span>
+0151 <span class="keyword">if</span> ~<a href="#_sub1" class="code" title="subfunction tf = sf_is_vol(V)">sf_is_vol</a>(V), varargout={V}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0152 <span class="keyword">if</span> nargin &lt; 3
+0153   ver = sf_current_ver;
+0154 <span class="keyword">else</span>
+0155   ver = varargin{3};
+0156   <span class="keyword">if</span> <a href="#_sub1" class="code" title="subfunction tf = sf_is_vol(V)">sf_is_vol</a>(ver), ver = <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(ver); <span class="keyword">end</span>
+0157 <span class="keyword">end</span>
+0158 <span class="keyword">if</span> <a href="#_sub11" class="code" title="subfunction tf = sf_same_ver(V, ver)">sf_same_ver</a>(V, ver)
+0159   varargout = {V};
+0160   <span class="keyword">return</span>
+0161 <span class="keyword">end</span>
+0162 <span class="keyword">switch</span> <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)
+0163  <span class="keyword">case</span> <span class="string">'99'</span>
+0164   varargout = {<a href="#_sub9" class="code" title="subfunction Vo = sf_99_to_5(Vi)">sf_99_to_5</a>(V)};
+0165  <span class="keyword">case</span> <span class="string">'5'</span>
+0166   varargout = {<a href="#_sub10" class="code" title="subfunction Vo = sf_5_to_99(Vi)">sf_5_to_99</a>(V)};
+0167  <span class="keyword">otherwise</span>
+0168   error([<a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V) <span class="string">' is just nuts'</span>]);
+0169 <span class="keyword">end</span>
+0170 
+0171 <span class="comment">%=======================================================================</span>
+0172 <span class="keyword">case</span> <span class="string">'def_vol'</span>                <span class="comment">% Returns default vol struct of given type</span>
+0173 <span class="comment">%=======================================================================</span>
+0174 <span class="keyword">if</span> nargin &lt; 2
+0175   ver = sf_current_ver;
+0176 <span class="keyword">else</span>
+0177   ver = varargin{2};
+0178   <span class="keyword">if</span> <a href="#_sub1" class="code" title="subfunction tf = sf_is_vol(V)">sf_is_vol</a>(ver), ver = <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(ver); <span class="keyword">end</span>
+0179 <span class="keyword">end</span>
+0180 <span class="keyword">switch</span> ver
+0181  <span class="keyword">case</span> <span class="string">'99'</span>
+0182   varargout = {sf_def_vol_99};
+0183  <span class="keyword">case</span> <span class="string">'5'</span>
+0184   varargout = {sf_def_vol_5};
+0185  <span class="keyword">otherwise</span>
+0186   error([ver <span class="string">' is unacceptable'</span>]);
+0187 <span class="keyword">end</span>
+0188 <span class="keyword">return</span> 
+0189  
+0190 <span class="keyword">otherwise</span>
+0191   error([Action <span class="string">' is beyond my range'</span>]);
+0192 <span class="keyword">end</span>
+0193 <span class="keyword">return</span>
+0194 
+0195 <span class="comment">% Subfunctions</span>
+0196 
+0197 <a name="_sub1" href="#_subfunctions" class="code">function tf = sf_is_vol(V)</a>
+0198 <span class="comment">% returns 1 if this may be a vol struct</span>
+0199 tf = 0;
+0200 <span class="keyword">if</span> ~isstruct(V), <span class="keyword">return</span>, <span class="keyword">end</span>
+0201 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V, <span class="string">'dim'</span>), <span class="keyword">return</span>, <span class="keyword">end</span>
+0202 tf = 1;
+0203 <span class="keyword">return</span>
+0204 
+0205 <a name="_sub2" href="#_subfunctions" class="code">function sf_die_no_vol(V)</a>
+0206 <span class="keyword">if</span> ~<a href="#_sub1" class="code" title="subfunction tf = sf_is_vol(V)">sf_is_vol</a>(V)
+0207   error(<span class="string">'I really wanted a vol struct here'</span>);
+0208 <span class="keyword">end</span>
+0209 <span class="keyword">return</span>
+0210 
+0211 <a name="_sub3" href="#_subfunctions" class="code">function [t, be, sw] = sf_type(V)</a>
+0212 <span class="comment">% returns type number, big-endian flag, swapped flag</span>
+0213 plat_be = spm_platform(<span class="string">'bigend'</span>);
+0214 V = V(1);
+0215 <span class="keyword">if</span> <a href="#_sub11" class="code" title="subfunction tf = sf_same_ver(V, ver)">sf_same_ver</a>(V, <span class="string">'5'</span>) <span class="comment">% spm5 vol type</span>
+0216   t = V.dt(1); 
+0217   be = V.dt(2);
+0218   sw = <a href="../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>(be, plat_be);
+0219 <span class="keyword">elseif</span> length(V.dim) &gt; 3 <span class="comment">% spm99 style type specifier</span>
+0220   t = V.dim(4);
+0221   sw = (t &gt; 256);
+0222   <span class="keyword">if</span> sw, t = t/256; <span class="keyword">end</span>
+0223   be = <a href="../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>(plat_be, sw);
+0224 <span class="keyword">else</span>
+0225   error(<span class="string">'Could not get vol type'</span>);
+0226 <span class="keyword">end</span>
+0227 <span class="keyword">return</span>
+0228 
+0229 <a name="_sub4" href="#_subfunctions" class="code">function V = sf_set_type(V, type_info)</a>
+0230 <span class="comment">% set type for V from type_info</span>
+0231 <span class="keyword">switch</span> sf_current_ver
+0232  <span class="keyword">case</span> <span class="string">'99'</span>
+0233   <span class="keyword">if</span> ischar(type_info)
+0234     <span class="keyword">if</span> strcmp(type_info, <span class="string">'float32'</span>), type_info=<span class="string">'float'</span>; <span class="keyword">end</span>
+0235     <span class="keyword">if</span> strcmp(type_info, <span class="string">'float64'</span>), type_info=<span class="string">'double'</span>; <span class="keyword">end</span>
+0236     type_info = spm_type(type_info);
+0237   <span class="keyword">end</span>
+0238  <span class="keyword">case</span> <span class="string">'5'</span>
+0239   <span class="keyword">if</span> ischar(type_info)
+0240     <span class="keyword">if</span> strcmp(type_info, <span class="string">'float'</span>), type_info=<span class="string">'float32'</span>; <span class="keyword">end</span>
+0241     <span class="keyword">if</span> strcmp(type_info, <span class="string">'double'</span>), type_info=<span class="string">'float64'</span>; <span class="keyword">end</span>
+0242     type_info = spm_type(type_info);
+0243   <span class="keyword">end</span>
+0244  <span class="keyword">otherwise</span>
+0245   error([<span class="string">'Don''t like your type: '</span> sf_current_ver]);
+0246 <span class="keyword">end</span>
+0247 <span class="keyword">switch</span> <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)
+0248  <span class="keyword">case</span> <span class="string">'99'</span>
+0249   V.dim(4) = type_info;
+0250  <span class="keyword">case</span> <span class="string">'5'</span>
+0251   V.dt(1) = type_info;
+0252  <span class="keyword">otherwise</span>
+0253   error([<span class="string">'That''s a funny type: '</span> <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V)]);
+0254 <span class="keyword">end</span>
+0255 <span class="keyword">return</span>
+0256   
+0257 <a name="_sub5" href="#_subfunctions" class="code">function ver = sf_ver(V)</a>
+0258 <span class="comment">% returns version string ('99' or '5')</span>
+0259 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V, <span class="string">'dt'</span>)
+0260   ver = <span class="string">'5'</span>;
+0261 <span class="keyword">else</span>
+0262   ver = <span class="string">'99'</span>;
+0263 <span class="keyword">end</span>
+0264 <span class="keyword">return</span>
+0265 
+0266 <a name="_sub6" href="#_subfunctions" class="code">function ver = sf_current_ver;</a>
+0267 <span class="comment">% returns version for spm_vol on path</span>
+0268 <span class="comment">% spm2,99 spm_vol do not accept no args</span>
+0269 <span class="keyword">try</span>
+0270   V = spm_vol;
+0271   ver = <a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V);
+0272 <span class="keyword">catch</span>
+0273   ver = <span class="string">'99'</span>;
+0274 <span class="keyword">end</span>
+0275 <span class="keyword">return</span>
+0276 
+0277 <a name="_sub7" href="#_subfunctions" class="code">function V = sf_def_vol_99;</a>
+0278 V = struct(<span class="keyword">...</span>
+0279     <span class="string">'fname'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0280     <span class="string">'dim'</span>, zeros(1,4), <span class="keyword">...</span>
+0281     <span class="string">'pinfo'</span>, [1 0 0]', <span class="keyword">...</span>
+0282     <span class="string">'mat'</span>, eye(4), <span class="keyword">...</span>
+0283     <span class="string">'n'</span>, [], <span class="keyword">...</span>
+0284     <span class="string">'descrip'</span>, <span class="string">''</span>);
+0285 <span class="keyword">return</span>
+0286 
+0287 <a name="_sub8" href="#_subfunctions" class="code">function V = sf_def_vol_5;</a>
+0288 V = struct(<span class="string">'fname'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0289        <span class="string">'dim'</span>,   zeros(1,3),<span class="keyword">...</span>
+0290        <span class="string">'dt'</span>,    [0 0],<span class="keyword">...</span>
+0291        <span class="string">'pinfo'</span>, [1 0 0]',<span class="keyword">...</span>
+0292        <span class="string">'mat'</span>,   eye(4),<span class="keyword">...</span>
+0293        <span class="string">'n'</span>,     [],<span class="keyword">...</span>
+0294        <span class="string">'descrip'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0295        <span class="string">'private'</span>,[]);
+0296 <span class="keyword">return</span>
+0297 
+0298 <a name="_sub9" href="#_subfunctions" class="code">function Vo = sf_99_to_5(Vi)</a>
+0299 <span class="comment">% converts spm99 vols to spm5 vols</span>
+0300 d = sf_def_vol_5;
+0301 Vo = d; <span class="comment">% in case Vi is empty</span>
+0302 is_n = <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(Vi, <span class="string">'n'</span>);
+0303 <span class="keyword">for</span> i = 1:numel(Vi)
+0304   OV = Vi(i);
+0305   NV = d;
+0306   [t be] = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(OV);
+0307   NV.fname = OV.fname;
+0308   NV.dim = OV.dim(1:3);
+0309   NV.dt = [t be];
+0310   NV.mat = OV.mat;
+0311   NV.pinfo = OV.pinfo;
+0312   NV.descrip = OV.descrip;
+0313   <span class="keyword">if</span> is_n, NV.n = [OV.n 1]; <span class="keyword">end</span>
+0314   Vo(i) = NV;
+0315 <span class="keyword">end</span>
+0316 Vo = reshape(Vo, size(Vi));
+0317 <span class="keyword">return</span>
+0318 
+0319 <a name="_sub10" href="#_subfunctions" class="code">function Vo = sf_5_to_99(Vi)</a>
+0320 <span class="comment">% converts spm5 vols to spm99 vols</span>
+0321 d = sf_def_vol_99;
+0322 Vo = d; <span class="comment">% in case Vi is empty</span>
+0323 <span class="keyword">for</span> i = 1:numel(Vi)
+0324   OV = Vi(i);
+0325   NV = d;
+0326   [t be sw] = <a href="#_sub3" class="code" title="subfunction [t, be, sw] = sf_type(V)">sf_type</a>(OV);
+0327   <span class="keyword">if</span> sw, t = t * 256; <span class="keyword">end</span>
+0328   NV.fname = OV.fname;
+0329   NV.dim = [OV.dim(1:3) t];
+0330   NV.mat = OV.mat;
+0331   NV.pinfo = OV.pinfo;
+0332   NV.descrip = OV.descrip;
+0333   NV.n = OV.n(1);
+0334   Vo(i) = NV;
+0335 <span class="keyword">end</span>
+0336 Vo = reshape(Vo, size(Vi));
+0337 <span class="keyword">return</span>
+0338 
+0339 <a name="_sub11" href="#_subfunctions" class="code">function tf = sf_same_ver(V, ver)</a>
+0340 tf = strcmp(<a href="#_sub5" class="code" title="subfunction ver = sf_ver(V)">sf_ver</a>(V), ver);
+0341 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

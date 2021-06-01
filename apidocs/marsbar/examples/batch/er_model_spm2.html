@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of er_model_spm2</title>
+  <meta name="keywords" content="er_model_spm2">
+  <meta name="description" content="SPM2 batch script wrapper for ER data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; er_model_spm2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>er_model_spm2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>SPM2 batch script wrapper for ER data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function SPM = er_model_spm2(sess_dir, sesses, ana_dir) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> SPM2 batch script wrapper for ER data
+ FORMAT SPM = er_model_spm2(sess_dir, sesses)
+
+ sess_dir        - directory containing session directories
+ sesses          - string or cell array of session directory names
+ ana_dir         - analysis directory
+ 
+ Returns
+ SPM             - SPM model structure after configuration
+ 
+ The script is specific to this design...
+
+ $Id: er_model_spm2.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>	batch script wrapper to configure model for MarsBaR ER data</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function SPM = er_model_spm2(sess_dir, sesses, ana_dir)</a>
+0002 <span class="comment">% SPM2 batch script wrapper for ER data</span>
+0003 <span class="comment">% FORMAT SPM = er_model_spm2(sess_dir, sesses)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% sess_dir        - directory containing session directories</span>
+0006 <span class="comment">% sesses          - string or cell array of session directory names</span>
+0007 <span class="comment">% ana_dir         - analysis directory</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Returns</span>
+0010 <span class="comment">% SPM             - SPM model structure after configuration</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% The script is specific to this design...</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id: er_model_spm2.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $</span>
+0015 
+0016 <span class="keyword">if</span> nargin &lt; 1
+0017   error(<span class="string">'Need directory containing session subdirectories'</span>);
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> nargin &lt; 2
+0020   error(<span class="string">'Need directory names for sessions'</span>);
+0021 <span class="keyword">end</span>
+0022 <span class="keyword">if</span> nargin &lt; 3
+0023   ana_dir = pwd;
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="keyword">if</span> ischar(sesses), sesses = cellstr(sesses); <span class="keyword">end</span>
+0027 nsessions = length(sesses);
+0028 
+0029 pwd_store = pwd;
+0030 cd(ana_dir);
+0031 
+0032 <span class="comment">% load SPM defaults</span>
+0033 <span class="keyword">if</span> ~exist(<span class="string">'defaults'</span>, <span class="string">'var'</span>)
+0034   <span class="keyword">global</span> defaults;
+0035   spm_defaults; 
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="comment">% Specify some design stuff</span>
+0039 SPM.xY.RT          =  2.02726;                              <span class="comment">% seconds</span>
+0040 
+0041 <span class="comment">% Specify design</span>
+0042 <span class="comment">%===========================================================================</span>
+0043 <span class="comment">% global normalization: OPTOINS:'Scaling'|'None'</span>
+0044 <span class="comment">%---------------------------------------------------------------------------</span>
+0045 SPM.xGX.iGXcalc    = <span class="string">'None'</span>;
+0046 
+0047 <span class="comment">% low frequency confound: high-pass cutoff (secs) [Inf = no filtering]</span>
+0048 <span class="comment">%---------------------------------------------------------------------------</span>
+0049 SPM.xX.K(1).HParam    = 60;
+0050 
+0051 <span class="comment">% intrinsic autocorrelations: OPTIONS: 'none'|'AR(1) + w'</span>
+0052 <span class="comment">%-----------------------------------------------------------------------</span>
+0053 SPM.xVi.form       = <span class="string">'AR(1) + w'</span>;
+0054 
+0055 <span class="comment">% basis functions and timing parameters</span>
+0056 <span class="comment">%---------------------------------------------------------------------------</span>
+0057 <span class="comment">% OPTIONS:'hrf'</span>
+0058 <span class="comment">%         'hrf (with time derivative)'</span>
+0059 <span class="comment">%         'hrf (with time and dispersion derivatives)'</span>
+0060 <span class="comment">%         'Fourier set'</span>
+0061 <span class="comment">%         'Fourier set (Hanning)'</span>
+0062 <span class="comment">%         'Gamma functions'</span>
+0063 <span class="comment">%         'Finite Impulse Response'</span>
+0064 <span class="comment">%---------------------------------------------------------------------------</span>
+0065 SPM.xBF.name       = <span class="string">'hrf (with time derivative)'</span>;
+0066 SPM.xBF.length     = 24;                <span class="comment">% length in seconds</span>
+0067 SPM.xBF.order      = 1;                 <span class="comment">% order of basis set</span>
+0068 SPM.xBF.T          = 16;                <span class="comment">% number of time bins per scan</span>
+0069 SPM.xBF.T0         = 1;                 <span class="comment">% first time bin (see slice timing)</span>
+0070 SPM.xBF.UNITS      = <span class="string">'scans'</span>;           <span class="comment">% OPTIONS: 'scans'|'secs' for onsets</span>
+0071 SPM.xBF.Volterra   = 1;                 <span class="comment">% OPTIONS: 1|2 = order of convolution</span>
+0072 
+0073 condnames = {<span class="string">'vis_stim'</span>};
+0074 nconds = length(condnames);
+0075 
+0076 <span class="comment">% specify filter for filenames</span>
+0077 Filter             = <span class="string">'s*.img'</span>;
+0078 
+0079 PP = <span class="string">''</span>; stimons = [];
+0080 <span class="keyword">for</span> ss = 1:nsessions
+0081   <span class="comment">% directory containing scans</span>
+0082   fildir = fullfile(sess_dir, sesses{ss});
+0083 
+0084   <span class="comment">% Condition stuff - onset times for visual stimulus</span>
+0085   condir = fullfile(fildir, <span class="string">'onsets'</span>);
+0086   condfile = <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'Files'</span>, condir, <span class="string">'flash*.txt'</span>);
+0087   condons = spm_load(condfile);
+0088   tmp = condons(:,2); <span class="comment">% get stimulus column</span>
+0089   tmp(tmp &lt; 0) = 0; <span class="comment">% correct negative onsets</span>
+0090   stimons{1} = tmp;  
+0091 
+0092   <span class="keyword">for</span> cno = 1:nconds
+0093     SPM.Sess(ss).U(cno).name      =condnames(cno);
+0094     SPM.Sess(ss).U(cno).P(1).name = <span class="string">'none'</span>; <span class="comment">% Parametric modulation</span>
+0095     SPM.Sess(ss).U(cno).ons = stimons{cno};
+0096     SPM.Sess(ss).U(cno).dur = 0;
+0097   <span class="keyword">end</span>
+0098     
+0099   <span class="comment">% file selection</span>
+0100   P         = <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'files'</span>,fildir,Filter);
+0101   SPM.nscan(ss) = size(P,1);
+0102   
+0103   <span class="comment">% covariates</span>
+0104   SPM.Sess(ss).C.C    = [];       <span class="comment">% [n x c double] covariates</span>
+0105   SPM.Sess(ss).C.name = {};       <span class="comment">% [1 x c cell]   names</span>
+0106 
+0107   <span class="comment">% set files</span>
+0108   PP           = strvcat(PP, P);
+0109 
+0110 <span class="keyword">end</span>
+0111 
+0112 <span class="comment">% set files</span>
+0113 SPM.xY.P           = PP;
+0114 
+0115 <span class="comment">% Configure design matrix</span>
+0116 SPM = spm_fmri_spm_ui(SPM);
+0117 
+0118 <span class="comment">% Return to original directory</span>
+0119 cd(pwd_store);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_fitted</title>
+  <meta name="keywords" content="event_fitted">
+  <meta name="description" content="method to compute fitted event time course">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; event_fitted.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_fitted
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to compute fitted event time course</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [tc, dt] = event_fitted(D, e_spec, dur) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to compute fitted event time course
+ FORMAT [tc dt]  = event_fitted(D, e_spec, dur)
+ 
+ D          - design
+ e_spec     - 2 by N array specifying events to combine
+                 with row 1 giving session number
+                 and row 2 giving event number in session
+                 This may in due course become an object type
+ dur        - duration in seconds of event to estimate for
+ 
+ Returns
+ tc         - fitted event time course, averaged over events
+ dt         - time units (seconds per row in X)
+
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_2/event_regressor.html" class="code" title="function [X, dt] = event_regressor(D, e_spec, dur)">event_regressor</a>	method gets estimated regressor for single event</li>
+<li><a href="../../marsbar/@mardo_99/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_99/event_regressor.html" class="code" title="function [X, dt] = event_regressor(D, e_spec, dur)">event_regressor</a>	method gets estimated regressor for single event</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="event_signal.html" class="code" title="function s = event_signal(D, e_spec, dur, diff_func, varargin)">event_signal</a>	method to compute % signal change from fMRI events</li>
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [tc, dt] = event_fitted(D, e_spec, dur)</a>
+0002 <span class="comment">% method to compute fitted event time course</span>
+0003 <span class="comment">% FORMAT [tc dt]  = event_fitted(D, e_spec, dur)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - design</span>
+0006 <span class="comment">% e_spec     - 2 by N array specifying events to combine</span>
+0007 <span class="comment">%                 with row 1 giving session number</span>
+0008 <span class="comment">%                 and row 2 giving event number in session</span>
+0009 <span class="comment">%                 This may in due course become an object type</span>
+0010 <span class="comment">% dur        - duration in seconds of event to estimate for</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Returns</span>
+0013 <span class="comment">% tc         - fitted event time course, averaged over events</span>
+0014 <span class="comment">% dt         - time units (seconds per row in X)</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $Id$</span>
+0017 
+0018 <span class="keyword">if</span> nargin &lt; 2
+0019   error(<span class="string">'Need event specification'</span>);
+0020 <span class="keyword">end</span>
+0021 <span class="keyword">if</span> nargin &lt; 3
+0022   dur = 0;
+0023 <span class="keyword">end</span>
+0024 
+0025 <span class="keyword">if</span> ~<a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D) | <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(e_spec)
+0026   tc = [];
+0027   <span class="keyword">return</span>
+0028 <span class="keyword">end</span>
+0029 <span class="keyword">if</span> ~<a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(D)
+0030   error(<span class="string">'Need a MarsBaR estimated design'</span>);
+0031 <span class="keyword">end</span>
+0032 <span class="keyword">if</span> size(e_spec, 1) == 1, e_spec = e_spec'; <span class="keyword">end</span>
+0033 
+0034 e_s_l = size(e_spec, 2);
+0035 SPM   = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0036 <a href="betas.html" class="code" title="function r = betas(o)">betas</a> = SPM.betas;
+0037 tc    = zeros(1, size(<a href="betas.html" class="code" title="function r = betas(o)">betas</a>, 2));
+0038 <span class="keyword">for</span> e_i = 1:e_s_l
+0039   es    = e_spec(:, e_i);
+0040   ss    = es(1);
+0041   [X dt]= <a href="../../marsbar/@mardo_2/event_regressor.html" class="code" title="function [X, dt] = event_regressor(D, e_spec, dur)">event_regressor</a>(D, es, dur);
+0042   B     = <a href="betas.html" class="code" title="function r = betas(o)">betas</a>(<a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>(D, es), :);
+0043   Yh    = X*B;
+0044   
+0045   <span class="comment">% Sum over events</span>
+0046   sz    = size(Yh, 1);
+0047   szo   = size(tc, 1);
+0048   <span class="keyword">if</span> sz &gt; szo
+0049     tc(end+1:sz, :) = 0;
+0050   <span class="keyword">end</span>
+0051   tc(1:sz,:) = tc(1:sz,:) + Yh;  
+0052   
+0053 <span class="keyword">end</span>
+0054 tc = tc / e_s_l;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

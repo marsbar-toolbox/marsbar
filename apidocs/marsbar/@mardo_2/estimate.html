@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of estimate</title>
+  <meta name="keywords" content="estimate">
+  <meta name="description" content="estimate method - estimates GLM for SPM2 model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; estimate.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>estimate
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>estimate method - estimates GLM for SPM2 model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [marsD] = estimate(marsD, marsY, params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> estimate method - estimates GLM for SPM2 model
+
+ marsD           - SPM design object
+ marsY           - MarsBaR data object or 2D data matrix
+ params          - struct containing options, as fields
+                   redo_covar     - if 1, remodels covariance 
+                   redo_whitening - if 1, recalcalates whitening
+                   (by default, both are set to 1)
+ 
+ e.g.
+ % Estimate model on design D and data Y, using original covariance and
+ % whitening
+ E = estimate(D, Y, struct('reco_covar', 0, ...
+                           'redo_whitening', 0);
+  
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points in design</li>
+<li><a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>	method returns 1 if design can be estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_99/can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>	method returns 1 if design can be estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function params = sf_call_compat(params)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [marsD] = estimate(marsD, marsY, params)</a>
+0002 <span class="comment">% estimate method - estimates GLM for SPM2 model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% marsD           - SPM design object</span>
+0005 <span class="comment">% marsY           - MarsBaR data object or 2D data matrix</span>
+0006 <span class="comment">% params          - struct containing options, as fields</span>
+0007 <span class="comment">%                   redo_covar     - if 1, remodels covariance</span>
+0008 <span class="comment">%                   redo_whitening - if 1, recalcalates whitening</span>
+0009 <span class="comment">%                   (by default, both are set to 1)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% e.g.</span>
+0012 <span class="comment">% % Estimate model on design D and data Y, using original covariance and</span>
+0013 <span class="comment">% % whitening</span>
+0014 <span class="comment">% E = estimate(D, Y, struct('reco_covar', 0, ...</span>
+0015 <span class="comment">%                           'redo_whitening', 0);</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $Id$</span>
+0018 
+0019 def_params = struct(<span class="keyword">...</span>
+0020     <span class="string">'redo_covar'</span>, 1, <span class="keyword">...</span>
+0021     <span class="string">'redo_whitening'</span>, 1);
+0022 
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   error(<span class="string">'Need data to estimate'</span>);
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> nargin &lt; 3
+0027   params = [];
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">% Replicate original behaviour calling with cell array of strings</span>
+0031 params = <a href="#_sub1" class="code" title="subfunction params = sf_call_compat(params)">sf_call_compat</a>(params);
+0032 
+0033 <span class="comment">% Fill with defaults</span>
+0034 params = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, def_params, params);
+0035 
+0036 <span class="comment">% ensure we have a data object</span>
+0037 marsY = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(marsY);
+0038 
+0039 <span class="comment">% check design is complete</span>
+0040 <span class="keyword">if</span> ~<a href="can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>(marsD)
+0041   error(<span class="string">'This design needs more information before it can be estimated'</span>);
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">% Check data and design dimensions</span>
+0045 <span class="keyword">if</span> <a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(marsY) ~= <a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(marsD)
+0046   error(<span class="string">'The data and design must have the same number of rows'</span>);
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="comment">% get SPM design structure</span>
+0050 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsD);
+0051 
+0052 <span class="comment">% process params</span>
+0053 <span class="keyword">if</span> params.redo_covar
+0054   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM, <span class="string">'xVi'</span>) 
+0055     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xVi, <span class="string">'V'</span>) &amp; <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xVi, <span class="string">'Vi'</span>)
+0056       SPM.xVi = rmfield(SPM.xVi, <span class="string">'V'</span>);
+0057       <span class="keyword">if</span> <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(marsD)
+0058     disp(<span class="string">'Re-estimating covariance'</span>);
+0059       <span class="keyword">end</span>
+0060     <span class="keyword">end</span>
+0061   <span class="keyword">end</span>
+0062 <span class="keyword">end</span>
+0063 <span class="keyword">if</span> params.redo_whitening
+0064   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xX, <span class="string">'W'</span>)
+0065     SPM.xX = rmfield(SPM.xX, <span class="string">'W'</span>);
+0066     <span class="keyword">if</span> <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(marsD)
+0067       disp(<span class="string">'Re-estimating whitening filter'</span>);
+0068     <span class="keyword">end</span>
+0069   <span class="keyword">end</span>
+0070 <span class="keyword">end</span>
+0071 
+0072 SPM        = <a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>(SPM, marsY);
+0073 SPM.marsY  = marsY;
+0074 SPM.SPMid  = sprintf(<span class="string">'SPM2: MarsBaR estimation. mardo_2 version %s'</span>, <span class="keyword">...</span>
+0075              marsD.cvs_version);
+0076 
+0077 <span class="comment">% return modified structure</span>
+0078 marsD = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsD, SPM);
+0079 
+0080 <span class="keyword">return</span>
+0081 
+0082 <a name="_sub1" href="#_subfunctions" class="code">function params = sf_call_compat(params)</a>
+0083 <span class="comment">% Replicates old calling behaviour, for backwards compatibility</span>
+0084   
+0085 <span class="comment">% Replicate result of passing empty cell array, but warn that this</span>
+0086 <span class="comment">% will be removed soon</span>
+0087 <span class="keyword">if</span> ischar(params) | iscell(params)
+0088   warning([<span class="string">'Cell / char form of params deprecated, '</span> <span class="keyword">...</span>
+0089        <span class="string">'please use struct form instead'</span>]);
+0090 <span class="keyword">end</span>
+0091 <span class="keyword">if</span> iscell(params) &amp; <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(params)
+0092   warning([<span class="string">'Empty cell array changes default options; '</span><span class="keyword">...</span>
+0093       <span class="string">'This behaviour will change for future versions'</span>]);
+0094   params = struct(<span class="keyword">...</span>
+0095     <span class="string">'redo_covar'</span>, 0, <span class="keyword">...</span>
+0096     <span class="string">'redo_whitening'</span>, 0);
+0097 <span class="keyword">end</span>
+0098 <span class="keyword">if</span> ischar(params)params = {params}; <span class="keyword">end</span>
+0099 <span class="keyword">if</span> iscell(params)
+0100   params = params(:); 
+0101   params = cell2struct(num2cell(ones(size(params))), params, 1);
+0102 <span class="keyword">end</span>
+0103 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

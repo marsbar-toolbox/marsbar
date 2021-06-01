@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mardo_2</title>
+  <meta name="keywords" content="mardo_2">
+  <meta name="description" content="class constructor for SPM2 MarsBaR design object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; mardo_2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mardo_2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>class constructor for SPM2 MarsBaR design object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = mardo_2(params, others, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> class constructor for SPM2 MarsBaR design object
+ FORMAT [o, others] = mardo_2(params, others, varargin)
+ Inputs
+ params  - structure,containing fields, or SPM/MarsBaR design
+ others  - structure, containing other fields to define
+
+ Outputs
+ o       - mardo_2 object (unless disowned)
+ others  - any unrecognized fields from params, for processing by
+           children
+
+ This object is called from the mardo object contructor
+ with a mardo object as input.  mardo_2 checks to see
+ if the contained design is an SPM2 design, returns
+ the object unchanged if not.  If it is an SPM2
+ design, it claims ownership of the passed object.
+ 
+ Note the third argument.  If this call is a call as a constructor (i.e
+ not an action string call), this can be the 'child_pass_f', which is 1
+ if this call is from a child, passing a mardo object to be handled by
+ the mardo_2 class.  In this case we just accept this design is for us,
+ and don't do any SPM2 specific processing
+
+ The constructor can also be called to give class functions, where the
+ name of the class function is a character string which is one of:
+    'spm_filter' - applies spm_filter routine to passed args
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../../marsbar/@mardo_2/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM99 type</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_5/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../../marsbar/@mardo_5/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM5 / 8 type</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_99/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../../marsbar/@mardo_99/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>	returns 1 if design looks like it is of SPM99 type</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_99/mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = mardo_2(params, others, varargin)</a>
+0002 <span class="comment">% class constructor for SPM2 MarsBaR design object</span>
+0003 <span class="comment">% FORMAT [o, others] = mardo_2(params, others, varargin)</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">% params  - structure,containing fields, or SPM/MarsBaR design</span>
+0006 <span class="comment">% others  - structure, containing other fields to define</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Outputs</span>
+0009 <span class="comment">% o       - mardo_2 object (unless disowned)</span>
+0010 <span class="comment">% others  - any unrecognized fields from params, for processing by</span>
+0011 <span class="comment">%           children</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% This object is called from the mardo object contructor</span>
+0014 <span class="comment">% with a mardo object as input.  mardo_2 checks to see</span>
+0015 <span class="comment">% if the contained design is an SPM2 design, returns</span>
+0016 <span class="comment">% the object unchanged if not.  If it is an SPM2</span>
+0017 <span class="comment">% design, it claims ownership of the passed object.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Note the third argument.  If this call is a call as a constructor (i.e</span>
+0020 <span class="comment">% not an action string call), this can be the 'child_pass_f', which is 1</span>
+0021 <span class="comment">% if this call is from a child, passing a mardo object to be handled by</span>
+0022 <span class="comment">% the mardo_2 class.  In this case we just accept this design is for us,</span>
+0023 <span class="comment">% and don't do any SPM2 specific processing</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% The constructor can also be called to give class functions, where the</span>
+0026 <span class="comment">% name of the class function is a character string which is one of:</span>
+0027 <span class="comment">%    'spm_filter' - applies spm_filter routine to passed args</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% $Id$</span>
+0030 
+0031 myclass = <span class="string">'mardo_2'</span>;
+0032 cvs_v   = <a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>); <span class="comment">% was CVS version; now marsbar version</span>
+0033 
+0034 <span class="comment">% Default object structure</span>
+0035 defstruct = [];
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 1
+0038   defstruct.cvs_version = cvs_v;
+0039   o = class(defstruct, myclass, <a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>);
+0040   others = [];
+0041   <span class="keyword">return</span>
+0042 <span class="keyword">end</span>
+0043 <span class="keyword">if</span> nargin &lt; 2
+0044   others = [];
+0045 <span class="keyword">end</span>
+0046 <span class="keyword">if</span> nargin &lt; 3
+0047   arg3 = 0;
+0048 <span class="keyword">else</span>
+0049   arg3 = varargin{1};
+0050 <span class="keyword">end</span>
+0051 
+0052 <span class="comment">% parse out string action calls (class functions)</span>
+0053 <span class="keyword">if</span> ischar(params)
+0054   <span class="keyword">switch</span> params
+0055    <span class="keyword">case</span> <span class="string">'spm_filter'</span>
+0056     <span class="keyword">if</span> nargin &lt; 2
+0057       error(<span class="string">'Need filter'</span>);
+0058     <span class="keyword">elseif</span> nargin &lt; 3
+0059       o = <a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(others);
+0060     <span class="keyword">else</span>
+0061       o = <a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(others, arg3);
+0062     <span class="keyword">end</span>
+0063     <span class="keyword">return</span>
+0064   <span class="keyword">otherwise</span>
+0065     error(sprintf(<span class="string">'Is &quot;%s&quot; a filename? Use ``mardo`` to load from files'</span>,<span class="keyword">...</span>
+0066             params));
+0067   <span class="keyword">end</span>
+0068 <span class="keyword">end</span>
+0069     
+0070 <span class="comment">% Deal with passed objects of this (or child) class</span>
+0071 <span class="keyword">if</span> isa(params, myclass)
+0072   o = params;
+0073   <span class="comment">% Check for simple form of call</span>
+0074   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(others), <span class="keyword">return</span>, <span class="keyword">end</span>
+0075 
+0076   <span class="comment">% Otherwise, we are being asked to set fields of object</span>
+0077   <span class="comment">% (Moot at the moment, as there are no fields specific for this object)</span>
+0078   [p others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, others, defstruct);
+0079   <span class="keyword">return</span>
+0080 <span class="keyword">end</span>
+0081 
+0082 <span class="comment">% Set child_pass_f</span>
+0083 child_pass_f = arg3;
+0084 
+0085 <span class="comment">% normal call is via mardo constructor</span>
+0086 <span class="keyword">if</span> isa(params, <span class="string">'mardo'</span>)
+0087   <span class="comment">% Check to see if this is a suitable design, return if not</span>
+0088   des = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(params);
+0089   <span class="keyword">if</span> ~arg3 &amp; ~<a href="../../marsbar/@mardo_2/private/my_design.html" class="code" title="function tf = my_design(des)">my_design</a>(des), o = params; <span class="keyword">return</span>, <span class="keyword">end</span>
+0090   <span class="comment">% own</span>
+0091   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(des, <span class="string">'SPM'</span>)
+0092     des = des.SPM;
+0093   <span class="keyword">end</span>
+0094   uo = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(params, des);
+0095   params = [];
+0096 <span class="keyword">else</span>
+0097   uo = [];
+0098 <span class="keyword">end</span>
+0099 
+0100 <span class="keyword">if</span> ~isa(uo, <span class="string">'mardo'</span>) <span class="comment">% mardo object not passed</span>
+0101   <span class="comment">% umbrella object, parse out fields for (this object and children)</span>
+0102   <span class="comment">% third argument of 0 prevents recursive call back to here</span>
+0103   [uo, params] = <a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>(params, others, 0);
+0104 <span class="keyword">else</span>
+0105   <span class="comment">% fill params with other parameters</span>
+0106   params = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, params, others);
+0107 <span class="keyword">end</span>  
+0108 
+0109 <span class="comment">% parse parameters into those for this object, children</span>
+0110 [params, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0111 
+0112 <span class="comment">% add cvs tag</span>
+0113 params.cvs_version = cvs_v;
+0114 
+0115 <span class="comment">% set the mardo object</span>
+0116 o  = class(params, myclass, uo);
+0117 
+0118 <span class="comment">% convert vols to current format, if not passed from a child</span>
+0119 <span class="keyword">if</span> ~child_pass_f
+0120   o = <a href="convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>(o);
+0121 <span class="keyword">end</span>
+0122 
+0123 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

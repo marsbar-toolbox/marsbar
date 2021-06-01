@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_stat_compute</title>
+  <meta name="keywords" content="pr_stat_compute">
+  <meta name="description" content="calculates contrast value, stats and p values for contrasts">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_stat_compute.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_stat_compute
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>calculates contrast value, stats and p values for contrasts</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> calculates contrast value, stats and p values for contrasts
+ FORMAT [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);
+ 
+ xCon      - contrast structure
+ Xs        - design matrix
+ V         - covariance matrix
+ betas     - parameter estimates
+ ResidualMS       - root mean square of residuals
+ 
+ Output
+ Num       - contrast value (ess for F test)
+ Stat      - statistic value
+ P         - uncorrected p value
+ Pc        - P value corrected for number of columns analyzed
+--------------------------------------------------------------------
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);</a>
+0002 <span class="comment">% calculates contrast value, stats and p values for contrasts</span>
+0003 <span class="comment">% FORMAT [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% xCon      - contrast structure</span>
+0006 <span class="comment">% Xs        - design matrix</span>
+0007 <span class="comment">% V         - covariance matrix</span>
+0008 <span class="comment">% betas     - parameter estimates</span>
+0009 <span class="comment">% ResidualMS       - root mean square of residuals</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Output</span>
+0012 <span class="comment">% Num       - contrast value (ess for F test)</span>
+0013 <span class="comment">% Stat      - statistic value</span>
+0014 <span class="comment">% P         - uncorrected p value</span>
+0015 <span class="comment">% Pc        - P value corrected for number of columns analyzed</span>
+0016 <span class="comment">%--------------------------------------------------------------------</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019 
+0020 nROI = size(<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>,2);
+0021 nCon = length(xCon);
+0022 
+0023 xpxm = spm_sp(<span class="string">'xpx-'</span>,Xs);
+0024 xpVx = Xs.X'*V*Xs.X;
+0025 Bcov = xpxm*xpVx*xpxm;
+0026 
+0027 [trRV trRVRV] = spm_SpUtil(<span class="string">'trRV'</span>,Xs,V);
+0028 erdf = trRV^2/trRVRV;
+0029 RMS = sqrt(ResidualMS);
+0030 
+0031 T_indices = [];
+0032 F_indices = [];
+0033 dfnum     = [];
+0034 
+0035 Stat    = zeros(nCon, nROI);
+0036 P    = zeros(nCon, nROI);
+0037 check_Tvalue = zeros(nCon, nROI);
+0038 
+0039 <span class="keyword">for</span> ii = 1:nCon
+0040 
+0041 <span class="comment">%    [edf_tsp edf_Xsp] = spm_FcUtil('FconEdf', xCon(ii), Xs, V);</span>
+0042 
+0043     <span class="keyword">switch</span>(xCon(ii).STAT)
+0044        <span class="keyword">case</span> <span class="string">'T'</span>
+0045         <span class="comment">%----------- to check calculation with h -----------</span>
+0046         h       = spm_FcUtil(<span class="string">'Hsqr'</span>, xCon(ii), Xs);
+0047         [trMV trMVMV]= spm_SpUtil(<span class="string">'trMV'</span>, <span class="keyword">...</span>
+0048                 spm_FcUtil(<span class="string">'X1o'</span>,xCon(ii),Xs), V);
+0049 
+0050         check_Tvalue(ii,:) = ((h*<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>)/trMV)./RMS;
+0051         check_dfnum(ii) = trMV;
+0052 
+0053         <span class="comment">%----------- t value  -----------</span>
+0054 
+0055         Num(ii,:) = xCon(ii).c'*<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>;
+0056             Stat(ii,:) = Num(ii,:) ./ <span class="keyword">...</span>
+0057               (RMS .* sqrt((xCon(ii).c'*Bcov*xCon(ii).c)));
+0058         P(ii,:) = 1 - spm_Tcdf(Stat(ii,:), erdf);
+0059         T_indices = [T_indices ii];
+0060 
+0061 
+0062            <span class="keyword">case</span> <span class="string">'F'</span>  
+0063         [trMV trMVMV]= spm_SpUtil(<span class="string">'trMV'</span>, <span class="keyword">...</span>
+0064                 spm_FcUtil(<span class="string">'X1o'</span>,xCon(ii),Xs), V);
+0065         dfnum   = [dfnum trMV^2/trMVMV];
+0066         h       = spm_FcUtil(<span class="string">'Hsqr'</span>, xCon(ii), Xs);
+0067 
+0068         Num(ii,:) = sum( (h*<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>).^2, 1 );
+0069         Stat(ii,:) = (Num(ii,:)/trMV) ./ (RMS.^2);
+0070         check_Tvalue(ii,:) = Stat(ii,:) ;
+0071         P(ii,:) = 1 - spm_Fcdf(Stat(ii,:), <span class="keyword">...</span>
+0072                     [dfnum(end) erdf]);
+0073         F_indices       = [F_indices ii];
+0074         
+0075 
+0076        <span class="keyword">otherwise</span>
+0077             error([<span class="string">'unknown STAT &quot;'</span>,xCon(ii).STAT,<span class="string">'&quot;'</span>])
+0078     <span class="keyword">end</span>
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">%- corrected P value for the number of ROI</span>
+0082 <span class="comment">%--------------------------------------------------------------------</span>
+0083 Pc = ones(nCon, nROI) - (ones(nCon, nROI) - P).^nROI;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

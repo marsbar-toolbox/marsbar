@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of rle</title>
+  <meta name="keywords" content="rle">
+  <meta name="description" content="run length encoding method">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; rle.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>rle
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>run length encoding method</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function rlem = rle(o, sp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> run length encoding method
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_matrix/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_pointlist/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="save_mricro.html" class="code" title="function save_mricro(o, fname, sp)">save_mricro</a>	saves in MRIcro format</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function rlem = rle(o, sp)</a>
+0002 <span class="comment">% run length encoding method</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="keyword">if</span> nargin &lt; 1
+0007   sp = <a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(o);
+0008 <span class="keyword">end</span>
+0009 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp)
+0010   error(<span class="string">'Need defined, or passed native space for run length encoding'</span>)
+0011 <span class="keyword">end</span>
+0012 
+0013 o = <a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(o, sp);
+0014 rlem = do_rle(o);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

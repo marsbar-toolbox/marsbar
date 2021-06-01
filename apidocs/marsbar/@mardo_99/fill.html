@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fill</title>
+  <meta name="keywords" content="fill">
+  <meta name="description" content="fills missing entries from SPM FMRI design matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; fill.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>fill
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>fills missing entries from SPM FMRI design matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = fill(D, actions) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> fills missing entries from SPM FMRI design matrix 
+ FORMAT D = fill(D, actions)
+ 
+ D          - mardo object containing spm design
+ actions    - string or cell array of strings with actions:
+            'defaults' - fills empty parts of design with defaults
+            (in fact this is always done)
+            'filter'  - asks for and fills filter, autocorrelation 
+            'for_estimation - fills ready for estimation -&gt; 'filter'
+                  if there is no filter
+            'images'  - asks for and fills with images, mask, scaling
+
+ Returns
+ D         - returned mardo SPM design
+
+ Copied/pasted then rearranged from SPM99 spm_fmri_spm_ui
+ Matthew Brett - 17/11/01 - MRS2TH
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_get_filter.html" class="code" title="function [K, LFstr, HFstr] = pr_get_filter(RT, row)">pr_get_filter</a>	gets filter using spm_fmri_spm_ui routines</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/mars_vol_check.html" class="code" title="function [samef, msg, chgf] = mars_vol_check(varargin)">mars_vol_check</a>	FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)</li>
+<li><a href="../../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = fill(D, actions)</a>
+0002 <span class="comment">% fills missing entries from SPM FMRI design matrix</span>
+0003 <span class="comment">% FORMAT D = fill(D, actions)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - mardo object containing spm design</span>
+0006 <span class="comment">% actions    - string or cell array of strings with actions:</span>
+0007 <span class="comment">%            'defaults' - fills empty parts of design with defaults</span>
+0008 <span class="comment">%            (in fact this is always done)</span>
+0009 <span class="comment">%            'filter'  - asks for and fills filter, autocorrelation</span>
+0010 <span class="comment">%            'for_estimation - fills ready for estimation -&gt; 'filter'</span>
+0011 <span class="comment">%                  if there is no filter</span>
+0012 <span class="comment">%            'images'  - asks for and fills with images, mask, scaling</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Returns</span>
+0015 <span class="comment">% D         - returned mardo SPM design</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Copied/pasted then rearranged from SPM99 spm_fmri_spm_ui</span>
+0018 <span class="comment">% Matthew Brett - 17/11/01 - MRS2TH</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021 
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023   actions = <span class="string">''</span>;
+0024 <span class="keyword">end</span>
+0025 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D), <span class="keyword">return</span>, <span class="keyword">end</span>
+0026 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(actions), actions = {<span class="string">'defaults'</span>}; <span class="keyword">end</span>
+0027 <span class="keyword">if</span> ischar(actions), actions = {actions}; <span class="keyword">end</span>
+0028 fe = find(ismember(actions, <span class="string">'for_estimation'</span>));
+0029 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fe)
+0030   A = [];
+0031   <span class="keyword">if</span> <a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0032     <span class="keyword">if</span> ~<a href="has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>(D), A = {<span class="string">'filter'</span>}; <span class="keyword">end</span>
+0033   <span class="keyword">end</span>
+0034   actions(fe) = [];
+0035   actions = [actions(1:fe(1)-1) A actions(fe(1):end)];
+0036 <span class="keyword">end</span>
+0037 actions = [{<span class="string">'defaults'</span>}, actions];
+0038 
+0039 <span class="comment">% Get design, put into some useful variables</span>
+0040 spmD = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0041 xX = spmD.xX;
+0042 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(spmD, <span class="string">'Sess'</span>)
+0043   have_sess = 1;
+0044   Sess = spmD.Sess;
+0045 <span class="keyword">else</span>
+0046   have_sess = 0;
+0047 <span class="keyword">end</span>
+0048 
+0049 <span class="comment">% get file indices</span>
+0050 <span class="comment">%---------------------------------------------------------------</span>
+0051 row = <a href="block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>(D);
+0052 nsess  = length(row);
+0053 nscan  = zeros(1,nsess);
+0054 <span class="keyword">for</span>  i = 1:nsess
+0055   nscan(i) = length(row{i});
+0056 <span class="keyword">end</span>
+0057 
+0058 done_list = {};
+0059 <span class="keyword">for</span> a = 1:length(actions)
+0060   <span class="keyword">if</span> ismember(actions{a}, done_list), <span class="keyword">continue</span>, <span class="keyword">end</span>
+0061   done_list = [actions(a) done_list];
+0062   <span class="keyword">switch</span> lower(actions{a})
+0063    <span class="keyword">case</span> <span class="string">'defaults'</span>
+0064 
+0065     <span class="comment">% prepare various default settings, offer to design</span>
+0066     xM = [];             <span class="comment">% masking</span>
+0067     xGX = [];            <span class="comment">% globals</span>
+0068     sGXcalc  = <span class="string">'none'</span>;   <span class="comment">% global calculation description</span>
+0069     sGMsca   = <span class="string">'none'</span>;   <span class="comment">% grand mean scaling description</span>
+0070     Global   = <span class="string">'None'</span>;   <span class="comment">% proportional scaling or no</span>
+0071  
+0072     BFstr = <span class="string">''</span>; DSstr = <span class="string">''</span>; ntr = [];
+0073     <span class="keyword">if</span> have_sess
+0074       BFstr  = Sess{1}.BFstr;
+0075       DSstr  = Sess{1}.DSstr;
+0076       <span class="keyword">if</span> ~length(xX.iC)
+0077     DSstr = <span class="string">'Block [session] effects only'</span>;
+0078       <span class="keyword">end</span>
+0079       
+0080       <span class="comment">% Number of trial types per session</span>
+0081       <span class="keyword">for</span> i = 1:length(Sess)
+0082     ntr(i) = length(Sess{i}.name);
+0083       <span class="keyword">end</span>
+0084     <span class="keyword">end</span>
+0085     
+0086     xsDes = struct( <span class="string">'Design'</span>,            DSstr,<span class="keyword">...</span>
+0087             <span class="string">'Basis_functions'</span>,        BFstr,<span class="keyword">...</span>
+0088             <span class="string">'Number_of_sessions'</span>,    sprintf(<span class="string">'%d'</span>,nsess),<span class="keyword">...</span>
+0089             <span class="string">'Conditions_per_session'</span>,    sprintf(<span class="string">'%-3d'</span>,ntr),<span class="keyword">...</span>
+0090             <span class="string">'Global_calculation'</span>,    sGXcalc,<span class="keyword">...</span>
+0091             <span class="string">'Grand_mean_scaling'</span>,    sGMsca,<span class="keyword">...</span>
+0092             <span class="string">'Global_normalisation'</span>,    Global);
+0093 
+0094     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(spmD, <span class="string">'xsDes'</span>)
+0095       xsDes = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>, spmD.xsDes, xsDes);
+0096     <span class="keyword">end</span>
+0097     
+0098     spmD.xsDes = xsDes;
+0099     spmD = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'merge'</span>, spmD, <span class="keyword">...</span>
+0100                struct(<span class="string">'xGX'</span>, xGX,<span class="keyword">...</span>
+0101                   <span class="string">'xM'</span>,  xM));
+0102                   
+0103    <span class="keyword">case</span> <span class="string">'images'</span>
+0104     [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'fMRI stats model setup'</span>,0);
+0105     <span class="comment">% select images into matrix P</span>
+0106     P = <span class="string">''</span>;
+0107     <span class="keyword">if</span> nsess &lt; 16
+0108       <span class="keyword">for</span> i = 1:nsess
+0109     str = sprintf(<span class="string">'select scans for session %0.0f'</span>,i);
+0110     q = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(nscan(i),<a href="../../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>),str);
+0111     P   = strvcat(P,q);
+0112       <span class="keyword">end</span>
+0113     <span class="keyword">else</span>
+0114       str   = sprintf(<span class="string">'select scans for this study'</span>);
+0115       P     = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(sum(nscan),<a href="../../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>),str);
+0116     <span class="keyword">end</span>
+0117     
+0118     <span class="comment">% Assemble other design parameters</span>
+0119     <span class="comment">%=======================================================================</span>
+0120     spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0121     spm_input(<span class="string">'Global intensity normalisation...'</span>,1,<span class="string">'d'</span>,mfilename);
+0122     
+0123     <span class="comment">% Global normalization</span>
+0124     <span class="comment">%-----------------------------------------------------------------------</span>
+0125     str    = <span class="string">'remove Global effects'</span>;
+0126     Global = spm_input(str,<span class="string">'+1'</span>,<span class="string">'scale|none'</span>,{<span class="string">'Scaling'</span> <span class="string">'None'</span>});
+0127     <span class="keyword">if</span> ischar(Global),
+0128       Global = {Global};
+0129     <span class="keyword">end</span>
+0130 
+0131     <span class="comment">% get file identifiers and Global values</span>
+0132     <span class="comment">%=======================================================================</span>
+0133     fprintf(<span class="string">'%-40s: '</span>,<span class="string">'Mapping files'</span>)                                   <span class="comment">%-#</span>
+0134     VY     = spm_vol(P);
+0135     fprintf(<span class="string">'%30s\n'</span>,<span class="string">'...done'</span>)                                          <span class="comment">%-#</span>
+0136     
+0137     <span class="comment">%-Check compatability of images</span>
+0138     <span class="comment">%-----------------------------------------------------------------------</span>
+0139     [samef msg] = <a href="../../marsbar/mars_vol_check.html" class="code" title="function [samef, msg, chgf] = mars_vol_check(varargin)">mars_vol_check</a>(VY);
+0140     <span class="keyword">if</span> ~samef, disp(char(msg)),error(<span class="string">'Cannot use images'</span>),<span class="keyword">end</span>;
+0141     
+0142     <span class="comment">%-Compute Global variate</span>
+0143     <span class="comment">%-------------------------------------------------------------------</span>
+0144     GM     = 100;
+0145     q      = sum(nscan);
+0146     g      = zeros(q,1);
+0147     fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Calculating globals'</span>,<span class="string">' '</span>);                     
+0148     <span class="keyword">for</span> i  = 1:q
+0149       fprintf(<span class="string">'%s%30s'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),sprintf(<span class="string">'%4d/%-4d'</span>,i,q));
+0150       g(i) = spm_global(VY(i));
+0151     <span class="keyword">end</span>
+0152     fprintf(<span class="string">'%s%30s\n'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'...done'</span>)             
+0153     
+0154     <span class="comment">% scale if specified (otherwise session specific grand mean scaling)</span>
+0155     <span class="comment">%------------------------------------------------------------------</span>
+0156     gSF     = GM./g;
+0157     <span class="keyword">if</span> strcmp(Global,<span class="string">'None'</span>)
+0158       <span class="keyword">for</span> i = 1:nsess
+0159     j      = row{i};
+0160     gSF(j) = GM./mean(g(j));
+0161       <span class="keyword">end</span>
+0162     <span class="keyword">end</span>
+0163     
+0164     <span class="comment">%-Apply gSF to memory-mapped scalefactors to implement scaling</span>
+0165     <span class="comment">%---------------------------------------------------------------</span>
+0166     <span class="keyword">for</span>  i = 1:q, VY(i).pinfo(1:2,:) = VY(i).pinfo(1:2,:)*gSF(i); <span class="keyword">end</span>
+0167     
+0168     sGXcalc  = <span class="string">'mean voxel value'</span>;
+0169     sGMsca   = <span class="string">'session specific'</span>;
+0170     
+0171     <span class="comment">%-Masking structure</span>
+0172     <span class="comment">%---------------------------------------------------------------</span>
+0173     xM     = struct(<span class="string">'T'</span>,    ones(q,1),<span class="keyword">...</span>
+0174             <span class="string">'TH'</span>,    g.*gSF,<span class="keyword">...</span>
+0175             <span class="string">'I'</span>,    0,<span class="keyword">...</span>
+0176             <span class="string">'VM'</span>,    {[]},<span class="keyword">...</span>
+0177             <span class="string">'xs'</span>,    struct(<span class="string">'Masking'</span>,<span class="string">'analysis threshold'</span>));
+0178     
+0179     <span class="comment">% Global structure</span>
+0180     xGX.iGXcalc  = Global{1};
+0181     xGX.sGXcalc  = sGXcalc;
+0182     xGX.rg       = g;
+0183     xGX.sGMsca   = sGMsca;
+0184     xGX.GM       = GM;
+0185     xGX.gSF      = gSF;
+0186     
+0187     xsDes = struct(<span class="keyword">...</span>
+0188     <span class="string">'Global_calculation'</span>,        sGXcalc,<span class="keyword">...</span>
+0189     <span class="string">'Grand_mean_scaling'</span>,        sGMsca,<span class="keyword">...</span>
+0190     <span class="string">'Global_normalisation'</span>,        Global);
+0191       
+0192     spmD.xsDes = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>,<span class="keyword">...</span>
+0193                  spmD.xsDes,<span class="keyword">...</span>
+0194                  xsDes);
+0195     spmD = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, <span class="keyword">...</span>
+0196                spmD,<span class="keyword">...</span>
+0197                struct(<span class="string">'xGX'</span>, xGX,<span class="keyword">...</span>
+0198                   <span class="string">'VY'</span>,   VY,<span class="keyword">...</span>
+0199                   <span class="string">'xM'</span>,   xM));
+0200 
+0201    <span class="keyword">case</span> <span class="string">'filter'</span>
+0202     <span class="comment">% Get filter and autocorrelation options</span>
+0203     <span class="keyword">if</span> ~have_sess, <span class="keyword">return</span>, <span class="keyword">end</span>
+0204 
+0205     [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'Set FMRI filter'</span>,0);
+0206     
+0207     <span class="comment">% TR if not set (it should be)</span>
+0208     <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX, <span class="string">'RT'</span>)
+0209           spmD.xX.RT  = spm_input(<span class="string">'Interscan interval {secs}'</span>,<span class="string">'+1'</span>);
+0210     <span class="keyword">end</span>
+0211     
+0212     spm_input(<span class="string">'High and low pass filter'</span>,<span class="string">'+1'</span>,<span class="string">'d'</span>,mfilename)
+0213     [spmD.xX.K HFstr LFstr] = <a href="../../marsbar/@mardo_2/private/pr_get_filter.html" class="code" title="function [K, str] = pr_get_filter(RT, row)">pr_get_filter</a>(spmD.xX.RT, Sess);
+0214     xsDes = struct(<span class="keyword">...</span>
+0215     <span class="string">'Interscan_interval'</span>,    sprintf(<span class="string">'%0.2f'</span>,spmD.xX.RT),<span class="keyword">...</span>
+0216     <span class="string">'High_pass_Filter'</span>,     LFstr,<span class="keyword">...</span>
+0217     <span class="string">'Low_pass_Filter'</span>,      HFstr);
+0218     spmD.xsDes = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>,<span class="keyword">...</span>
+0219                  spmD.xsDes,<span class="keyword">...</span>
+0220                  xsDes);
+0221 
+0222    <span class="keyword">case</span> <span class="string">'autocorr'</span>
+0223     [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'FMRI autocorrelation model'</span>,0);
+0224     <span class="comment">% intrinsic autocorrelations (Vi)</span>
+0225     <span class="comment">%-----------------------------------------------------------------------</span>
+0226     str     = <span class="string">'Model intrinsic correlations?'</span>;
+0227     cVimenu = {<span class="string">'none'</span>,<span class="string">'AR(1)'</span>};
+0228     cVi     = spm_input(str,<span class="string">'+1'</span>,<span class="string">'b'</span>,cVimenu);
+0229     
+0230     <span class="comment">% create Vi struct</span>
+0231     <span class="comment">%-----------------------------------------------------------------------</span>
+0232     Vi      = speye(sum(nscan));
+0233     xVi     = struct(<span class="string">'Vi'</span>,Vi,<span class="string">'Form'</span>,cVi);
+0234     <span class="keyword">for</span>   i = 1:nsess
+0235       xVi.row{i} = row{i};
+0236     <span class="keyword">end</span>
+0237     
+0238     <span class="comment">% fill into design</span>
+0239     spmD.xX.xVi = xVi;
+0240     spmD.xsDes.Intrinsic_correlations = cVi;
+0241     
+0242    <span class="keyword">otherwise</span>
+0243     error([<span class="string">'Unpredictable: '</span> actions{a}]);
+0244   <span class="keyword">end</span>
+0245 <span class="keyword">end</span>
+0246 
+0247 <span class="comment">% put stuff into object</span>
+0248 D = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D,spmD);
+0249 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

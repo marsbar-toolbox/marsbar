@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_refresh_et</title>
+  <meta name="keywords" content="pr_refresh_et">
+  <meta name="description" content="Refreshes data and display of event type window after edit">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo</a> &gt; <a href="index.html">private</a> &gt; pr_refresh_et.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_refresh_et
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Refreshes data and display of event type window after edit</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function F = pr_refresh_et(D, ic, F, hList, hEdit) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Refreshes data and display of event type window after edit
+ FORMAT F = pr_refresh_et(D, ic, F, hList)
+ 
+ D              - design object
+ ic             - indices to events to select
+ F              - (optional) figure handle
+ hList          - (optional) handle to list uicontrol
+ hEdit          - (optional) handle to Edit uicontrol
+ 
+ Returns
+ F              - figure handle (in case you didn't have it)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>	method to get / set event types for design</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/ui_event_types_cb.html" class="code" title="function varargout = ui_event_types_cb(D, action, varargin)">ui_event_types_cb</a>	method to handle callbacks from ui_event_types</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function F = pr_refresh_et(D, ic, F, hList, hEdit)</a>
+0002 <span class="comment">% Refreshes data and display of event type window after edit</span>
+0003 <span class="comment">% FORMAT F = pr_refresh_et(D, ic, F, hList)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D              - design object</span>
+0006 <span class="comment">% ic             - indices to events to select</span>
+0007 <span class="comment">% F              - (optional) figure handle</span>
+0008 <span class="comment">% hList          - (optional) handle to list uicontrol</span>
+0009 <span class="comment">% hEdit          - (optional) handle to Edit uicontrol</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Returns</span>
+0012 <span class="comment">% F              - figure handle (in case you didn't have it)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015   
+0016 <span class="keyword">if</span> nargin &lt; 1
+0017   error(<span class="string">'Need object'</span>);
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> nargin &lt; 2
+0020   ic = [];
+0021 <span class="keyword">end</span>
+0022 <span class="keyword">if</span> nargin &lt; 3
+0023   F = findobj(get(0, <span class="string">'Children'</span>), <span class="string">'Flat'</span>, <span class="string">'Tag'</span>, <span class="string">'ui_event_types'</span>);
+0024 <span class="keyword">end</span>
+0025 <span class="keyword">if</span> nargin &lt; 4
+0026   hList = findobj(F, <span class="string">'Tag'</span>,<span class="string">'eList'</span>);
+0027 <span class="keyword">end</span>
+0028 <span class="keyword">if</span> nargin &lt; 5
+0029   hEdit = findobj(F, <span class="string">'Tag'</span>,<span class="string">'eEdit'</span>);
+0030 <span class="keyword">end</span>
+0031 
+0032 <span class="keyword">if</span> ~ishandle(F)
+0033   error(<span class="string">'Could not find ui_event_types window'</span>);
+0034 <span class="keyword">end</span>
+0035 
+0036 et = <a href="../../../marsbar/@mardo/event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D);
+0037 
+0038 <span class="comment">% Event type list to put</span>
+0039 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(et, <span class="string">'name'</span>)
+0040   eNames = {et(:).name};
+0041 <span class="keyword">else</span>
+0042   eNames = {};
+0043 <span class="keyword">end</span>
+0044 
+0045 set(hList, <span class="string">'String'</span>, eNames);
+0046 set(hList, <span class="string">'Value'</span>, ic);
+0047 set(F, <span class="string">'Userdata'</span>, D);
+0048 set(hEdit, <span class="string">'UserData'</span>, 1);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

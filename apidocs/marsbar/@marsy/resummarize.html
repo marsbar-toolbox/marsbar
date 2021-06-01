@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of resummarize</title>
+  <meta name="keywords" content="resummarize">
+  <meta name="description" content="recalculate summary data if possible">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; resummarize.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>resummarize
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>recalculate summary data if possible</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = resummarize(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> recalculate summary data if possible
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/residuals.html" class="code" title="function r = residuals(D)">residuals</a>	method returns residuals from model</li>
+<li><a href="as_summary_only.html" class="code" title="function out_o = as_summary_only(o)">as_summary_only</a>	returns object with region data removed</li>
+<li><a href="join.html" class="code" title="function o = join(varargin)">join</a>	joins marsy objects into one object</li>
+<li><a href="marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="region.html" class="code" title="function [rs,r_nos] = region(o, r_nos, new_data, fieldname)">region</a>	gets / sets data for region or regions</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = resummarize(o)</a>
+0002 <span class="comment">% recalculate summary data if possible</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 s_f = <a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>(o);  
+0007 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(s_f) &amp; ~strcmp(s_f, <span class="string">'unknown'</span>)
+0008   [t1 t2 o] = <a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(o, s_f);
+0009 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

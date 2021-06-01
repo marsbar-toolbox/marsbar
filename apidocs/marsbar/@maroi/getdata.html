@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of getdata</title>
+  <meta name="keywords" content="getdata">
+  <meta name="description" content="getdata method - fetches time series data for ROI from images">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; getdata.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>getdata
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>getdata method - fetches time series data for ROI from images</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> getdata method - fetches time series data for ROI from images 
+ FORMAT [Y multv vXYZ mat] = getdata(roiobj, data_imgs, flags)
+
+ roiobj    - an object of type maroi
+ data_imgs - images to fetch data from.  These can be in the form of
+             a character array, or an array of type spm_vol (see
+             spm_vol.m)
+
+ flags can can be none or more of
+              z - use zero masking for images without NaN represenation
+              n - nearest neighbour resampling of images
+              s - sinc resampling of images (why?)
+              (trilinear resampling is the default)
+              m - remap images
+              l - Leave in columns with missing data
+
+ If the resampling is not set with the flags input, then we use the resampling
+ value from the ROI ``spm_hold`` value.
+
+ default flags is empty
+
+ Returns
+ Y        - no of images x no of voxels in ROI data matrix
+ multv    - weighting values from ROI (which have not been applied)
+ vXYZ     - voxel coordinates of ROI from first image in series
+ mat      - voxels -&gt; mm mat file, again from first in series
+
+ Matthew Brett 8/11/99, 2/8/01 (JBCP)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>	method to get or set data object</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="realpts.html" class="code" title="function [pts, vals] = realpts(o,sp)">realpts</a>	realpts method - returns 3xN XYZ matrix in mm</li>
+<li><a href="spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>	hold - returns / sets hold value for object</li>
+<li><a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)</a>
+0002 <span class="comment">% getdata method - fetches time series data for ROI from images</span>
+0003 <span class="comment">% FORMAT [Y multv vXYZ mat] = getdata(roiobj, data_imgs, flags)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% roiobj    - an object of type maroi</span>
+0006 <span class="comment">% data_imgs - images to fetch data from.  These can be in the form of</span>
+0007 <span class="comment">%             a character array, or an array of type spm_vol (see</span>
+0008 <span class="comment">%             spm_vol.m)</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% flags can can be none or more of</span>
+0011 <span class="comment">%              z - use zero masking for images without NaN represenation</span>
+0012 <span class="comment">%              n - nearest neighbour resampling of images</span>
+0013 <span class="comment">%              s - sinc resampling of images (why?)</span>
+0014 <span class="comment">%              (trilinear resampling is the default)</span>
+0015 <span class="comment">%              m - remap images</span>
+0016 <span class="comment">%              l - Leave in columns with missing data</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% If the resampling is not set with the flags input, then we use the resampling</span>
+0019 <span class="comment">% value from the ROI ``spm_hold`` value.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% default flags is empty</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% Returns</span>
+0024 <span class="comment">% Y        - no of images x no of voxels in ROI data matrix</span>
+0025 <span class="comment">% multv    - weighting values from ROI (which have not been applied)</span>
+0026 <span class="comment">% vXYZ     - voxel coordinates of ROI from first image in series</span>
+0027 <span class="comment">% mat      - voxels -&gt; mm mat file, again from first in series</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% Matthew Brett 8/11/99, 2/8/01 (JBCP)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $Id$</span>
+0032   
+0033 <span class="keyword">if</span> nargin &lt; 2
+0034   error(<span class="string">'Need ROI and data images'</span>);
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> nargin &lt; 3
+0037   flags = <span class="string">''</span>;
+0038 <span class="keyword">end</span>
+0039 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags)
+0040   flags = <span class="string">' '</span>;
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="keyword">if</span> ischar(data_imgs)
+0044   data_imgs = spm_vol(data_imgs);
+0045 <span class="keyword">elseif</span> ~isstruct(data_imgs)
+0046   error(<span class="string">'Input data files must be strings or structs'</span>)
+0047 <span class="keyword">elseif</span> any(flags == <span class="string">'m'</span>)
+0048   <span class="keyword">for</span> i = 1:length(data_imgs)
+0049     data_imgs(i) = spm_vol(data_imgs(i).fname);
+0050   <span class="keyword">end</span>
+0051 <span class="keyword">end</span>
+0052 
+0053 <span class="comment">% resampling = set by ROI hold value by default</span>
+0054 <span class="keyword">if</span> any(flags == <span class="string">'s'</span>)
+0055   holdval = -11;
+0056 <span class="keyword">elseif</span> any(flags == <span class="string">'n'</span>)
+0057   holdval = 0;
+0058 <span class="keyword">else</span> <span class="comment">% Not specified, use ROI default resampling value</span>
+0059   holdval = <a href="spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>(roiobj);
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="comment">% NaN replacement</span>
+0063 <span class="keyword">if</span> any(flags == <span class="string">'z'</span>)
+0064   zmask = 1;
+0065 <span class="keyword">else</span>
+0066   zmask = 0;
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">% get real points corresponding to first image in series</span>
+0070 [XYZ multv] = <a href="realpts.html" class="code" title="function [pts, vals] = realpts(o,sp)">realpts</a>(roiobj, <a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(data_imgs(1)));
+0071 dlen = length(multv);
+0072 <span class="keyword">if</span> dlen == 0 <span class="comment">% no points in space</span>
+0073   Y = [];
+0074   <span class="keyword">return</span>
+0075 <span class="keyword">end</span>
+0076 XYZ = [XYZ; ones(size(multv))];
+0077 
+0078 <span class="comment">% check for same dims etc - which could save a bag of time</span>
+0079 <span class="comment">% Code a bit tricksy here to allow comparison of vector and 4x4 matrices</span>
+0080 <span class="comment">% without doing loops</span>
+0081 <span class="comment">%---------------------------------------------------------</span>
+0082 nimgs = length(data_imgs);
+0083 dims = cat(3,data_imgs(:).dim);
+0084 dims = dims(:, 1:3, :); <span class="comment">% to allow for SPM2/SPM99 4 element dims</span>
+0085 chgflgs = any(diff(dims,1,3)) | any(any(diff(cat(3,data_imgs(:).mat),1,3)));
+0086 chgflgs = [1; chgflgs(:)];
+0087 
+0088 <span class="comment">% create return matrix</span>
+0089 Y = zeros(nimgs, dlen);
+0090 
+0091 <span class="keyword">for</span> i = 1:nimgs
+0092   <span class="comment">% nan replacement</span>
+0093   i_type = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'type'</span>, data_imgs(i));
+0094   nanrep =  spm_type(i_type, <span class="string">'nanrep'</span>);
+0095 
+0096   <span class="keyword">if</span> chgflgs(i)  <span class="comment">% images not the same, (re)get resample points</span>
+0097     ixyz = data_imgs(i).mat \ XYZ;
+0098   <span class="keyword">end</span>
+0099   <span class="keyword">if</span> i == 1; <span class="comment">% record voxel XYZ for return</span>
+0100     vXYZ = ixyz(1:3,:);
+0101     mat  = data_imgs(1).mat;
+0102   <span class="keyword">end</span>
+0103   <span class="comment">% resample data at voxel centres of ROI</span>
+0104   <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = spm_sample_vol(data_imgs(i), ixyz(1,:),ixyz(2,:),ixyz(3,:),holdval);
+0105   <span class="comment">% clear out missing values</span>
+0106   <span class="keyword">if</span> ~nanrep &amp; zmask
+0107     <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>(<a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> == 0) = NaN;
+0108   <span class="keyword">end</span>
+0109   <span class="comment">% return all the values</span>
+0110   Y(i, :) = <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0111 <span class="keyword">end</span>
+0112 
+0113 <span class="comment">% strip missing data</span>
+0114 <span class="keyword">if</span> ~any(flags == <span class="string">'l'</span>)
+0115   <span class="comment">% Mask out columns with NaNs</span>
+0116   msk = ~any(isnan(Y),1);
+0117   <span class="keyword">if</span> ~all(msk)
+0118     Y = Y(:, msk);
+0119     multv = multv(msk);
+0120   <span class="keyword">end</span>
+0121 <span class="keyword">end</span>
+0122 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

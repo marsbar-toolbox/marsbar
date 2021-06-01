@@ -1,0 +1,662 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_spm_graph</title>
+  <meta name="keywords" content="mars_spm_graph">
+  <meta name="description" content="Graphical display of adjusted data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; mars_spm_graph.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mars_spm_graph
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Graphical display of adjusted data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Graphical display of adjusted data
+ FORMAT [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)
+
+ marsD    - SPM design object
+        required fields in des_struct are:
+        xX     - Design Matrix structure
+        - (see spm_spm.m for structure)
+        betas  - the betas!
+        ResidualMS  - the residual mean square
+        xCon   - contrast definitions
+          - required fields are:
+          .c  - contrast vector/matrix
+          (see spm_FcUtil.m for details of contrast structure... )
+        marsY  - the data itself (as a data object)
+
+ rno    - region number (index for marsD.marsY)
+ Ic     - contrast number (optional)
+ 
+ Returns
+ r_st   - return structure, with fields
+          Y      - fitted   data for the selected voxel
+          y      - adjusted data for the selected voxel
+          beta   - parameter estimates
+          SE     - standard error of parameter estimates
+          cbeta  = betas multiplied by contrast
+ marsD   - design structure, with possibly added contrasts
+ changef - set to 1 if design has changed
+
+ see spm99 version of spm_graph for details
+_______________________________________________________________________
+ @(#)spm_graph.m    2.29 Karl Friston 00/09/14
+ Modified for MarsBar - Matthew Brett 1/11/01 NRN
+ Added return of cbetas at some point before 28/1/03
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="../../marsbar/@mardo/is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+<li><a href="tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@marsy/n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>	get number of regions</li>
+<li><a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)</a>
+0002 <span class="comment">% Graphical display of adjusted data</span>
+0003 <span class="comment">% FORMAT [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% marsD    - SPM design object</span>
+0006 <span class="comment">%        required fields in des_struct are:</span>
+0007 <span class="comment">%        xX     - Design Matrix structure</span>
+0008 <span class="comment">%        - (see spm_spm.m for structure)</span>
+0009 <span class="comment">%        betas  - the betas!</span>
+0010 <span class="comment">%        ResidualMS  - the residual mean square</span>
+0011 <span class="comment">%        xCon   - contrast definitions</span>
+0012 <span class="comment">%          - required fields are:</span>
+0013 <span class="comment">%          .c  - contrast vector/matrix</span>
+0014 <span class="comment">%          (see spm_FcUtil.m for details of contrast structure... )</span>
+0015 <span class="comment">%        marsY  - the data itself (as a data object)</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% rno    - region number (index for marsD.marsY)</span>
+0018 <span class="comment">% Ic     - contrast number (optional)</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% Returns</span>
+0021 <span class="comment">% r_st   - return structure, with fields</span>
+0022 <span class="comment">%          Y      - fitted   data for the selected voxel</span>
+0023 <span class="comment">%          y      - adjusted data for the selected voxel</span>
+0024 <span class="comment">%          beta   - parameter estimates</span>
+0025 <span class="comment">%          SE     - standard error of parameter estimates</span>
+0026 <span class="comment">%          cbeta  = betas multiplied by contrast</span>
+0027 <span class="comment">% marsD   - design structure, with possibly added contrasts</span>
+0028 <span class="comment">% changef - set to 1 if design has changed</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% see spm99 version of spm_graph for details</span>
+0031 <span class="comment">%_______________________________________________________________________</span>
+0032 <span class="comment">% @(#)spm_graph.m    2.29 Karl Friston 00/09/14</span>
+0033 <span class="comment">% Modified for MarsBar - Matthew Brett 1/11/01 NRN</span>
+0034 <span class="comment">% Added return of cbetas at some point before 28/1/03</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">% $Id$</span>
+0037 
+0038 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(marsD)
+0039   error(<span class="string">'Need estimated design for plot'</span>);
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">if</span> nargin &lt; 2
+0042   rno = [];
+0043 <span class="keyword">end</span>
+0044 <span class="keyword">if</span> nargin &lt; 3
+0045   Ic = [];
+0046 <span class="keyword">end</span>
+0047 changef = 0;
+0048 
+0049 <span class="comment">% make values ready for return</span>
+0050 def_r_st = struct(<span class="keyword">...</span>
+0051     <span class="string">'Y'</span>, [],<span class="keyword">...</span>
+0052     <span class="string">'y'</span>, [],<span class="keyword">...</span>
+0053     <span class="string">'beta'</span>, [],<span class="keyword">...</span>
+0054     <span class="string">'SE'</span>, [],<span class="keyword">...</span>
+0055     <span class="string">'cbeta'</span>,[]);
+0056 cbeta = [];
+0057 
+0058 <span class="comment">% get stuff from object</span>
+0059 mRes = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsD);
+0060 xCon = mRes.xCon;
+0061 
+0062 <span class="comment">% Check if we want to, and can, assume region no is 1</span>
+0063 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(rno) 
+0064   <span class="keyword">if</span> <a href="../../marsbar/@marsy/n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>(mRes.marsY) &gt; 1
+0065     error(<span class="string">'Need to specify region number'</span>);
+0066   <span class="keyword">end</span>
+0067   rno = 1;
+0068 <span class="keyword">end</span>
+0069 
+0070 <span class="comment">%-Get Graphics figure handle</span>
+0071 <span class="comment">%-----------------------------------------------------------------------</span>
+0072 Fgraph = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0073 
+0074 <span class="comment">%-Delete previous axis and their pagination controls (if any)</span>
+0075 <span class="comment">%-----------------------------------------------------------------------</span>
+0076 spm_results_ui(<span class="string">'Clear'</span>,Fgraph,2);
+0077 
+0078 <span class="comment">% Get required data</span>
+0079 sY   = <a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(mRes.marsY); 
+0080 y    = <a href="apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(marsD, sY(:, rno));
+0081 
+0082 <span class="comment">% Get design matrix for convenience</span>
+0083 xX = mRes.xX;
+0084 
+0085 <span class="comment">% Label for region</span>
+0086 XYZstr = <a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(mRes.marsY, rno);
+0087 XYZstr = XYZstr{1};
+0088 
+0089 <span class="comment">%-Get parameter estimates, ResidualMS, (compute) fitted data &amp; residuals</span>
+0090 <span class="comment">%=======================================================================</span>
+0091 
+0092 <span class="comment">%-Parameter estimates: beta = xX.pKX*xX.K*y;</span>
+0093 <span class="comment">%-----------------------------------------------------------------------</span>
+0094 beta  = mRes.betas(:, rno);
+0095 
+0096 <span class="comment">%-Compute residuals</span>
+0097 <span class="comment">%-----------------------------------------------------------------------</span>
+0098 R   = spm_sp(<span class="string">'r'</span>,xX.xKXs,<a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>,xX.K,y));
+0099 
+0100 <span class="comment">%-Residual mean square: ResidualMS = sum(R.^2)/xX.trRV;</span>
+0101 <span class="comment">%-----------------------------------------------------------------------</span>
+0102 ResidualMS = mRes.ResidualMS(rno);
+0103 Bcov  = xX.Bcov;
+0104 SE    = sqrt(ResidualMS*diag(Bcov));
+0105 COL   = [<span class="string">'r'</span>,<span class="string">'b'</span>,<span class="string">'g'</span>,<span class="string">'c'</span>,<span class="string">'y'</span>,<span class="string">'m'</span>,<span class="string">'r'</span>,<span class="string">'b'</span>,<span class="string">'g'</span>,<span class="string">'c'</span>,<span class="string">'y'</span>,<span class="string">'m'</span>];
+0106 
+0107 
+0108 <span class="comment">%-Plot</span>
+0109 <span class="comment">%=======================================================================</span>
+0110 
+0111 <span class="comment">% find out what to plot</span>
+0112 <span class="comment">%-----------------------------------------------------------------------</span>
+0113 Cplot = {    <span class="string">'Contrast of parameter estimates'</span>,<span class="keyword">...</span>
+0114          <span class="string">'Fitted and adjusted responses'</span>,<span class="keyword">...</span>
+0115          <span class="string">'Event/epoch-related responses'</span>,<span class="keyword">...</span>
+0116          <span class="string">'Plots of parametric responses'</span>,<span class="keyword">...</span>
+0117         <span class="string">'Volterra Kernels'</span>};
+0118 
+0119 
+0120 <span class="comment">% ensure options are appropriate</span>
+0121 <span class="comment">%-----------------------------------------------------------------------</span>
+0122 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(mRes,<span class="string">'Sess'</span>)
+0123 
+0124     Cplot = Cplot(1:2);
+0125 <span class="keyword">else</span>
+0126     Sess  = mRes.Sess;
+0127 <span class="keyword">end</span>
+0128 Cp     = spm_input(<span class="string">'Plot'</span>,-1,<span class="string">'m'</span>,Cplot);
+0129 Cplot  = Cplot{Cp};
+0130 
+0131 <span class="keyword">switch</span> Cplot
+0132 
+0133 <span class="comment">% select contrast to plot and compute fitted and adjusted data</span>
+0134 <span class="comment">%----------------------------------------------------------------------</span>
+0135 <span class="keyword">case</span> {<span class="string">'Contrast of parameter estimates'</span>,<span class="string">'Fitted and adjusted responses'</span>}
+0136 
+0137     <span class="comment">% determine current contrasts</span>
+0138     <span class="comment">%---------------------------------------------------------------</span>
+0139     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ic)
+0140       <span class="comment">% determine which contrast</span>
+0141       <span class="comment">%---------------------------------------------------------------</span>
+0142       [Ic marsD changef] = <a href="../../marsbar/@mardo/ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(<span class="keyword">...</span>
+0143           marsD, <span class="string">'T|F'</span>,1, <span class="string">'Select contrast...'</span>, <span class="string">' for plot'</span>, 1);
+0144       <span class="keyword">if</span> changef, xCon = <a href="../../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(marsD); <span class="keyword">end</span>
+0145     <span class="keyword">end</span>
+0146     TITLE = {Cplot xCon(Ic).name};
+0147 
+0148     <span class="comment">% fitted (corrected) data (Y = X1o*beta)</span>
+0149     <span class="comment">%---------------------------------------------------------------</span>
+0150     Y     = spm_FcUtil(<span class="string">'Yc'</span>,xCon(Ic),xX.xKXs,beta);
+0151 
+0152     <span class="comment">% adjusted data</span>
+0153     <span class="comment">%---------------------------------------------------------------</span>
+0154     y     = Y + R;
+0155 
+0156 <span class="keyword">end</span>
+0157 
+0158 <span class="keyword">switch</span> Cplot
+0159 
+0160 <span class="comment">% plot parameter estimates</span>
+0161 <span class="comment">%----------------------------------------------------------------------</span>
+0162 <span class="keyword">case</span> <span class="string">'Contrast of parameter estimates'</span>
+0163 
+0164     <span class="comment">% comute contrast of parameter estimates and standard error</span>
+0165     <span class="comment">%--------------------------------------------------------------</span>
+0166     c     = xCon(Ic).c;
+0167     cbeta = c'*beta;
+0168     SE    = sqrt(ResidualMS*diag(c'*Bcov*c));
+0169 
+0170     <span class="comment">% bar chart</span>
+0171     <span class="comment">%--------------------------------------------------------------</span>
+0172     figure(Fgraph)
+0173     subplot(2,1,2)
+0174     h     = bar(cbeta);
+0175     set(h,<span class="string">'FaceColor'</span>,[1 1 1]*.8)
+0176     <span class="keyword">for</span> j = 1:length(cbeta)
+0177         line([j j],([SE(j) 0 - SE(j)] + cbeta(j)),<span class="keyword">...</span>
+0178                 <span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0179     <span class="keyword">end</span>
+0180     set(gca,<span class="string">'XLim'</span>,[0.4 (length(cbeta) + 0.6)])
+0181     XLAB  = <span class="string">'effect'</span>;
+0182     YLAB  = [<span class="string">'size of effect'</span>,XYZstr];
+0183 
+0184 
+0185 <span class="comment">% all fitted effects or selected effects</span>
+0186 <span class="comment">%-----------------------------------------------------------------------</span>
+0187 <span class="keyword">case</span> <span class="string">'Fitted and adjusted responses'</span>
+0188 
+0189     <span class="comment">% get ordinates</span>
+0190     <span class="comment">%---------------------------------------------------------------</span>
+0191     Xplot = {    <span class="string">'an explanatory variable'</span>,<span class="keyword">...</span>
+0192             <span class="string">'scan or time'</span>,<span class="keyword">...</span>
+0193             <span class="string">'a user specified ordinate'</span>};
+0194 
+0195     Cx    = spm_input(<span class="string">'plot against'</span>,<span class="string">'!+1'</span>,<span class="string">'m'</span>,Xplot);
+0196 
+0197     <span class="keyword">if</span>     Cx == 1
+0198 
+0199         str  = <span class="string">'Which column or effect?'</span>;
+0200         i    = spm_input(str,<span class="string">'!+1'</span>,<span class="string">'m'</span>,xX.Xnames);
+0201         x    = xX.xKXs.X(:,i);
+0202         XLAB = xX.Xnames{i};
+0203 
+0204     <span class="keyword">elseif</span> Cx == 2
+0205 
+0206         <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'RT'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.RT)
+0207             x    = xX.RT*[1:size(Y,1)]';
+0208             XLAB = <span class="string">'time {seconds}'</span>;
+0209         <span class="keyword">else</span>
+0210             x    = [1:size(Y,1)]';
+0211             XLAB = <span class="string">'scan number'</span>;
+0212         <span class="keyword">end</span>
+0213 
+0214     <span class="keyword">elseif</span> Cx == 3
+0215 
+0216         x    = spm_input(<span class="string">'enter ordinate'</span>,<span class="string">'!+1'</span>,<span class="string">'e'</span>,<span class="string">''</span>,size(Y,1));
+0217         XLAB = <span class="string">'ordinate'</span>;
+0218 
+0219     <span class="keyword">end</span>
+0220 
+0221     <span class="comment">% plot</span>
+0222     <span class="comment">%---------------------------------------------------------------</span>
+0223     figure(Fgraph)
+0224     subplot(2,1,2)
+0225     [p q] = sort(x);
+0226     <span class="keyword">if</span> all(diff(x(q)))
+0227         plot(x(q),y(q),<span class="string">':b'</span>); hold on
+0228         plot(x(q),y(q),<span class="string">'.b'</span>,<span class="string">'MarkerSize'</span>,8); hold on
+0229         plot(x(q),Y(q),<span class="string">'r'</span> ); hold off
+0230 
+0231     <span class="keyword">else</span>
+0232         plot(x(q),y(q),<span class="string">'.b'</span>,<span class="string">'MarkerSize'</span>,8); hold on
+0233         plot(x(q),Y(q),<span class="string">'.r'</span>,<span class="string">'MarkerSize'</span>,16); hold off
+0234         xlim = get(gca,<span class="string">'XLim'</span>);
+0235         xlim = [-1 1]*diff(xlim)/4 + xlim;
+0236         set(gca,<span class="string">'XLim'</span>,xlim)
+0237 
+0238     <span class="keyword">end</span>
+0239     YLAB  = [<span class="string">'response'</span>,XYZstr];
+0240 
+0241 
+0242 <span class="comment">% modeling evoked responses based on Sess</span>
+0243 <span class="comment">%----------------------------------------------------------------------</span>
+0244 <span class="keyword">case</span> <span class="string">'Event/epoch-related responses'</span>
+0245 
+0246 
+0247     <span class="comment">% average over sessions?</span>
+0248     <span class="comment">%--------------------------------------------------------------</span>
+0249     ss    = length(Sess);
+0250     <span class="keyword">if</span> ss &gt; 1
+0251 
+0252         <span class="comment">% determine if the same basis functions have been used</span>
+0253         <span class="comment">%------------------------------------------------------</span>
+0254         <span class="keyword">for</span> s = 1:ss
+0255             rep     = length(Sess{s}.bf) == length(Sess{1}.bf);
+0256             <span class="keyword">if</span> ~rep, <span class="keyword">break</span>, <span class="keyword">end</span>
+0257             <span class="keyword">for</span> t   = 1:length(Sess{s}.bf)
+0258             rep = all(size(Sess{s}.bf{t}) == size(Sess{1}.bf{t}));
+0259             <span class="keyword">if</span> ~rep, <span class="keyword">break</span>, <span class="keyword">end</span>
+0260             rep = all(all( Sess{s}.bf{t}  == Sess{1}.bf{t} ));
+0261             <span class="keyword">if</span> ~rep, <span class="keyword">break</span>, <span class="keyword">end</span>
+0262             <span class="keyword">end</span>
+0263             <span class="keyword">if</span> ~rep, <span class="keyword">break</span>, <span class="keyword">end</span>
+0264         <span class="keyword">end</span>
+0265 
+0266         <span class="comment">% average over sessions?</span>
+0267         <span class="comment">%------------------------------------------------------</span>
+0268         <span class="keyword">if</span> rep
+0269             str   = <span class="string">'average over sessions?'</span>;
+0270             rep   = spm_input(str,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1 0]);
+0271         <span class="keyword">end</span>
+0272 
+0273         <span class="comment">% selected sessions</span>
+0274         <span class="comment">%------------------------------------------------------</span>
+0275         <span class="keyword">if</span> rep
+0276             ss    = 1:ss;
+0277         <span class="keyword">else</span>
+0278             str   = sprintf(<span class="string">'which session (1 to %d)'</span>,ss);
+0279             ss    = spm_input(str,<span class="string">'+1'</span>,<span class="string">'n'</span>,<span class="string">'1'</span>,1,ss);
+0280         <span class="keyword">end</span>
+0281     <span class="keyword">end</span>
+0282 
+0283     <span class="comment">% get plot type</span>
+0284     <span class="comment">%--------------------------------------------------------------</span>
+0285     Rplot = {    <span class="string">'fitted response'</span>,<span class="keyword">...</span>
+0286             <span class="string">'fitted response and PSTH'</span>,<span class="keyword">...</span>
+0287             <span class="string">'fitted response +/- standard error'</span>,<span class="keyword">...</span>
+0288             <span class="string">'fitted response and adjusted data'</span>};
+0289 
+0290     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(y), Rplot = Rplot([1 3]); <span class="keyword">end</span>
+0291     Cr      = spm_input(<span class="string">'plot in terms of'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,Rplot);
+0292     TITLE   = Rplot{Cr};
+0293     YLAB    = [<span class="string">'response'</span>,XYZstr];
+0294     XLAB{1} = <span class="string">'peri-stimulus time {secs}'</span>;
+0295 
+0296 
+0297     <span class="comment">% get selected trials</span>
+0298     <span class="comment">%--------------------------------------------------------------</span>
+0299     <a href="tr.html" class="code" title="function t = tr(o)">tr</a>    = length(Sess{ss(1)}.pst);
+0300     <span class="keyword">if</span> <a href="tr.html" class="code" title="function t = tr(o)">tr</a> &gt; 1
+0301         str   = sprintf(<span class="string">'which trials or conditions (1 to %d)'</span>,<a href="tr.html" class="code" title="function t = tr(o)">tr</a>);
+0302         <a href="tr.html" class="code" title="function t = tr(o)">tr</a>    = spm_input(str,<span class="string">'+1'</span>,<span class="string">'n'</span>);
+0303     <span class="keyword">end</span>
+0304 
+0305 
+0306     <span class="comment">% plot</span>
+0307     <span class="comment">%--------------------------------------------------------------</span>
+0308     <span class="keyword">switch</span> TITLE
+0309     <span class="keyword">case</span> <span class="string">'fitted response and PSTH'</span>
+0310             str = <span class="string">'bin size for PSTH {secs}'</span>;
+0311             BIN = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,<span class="string">'2'</span>,1);
+0312 
+0313     <span class="keyword">otherwise</span>,    BIN = 2;   <span class="keyword">end</span>
+0314 
+0315     <span class="comment">% reconstruct response with filtering</span>
+0316     <span class="comment">%--------------------------------------------------------------</span>
+0317     figure(Fgraph)
+0318     subplot(2,1,2)
+0319     hold on
+0320     dx    = xX.dt;
+0321     XLim  = 0;
+0322     u     = 1;
+0323     <span class="keyword">for</span> t = <a href="tr.html" class="code" title="function t = tr(o)">tr</a>
+0324 
+0325         <span class="keyword">for</span> s = ss
+0326 
+0327             <span class="comment">% basis functions, filter and parameters</span>
+0328             <span class="comment">%----------------------------------------------</span>
+0329             j    = 1:size(Sess{s}.sf{t},2):length(Sess{s}.ind{t});
+0330             j    = Sess{s}.col(Sess{s}.ind{t}(j));
+0331             B    = beta(j);
+0332             X    = Sess{s}.bf{t};
+0333             q    = 1:size(X,1);
+0334             x    = (q - 1)*dx;
+0335             K{1} = struct(  <span class="string">'HChoice'</span>,    <span class="string">'none'</span>,<span class="keyword">...</span>
+0336                      <span class="string">'HParam'</span>,    [],<span class="keyword">...</span>
+0337                     <span class="string">'LChoice'</span>,    xX.K{s}.LChoice,<span class="keyword">...</span>
+0338                     <span class="string">'LParam'</span>,    xX.K{s}.LParam,<span class="keyword">...</span>
+0339                     <span class="string">'row'</span>,        q,<span class="keyword">...</span>
+0340                     <span class="string">'RT'</span>,        dx);
+0341 
+0342             <span class="comment">% fitted responses with standard error</span>
+0343             <span class="comment">%----------------------------------------------</span>
+0344             KX       = <a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>,K,X);
+0345             Y(q,s)   = KX*B;
+0346             se(:,s)  = sqrt(diag(X*Bcov(j,j)*X')*ResidualMS);
+0347         <span class="keyword">end</span>
+0348 
+0349         <span class="comment">% average over sessions</span>
+0350         <span class="comment">%------------------------------------------------------</span>
+0351         Y     = sum(Y,2)/length(ss);
+0352 
+0353         <span class="comment">% peristimulus times and adjusted data (Y + R)</span>
+0354         <span class="comment">%------------------------------------------------------</span>
+0355         pst   = [];
+0356         y     = [];
+0357         <span class="keyword">for</span> s = ss
+0358             p       = Sess{s}.pst{t}(:);
+0359             bin     = round(p/dx);
+0360             q       = find((bin &gt;= 0) &amp; (bin &lt; size(X,1)));
+0361             pst     = [pst; p];
+0362             p       = R(Sess{s}.row(:));
+0363             p(q)    = p(q) + Y(bin(q) + 1);
+0364             y       = [y; p];
+0365         <span class="keyword">end</span>
+0366 
+0367 
+0368         <span class="comment">% PSTH</span>
+0369         <span class="comment">%------------------------------------------------------</span>
+0370         INT    = -BIN:BIN:max(pst);
+0371         PSTH   = [];
+0372         SEM    = [];
+0373         PST    = [];
+0374         <span class="keyword">for</span> k  = 1:(length(INT) - 1)
+0375             q = find(pst &gt; INT(k) &amp; pst &lt;= INT(k + 1));
+0376             n = length(q);
+0377             <span class="keyword">if</span> n
+0378                 PSTH = [PSTH mean(y(q))];
+0379                 SEM  = [SEM std(y(q))/sqrt(n)];
+0380                 PST  = [PST mean(pst(q))];
+0381             <span class="keyword">end</span>
+0382         <span class="keyword">end</span>
+0383 
+0384         <span class="comment">% plot</span>
+0385         <span class="comment">%------------------------------------------------------</span>
+0386         <span class="keyword">switch</span> TITLE
+0387 
+0388             <span class="keyword">case</span> <span class="string">'fitted response'</span>
+0389             <span class="comment">%----------------------------------------------</span>
+0390             plot(x,Y,COL(u))
+0391 
+0392             <span class="keyword">case</span> <span class="string">'fitted response and PSTH'</span>
+0393             <span class="comment">%----------------------------------------------</span>
+0394             errorbar(PST,PSTH,SEM,[<span class="string">':'</span> COL(u)])
+0395             plot(PST,PSTH,[<span class="string">'.'</span> COL(u)],<span class="string">'MarkerSize'</span>,16)
+0396             plot(PST,PSTH,COL(u),<span class="string">'LineWidth'</span>,2)
+0397             plot(x,Y,[<span class="string">'-.'</span> COL(u)])
+0398 
+0399             <span class="keyword">case</span> <span class="string">'fitted response +/- standard error'</span>
+0400             <span class="comment">%----------------------------------------------</span>
+0401             plot(x,Y,COL(u))
+0402             plot(x,Y + se,[<span class="string">'-.'</span> COL(u)],x,Y - se,[<span class="string">'-.'</span> COL(u)])
+0403 
+0404             <span class="keyword">case</span> <span class="string">'fitted response and adjusted data'</span>
+0405             <span class="comment">%----------------------------------------------</span>
+0406             plot(x,Y,COL(u),pst,y,[<span class="string">'.'</span> COL(u)],<span class="string">'MarkerSize'</span>,8)
+0407 
+0408         <span class="keyword">end</span>
+0409 
+0410         <span class="comment">% xlabel</span>
+0411         <span class="comment">%------------------------------------------------------</span>
+0412         XLAB{end + 1} = [Sess{s}.name{t} <span class="string">' - '</span> COL(u)];
+0413         u    = u + 1;
+0414         XLim = max([XLim max(x)]);
+0415 
+0416     <span class="keyword">end</span>
+0417 
+0418     hold off; axis on
+0419     set(gca,<span class="string">'XLim'</span>,[-4 XLim])
+0420 
+0421 <span class="comment">% modeling evoked responses based on Sess</span>
+0422 <span class="comment">%----------------------------------------------------------------------</span>
+0423 <span class="keyword">case</span> <span class="string">'Plots of parametric responses'</span>
+0424 
+0425     <span class="comment">% Get session</span>
+0426     <span class="comment">%--------------------------------------------------------------</span>
+0427     s     = length(Sess);
+0428     <span class="keyword">if</span>  s &gt; 1
+0429         s = spm_input(<span class="string">'which session'</span>,<span class="string">'+1'</span>,<span class="string">'n1'</span>,[],s);
+0430     <span class="keyword">end</span>
+0431 
+0432     <span class="comment">% Get [parametric] trial</span>
+0433     <span class="comment">%--------------------------------------------------------------</span>
+0434     Vname = {};
+0435     j     = [];
+0436     <span class="keyword">for</span> i = 1:length(Sess{s}.Pv)
+0437         <span class="keyword">if</span> length(Sess{s}.Pv{i})
+0438             Vname{end + 1} = Sess{s}.name{i};
+0439             j              = [j i];
+0440         <span class="keyword">end</span>
+0441     <span class="keyword">end</span>
+0442     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Vname)
+0443       warning(<span class="string">'No parametric responses specified'</span>);
+0444     <span class="keyword">end</span>
+0445     t     = j(spm_input(<span class="string">'which effect'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,Vname));
+0446 
+0447     <span class="comment">% parameter estimates and fitted response</span>
+0448     <span class="comment">%-------------------------------------------------------------</span>
+0449     B     = beta(Sess{s}.col(Sess{s}.ind{t}));
+0450     Q     = Sess{s}.Pv{t};
+0451     SF    = Sess{s}.sf{t};
+0452     SF    = SF(find(SF(:,1)),:);
+0453     X     = Sess{s}.bf{t};
+0454     q     = 1:size(X,1);
+0455     x     = q*xX.dt;
+0456     K{1}  = struct(        <span class="string">'HChoice'</span>,    <span class="string">'none'</span>,<span class="keyword">...</span>
+0457                 <span class="string">'HParam'</span>,    [],<span class="keyword">...</span>
+0458                 <span class="string">'LChoice'</span>,    xX.K{s}.LChoice,<span class="keyword">...</span>
+0459                 <span class="string">'LParam'</span>,    xX.K{s}.LParam,<span class="keyword">...</span>
+0460                 <span class="string">'row'</span>,        q,<span class="keyword">...</span>
+0461                 <span class="string">'RT'</span>,        xX.dt);
+0462 
+0463     KX    = <a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>,K,X);
+0464     p     = size(SF,2);
+0465     b     = [];
+0466     <span class="keyword">for</span> i = 1:size(KX,2)
+0467         b = [b SF*B([1:p] + (i - 1)*p)];
+0468     <span class="keyword">end</span>
+0469     Y     = KX*b';
+0470 
+0471     <span class="comment">% plot</span>
+0472     <span class="comment">%-------------------------------------------------------------</span>
+0473     figure(Fgraph)
+0474     subplot(2,1,2)
+0475     surf(x',Q',Y')
+0476     shading flat
+0477     TITLE = Sess{s}.name{t};
+0478     XLAB  = <span class="string">'perstimulus time (secs)'</span>;
+0479     YLAB  = Sess{s}.Pname{t};
+0480     zlabel([<span class="string">'responses'</span>,XYZstr]);
+0481 
+0482 
+0483 <span class="comment">% modeling evoked responses based on Sess</span>
+0484 <span class="comment">%----------------------------------------------------------------------</span>
+0485 <span class="keyword">case</span> <span class="string">'Volterra Kernels'</span>
+0486 
+0487 
+0488     <span class="comment">% Get session</span>
+0489     <span class="comment">%--------------------------------------------------------------</span>
+0490     s     = length(Sess);
+0491     <span class="keyword">if</span>  s &gt; 1
+0492         s = spm_input(<span class="string">'which session'</span>,<span class="string">'+1'</span>,<span class="string">'n1'</span>,[],s);
+0493     <span class="keyword">end</span>
+0494 
+0495     <span class="comment">% Get [non-parametric] trial</span>
+0496     <span class="comment">%--------------------------------------------------------------</span>
+0497     Vname = {};
+0498     j     = [];
+0499     <span class="keyword">for</span> i = 1:length(Sess{s}.name)
+0500         Vname{end + 1} = Sess{s}.name{i};
+0501     <span class="keyword">end</span>
+0502     t     = spm_input(<span class="string">'which effect'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,Vname);
+0503 
+0504     <span class="comment">% Parameter estimates</span>
+0505     <span class="comment">%--------------------------------------------------------------</span>
+0506     B     = beta(Sess{s}.col(Sess{s}.ind{t}));
+0507 
+0508     <span class="comment">% plot</span>
+0509     <span class="comment">%--------------------------------------------------------------</span>
+0510     figure(Fgraph)
+0511     subplot(2,1,2)
+0512 
+0513     <span class="comment">% second order kernel</span>
+0514     <span class="comment">%--------------------------------------------------------------</span>
+0515     <span class="keyword">if</span> iscell(Sess{s}.bf{t})
+0516 
+0517         Y     = 0;
+0518         <span class="keyword">for</span> i = 1:length(Sess{s}.bf{t})
+0519             Y = Y + B(i)*Sess{s}.bf{t}{i};
+0520         <span class="keyword">end</span>
+0521         p     = ([1:size(Y,2)] - 1)*xX.dt;
+0522         q     = ([1:size(Y,1)] - 1)*xX.dt;
+0523         imagesc(p,q,Y)
+0524         axis xy
+0525 
+0526         TITLE = {<span class="string">'Second order Volterra Kernel'</span> Sess{s}.name{t}};
+0527         XLAB  = <span class="string">'perstimulus time (secs)'</span>;
+0528         YLAB  = <span class="string">'perstimulus time (secs)'</span>;
+0529 
+0530     <span class="comment">% first  order kernel</span>
+0531     <span class="comment">%--------------------------------------------------------------</span>
+0532     <span class="keyword">else</span>
+0533         j     = 1:size(Sess{s}.sf{t},2):length(Sess{s}.ind{t});
+0534         Y     = Sess{s}.bf{t}*B(j);
+0535         p     = ([1:length(Y)] - 1)*xX.dt;
+0536         plot(p,Y)
+0537         grid on
+0538 
+0539         TITLE = {<span class="string">'First order Volterra Kernel'</span> Sess{s}.name{t}};
+0540         XLAB  = <span class="string">'perstimulus time (secs)'</span>;
+0541         YLAB  = [<span class="string">'responses'</span>,XYZstr];
+0542 
+0543     <span class="keyword">end</span>
+0544 <span class="keyword">end</span>
+0545 
+0546 <span class="comment">%-Label and call Plot UI</span>
+0547 <span class="comment">%----------------------------------------------------------------------</span>
+0548 axis square
+0549 <span class="keyword">if</span> strcmp(get(get(gca,<span class="string">'Children'</span>),<span class="string">'type'</span>),<span class="string">'image'</span>)
+0550     axis image
+0551 <span class="keyword">end</span>
+0552 xlabel(XLAB,<span class="string">'FontSize'</span>,10)
+0553 ylabel(YLAB,<span class="string">'FontSize'</span>,10)
+0554 title(TITLE,<span class="string">'FontSize'</span>,16)
+0555 
+0556 spm_results_ui(<span class="string">'PlotUi'</span>,gca)
+0557 
+0558 <span class="comment">% Complete return values</span>
+0559 r_st = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>, def_r_st, struct(<span class="keyword">...</span>
+0560     <span class="string">'Y'</span>, Y, <span class="string">'y'</span>, y, <span class="string">'beta'</span>, beta, <span class="string">'SE'</span>, SE, <span class="string">'cbeta'</span>, cbeta));
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

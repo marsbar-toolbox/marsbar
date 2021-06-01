@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get_subjroot</title>
+  <meta name="keywords" content="get_subjroot">
+  <meta name="description" content="FORMAT subjroot = get_subjroot()">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; get_subjroot.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>get_subjroot
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>FORMAT subjroot = get_subjroot()</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function subjroot = get_subjroot() </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> FORMAT subjroot = get_subjroot()
+
+ Gets the root path for the example data.
+ Looks first for an environment variable, if not defined, uses GUI
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="run_preprocess.html" class="code" title="">run_preprocess</a>	Run smoothing and SPM analysis for MarsBaR ER sample data</li>
+<li><a href="run_s3_model.html" class="code" title="">run_s3_model</a>	Run SPM 2-session model for MarsBaR ER sample data</li>
+<li><a href="run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function subjroot = get_subjroot()</a>
+0002 <span class="comment">% FORMAT subjroot = get_subjroot()</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Gets the root path for the example data.</span>
+0005 <span class="comment">% Looks first for an environment variable, if not defined, uses GUI</span>
+0006 subjroot = getenv(<span class="string">'MARSBAR_EG_DATAPATH'</span>);
+0007 <span class="comment">% Otherwise fetch via the GUI</span>
+0008 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(subjroot)
+0009     subjroot = <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(-1, <span class="string">''</span>, <span class="string">'Root directory of example data'</span>);
+0010 <span class="keyword">end</span>
+0011 <span class="keyword">if</span> ~exist(fullfile(subjroot, <span class="string">'sess1'</span>), <span class="string">'dir'</span>)
+0012     error(sprintf(<span class="string">'Expecting &quot;sess1&quot; directory in %s'</span>, subjroot))
+0013 <span class="keyword">end</span>
+0014 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

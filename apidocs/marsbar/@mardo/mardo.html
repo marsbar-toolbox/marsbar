@@ -1,0 +1,527 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mardo</title>
+  <meta name="keywords" content="mardo">
+  <meta name="description" content="mardo - class constructor for MarsBaR design object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; mardo.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mardo
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>mardo - class constructor for MarsBaR design object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = mardo(params, others, passf) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mardo - class constructor for MarsBaR design object
+ inputs [defaults]
+ params  -  one of:
+            - string, specifying SPM design file, OR
+            - structure, which can:
+               contain SPM/MarsBaR design or
+               contain fields for mardo object, which should include
+               'des_struct', containing design structure
+ others  - any other fields for mardo object (or children)
+ passf   - if 1, or not passed, will try children objects to see if
+           they would like to own this design
+
+ outputs
+ o       - mardo object
+ others  - any unrecognized fields from params, others
+
+ Synopsis
+ --------
+ D = mardo('/my/spm/analysis/directory/SPM.mat');
+ % or
+ load('/my/spm/analysis/directory/SPM.mat');
+ D = mardo(SPM);
+ % or
+ load('/my/spm/analysis/directory/SPM.mat');
+ D = mardo(struct('des_struct', SPM, 'verbose', 0));
+ % or
+ D = mardo(SPM, struct('verbose', 0));
+ 
+ mardo is an object to contain SPM designs. It allows us to deal with
+ different design formats by overloading functions in child objects, here
+ for harmonizing between SPM2 and SPM99 designs.  It is transparent, in
+ the sense that it can be referenced as a structure, so to the user, it
+ can appear as if the design continues to be the familiar old SPM structure.
+ 
+ This constructor first checks for strings; it treats strings as filenames
+ containing SPM designs, and loads the file.  By now it should have an SPM
+ design structure (passed or loaded). It then labels itself as a mardo
+ design, and passes itself to candidate mardo design classes (99 and 2 type
+ designs) for these classes to further claim the object.  If the (99 or 2)
+ classes claim the object, they return an object of class (99 or 2), which
+ inherits the mardo class just created in this call to the object.
+ 
+ Note the &quot;passf&quot; input flag; this is a trick to allow the other mardo
+ classes (99 and 2) to create a mardo object for them to inherit, without
+ this constructor passing the mardo object back to the other classes,
+ creating an infinite loop.  So, the flag is by default set to 1, and the
+ newly created mardo object is passed to the other mardo classes for them
+ to claim ownership.  The other mardo classes can call this constructor
+ with passf set to 0 in order for the constructor merely to make a mardo
+ object, without passing back to the other classes.
+
+ Note also the way that the constructor passes out fields in the input
+ structures that it does not recognize.  This is so apparently useless
+ field information can be passed to child objects for processing (or
+ parent objects, but mardo does not have a parent).
+
+ Fields 
+ des_struct  - structure containing SPM design
+ verbose     - flag; if 1, display text messages during processing
+ flip_option - flag; only used on creation of the object.  If 1, and the
+               design not the same format as the current version of SPM
+               on the path, then this constructor will flip the images
+               in the design left to right.  So, if an SPM99 design
+               object is being created, and SPM2 is the version on the
+               path, and flip_option is set to 1, then the images will
+               be automatically flipped in the design, as the object is
+               being created.
+
+ Methods
+ is_valid     - returns 1 if des_struct contains a valid design
+ is_fmri      - returns 1 if design is modality 'fmri'
+ is_marsed    - returns 1 if design has been processed with MarsBaR
+ is_mars_estimated - returns 1 if design has Mars estimation data
+ is_spm_estimated - returns 1 if design has SPM estimation data  
+ modality     - returns one of 'fmri','pet','unknown'
+ verbose      - whether reporting is verbose or not (1 or 0)
+ type         - returns design version string 'SPM2' or 'SPM99'
+ block_rows   - returns cell array, one cell per subject or session,
+                containing indices of design rows for that
+                subject/session
+ block_means  - returns means for each block in the design
+ n_time_points - number of rows (time points) in design
+ n_effects    - number of columns (effects) in design
+ ui_report    - display design report and query menu in UI
+ ui_report_fmri - design report + inspection tools for FMRI
+ 
+ savestruct   - saves design structure to file, with fields as variables
+ des_struct   - sets or gets design structure
+  
+ has_filter   - returns 1 if the design contains a filter, NaN if not known
+ apply_filter - applies design filter to data
+ ui_get_filter - gets filter and stocks in design
+ fill          - fills design with filter, images, or default values
+ 
+ data          - get/set data in estimated design
+ get_data      - get data
+ set_data      - set_data
+
+ contrasts     - get/set contrasts 
+ has_contrasts - returns 1 if the design contains contrasts
+ set_contrasts - set contrasts to design
+ get_contrasts - returns contrasts if present
+ add_contrasts - adds contrasts from a design, xCon struct or passed values
+ ui_get_contrasts - runs spm_conman to choose contrasts, returns indices
+ 
+ has_images   - returns 1 if the design contains images, NaN if not known
+ images       - gets / sets images in design
+ get_images   - gets image vol structs if present
+ set_images   - sets images 
+ image_names  - gets image names as cell array 
+ cd_images    - changes root directory to design images
+ prefix_images - adds, removes prefix from images names (e.g. 's')
+ 
+ estimate     - estimates design, given data
+ compute_contrasts - computes contrasts, returns statistics structure
+ stat_table   - return statistic table report and structures for
+                contrasts
+ mars_spm_graph - runs graph UI, displays in SPM windows
+
+ event_signal - calculates % signal change for (maybe compound) event
+ event_fitted - gets fitted time course for (maybe compound) event
+ event_regressor - returns regressor for given event type and duration
+ ui_get_event    - runs UI to select a single event
+ ui_event_types  - runs UI to select, create, edit event types.
+ event_cols   - returns column in design from given event
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="flip_images.html" class="code" title="function o = flip_images(o)">flip_images</a>	flips images in design</li>
+<li><a href="flip_option.html" class="code" title="function res = flip_option(obj, data)">flip_option</a>	get/set flag for flipping images in design</li>
+<li><a href="has_contrasts.html" class="code" title="function tf = has_contrasts(D)">has_contrasts</a>	method returns 1 if design has contrasts</li>
+<li><a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="is_marsed.html" class="code" title="function tf = is_marsed(o)">is_marsed</a>	returns 1 if design has been processed with MarsBaR</li>
+<li><a href="is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>	returns 1 if design has been estimated in SPM</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="mars_tag.html" class="code" title="function res = mars_tag(o, data)">mars_tag</a>	returns, or sets, Mars tagging structure in design</li>
+<li><a href="refresh_contrasts.html" class="code" title="function o = refresh_contrasts(o)">refresh_contrasts</a>	method to refresh contrasts to match design</li>
+<li><a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>	method to set contrasts into design object</li>
+<li><a href="type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_2/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_5/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_99/mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_99/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/mars_get_option.html" class="code" title="function optval = mars_get_option(varargin)">mars_get_option</a>	Get option subfield as named by ``varargin``.</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_99/mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/mars_arm_call.html" class="code" title="function [o,errf,msg] = mars_arm_call(action, o, item, old_o)">mars_arm_call</a>	services callbacks from marmoire object set functions</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function r = sf_tf(d)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = mardo(params, others, passf)</a>
+0002 <span class="comment">% mardo - class constructor for MarsBaR design object</span>
+0003 <span class="comment">% inputs [defaults]</span>
+0004 <span class="comment">% params  -  one of:</span>
+0005 <span class="comment">%            - string, specifying SPM design file, OR</span>
+0006 <span class="comment">%            - structure, which can:</span>
+0007 <span class="comment">%               contain SPM/MarsBaR design or</span>
+0008 <span class="comment">%               contain fields for mardo object, which should include</span>
+0009 <span class="comment">%               'des_struct', containing design structure</span>
+0010 <span class="comment">% others  - any other fields for mardo object (or children)</span>
+0011 <span class="comment">% passf   - if 1, or not passed, will try children objects to see if</span>
+0012 <span class="comment">%           they would like to own this design</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% outputs</span>
+0015 <span class="comment">% o       - mardo object</span>
+0016 <span class="comment">% others  - any unrecognized fields from params, others</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Synopsis</span>
+0019 <span class="comment">% --------</span>
+0020 <span class="comment">% D = mardo('/my/spm/analysis/directory/SPM.mat');</span>
+0021 <span class="comment">% % or</span>
+0022 <span class="comment">% load('/my/spm/analysis/directory/SPM.mat');</span>
+0023 <span class="comment">% D = mardo(SPM);</span>
+0024 <span class="comment">% % or</span>
+0025 <span class="comment">% load('/my/spm/analysis/directory/SPM.mat');</span>
+0026 <span class="comment">% D = mardo(struct('des_struct', SPM, 'verbose', 0));</span>
+0027 <span class="comment">% % or</span>
+0028 <span class="comment">% D = mardo(SPM, struct('verbose', 0));</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% mardo is an object to contain SPM designs. It allows us to deal with</span>
+0031 <span class="comment">% different design formats by overloading functions in child objects, here</span>
+0032 <span class="comment">% for harmonizing between SPM2 and SPM99 designs.  It is transparent, in</span>
+0033 <span class="comment">% the sense that it can be referenced as a structure, so to the user, it</span>
+0034 <span class="comment">% can appear as if the design continues to be the familiar old SPM structure.</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">% This constructor first checks for strings; it treats strings as filenames</span>
+0037 <span class="comment">% containing SPM designs, and loads the file.  By now it should have an SPM</span>
+0038 <span class="comment">% design structure (passed or loaded). It then labels itself as a mardo</span>
+0039 <span class="comment">% design, and passes itself to candidate mardo design classes (99 and 2 type</span>
+0040 <span class="comment">% designs) for these classes to further claim the object.  If the (99 or 2)</span>
+0041 <span class="comment">% classes claim the object, they return an object of class (99 or 2), which</span>
+0042 <span class="comment">% inherits the mardo class just created in this call to the object.</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">% Note the &quot;passf&quot; input flag; this is a trick to allow the other mardo</span>
+0045 <span class="comment">% classes (99 and 2) to create a mardo object for them to inherit, without</span>
+0046 <span class="comment">% this constructor passing the mardo object back to the other classes,</span>
+0047 <span class="comment">% creating an infinite loop.  So, the flag is by default set to 1, and the</span>
+0048 <span class="comment">% newly created mardo object is passed to the other mardo classes for them</span>
+0049 <span class="comment">% to claim ownership.  The other mardo classes can call this constructor</span>
+0050 <span class="comment">% with passf set to 0 in order for the constructor merely to make a mardo</span>
+0051 <span class="comment">% object, without passing back to the other classes.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% Note also the way that the constructor passes out fields in the input</span>
+0054 <span class="comment">% structures that it does not recognize.  This is so apparently useless</span>
+0055 <span class="comment">% field information can be passed to child objects for processing (or</span>
+0056 <span class="comment">% parent objects, but mardo does not have a parent).</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% Fields</span>
+0059 <span class="comment">% des_struct  - structure containing SPM design</span>
+0060 <span class="comment">% verbose     - flag; if 1, display text messages during processing</span>
+0061 <span class="comment">% flip_option - flag; only used on creation of the object.  If 1, and the</span>
+0062 <span class="comment">%               design not the same format as the current version of SPM</span>
+0063 <span class="comment">%               on the path, then this constructor will flip the images</span>
+0064 <span class="comment">%               in the design left to right.  So, if an SPM99 design</span>
+0065 <span class="comment">%               object is being created, and SPM2 is the version on the</span>
+0066 <span class="comment">%               path, and flip_option is set to 1, then the images will</span>
+0067 <span class="comment">%               be automatically flipped in the design, as the object is</span>
+0068 <span class="comment">%               being created.</span>
+0069 <span class="comment">%</span>
+0070 <span class="comment">% Methods</span>
+0071 <span class="comment">% is_valid     - returns 1 if des_struct contains a valid design</span>
+0072 <span class="comment">% is_fmri      - returns 1 if design is modality 'fmri'</span>
+0073 <span class="comment">% is_marsed    - returns 1 if design has been processed with MarsBaR</span>
+0074 <span class="comment">% is_mars_estimated - returns 1 if design has Mars estimation data</span>
+0075 <span class="comment">% is_spm_estimated - returns 1 if design has SPM estimation data</span>
+0076 <span class="comment">% modality     - returns one of 'fmri','pet','unknown'</span>
+0077 <span class="comment">% verbose      - whether reporting is verbose or not (1 or 0)</span>
+0078 <span class="comment">% type         - returns design version string 'SPM2' or 'SPM99'</span>
+0079 <span class="comment">% block_rows   - returns cell array, one cell per subject or session,</span>
+0080 <span class="comment">%                containing indices of design rows for that</span>
+0081 <span class="comment">%                subject/session</span>
+0082 <span class="comment">% block_means  - returns means for each block in the design</span>
+0083 <span class="comment">% n_time_points - number of rows (time points) in design</span>
+0084 <span class="comment">% n_effects    - number of columns (effects) in design</span>
+0085 <span class="comment">% ui_report    - display design report and query menu in UI</span>
+0086 <span class="comment">% ui_report_fmri - design report + inspection tools for FMRI</span>
+0087 <span class="comment">%</span>
+0088 <span class="comment">% savestruct   - saves design structure to file, with fields as variables</span>
+0089 <span class="comment">% des_struct   - sets or gets design structure</span>
+0090 <span class="comment">%</span>
+0091 <span class="comment">% has_filter   - returns 1 if the design contains a filter, NaN if not known</span>
+0092 <span class="comment">% apply_filter - applies design filter to data</span>
+0093 <span class="comment">% ui_get_filter - gets filter and stocks in design</span>
+0094 <span class="comment">% fill          - fills design with filter, images, or default values</span>
+0095 <span class="comment">%</span>
+0096 <span class="comment">% data          - get/set data in estimated design</span>
+0097 <span class="comment">% get_data      - get data</span>
+0098 <span class="comment">% set_data      - set_data</span>
+0099 <span class="comment">%</span>
+0100 <span class="comment">% contrasts     - get/set contrasts</span>
+0101 <span class="comment">% has_contrasts - returns 1 if the design contains contrasts</span>
+0102 <span class="comment">% set_contrasts - set contrasts to design</span>
+0103 <span class="comment">% get_contrasts - returns contrasts if present</span>
+0104 <span class="comment">% add_contrasts - adds contrasts from a design, xCon struct or passed values</span>
+0105 <span class="comment">% ui_get_contrasts - runs spm_conman to choose contrasts, returns indices</span>
+0106 <span class="comment">%</span>
+0107 <span class="comment">% has_images   - returns 1 if the design contains images, NaN if not known</span>
+0108 <span class="comment">% images       - gets / sets images in design</span>
+0109 <span class="comment">% get_images   - gets image vol structs if present</span>
+0110 <span class="comment">% set_images   - sets images</span>
+0111 <span class="comment">% image_names  - gets image names as cell array</span>
+0112 <span class="comment">% cd_images    - changes root directory to design images</span>
+0113 <span class="comment">% prefix_images - adds, removes prefix from images names (e.g. 's')</span>
+0114 <span class="comment">%</span>
+0115 <span class="comment">% estimate     - estimates design, given data</span>
+0116 <span class="comment">% compute_contrasts - computes contrasts, returns statistics structure</span>
+0117 <span class="comment">% stat_table   - return statistic table report and structures for</span>
+0118 <span class="comment">%                contrasts</span>
+0119 <span class="comment">% mars_spm_graph - runs graph UI, displays in SPM windows</span>
+0120 <span class="comment">%</span>
+0121 <span class="comment">% event_signal - calculates % signal change for (maybe compound) event</span>
+0122 <span class="comment">% event_fitted - gets fitted time course for (maybe compound) event</span>
+0123 <span class="comment">% event_regressor - returns regressor for given event type and duration</span>
+0124 <span class="comment">% ui_get_event    - runs UI to select a single event</span>
+0125 <span class="comment">% ui_event_types  - runs UI to select, create, edit event types.</span>
+0126 <span class="comment">% event_cols   - returns column in design from given event</span>
+0127 <span class="comment">%</span>
+0128 <span class="comment">% $Id$</span>
+0129   
+0130 myclass = <span class="string">'mardo'</span>;
+0131 cvs_v   = <a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>); <span class="comment">% was CVS version; now marsbar version</span>
+0132 
+0133 <span class="comment">% Default flip option</span>
+0134 flippo = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, <span class="keyword">...</span>
+0135              spm(<span class="string">'getglobal'</span>, <span class="string">'MARS'</span>), <span class="keyword">...</span>
+0136              <span class="string">'OPTIONS'</span>, <span class="keyword">...</span>
+0137              <span class="string">'statistics'</span>, <span class="keyword">...</span>
+0138              <span class="string">'flip_option'</span>);
+0139 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flippo), flippo = 0; <span class="keyword">end</span>
+0140 
+0141 <span class="comment">% Default object structure; see also paramfields.m</span>
+0142 defstruct = struct(<span class="string">'des_struct'</span>, [],<span class="keyword">...</span>
+0143            <span class="string">'flip_option'</span>, flippo,<span class="keyword">...</span>
+0144            <span class="string">'verbose'</span>, 1);
+0145 
+0146 <span class="keyword">if</span> nargin &lt; 1
+0147   defstruct.cvs_version = cvs_v;
+0148   o = class(defstruct, myclass);
+0149   others = [];
+0150   <span class="keyword">return</span>
+0151 <span class="keyword">end</span>
+0152 <span class="keyword">if</span> nargin &lt; 2
+0153   others = [];
+0154 <span class="keyword">end</span>
+0155 <span class="keyword">if</span> nargin &lt; 3
+0156   passf = 1;
+0157 <span class="keyword">end</span>
+0158 
+0159 <span class="comment">% Deal with passed objects of this (or child) class</span>
+0160 <span class="keyword">if</span> isa(params, myclass)
+0161   o = params;
+0162   <span class="comment">% Check for simple form of call</span>
+0163   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(others), <span class="keyword">return</span>, <span class="keyword">end</span>
+0164 
+0165   <span class="comment">% Otherwise, we are being asked to set fields of object</span>
+0166   [p others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, others, defstruct);
+0167   <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(p, <span class="string">'des_struct'</span>)
+0168     error(<span class="string">'Please set des_struct using des_struct method'</span>);
+0169   <span class="keyword">end</span>
+0170   <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(p, <span class="string">'verbose'</span>), o.verbose = p.verbose; <span class="keyword">end</span>
+0171   <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(p, <span class="string">'flip_option'</span>), o.flip_option = p.flip_option; <span class="keyword">end</span>
+0172   <span class="keyword">return</span>
+0173 <span class="keyword">end</span>
+0174 
+0175 <span class="comment">% check inputs</span>
+0176 <span class="keyword">if</span> ischar(params)  <span class="comment">% maybe filename</span>
+0177   fname  = deblank(params);
+0178   fname  = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'CPath'</span>, fname);
+0179   params = load(fname);
+0180   params.swd = fileparts(fname);
+0181 <span class="keyword">else</span>
+0182   fname = <span class="string">''</span>;
+0183 <span class="keyword">end</span>
+0184 <span class="keyword">if</span> isstruct(params)
+0185   <span class="keyword">if</span> ~<a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params, <span class="string">'des_struct'</span>)
+0186     <span class="comment">% Appears to be an SPM design</span>
+0187     params = struct(<span class="string">'des_struct'</span>, params);
+0188   <span class="keyword">end</span>
+0189 <span class="keyword">end</span>
+0190 
+0191 <span class="comment">% fill with other params, defaults, parse into fields for this object,</span>
+0192 <span class="comment">% children</span>
+0193 params = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, params, others);
+0194 [params, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0195 
+0196 <span class="comment">% cvs version</span>
+0197 params.cvs_version = cvs_v;
+0198 
+0199 <span class="comment">% set the mardo object</span>
+0200 o  = class(params, myclass);
+0201 
+0202 <span class="comment">% Return if des_struct is empty, there's nothing to do</span>
+0203 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(o.des_struct), <span class="keyword">return</span>, <span class="keyword">end</span>
+0204 
+0205 <span class="comment">% If requested, pass to child objects to request ownership</span>
+0206 <span class="keyword">if</span> passf
+0207   <span class="comment">% Check what object type is returned from each of the potential</span>
+0208   <span class="comment">% constructors.  If returns default (this) object type, the constructor</span>
+0209   <span class="comment">% has disowned the design, and keep looking</span>
+0210   [o others] = <a href="../../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>(o, others);
+0211   <span class="keyword">if</span> strcmp(class(o), myclass)
+0212     [o others] = <a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>(o, others);
+0213   <span class="keyword">end</span>
+0214   <span class="keyword">if</span> strcmp(class(o), myclass)
+0215     [o others] = <a href="../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>(o, others);
+0216   <span class="keyword">end</span>
+0217 <span class="keyword">end</span>
+0218 
+0219 <span class="comment">% convert MarsBaR data field to object, if present</span>
+0220 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(o.des_struct, <span class="string">'marsY'</span>)
+0221   o.des_struct.marsY = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(o.des_struct.marsY);
+0222 <span class="keyword">end</span>
+0223 
+0224 <span class="comment">% If the design was loaded from a file, and is 99 type then it may need</span>
+0225 <span class="comment">% contrasts.  If it was estimated in MarsBaR, try loading mars_xCon.mat in the</span>
+0226 <span class="comment">% same directory.  If it was estimated in SPM, try loading xCon.mat in the same</span>
+0227 <span class="comment">% directory.</span>
+0228 <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fname) &amp; strcmp(<a href="type.html" class="code" title="function str = type(o)">type</a>(o), <span class="string">'SPM99'</span>) &amp; ~<a href="has_contrasts.html" class="code" title="function tf = has_contrasts(D)">has_contrasts</a>(o)
+0229   <span class="comment">% We try to load contrasts from an xCon file</span>
+0230   [pn fn ext] = fileparts(fname);
+0231   <span class="keyword">if</span> <a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(o)
+0232     xcon_name = fullfile(pn, <span class="string">'mars_xCon.mat'</span>)
+0233   <span class="keyword">elseif</span> <a href="is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>(o)
+0234     xcon_name = fullfile(pn, <span class="string">'xCon.mat'</span>);
+0235   <span class="keyword">else</span>
+0236     xcon_name = <span class="string">''</span>;
+0237   <span class="keyword">end</span>
+0238   <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xcon_name)
+0239     <span class="comment">% There is a file to load</span>
+0240     <span class="keyword">if</span> exist(xcon_name, <span class="string">'file'</span>)
+0241       xc = load(xcon_name);
+0242       <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xc, <span class="string">'xCon'</span>)
+0243           o = <a href="set_contrasts.html" class="code" title="function D = set_contrasts(D, C, refreshf)">set_contrasts</a>(o, xc.xCon);
+0244           <span class="keyword">if</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(o)
+0245               disp([<span class="string">'Set contrasts from '</span> xcon_name]);
+0246           <span class="keyword">end</span>
+0247       <span class="keyword">end</span>
+0248     <span class="keyword">elseif</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(o)
+0249       disp(<span class="string">'Failed to load contrasts'</span>);
+0250     <span class="keyword">end</span>
+0251   <span class="keyword">end</span>
+0252 <span class="keyword">end</span>
+0253 
+0254 <span class="comment">% Refresh contrasts if option specifies</span>
+0255 <span class="keyword">if</span> <a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(o) &amp; <a href="../../marsbar/mars_get_option.html" class="code" title="function optval = mars_get_option(varargin)">mars_get_option</a>(<span class="string">'statistics'</span>, <span class="string">'refresh_contrasts'</span>)
+0256     o = <a href="refresh_contrasts.html" class="code" title="function o = refresh_contrasts(o)">refresh_contrasts</a>(o);
+0257 <span class="keyword">end</span>
+0258 
+0259 <span class="comment">% sort out design image flipping</span>
+0260 dt = <a href="type.html" class="code" title="function str = type(o)">type</a>(o);
+0261 sv = <a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'spm_version'</span>);
+0262 maybe_flip = ~strcmp(dt, sv) &amp; ismember(<span class="string">'SPM99'</span>, {dt, sv});
+0263 <span class="keyword">if</span> ~<a href="is_marsed.html" class="code" title="function tf = is_marsed(o)">is_marsed</a>(o) 
+0264   <span class="keyword">if</span> <a href="#_sub1" class="code" title="subfunction r = sf_tf(d)">sf_tf</a>(<a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(o)) &amp; maybe_flip
+0265     flippo = <a href="flip_option.html" class="code" title="function res = flip_option(obj, data)">flip_option</a>(o);
+0266     <span class="keyword">switch</span> flippo
+0267      <span class="keyword">case</span> 1
+0268       o = <a href="flip_images.html" class="code" title="function o = flip_images(o)">flip_images</a>(o);
+0269       add_str = <span class="string">''</span>;
+0270      <span class="keyword">case</span> 0
+0271       add_str = <span class="string">'not '</span>;
+0272      <span class="keyword">otherwise</span>
+0273       error([<span class="string">'Do not recognize flip option '</span> flippo]);
+0274     <span class="keyword">end</span>
+0275     <span class="keyword">if</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(o)
+0276       fprintf([<span class="keyword">...</span>
+0277     <span class="string">'This a design from %s, but you are currently using %s\n'</span>,<span class="keyword">...</span>
+0278     <span class="string">'Data may be extracted from different sides in X (L/R)\n'</span>,<span class="keyword">...</span>
+0279     <span class="string">'when using this design with %s compared to %s.\n'</span>,<span class="keyword">...</span>
+0280     <span class="string">'NB mardo object has %sflipped the images for this design\n'</span>],<span class="keyword">...</span>
+0281           dt, sv, dt, sv, add_str);
+0282     <span class="keyword">end</span>
+0283   <span class="keyword">end</span> <span class="comment">% has_images, design/running SPM version differ</span>
+0284   <span class="comment">% Add Mars tag</span>
+0285   o = <a href="mars_tag.html" class="code" title="function res = mars_tag(o, data)">mars_tag</a>(o, struct(<span class="keyword">...</span>
+0286       <span class="string">'flipped'</span>, <a href="flip_option.html" class="code" title="function res = flip_option(obj, data)">flip_option</a>(o)));
+0287 <span class="keyword">end</span>
+0288 
+0289 <span class="comment">% resolve confusing field name in marsbar &lt;= 0.23</span>
+0290 <span class="comment">% ResMS was in fact the _Root_ Mean Square</span>
+0291 <span class="comment">% The statistics routines treated the field correctly</span>
+0292 D = o.des_struct;
+0293 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(D, <span class="string">'ResMS'</span>)
+0294   <span class="keyword">if</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(o)
+0295     msg = {<span class="string">'Compatibility trivia: processed ResMS to ResidualMS'</span>};
+0296     fprintf(<span class="string">'\n%s'</span>,sprintf(<span class="string">'%s\n'</span>,msg{:})); 
+0297   <span class="keyword">end</span>
+0298   D.ResidualMS = D.ResMS .^ 2;
+0299   D = rmfield(D, <span class="string">'ResMS'</span>);
+0300   o.des_struct = D;
+0301 <span class="keyword">end</span>
+0302 
+0303 <span class="keyword">return</span>
+0304 
+0305 <a name="_sub1" href="#_subfunctions" class="code">function r = sf_tf(d)</a>
+0306 <span class="keyword">if</span> isnan(d), r = 0;
+0307 <span class="keyword">else</span>
+0308   r = (d~=0);
+0309 <span class="keyword">end</span>
+0310 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_build_roi</title>
+  <meta name="keywords" content="mars_build_roi">
+  <meta name="description" content="builds ROIs via the SPM GUI">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_build_roi.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_build_roi
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>builds ROIs via the SPM GUI</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function o = mars_build_roi </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> builds ROIs via the SPM GUI
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@maroi/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>	c_o_m method - calculates unweighted centre of mass</li>
+<li><a href="../marsbar/@maroi/descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>	name - returns / sets name value for object</li>
+<li><a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>	label - returns / sets label value for object</li>
+<li><a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>	maroi_box - class constructor</li>
+<li><a href="../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="../marsbar/@maroi_shape/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>	c_o_m method - calculates centre of mass</li>
+<li><a href="../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+<li><a href="../marsbar/@maroi_sphere/maroi_sphere.html" class="code" title="function [o, others] = maroi_sphere(params)">maroi_sphere</a>	maroi_sphere - class constructor</li>
+<li><a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = mars_build_roi</a>
+0002 <span class="comment">% builds ROIs via the SPM GUI</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 o = [];  
+0007 [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'Build ROI'</span>, 0);
+0008 
+0009 <span class="comment">% get ROI type</span>
+0010 optfields = {<span class="string">'image'</span>,<span class="string">'voxel'</span>, <span class="string">'sphere'</span>, <span class="string">'box_cw'</span>, <span class="string">'box_lims'</span>};
+0011 optlabs =  {<span class="string">'Image'</span>, <span class="string">'Voxel'</span>, <span class="string">'Sphere'</span>,<span class="keyword">...</span>
+0012         <span class="string">'Box (centre,widths)'</span>, <span class="string">'Box (ranges XYZ)'</span>};
+0013 
+0014 roitype = char(<span class="keyword">...</span>
+0015     spm_input(<span class="string">'Type of ROI'</span>, <span class="string">'+1'</span>, <span class="string">'m'</span>,{optlabs{:} <span class="string">'Quit'</span>},<span class="keyword">...</span>
+0016           {optfields{:} <span class="string">'quit'</span>},length(optfields)+1));
+0017 
+0018 <span class="comment">% For selecting images, later</span>
+0019 img_flt = <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>);
+0020 
+0021 d = [];
+0022 <span class="keyword">switch</span> roitype
+0023  <span class="keyword">case</span> <span class="string">'image'</span>
+0024   imgname = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(1, img_flt, <span class="string">'Image defining ROI'</span>);
+0025   [p f e] = fileparts(imgname);
+0026   binf = spm_input(<span class="string">'Maintain as binary image'</span>, <span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="keyword">...</span>
+0027                       [<span class="string">'Yes|No'</span>], [1 0],1);
+0028   func = <span class="string">''</span>;
+0029   <span class="keyword">if</span> spm_input(<span class="string">'Apply function to image'</span>, <span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="keyword">...</span>
+0030                       [<span class="string">'Yes|No'</span>], [1 0],1);
+0031     spm_input(<span class="string">'img &lt; 30'</span>,1,<span class="string">'d'</span>,<span class="string">'Example function:'</span>);
+0032     func = spm_input(<span class="string">'Function to apply to image'</span>, <span class="string">'+1'</span>, <span class="string">'s'</span>, <span class="string">'img'</span>);
+0033   <span class="keyword">end</span>
+0034   d = f; l = f;
+0035   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(func)
+0036     d = [d <span class="string">' func: '</span> func];
+0037     l = [l <span class="string">'_f_'</span> func];
+0038   <span class="keyword">end</span>
+0039   <span class="keyword">if</span> binf
+0040     d = [d <span class="string">' - binarized'</span>];
+0041     l = [l <span class="string">'_bin'</span>];
+0042   <span class="keyword">end</span>
+0043   o = <a href="../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>(struct(<span class="string">'vol'</span>, spm_vol(imgname), <span class="string">'binarize'</span>,binf,<span class="keyword">...</span>
+0044              <span class="string">'func'</span>, func));
+0045   
+0046   <span class="comment">% convert to matrix format to avoid delicacies of image format</span>
+0047   o = <a href="../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(o);
+0048   
+0049  <span class="keyword">case</span> <span class="string">'voxel'</span>
+0050   not_donef = 1;
+0051   <span class="keyword">while</span> not_donef
+0052     XYZ = spm_input(<span class="string">'Coordinate(s)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, []);
+0053     <span class="keyword">if</span> size(XYZ,1) == 1, XYZ = XYZ'; <span class="keyword">end</span>
+0054     <span class="keyword">if</span> size(XYZ,1) ~= 3, warning(<span class="string">'Need 3xN or Nx3 matrix'</span>); 
+0055     <span class="keyword">else</span> not_donef = 0; <span class="keyword">end</span>
+0056   <span class="keyword">end</span>
+0057   v = char(spm_input(<span class="string">'Coordinate(s) in'</span>,<span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="string">'mm|voxels'</span>,{<span class="string">'mm'</span>,<span class="string">'vox'</span>}, 1));
+0058   spopts = {<span class="string">'spacebase'</span>,<span class="string">'image'</span>};
+0059   splabs =  {<span class="string">'Base space for ROIs'</span>,<span class="string">'From image'</span>};
+0060   spo  = spm_input(<span class="string">'Space for voxel ROI'</span>, <span class="string">'+1'</span>, <span class="string">'m'</span>,splabs,<span class="keyword">...</span>
+0061            spopts, 1);
+0062   <span class="keyword">switch</span> char(spo)
+0063    <span class="keyword">case</span> <span class="string">'spacebase'</span>
+0064     sp = <a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'classdata'</span>, <span class="string">'spacebase'</span>);
+0065    <span class="keyword">case</span> <span class="string">'image'</span>
+0066     img = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>([0 1], img_flt, <span class="string">'Image defining space'</span>);
+0067     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(img),<span class="keyword">return</span>,<span class="keyword">end</span>
+0068     sp = <a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(img);
+0069   <span class="keyword">end</span>
+0070   o = <a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>(struct(<span class="string">'XYZ'</span>, XYZ, <span class="string">'mat'</span>, sp.mat), v);
+0071   <span class="keyword">if</span> size(XYZ, 2) &gt; 1
+0072     pos = <a href="../marsbar/@maroi/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>(o); coord_lbl = <span class="string">'C.o.M.'</span>;
+0073   <span class="keyword">else</span>
+0074     pos = XYZ; coord_lbl = <span class="string">'coordinate'</span>;
+0075   <span class="keyword">end</span>
+0076   d = sprintf(<span class="string">'points; %s (%s) [%0.1f %0.1f %0.1f]'</span>,coord_lbl,v,pos);
+0077   l = sprintf(<span class="string">'points_%s_%s_%0.0f_%0.0f_%0.0f'</span>,coord_lbl,v,pos);
+0078  <span class="keyword">case</span> <span class="string">'sphere'</span>
+0079   c = spm_input(<span class="string">'Centre of sphere (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 3); 
+0080   r = spm_input(<span class="string">'Sphere radius (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'r'</span>, 10, 1);
+0081   d = sprintf(<span class="string">'%0.1fmm radius sphere at [%0.1f %0.1f %0.1f]'</span>,r,c);
+0082   l = sprintf(<span class="string">'sphere_%0.0f-%0.0f_%0.0f_%0.0f'</span>,r,c);
+0083   o = <a href="../marsbar/@maroi_sphere/maroi_sphere.html" class="code" title="function [o, others] = maroi_sphere(params)">maroi_sphere</a>(struct(<span class="string">'centre'</span>,c,<span class="string">'radius'</span>,r));
+0084  <span class="keyword">case</span> <span class="string">'box_cw'</span>
+0085   c = spm_input(<span class="string">'Centre of box (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 3); 
+0086   w = spm_input(<span class="string">'Widths in XYZ (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 3);
+0087   d = sprintf(<span class="string">'[%0.1f %0.1f %0.1f] box at [%0.1f %0.1f %0.1f]'</span>,w,c);
+0088   l = sprintf(<span class="string">'box_w-%0.0f_%0.0f_%0.0f-%0.0f_%0.0f_%0.0f'</span>,w,c);
+0089   o = <a href="../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>(struct(<span class="string">'centre'</span>,c,<span class="string">'widths'</span>,w));
+0090  <span class="keyword">case</span> <span class="string">'box_lims'</span>
+0091   X = sort(spm_input(<span class="string">'Range in X (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 2)); 
+0092   Y = sort(spm_input(<span class="string">'Range in Y (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 2)); 
+0093   Z = sort(spm_input(<span class="string">'Range in Z (mm)'</span>, <span class="string">'+1'</span>, <span class="string">'e'</span>, [], 2));
+0094   A = [X Y Z];
+0095   c = mean(A);
+0096   w = diff(A);
+0097   d = sprintf(<span class="string">'box at %0.1f&gt;X&lt;%0.1f %0.1f&gt;Y&lt;%0.1f %0.1f&gt;Z&lt;%0.1f'</span>,A);
+0098   l = sprintf(<span class="string">'box_x_%0.0f:%0.0f_y_%0.0f:%0.0f_z_%0.0f:%0.0f'</span>,A);
+0099   o = <a href="../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>(struct(<span class="string">'centre'</span>,c,<span class="string">'widths'</span>,w));
+0100  <span class="keyword">case</span> <span class="string">'quit'</span>
+0101   o = [];
+0102   <span class="keyword">return</span>
+0103  <span class="keyword">otherwise</span>
+0104   error([<span class="string">'Strange ROI type: '</span> roitype]);
+0105 <span class="keyword">end</span>
+0106 o = <a href="../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>(o,d);
+0107 o = <a href="../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(o,l);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

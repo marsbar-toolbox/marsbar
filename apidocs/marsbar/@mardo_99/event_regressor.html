@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_regressor</title>
+  <meta name="keywords" content="event_regressor">
+  <meta name="description" content="method gets estimated regressor for single event">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; event_regressor.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_regressor
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method gets estimated regressor for single event</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [X, dt] = event_regressor(D, e_spec, dur) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method gets estimated regressor for single event 
+ FORMAT [X dt] = event_regressor(D, e_spec, dur)
+
+ D          - design object
+ e_spec     - event specification (see event_fitted for details)
+ dur        - event duration in seconds (default = 0)
+ 
+ Returns
+ X          - event regressor for single event 
+              (one column per basis function used to model event)
+ dt         - time units (seconds per row in X)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_fitted.html" class="code" title="function [tc, dt] = event_fitted(D, e_spec, dur)">event_fitted</a>	method to compute fitted event time course</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X, dt] = event_regressor(D, e_spec, dur)</a>
+0002 <span class="comment">% method gets estimated regressor for single event</span>
+0003 <span class="comment">% FORMAT [X dt] = event_regressor(D, e_spec, dur)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - design object</span>
+0006 <span class="comment">% e_spec     - event specification (see event_fitted for details)</span>
+0007 <span class="comment">% dur        - event duration in seconds (default = 0)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Returns</span>
+0010 <span class="comment">% X          - event regressor for single event</span>
+0011 <span class="comment">%              (one column per basis function used to model event)</span>
+0012 <span class="comment">% dt         - time units (seconds per row in X)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015   
+0016 <span class="keyword">if</span> nargin &lt; 2
+0017   error(<span class="string">'Need design and event spec'</span>);
+0018 <span class="keyword">end</span>
+0019 <span class="keyword">if</span> nargin &lt; 3
+0020   dur = 0;
+0021 <span class="keyword">end</span>
+0022 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0023   error(<span class="string">'Needs FMRI design'</span>);
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="keyword">if</span> size(e_spec, 1) == 1, e_spec = e_spec'; <span class="keyword">end</span>
+0027 
+0028 SPM   = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0029 Sess  = SPM.Sess;
+0030 xX    = SPM.xX;
+0031 dt    = xX.dt;
+0032 ss    = e_spec(1);
+0033 en    = e_spec(2);
+0034 bf    = full(Sess{ss}.bf{en});
+0035 
+0036 <span class="keyword">if</span> ~dur  
+0037   <span class="comment">% SPM99 uses one time bin for events with no duration</span>
+0038   sf = 1; 
+0039 <span class="keyword">else</span>
+0040   sf    = ones(round(dur/dt), 1);
+0041 <span class="keyword">end</span>
+0042 X = [];
+0043 
+0044 <span class="keyword">for</span> b = 1:size(bf,2)
+0045   X = [X conv(sf, bf(:,b))];
+0046 <span class="keyword">end</span>
+0047 
+0048 <span class="keyword">return</span>
+0049 
+0050 <span class="comment">% In SPM99 spm_graph, we also apply the filter</span>
+0051 K{1}  = struct(<span class="string">'HChoice'</span>,    <span class="string">'none'</span>,<span class="keyword">...</span>
+0052            <span class="string">'HParam'</span>,    [],<span class="keyword">...</span>
+0053            <span class="string">'LChoice'</span>,    xX.K{ss}.LChoice,<span class="keyword">...</span>
+0054            <span class="string">'LParam'</span>,    xX.K{ss}.LParam,<span class="keyword">...</span>
+0055            <span class="string">'row'</span>,        1:size(X,1),<span class="keyword">...</span>
+0056            <span class="string">'RT'</span>,        dt);
+0057 X    = <a href="../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>(<span class="string">'apply'</span>,K,X);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

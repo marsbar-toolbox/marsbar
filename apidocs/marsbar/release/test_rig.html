@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of test_rig</title>
+  <meta name="keywords" content="test_rig">
+  <meta name="description" content="runs tests on MarsBaR using specified designs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">release</a> &gt; test_rig.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/release&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>test_rig
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>runs tests on MarsBaR using specified designs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function res = test_rig(design_paths, params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> runs tests on MarsBaR using specified designs
+ FORMAT res = test(design_paths, params)
+ 
+ Inputs
+ design_paths     - path(s) to SPM design files
+ params           - structure giving params to pass to estimate method,
+                    see help for do_estimate methods for details
+                    Default is
+                    params = struct('redo_covar', 0, ...
+                                'redo_whitening', 0);
+ 
+ Outputs
+ res              - 1 if all tests passed, 0 otherwise
+ 
+ The function depends on the SPM design having estimated contrasts to
+ play with.  It uses these to:
+ Get the maximum voxel in the first F and first T contrast
+ Records the T/F statistic value
+ Makes an ROI out of this voxel
+ Estimates in MarsBaR
+ Checks the statistic value is that same.
+ 
+ Along the way, it uses much of the MarsBaR machinery
+ 
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>	method to add contrast definitions to design</li>
+<li><a href="../../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="../../marsbar/@mardo/has_contrasts.html" class="code" title="function tf = has_contrasts(D)">has_contrasts</a>	method returns 1 if design has contrasts</li>
+<li><a href="../../marsbar/@mardo/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="../../marsbar/@mardo/is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>	returns 1 if design has been estimated in SPM</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+<li><a href="../../marsbar/@mardo_99/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM99 model</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="../../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>	gets XYZ coordinates for region</li>
+<li><a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function res = sf_test_design(d_path, params)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function res = test_rig(design_paths, params)</a>
+0002 <span class="comment">% runs tests on MarsBaR using specified designs</span>
+0003 <span class="comment">% FORMAT res = test(design_paths, params)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% design_paths     - path(s) to SPM design files</span>
+0007 <span class="comment">% params           - structure giving params to pass to estimate method,</span>
+0008 <span class="comment">%                    see help for do_estimate methods for details</span>
+0009 <span class="comment">%                    Default is</span>
+0010 <span class="comment">%                    params = struct('redo_covar', 0, ...</span>
+0011 <span class="comment">%                                'redo_whitening', 0);</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Outputs</span>
+0014 <span class="comment">% res              - 1 if all tests passed, 0 otherwise</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% The function depends on the SPM design having estimated contrasts to</span>
+0017 <span class="comment">% play with.  It uses these to:</span>
+0018 <span class="comment">% Get the maximum voxel in the first F and first T contrast</span>
+0019 <span class="comment">% Records the T/F statistic value</span>
+0020 <span class="comment">% Makes an ROI out of this voxel</span>
+0021 <span class="comment">% Estimates in MarsBaR</span>
+0022 <span class="comment">% Checks the statistic value is that same.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% Along the way, it uses much of the MarsBaR machinery</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% $Id$</span>
+0027   
+0028 <span class="keyword">if</span> nargin &lt; 1
+0029   design_paths = <a href="../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>([0 Inf], <span class="string">'SPM*.mat'</span>, <span class="string">'Select SPM designs'</span>);
+0030 <span class="keyword">end</span>
+0031 <span class="keyword">if</span> nargin &lt; 2
+0032   params = struct(<span class="string">'redo_covar'</span>, 0, <span class="keyword">...</span>
+0033           <span class="string">'redo_whitening'</span>, 0);
+0034 <span class="keyword">end</span>
+0035 
+0036 n_designs = size(design_paths, 1);
+0037 res = zeros(n_designs, 1);
+0038 <span class="keyword">for</span> d = 1:n_designs
+0039   d_path = deblank(design_paths(d,:));
+0040   res(d) = <a href="#_sub1" class="code" title="subfunction res = sf_test_design(d_path, params)">sf_test_design</a>(d_path, params);
+0041 <span class="keyword">end</span>
+0042 <span class="keyword">return</span>
+0043 
+0044 <a name="_sub1" href="#_subfunctions" class="code">function res = sf_test_design(d_path, params)</a>
+0045 <span class="comment">% tests one design</span>
+0046   
+0047 <span class="comment">% Check for SPM estimated design, with estimated contrasts</span>
+0048 D = <a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>(d_path);
+0049 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>(D)
+0050   error(<span class="string">'Need an SPM estimated design'</span>);
+0051 <span class="keyword">end</span>
+0052 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/has_contrasts.html" class="code" title="function tf = has_contrasts(D)">has_contrasts</a>(D)
+0053   error([<span class="string">'Design '</span> d_path <span class="string">' does not contain contrasts'</span>]);
+0054 <span class="keyword">end</span>
+0055 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(D)
+0056   error([<span class="string">'Design '</span> d_path <span class="string">' does not contain images'</span>]);
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="comment">% try to get one F and one T contrast</span>
+0060 Swd = fileparts(d_path);
+0061 xCon = <a href="../../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(D);
+0062 stats = [xCon(:).STAT];
+0063 Ic    = []; fnames = {};
+0064 <span class="keyword">for</span> t = <span class="string">'TF'</span>
+0065   <span class="keyword">for</span> c = fliplr(find(stats == t))
+0066     F = xCon(c).Vspm;
+0067     <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F)
+0068       <span class="comment">% SPM99 = filename, SPM2 = vol_struct</span>
+0069       <span class="keyword">if</span> isstruct(F), F = F.fname; <span class="keyword">end</span>
+0070       <span class="comment">% SPM5 has full paths for the contrast images</span>
+0071       con_pth = fileparts(F);
+0072       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(con_pth)
+0073           F = fullfile(Swd, F);
+0074       <span class="keyword">end</span>
+0075       <span class="keyword">if</span> exist(F, <span class="string">'file'</span>), Ic = [Ic c]; fnames{end+1} = F; <span class="keyword">break</span>, <span class="keyword">end</span>
+0076     <span class="keyword">end</span>
+0077   <span class="keyword">end</span>
+0078 <span class="keyword">end</span>
+0079 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ic)
+0080   error([<span class="string">'Could not find any contrast images for '</span> d_path]);
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">% find maximum voxel coordinate for contrasts and test</span>
+0084 res = 1;
+0085 <span class="keyword">for</span> c = 1:length(Ic)
+0086   V = spm_vol(fnames{c});
+0087   img = spm_read_vols(V);
+0088   [mx(c) i] = max(img(:));
+0089   <a href="../../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>(:, c) = <a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'e2xyz'</span>, i, V.dim(1:3));
+0090   mx_roi(c) = <a href="../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>(struct(<span class="string">'XYZ'</span>, <a href="../../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>(:, c), <span class="keyword">...</span>
+0091                 <span class="string">'mat'</span>, V.mat), <span class="string">'vox'</span>);
+0092   Y = <a href="../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>(mx_roi(c), D, <span class="string">'mean'</span>);
+0093   E = <a href="../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>(D, Y, params);
+0094   [E n_Ic] = <a href="../../marsbar/@mardo/add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>(E, D, Ic(c));
+0095   marsS = <a href="../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>(E, n_Ic);
+0096   fprintf(<span class="string">'SPM statistic %7.4f; MarsBaR statistic %7.4f\n'</span>,<span class="keyword">...</span>
+0097             mx(c), marsS.stat(1));
+0098   st_spm = mx(c);
+0099   st_mars = marsS.stat(1);
+0100   bad_test = abs(st_mars - st_spm) &gt; 1e-5;
+0101   <span class="keyword">if</span> bad_test <span class="comment">% Statistics are different - SPM8 fudge?</span>
+0102     spmV = lower(<a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'spm_version'</span>));
+0103     <span class="keyword">if</span> any(strcmp(spmV, {<span class="string">'spm8'</span>, <span class="string">'spm12b'</span>, <span class="string">'spm12'</span>}))
+0104       xCon = <a href="../../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>(E);
+0105       this_con = xCon(n_Ic);
+0106       <span class="keyword">if</span> this_con.STAT == <span class="string">'T'</span> &amp; (st_mars &gt; st_spm)
+0107         <span class="comment">% Probably the fudge factor</span>
+0108         fudge = (st_mars / st_spm - 1) / exp(-8);
+0109         fprintf(<span class="string">'Fudge value was %f\n'</span>, fudge);
+0110         <span class="comment">% fudge should now be max SE across all voxels in the</span>
+0111         <span class="comment">% estimation block (e.g. slice) / SE for this voxel</span>
+0112         <span class="keyword">if</span> fudge &lt; 10
+0113           bad_test = 0;
+0114         <span class="keyword">end</span>
+0115       <span class="keyword">end</span>
+0116     <span class="keyword">end</span>
+0117   <span class="keyword">end</span>
+0118   <span class="keyword">if</span> bad_test
+0119     disp(<span class="string">'MarsBaR gives a different result for contrast'</span>);
+0120     res = 0;
+0121   <span class="keyword">end</span>
+0122 <span class="keyword">end</span>
+0123 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

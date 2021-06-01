@@ -1,0 +1,585 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of marsy</title>
+  <meta name="keywords" content="marsy">
+  <meta name="description" content="Class constructor for marsy: the MarsBaR data object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; marsy.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>marsy
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Class constructor for marsy: the MarsBaR data object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o,others] = marsy(params, region_stuff, summary_stuff) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Class constructor for marsy: the MarsBaR data object
+ FORMAT [o,others] = marsy(params, region_stuff, summary_stuff)
+
+ Synopsis:
+ % Some example data
+ Y = rand(100, 10);
+ 
+ % Use data as time courese from 10 regions
+ m_Y = marsy(Y);
+ 
+ % Use data as 10 samples (voxels from one region)
+ m_Y = marsy({Y}, 'region_1', 'mean');
+
+ % Extract data for ROI 'my_roi', from list (string array) of images P
+ m_Y = get_marsy(my_roi, P, 'mean');  % method for maroi (region) object
+
+ Inputs
+ params  - can be: structure, either:
+             containing MarsBaR data structure or
+             containing fields for marsy object, which should include
+             'y_struct', containing data structure
+           OR: filename, which loads to give structure as above
+           OR: 2D matrix, containing summary data (Y) only (see below)
+           OR: cell array of 2D matrices, one per region 
+ 
+ region_stuff  - (optional) cell array of names for regions 
+                or array of structures containing information for
+                   regions
+                or cell array of structures with information 
+                Structure can have fields;
+                name    - string identifying region
+                descrip - longer description of region
+                Y       - matrix of samples (voxel data) for this
+                          region, size N by S1 for region 1, N by S2 for
+                          region 2 etc.
+                weights - weighting vector, one value for each sample
+                          1..S1 (for region 1) etc.
+                          Can be empty, so each sample has weight 1.
+                info    - structure containing any other fields of
+                          interest  
+                vXYZ    - any voxel coordinates in X Y Z dimension 
+                          (3 by S1 for region 1 etc).  
+                mat     - a 4x4 transformation matrix giving coordinates
+                          in mm from voxel coordinates in vXYZ
+
+ summary_stuff - (optional) summary function to summarize data (string)
+                or structure containing information for summary data
+                Structure can have fields;
+                sumfunc - the summary function used to summarize the
+                          samples (voxels) per time point;  a string, 
+                          which is usually one of 'mean', 'median',
+                          'wtmean', 'eigen1', or 'unknown'
+                descrip - text field describing the origin of the data  
+                info    - a structure with fields defining any other
+                          interesting information about the region
+                block_rows - optional cell array, specifying the rows in
+                          the data that correspond to a particular
+                          session or subject (see below). If absent, the
+                          data is assumed to come from a single session
+                          or subject.
+
+ Any data in region_stuff, summary info will overwrite region or summary
+ information passed in the first argument
+ 
+ Outputs
+ o       - marsy object
+ others  - any unrecognized fields from params, for processing by
+           (as yet non-existent) children
+
+ marsy is an object to contain MarsBaR data structures. 
+ 
+ The marsy object contains data for one or more ROIs.  It offers two
+ possible views of the data; the SUMMARY view, which gives one summary time
+ course for each ROI, and the REGION view, which gives all the timecourses
+ available from the ROI.  For example, most ROIs contain more than one
+ voxel, and, in the REGION view, there will be one time course for each
+ voxel.  In the SUMMARY view, all the data for a single region, for each
+ timepoint, are combined with a summary function, to give one
+ representative value per time point, and therefore a single time course
+ for the whole ROI.  The most common summary function would be the mean of
+ all the samples (voxels) at each time point, but there are others (see
+ below).
+  
+ At its simplest, the marsy object can just contain a single time-course
+ for a single ROI.   In this case the summary and region view will be
+ the same.
+ 
+ It can also contain data for more than one ROI, and more than one 
+ time course per region.  In this case the object needs to know how to
+ summarize the timecourses for the ROIs to give the summary view.    
+
+ Let's call the number of regions R
+ All regions in the structure have data with the same number of time points
+ Let's call the number of time points N
+ For each region there may be many samples at each time point.
+ For example, there is usually one sample from each voxel in the ROI.
+ Let's call the number of samples (voxels) per time point S1..SR for
+ regions 1..R.
+ 
+ Thus, the summary view will give an N by R matrix, with one row for
+ each ROI.  The region view, for (say) region 2, will return all the
+ samples for ROI 2, an N by S2 matrix.
+ 
+ The regions may also be associated with names, for interpreting output and
+ to help remember where the data has come from.  They may also (optionally)
+ be associated with a longer text description ('descrip'), and any fields
+ you the user think may be useful (contained in 'info').
+ 
+ You can also (optionally) set text description and info data for the
+ whole object, for examnple specifying where (all) the data was
+ extraxcted from.
+ 
+ The data can come from several sessions or subjects.  Optionally, this
+ can be specified with the summary data field 'block_rows', specifying
+ which rows in the data correspond to which session or subject
+
+ The object contains a data structure of a particular format, listed in
+ the programmer's help for this function.  Please avoid using this
+ structure directly, as this format may change at any time.  Instead,
+ please use the public methods listed below
+ 
+ Methods
+ verbose      - get/set whether reporting is verbose or not (1 or 0)
+ summary_data - gets (N by R) summary matrix Y
+ summary_descrip - gets/sets description of object
+ summary_stuff - gets/sets information field of object
+ resummarize  - recalculates summary data if possible
+ is_summarized - returns 1 if data has been summarized already
+ can_summarize - returns 1 if data can be suumarized without error
+ sumfunc      - gets/sets summary function to summarize data
+ block_rows   - gets/sets information on rows corresponding to
+                sessions/subjects 
+ n_regions    - gets number of regions (R above)
+ n_time_points - gets number of time points (N above)
+ ui_plot      - a variety of plots of the data to SPM interface
+ save_struct  - saves y_struct to disk as structure
+  
+ region       - returns region structure, filled with defaults as necessary
+ region_data  - gets region sample (voxel) data as cell array; returns
+                all regions if no region number specificed, or one cell
+                per region if region numbers are specified
+ region_weights - as above, but for region weighting vector (see above)
+ region_name  - gets cell array of region names as 1 by R cell array 
+                (if no region number is specified) or single cell string
+                if a single region is specified
+ region_descrip - gets cell array of descriptions of specified region
+ region_stuff  - gets cell array of info field of specified region
+ xyz          - gets voxel or mm XYZ coordinates of given region
+ join         - accepts several marsy objects, and merges into one (if
+                possible)
+ split        - splits object into array of objects, with one element
+                for each region 
+ 
+ Other methods (to avoid)
+ y_struct     - sets or gets data structure
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="resummarize.html" class="code" title="function o = resummarize(o)">resummarize</a>	recalculate summary data if possible</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo/residuals.html" class="code" title="function r = residuals(D)">residuals</a>	method returns residuals from model</li>
+<li><a href="../../marsbar/@mardo/set_data.html" class="code" title="function D = set_data(D, d)">set_data</a>	method to set data for design object</li>
+<li><a href="../../marsbar/@mardo/ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+<li><a href="../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_99/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM99 model</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+<li><a href="../../marsbar/mars_arm_call.html" class="code" title="function [o,errf,msg] = mars_arm_call(action, o, item, old_o)">mars_arm_call</a>	services callbacks from marmoire object set functions</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function o_st = sf_convert_0p23(i_st)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o,others] = marsy(params, region_stuff, summary_stuff)</a>
+0002 <span class="comment">% Class constructor for marsy: the MarsBaR data object</span>
+0003 <span class="comment">% FORMAT [o,others] = marsy(params, region_stuff, summary_stuff)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Synopsis:</span>
+0006 <span class="comment">% % Some example data</span>
+0007 <span class="comment">% Y = rand(100, 10);</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% % Use data as time courese from 10 regions</span>
+0010 <span class="comment">% m_Y = marsy(Y);</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% % Use data as 10 samples (voxels from one region)</span>
+0013 <span class="comment">% m_Y = marsy({Y}, 'region_1', 'mean');</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% % Extract data for ROI 'my_roi', from list (string array) of images P</span>
+0016 <span class="comment">% m_Y = get_marsy(my_roi, P, 'mean');  % method for maroi (region) object</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Inputs</span>
+0019 <span class="comment">% params  - can be: structure, either:</span>
+0020 <span class="comment">%             containing MarsBaR data structure or</span>
+0021 <span class="comment">%             containing fields for marsy object, which should include</span>
+0022 <span class="comment">%             'y_struct', containing data structure</span>
+0023 <span class="comment">%           OR: filename, which loads to give structure as above</span>
+0024 <span class="comment">%           OR: 2D matrix, containing summary data (Y) only (see below)</span>
+0025 <span class="comment">%           OR: cell array of 2D matrices, one per region</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% region_stuff  - (optional) cell array of names for regions</span>
+0028 <span class="comment">%                or array of structures containing information for</span>
+0029 <span class="comment">%                   regions</span>
+0030 <span class="comment">%                or cell array of structures with information</span>
+0031 <span class="comment">%                Structure can have fields;</span>
+0032 <span class="comment">%                name    - string identifying region</span>
+0033 <span class="comment">%                descrip - longer description of region</span>
+0034 <span class="comment">%                Y       - matrix of samples (voxel data) for this</span>
+0035 <span class="comment">%                          region, size N by S1 for region 1, N by S2 for</span>
+0036 <span class="comment">%                          region 2 etc.</span>
+0037 <span class="comment">%                weights - weighting vector, one value for each sample</span>
+0038 <span class="comment">%                          1..S1 (for region 1) etc.</span>
+0039 <span class="comment">%                          Can be empty, so each sample has weight 1.</span>
+0040 <span class="comment">%                info    - structure containing any other fields of</span>
+0041 <span class="comment">%                          interest</span>
+0042 <span class="comment">%                vXYZ    - any voxel coordinates in X Y Z dimension</span>
+0043 <span class="comment">%                          (3 by S1 for region 1 etc).</span>
+0044 <span class="comment">%                mat     - a 4x4 transformation matrix giving coordinates</span>
+0045 <span class="comment">%                          in mm from voxel coordinates in vXYZ</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% summary_stuff - (optional) summary function to summarize data (string)</span>
+0048 <span class="comment">%                or structure containing information for summary data</span>
+0049 <span class="comment">%                Structure can have fields;</span>
+0050 <span class="comment">%                sumfunc - the summary function used to summarize the</span>
+0051 <span class="comment">%                          samples (voxels) per time point;  a string,</span>
+0052 <span class="comment">%                          which is usually one of 'mean', 'median',</span>
+0053 <span class="comment">%                          'wtmean', 'eigen1', or 'unknown'</span>
+0054 <span class="comment">%                descrip - text field describing the origin of the data</span>
+0055 <span class="comment">%                info    - a structure with fields defining any other</span>
+0056 <span class="comment">%                          interesting information about the region</span>
+0057 <span class="comment">%                block_rows - optional cell array, specifying the rows in</span>
+0058 <span class="comment">%                          the data that correspond to a particular</span>
+0059 <span class="comment">%                          session or subject (see below). If absent, the</span>
+0060 <span class="comment">%                          data is assumed to come from a single session</span>
+0061 <span class="comment">%                          or subject.</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">% Any data in region_stuff, summary info will overwrite region or summary</span>
+0064 <span class="comment">% information passed in the first argument</span>
+0065 <span class="comment">%</span>
+0066 <span class="comment">% Outputs</span>
+0067 <span class="comment">% o       - marsy object</span>
+0068 <span class="comment">% others  - any unrecognized fields from params, for processing by</span>
+0069 <span class="comment">%           (as yet non-existent) children</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">% marsy is an object to contain MarsBaR data structures.</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">% The marsy object contains data for one or more ROIs.  It offers two</span>
+0074 <span class="comment">% possible views of the data; the SUMMARY view, which gives one summary time</span>
+0075 <span class="comment">% course for each ROI, and the REGION view, which gives all the timecourses</span>
+0076 <span class="comment">% available from the ROI.  For example, most ROIs contain more than one</span>
+0077 <span class="comment">% voxel, and, in the REGION view, there will be one time course for each</span>
+0078 <span class="comment">% voxel.  In the SUMMARY view, all the data for a single region, for each</span>
+0079 <span class="comment">% timepoint, are combined with a summary function, to give one</span>
+0080 <span class="comment">% representative value per time point, and therefore a single time course</span>
+0081 <span class="comment">% for the whole ROI.  The most common summary function would be the mean of</span>
+0082 <span class="comment">% all the samples (voxels) at each time point, but there are others (see</span>
+0083 <span class="comment">% below).</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">% At its simplest, the marsy object can just contain a single time-course</span>
+0086 <span class="comment">% for a single ROI.   In this case the summary and region view will be</span>
+0087 <span class="comment">% the same.</span>
+0088 <span class="comment">%</span>
+0089 <span class="comment">% It can also contain data for more than one ROI, and more than one</span>
+0090 <span class="comment">% time course per region.  In this case the object needs to know how to</span>
+0091 <span class="comment">% summarize the timecourses for the ROIs to give the summary view.</span>
+0092 <span class="comment">%</span>
+0093 <span class="comment">% Let's call the number of regions R</span>
+0094 <span class="comment">% All regions in the structure have data with the same number of time points</span>
+0095 <span class="comment">% Let's call the number of time points N</span>
+0096 <span class="comment">% For each region there may be many samples at each time point.</span>
+0097 <span class="comment">% For example, there is usually one sample from each voxel in the ROI.</span>
+0098 <span class="comment">% Let's call the number of samples (voxels) per time point S1..SR for</span>
+0099 <span class="comment">% regions 1..R.</span>
+0100 <span class="comment">%</span>
+0101 <span class="comment">% Thus, the summary view will give an N by R matrix, with one row for</span>
+0102 <span class="comment">% each ROI.  The region view, for (say) region 2, will return all the</span>
+0103 <span class="comment">% samples for ROI 2, an N by S2 matrix.</span>
+0104 <span class="comment">%</span>
+0105 <span class="comment">% The regions may also be associated with names, for interpreting output and</span>
+0106 <span class="comment">% to help remember where the data has come from.  They may also (optionally)</span>
+0107 <span class="comment">% be associated with a longer text description ('descrip'), and any fields</span>
+0108 <span class="comment">% you the user think may be useful (contained in 'info').</span>
+0109 <span class="comment">%</span>
+0110 <span class="comment">% You can also (optionally) set text description and info data for the</span>
+0111 <span class="comment">% whole object, for examnple specifying where (all) the data was</span>
+0112 <span class="comment">% extraxcted from.</span>
+0113 <span class="comment">%</span>
+0114 <span class="comment">% The data can come from several sessions or subjects.  Optionally, this</span>
+0115 <span class="comment">% can be specified with the summary data field 'block_rows', specifying</span>
+0116 <span class="comment">% which rows in the data correspond to which session or subject</span>
+0117 <span class="comment">%</span>
+0118 <span class="comment">% The object contains a data structure of a particular format, listed in</span>
+0119 <span class="comment">% the programmer's help for this function.  Please avoid using this</span>
+0120 <span class="comment">% structure directly, as this format may change at any time.  Instead,</span>
+0121 <span class="comment">% please use the public methods listed below</span>
+0122 <span class="comment">%</span>
+0123 <span class="comment">% Methods</span>
+0124 <span class="comment">% verbose      - get/set whether reporting is verbose or not (1 or 0)</span>
+0125 <span class="comment">% summary_data - gets (N by R) summary matrix Y</span>
+0126 <span class="comment">% summary_descrip - gets/sets description of object</span>
+0127 <span class="comment">% summary_stuff - gets/sets information field of object</span>
+0128 <span class="comment">% resummarize  - recalculates summary data if possible</span>
+0129 <span class="comment">% is_summarized - returns 1 if data has been summarized already</span>
+0130 <span class="comment">% can_summarize - returns 1 if data can be suumarized without error</span>
+0131 <span class="comment">% sumfunc      - gets/sets summary function to summarize data</span>
+0132 <span class="comment">% block_rows   - gets/sets information on rows corresponding to</span>
+0133 <span class="comment">%                sessions/subjects</span>
+0134 <span class="comment">% n_regions    - gets number of regions (R above)</span>
+0135 <span class="comment">% n_time_points - gets number of time points (N above)</span>
+0136 <span class="comment">% ui_plot      - a variety of plots of the data to SPM interface</span>
+0137 <span class="comment">% save_struct  - saves y_struct to disk as structure</span>
+0138 <span class="comment">%</span>
+0139 <span class="comment">% region       - returns region structure, filled with defaults as necessary</span>
+0140 <span class="comment">% region_data  - gets region sample (voxel) data as cell array; returns</span>
+0141 <span class="comment">%                all regions if no region number specificed, or one cell</span>
+0142 <span class="comment">%                per region if region numbers are specified</span>
+0143 <span class="comment">% region_weights - as above, but for region weighting vector (see above)</span>
+0144 <span class="comment">% region_name  - gets cell array of region names as 1 by R cell array</span>
+0145 <span class="comment">%                (if no region number is specified) or single cell string</span>
+0146 <span class="comment">%                if a single region is specified</span>
+0147 <span class="comment">% region_descrip - gets cell array of descriptions of specified region</span>
+0148 <span class="comment">% region_stuff  - gets cell array of info field of specified region</span>
+0149 <span class="comment">% xyz          - gets voxel or mm XYZ coordinates of given region</span>
+0150 <span class="comment">% join         - accepts several marsy objects, and merges into one (if</span>
+0151 <span class="comment">%                possible)</span>
+0152 <span class="comment">% split        - splits object into array of objects, with one element</span>
+0153 <span class="comment">%                for each region</span>
+0154 <span class="comment">%</span>
+0155 <span class="comment">% Other methods (to avoid)</span>
+0156 <span class="comment">% y_struct     - sets or gets data structure</span>
+0157 <span class="comment">%</span>
+0158 <span class="comment">% $Id$</span>
+0159   
+0160 <span class="comment">% Programmer's help</span>
+0161 <span class="comment">%</span>
+0162 <span class="comment">% Please see the caveats in the main help about using the object</span>
+0163 <span class="comment">% structure to access the object data.</span>
+0164 <span class="comment">%</span>
+0165 <span class="comment">% Fields</span>
+0166 <span class="comment">% ------</span>
+0167 <span class="comment">%</span>
+0168 <span class="comment">% y_struct - structure containing MarsBaR data structure</span>
+0169 <span class="comment">% verbose - flag for verbose messages while working</span>
+0170 <span class="comment">%</span>
+0171 <span class="comment">% The MarsBaR data structure</span>
+0172 <span class="comment">% --------------------------</span>
+0173 <span class="comment">%</span>
+0174 <span class="comment">% The data structure contains fields:</span>
+0175 <span class="comment">%   Y       - matrix of summary time courses, N by R</span>
+0176 <span class="comment">%   Yvar    - matrix of summary time course variance, over samples for</span>
+0177 <span class="comment">%            each time point (usually voxels) - N by R</span>
+0178 <span class="comment">%            (the marsbar code does not currently use Yvar)</span>
+0179 <span class="comment">%   sumfunc - the summary function used to summarize the samples (voxels)</span>
+0180 <span class="comment">%             per time point;  a string, which is usually one of</span>
+0181 <span class="comment">%             'mean', 'median', 'wtmean', 'eigen1', or 'unknown'</span>
+0182 <span class="comment">%   descrip - text field describing the origin of the data (optional)</span>
+0183 <span class="comment">%   info    - a structure defining any other interesting information</span>
+0184 <span class="comment">%             about where the data came from</span>
+0185 <span class="comment">%</span>
+0186 <span class="comment">%   regions - cell array of structures, with one element per region (and</span>
+0187 <span class="comment">%             therefore one element per column in the Y field).</span>
+0188 <span class="comment">%             Regions is a cell array to allow different fields to be</span>
+0189 <span class="comment">%             filled for each region</span>
+0190 <span class="comment">%             Each structure in the cell array has fields</span>
+0191 <span class="comment">%             name    - string identifying region</span>
+0192 <span class="comment">%             descrip - longer description of region</span>
+0193 <span class="comment">%             Y       - matrix of samples (voxel data) for this region, size</span>
+0194 <span class="comment">%                       N by S1 for region 1, N by S2 for region 2 etc.</span>
+0195 <span class="comment">%             weights - weighting vector, one value for each sample 1..S1</span>
+0196 <span class="comment">%                       can be empty, so each sample has weight 1.</span>
+0197 <span class="comment">%             info    - structure containing any other fields of interest</span>
+0198 <span class="comment">%             vXYZ    - any voxel coordinates in X Y Z dimension</span>
+0199 <span class="comment">%                       (3 by S1 for region 1 etc).</span>
+0200 <span class="comment">%             mat     - a 4x4 transformation matrix giving coordinates in</span>
+0201 <span class="comment">%                       mm from voxel coordinates in vXYZ</span>
+0202 
+0203 myclass = <span class="string">'marsy'</span>;
+0204 defstruct = struct(<span class="string">'y_struct'</span>, [],<span class="keyword">...</span>
+0205            <span class="string">'verbose'</span>, 1);
+0206 
+0207 <span class="keyword">if</span> nargin &lt; 1
+0208   params = [];
+0209 <span class="keyword">end</span>
+0210 <span class="keyword">if</span> isa(params, myclass)
+0211   o = params;
+0212   <span class="keyword">return</span>
+0213 <span class="keyword">end</span>
+0214 <span class="keyword">if</span> nargin &lt; 2
+0215   region_stuff = [];
+0216 <span class="keyword">end</span>
+0217 <span class="keyword">if</span> nargin &lt; 3
+0218   summary_stuff = [];
+0219 <span class="keyword">end</span>
+0220 
+0221 <span class="comment">% check first input</span>
+0222 <span class="keyword">if</span> ischar(params)  <span class="comment">% maybe filename</span>
+0223   params = load(params);
+0224 <span class="keyword">end</span>
+0225 <span class="keyword">switch</span> class(params)
+0226  <span class="keyword">case</span> <span class="string">'marsy'</span>
+0227   <span class="comment">% pass quietly through</span>
+0228   o = params;
+0229   <span class="keyword">return</span>
+0230  <span class="keyword">case</span> <span class="string">'struct'</span>
+0231   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params, <span class="string">'y_struct'</span>)
+0232     <span class="comment">% Appears to be an MarsBaR data structure</span>
+0233     params = struct(<span class="string">'y_struct'</span>,params);
+0234   <span class="keyword">end</span>
+0235   
+0236   <span class="comment">% need to process old data structure format here</span>
+0237   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params.y_struct, <span class="string">'cols'</span>)
+0238     params.y_struct = <a href="#_sub1" class="code" title="subfunction o_st = sf_convert_0p23(i_st)">sf_convert_0p23</a>(params.y_struct);
+0239   <span class="keyword">end</span>
+0240  <span class="keyword">case</span> {<span class="string">'double'</span>,<span class="string">'float'</span>}
+0241   <span class="comment">% direct set of summary data call</span>
+0242   params = struct(<span class="string">'y_struct'</span>, <span class="keyword">...</span>
+0243           struct(<span class="string">'Y'</span>, <span class="keyword">...</span>
+0244              params, <span class="string">'Yvar'</span>, <span class="keyword">...</span>
+0245              params * Inf, <span class="keyword">...</span>
+0246              <span class="string">'sumfunc'</span>, <span class="string">'unknown'</span>));
+0247  <span class="keyword">case</span> <span class="string">'cell'</span>
+0248   <span class="comment">% specifying region data</span>
+0249   n = size(params{1}, 1);
+0250   <span class="keyword">for</span> i = 1:length(params)
+0251     n2 = size(params{i}, 1);
+0252     <span class="keyword">if</span> any(n - n2)
+0253       error(<span class="string">'All regions must have the same number of time points'</span>);
+0254     <span class="keyword">end</span>
+0255     <span class="keyword">if</span> isstruct(params{i})
+0256       regions{i} = params{i};
+0257     <span class="keyword">else</span>
+0258       regions{i} = struct(<span class="string">'Y'</span>, params{i});
+0259     <span class="keyword">end</span>
+0260   <span class="keyword">end</span>
+0261   params = struct(<span class="string">'y_struct'</span>, struct(<span class="string">'regions'</span>, {regions}));
+0262  <span class="keyword">otherwise</span>
+0263   error(<span class="string">'Unexpected data type for first input'</span>);
+0264 <span class="keyword">end</span>
+0265 
+0266 <span class="comment">% get number of regions</span>
+0267 R = NaN;
+0268 st = params.y_struct;
+0269 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'Y'</span>)
+0270   R = size(st.Y);
+0271 <span class="keyword">elseif</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'regions'</span>)
+0272   R = length(st.regions);
+0273 <span class="keyword">end</span>
+0274 
+0275 <span class="comment">% process further inputs</span>
+0276 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(region_stuff)
+0277   <span class="comment">% region_stuff has been specified</span>
+0278   <span class="keyword">if</span> ischar(region_stuff)
+0279     region_stuff = {region_stuff};
+0280   <span class="keyword">end</span>
+0281   <span class="keyword">if</span> ~isnan(R)
+0282     <span class="keyword">if</span> length(region_stuff) ~= R
+0283       error(<span class="string">'region_stuff should have one entry per region'</span>);
+0284     <span class="keyword">end</span>
+0285   <span class="keyword">end</span>
+0286   <span class="keyword">if</span> iscell(region_stuff) &amp; ischar(region_stuff{1}) <span class="comment">% names only</span>
+0287     tmp = region_stuff; region_stuff = cell(size(region_stuff));
+0288     <span class="keyword">for</span> i = 1:length(tmp)
+0289       region_stuff{i}.name = tmp{i};
+0290     <span class="keyword">end</span>
+0291   <span class="keyword">end</span>
+0292   <span class="keyword">if</span> isstruct(region_stuff) <span class="comment">% need a cell array</span>
+0293     tmp = region_stuff; region_stuff = cell(size(region_stuff));
+0294     <span class="keyword">for</span> i = 1:length(tmp)
+0295       region_stuff{i} = tmp(i);
+0296     <span class="keyword">end</span>
+0297   <span class="keyword">end</span>
+0298 
+0299   <span class="comment">% set</span>
+0300   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params.y_struct, <span class="string">'regions'</span>)
+0301     params.y_struct.regions = cell(1, length(region_stuff));
+0302   <span class="keyword">end</span>
+0303   <span class="keyword">for</span> i = 1:length(region_stuff)
+0304     params.y_struct.regions{i} = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, <span class="keyword">...</span>
+0305                          params.y_struct.regions{i},<span class="keyword">...</span>
+0306                          region_stuff{i});
+0307   <span class="keyword">end</span>
+0308 <span class="keyword">end</span>
+0309 
+0310 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(summary_stuff)
+0311   <span class="comment">% summary_stuff has been specified</span>
+0312   <span class="keyword">if</span> ischar(summary_stuff) <span class="comment">% sumfunc only</span>
+0313     summary_stuff = struct(<span class="string">'sumfunc'</span>, summary_stuff);
+0314   <span class="keyword">end</span>
+0315   params.y_struct = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, <span class="keyword">...</span>
+0316                 params.y_struct, <span class="keyword">...</span>
+0317                 summary_stuff);
+0318 <span class="keyword">end</span>
+0319 
+0320 <span class="comment">% fill with defaults, parse into fields for this object, children</span>
+0321 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0322 
+0323 <span class="comment">% add version tag (was CVS; now marsbar version)</span>
+0324 pparams.cvs_version = <a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>);
+0325 
+0326 <span class="comment">% set the marsy object</span>
+0327 o  = class(pparams, myclass);
+0328 
+0329 <span class="comment">% calculate summary data if possible</span>
+0330 o = <a href="resummarize.html" class="code" title="function o = resummarize(o)">resummarize</a>(o);
+0331 
+0332 <span class="keyword">return</span>
+0333 
+0334 <span class="comment">% Subfunctions</span>
+0335 
+0336 <span class="comment">% convert structure from MarsBaR &lt;= 0.23</span>
+0337 <a name="_sub1" href="#_subfunctions" class="code">function o_st = sf_convert_0p23(i_st)</a>
+0338 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(i_st, <span class="string">'cols'</span>)
+0339   o_st = i_st;
+0340   <span class="keyword">return</span>
+0341 <span class="keyword">end</span>
+0342 <span class="keyword">for</span> r = 1:length(i_st.cols)
+0343   col = i_st.cols{r};
+0344   regions{r} = struct(<span class="string">'name'</span>, col.name,<span class="keyword">...</span>
+0345               <span class="string">'descrip'</span>, col.descrip,<span class="keyword">...</span>
+0346               <span class="string">'Y'</span>, col.y,<span class="keyword">...</span>
+0347               <span class="string">'weights'</span>, [],<span class="keyword">...</span>
+0348               <span class="string">'info'</span>, struct(<span class="string">'file'</span>, col.file),<span class="keyword">...</span>
+0349               <span class="string">'vXYZ'</span>, [], <span class="keyword">...</span>
+0350               <span class="string">'mat'</span>, []);
+0351 <span class="keyword">end</span>
+0352 o_st = struct(<span class="string">'Y'</span>, i_st.Y,<span class="keyword">...</span>
+0353           <span class="string">'Yvar'</span>, i_st.Yvar,<span class="keyword">...</span>
+0354           <span class="string">'regions'</span>, {regions},<span class="keyword">...</span>
+0355           <span class="string">'sumfunc'</span>, i_st.sumfunc,<span class="keyword">...</span>
+0356           <span class="string">'descrip'</span>, <span class="string">'Data from MarsBaR &lt;= 0.23'</span>,<span class="keyword">...</span>
+0357           <span class="string">'info'</span>, []);
+0358 <span class="keyword">return</span>
+0359 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

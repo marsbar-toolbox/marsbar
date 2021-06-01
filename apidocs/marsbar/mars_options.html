@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_options</title>
+  <meta name="keywords" content="mars_options">
+  <meta name="description" content="options utility routines">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_options.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_options
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>options utility routines</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [mars, msgstr] = mars_options(optstr, mars, cfg_fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> options utility routines
+ FORMAT [mars msgstr] = mars_options(optstr, mars, cfg_fname)
+
+ Input [default]
+ optstr            - option string: one of
+                     'put','load','save','edit','defaults',
+                     'basedefaults','fill' [load]  
+ mars              - marsbar options structure [MARS.OPTIONS]
+ cfg_fname         - filename for configuration file [GUI]
+ 
+ Output
+ mars              - possible modified MARS.OPTIONS structure
+ msgstr            - any relevant messages
+
+ Matthew Brett 20/10/00,2/6/01
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>	wrapper for matlab uiputfile/getfile; to resolve version differences</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="mars_get_option.html" class="code" title="function optval = mars_get_option(varargin)">mars_get_option</a>	Get option subfield as named by ``varargin``.</li>
+<li><a href="mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function s = getdefs(s, defval, fieldn, prompt, vals, labels)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)</a>
+0002 <span class="comment">% options utility routines</span>
+0003 <span class="comment">% FORMAT [mars msgstr] = mars_options(optstr, mars, cfg_fname)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input [default]</span>
+0006 <span class="comment">% optstr            - option string: one of</span>
+0007 <span class="comment">%                     'put','load','save','edit','defaults',</span>
+0008 <span class="comment">%                     'basedefaults','fill' [load]</span>
+0009 <span class="comment">% mars              - marsbar options structure [MARS.OPTIONS]</span>
+0010 <span class="comment">% cfg_fname         - filename for configuration file [GUI]</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Output</span>
+0013 <span class="comment">% mars              - possible modified MARS.OPTIONS structure</span>
+0014 <span class="comment">% msgstr            - any relevant messages</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Matthew Brett 20/10/00,2/6/01</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019   
+0020 <span class="keyword">if</span> nargin &lt; 1
+0021   optstr = <span class="string">'load'</span>;
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   mars = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, spm(<span class="string">'getglobal'</span>,<span class="string">'MARS'</span>), <span class="string">'OPTIONS'</span>);
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> nargin &lt; 3
+0027   cfg_fname = <span class="string">''</span>;
+0028 <span class="keyword">end</span>
+0029 
+0030 msgstr = <span class="string">''</span>;
+0031 
+0032 <span class="comment">% editable fields, and descriptions of fields, in mars options structure</span>
+0033 optfields = {<span class="string">'spacebase'</span>,<span class="string">'structural'</span>,<span class="string">'statistics'</span>, <span class="string">'events'</span>}; 
+0034 optlabs =  {<span class="string">'Base space for ROIs'</span>,<span class="string">'Default structural'</span>,<span class="string">'Statistics'</span>, <span class="keyword">...</span>
+0035         <span class="string">'Working with events'</span>};
+0036 
+0037 <span class="keyword">switch</span> lower(optstr)
+0038   
+0039  <span class="comment">% --------------------------------------------------</span>
+0040  <span class="keyword">case</span> <span class="string">'put'</span>
+0041   <a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'classdata'</span>, <span class="string">'spacebase'</span>, <a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(mars.spacebase.fname));
+0042   <a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'classdata'</span>, <span class="string">'def_hold'</span>, mars.roidefs.spm_hold);
+0043  
+0044  <span class="comment">% --------------------------------------------------</span>
+0045  <span class="keyword">case</span> <span class="string">'load'</span>
+0046   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cfg_fname)
+0047     [fn, fn2] = <a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'cfgfile'</span>);
+0048     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fn), fn=fn2;<span class="keyword">end</span>
+0049     [p f e] = fileparts(fn);
+0050     cfg_fname = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>([0 1],[f e], <span class="string">'Configuration file to load'</span>,p);
+0051   <span class="keyword">end</span>
+0052   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cfg_fname)
+0053     tmp = load(cfg_fname);
+0054     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(tmp)
+0055       <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(tmp, <span class="string">'mars'</span>)
+0056     mars = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>, tmp.mars, mars);
+0057       <span class="keyword">end</span>
+0058     <span class="keyword">end</span>
+0059   <span class="keyword">end</span>
+0060  
+0061   <span class="comment">% --------------------------------------------------</span>
+0062  <span class="keyword">case</span> <span class="string">'save'</span>
+0063   <span class="keyword">if</span> nargin &lt; 3
+0064     [fn, fn2] = <a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'cfgfile'</span>);
+0065     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fn), fn=fn2;<span class="keyword">end</span>
+0066     [f p] = <a href="mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>(<span class="string">'put'</span>, fn, <span class="string">'Configuration file to save'</span>);
+0067     <span class="keyword">if</span> isequal(f,0) || isequal(p,0), <span class="keyword">return</span>, <span class="keyword">end</span>
+0068     cfg_fname = fullfile(p, f);
+0069   <span class="keyword">end</span>
+0070   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cfg_fname)
+0071     <span class="keyword">try</span>
+0072       save(cfg_fname, <span class="string">'mars'</span>);
+0073       fprintf(<span class="string">'Saved options to %s\n'</span>, cfg_fname);
+0074     <span class="keyword">catch</span>
+0075       warning(sprintf(<span class="string">'%s: error saving config to file %s'</span>, <span class="keyword">...</span>
+0076               lasterr, cfg_fname))
+0077     <span class="keyword">end</span>
+0078   <span class="keyword">end</span>
+0079   
+0080   <span class="comment">% --------------------------------------------------</span>
+0081  <span class="keyword">case</span> <span class="string">'basedefaults'</span>
+0082   <span class="comment">% hardcoded defaults</span>
+0083   msgstr = <span class="string">'base defaults'</span>;
+0084 
+0085   <span class="comment">% default structural image for display</span>
+0086   mars.structural.fname = fullfile(spm(<span class="string">'Dir'</span>), <span class="string">'canonical'</span>, <span class="keyword">...</span>
+0087     [<span class="string">'avg152T1'</span> <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'template_ext'</span>)]);
+0088 
+0089   <span class="comment">% default image specifying base space for ROIs</span>
+0090   mars.spacebase.fname = mars.structural.fname;
+0091   
+0092   <span class="comment">% ROI defaults</span>
+0093   mars.roidefs.spm_hold = 1;
+0094   
+0095   <span class="comment">% default summary function for ROI data</span>
+0096   mars.statistics.sumfunc = <span class="string">'mean'</span>;
+0097   
+0098   <span class="comment">% flag to indicate voxel data should be used to calculate filter</span>
+0099   mars.statistics.voxfilter = 0;
+0100 
+0101   <span class="comment">% option to say if images should be flipped when converting</span>
+0102   <span class="comment">% to and from spm99 designs</span>
+0103   mars.statistics.flip_option = <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'flip_option'</span>);
+0104 
+0105   <span class="comment">% Whether to refresh contrast structure when loading designs</span>
+0106   mars.statistics.refresh_contrasts = 1;
+0107   
+0108   <span class="comment">% Difference function to calculate % signal change</span>
+0109   mars.events.diff_func = <span class="string">'abs max'</span>;
+0110   
+0111 <span class="comment">% --------------------------------------------------</span>
+0112  <span class="keyword">case</span> <span class="string">'edit'</span>
+0113   
+0114   <span class="comment">% Edit defaults.  See 'basedefaults' option for other defaults</span>
+0115   defarea = cfg_fname;  <span class="comment">% third arg is defaults area, if specified</span>
+0116   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(defarea)
+0117     <span class="comment">% get defaults area</span>
+0118     [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'MarsBar Defaults'</span>);
+0119 
+0120     defarea = char(<span class="keyword">...</span>
+0121       spm_input(<span class="string">'Defaults area'</span>, <span class="string">'+1'</span>, <span class="string">'m'</span>,{optlabs{:} <span class="string">'Quit'</span>},<span class="keyword">...</span>
+0122         {optfields{:} <span class="string">'quit'</span>},length(optfields)+1));
+0123   <span class="keyword">end</span>
+0124   
+0125   oldmars = mars;
+0126   <span class="keyword">switch</span> defarea
+0127    <span class="keyword">case</span> <span class="string">'quit'</span>
+0128     <span class="keyword">return</span>
+0129    
+0130     <span class="comment">% display stuff - default structural scan</span>
+0131    <span class="keyword">case</span> <span class="string">'structural'</span>
+0132     mars.structural.fname = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(1, <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>),<span class="keyword">...</span>
+0133                     <span class="string">'Default structural image'</span>, <span class="keyword">...</span>
+0134                     fileparts(mars.structural.fname));
+0135 
+0136     <span class="comment">% default ROI base space</span>
+0137    <span class="keyword">case</span> <span class="string">'roidefs'</span>
+0138     mars.roidefs.spm_hold = <span class="keyword">...</span>
+0139     spm_input(<span class="string">'ROI interpolation method?'</span>,<span class="string">'+1'</span>,<span class="string">'m'</span>,<span class="keyword">...</span>
+0140           [<span class="string">'Nearest neighbour'</span> <span class="keyword">...</span>
+0141           <span class="string">'|Trilinear Interpolation'</span><span class="keyword">...</span>
+0142           <span class="string">'|Sinc Interpolation'</span>],<span class="keyword">...</span>
+0143                  [0 1 -9],2);
+0144     
+0145    <span class="comment">% default ROI base space</span>
+0146    <span class="keyword">case</span> <span class="string">'spacebase'</span>
+0147     mars.spacebase.fname = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(1, <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>),<span class="keyword">...</span>
+0148                    <span class="string">'Default ROI image space'</span>, <span class="keyword">...</span>
+0149                    fileparts(mars.spacebase.fname));
+0150     
+0151    <span class="comment">% statistics</span>
+0152    <span class="keyword">case</span> <span class="string">'statistics'</span>
+0153     mars.statistics = <a href="#_sub1" class="code" title="subfunction s = getdefs(s, defval, fieldn, prompt, vals, labels)">getdefs</a>(<span class="keyword">...</span>
+0154     mars.statistics,<span class="keyword">...</span>
+0155     oldmars.statistics,<span class="keyword">...</span>
+0156     <span class="string">'sumfunc'</span>,<span class="keyword">...</span>
+0157     <span class="string">'Data summary function'</span>,<span class="keyword">...</span>
+0158     {<span class="string">'mean'</span>,<span class="string">'wtmean'</span>,<span class="string">'median'</span>,<span class="string">'ask'</span>},<span class="keyword">...</span>
+0159     <span class="string">'Mean|Weighted mean|Median|Always ask'</span>);
+0160        
+0161     tmp = [1 0]; tmpi = find(tmp == mars.statistics.flip_option);
+0162     mars.statistics.flip_option = spm_input(<span class="string">'Flip design images SPM99-2'</span>,<span class="keyword">...</span>
+0163                      <span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="string">'Yes|No'</span>,tmp, tmpi);
+0164 
+0165     tmp = [1 0]; tmpi = find(tmp == mars.statistics.refresh_contrasts);
+0166     mars.statistics.refresh_contrasts = spm_input(<span class="keyword">...</span>
+0167         <span class="string">'Load updates F contrasts?'</span>, <span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="string">'Yes|No'</span>,tmp, tmpi);
+0168 
+0169    <span class="keyword">case</span> <span class="string">'events'</span>
+0170     mars.events = <a href="#_sub1" class="code" title="subfunction s = getdefs(s, defval, fieldn, prompt, vals, labels)">getdefs</a>(<span class="keyword">...</span>
+0171     mars.events,<span class="keyword">...</span>
+0172     oldmars.events,<span class="keyword">...</span>
+0173     <span class="string">'diff_func'</span>,<span class="keyword">...</span>
+0174     <span class="string">'Event height function'</span>,<span class="keyword">...</span>
+0175     {<span class="string">'abs max'</span>,<span class="string">'abs max-min'</span>,<span class="string">'max'</span>,<span class="string">'max-min'</span>,<span class="string">'window'</span>},<span class="keyword">...</span>
+0176     <span class="string">'Abs max|Abs max-min|Max|Max-min|Mean over time window'</span>);
+0177     
+0178    <span class="keyword">otherwise</span> 
+0179     error(<span class="string">'Unknown defaults area'</span>)
+0180   <span class="keyword">end</span>
+0181 
+0182   <span class="comment">% Offer a rollback</span>
+0183   <span class="keyword">if</span> spm_input(<span class="string">'Accept these settings'</span>, <span class="string">'+1'</span>, <span class="string">'b'</span>,<span class="string">'Yes|No'</span>,[0 1],1)
+0184     mars = oldmars;
+0185   <span class="keyword">end</span>
+0186   
+0187   <span class="comment">% --------------------------------------------------</span>
+0188  <span class="keyword">case</span> <span class="string">'defaults'</span>                             <span class="comment">%-get marsbar defaults</span>
+0189   pwdefs = [];
+0190   msgstr = <span class="string">'base defaults'</span>;
+0191   cfgfile = <a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'cfgfile'</span>);
+0192   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cfgfile);
+0193     tmp = load(cfgfile);
+0194     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(tmp, <span class="string">'mars'</span>)
+0195       pwdefs = tmp.mars;
+0196       msgstr = cfgfile;
+0197     <span class="keyword">else</span>
+0198       warning(<span class="keyword">...</span>
+0199       [<span class="string">'File '</span> cfgfile <span class="string">' does not contain valid config settings'</span>],<span class="keyword">...</span>
+0200       <span class="string">'Did not load marsbar config file'</span>);
+0201     <span class="keyword">end</span>
+0202   <span class="keyword">end</span>
+0203   mars = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>,pwdefs, <a href="mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>(<span class="string">'basedefaults'</span>));
+0204   
+0205    <span class="comment">% --------------------------------------------------</span>
+0206  <span class="keyword">case</span> <span class="string">'fill'</span>                             <span class="comment">%-fill from template</span>
+0207   mars = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>,mars,cfg_fname);
+0208   
+0209  <span class="keyword">otherwise</span>
+0210   error(<span class="string">'Don''t recognize options action string'</span>)
+0211 <span class="keyword">end</span>
+0212 <span class="keyword">return</span>
+0213 
+0214 
+0215 <a name="_sub1" href="#_subfunctions" class="code">function s = getdefs(s, defval, fieldn, prompt, vals, labels)</a>
+0216 <span class="comment">% sets field in structure given values, labels, etc</span>
+0217     
+0218 <span class="keyword">if</span> isstruct(defval)
+0219   defval = getfield(defval, fieldn);  
+0220 <span class="keyword">end</span>
+0221 
+0222 <span class="keyword">if</span> ischar(defval)
+0223   defind = find(strcmp(defval,vals));
+0224 <span class="keyword">else</span>
+0225   defind = find(defval == vals);
+0226 <span class="keyword">end</span>
+0227 
+0228 v = spm_input(prompt, <span class="string">'+1'</span>, <span class="string">'m'</span>, labels, vals, defind);
+0229 <span class="keyword">if</span> iscell(v) &amp;&amp; ischar(defval)
+0230   v = char(v);
+0231 <span class="keyword">end</span>
+0232   
+0233 s = setfield(s,fieldn,v);
+0234 
+0235 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

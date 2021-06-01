@@ -1,0 +1,25 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  configure_er_model -> er_model_spm2;
+  run_preprocess -> configure_er_model;
+  run_preprocess -> er_smooth;
+  run_preprocess -> estimate_er_model;
+  run_preprocess -> get_subjroot;
+  run_s3_model -> configure_er_model;
+  run_s3_model -> estimate_er_model;
+  run_s3_model -> get_subjroot;
+  run_tutorial -> configure_er_model;
+  run_tutorial -> get_subjroot;
+
+  configure_er_model [URL="configure_er_model.html"];
+  do_bch_wrapper [URL="do_bch_wrapper.html"];
+  er_contrast_spm99 [URL="er_contrast_spm99.html"];
+  er_model_spm2 [URL="er_model_spm2.html"];
+  er_model_spm99 [URL="er_model_spm99.html"];
+  er_smooth [URL="er_smooth.html"];
+  estimate_er_model [URL="estimate_er_model.html"];
+  get_subjroot [URL="get_subjroot.html"];
+  run_preprocess [URL="run_preprocess.html"];
+  run_s3_model [URL="run_s3_model.html"];
+  run_tutorial [URL="run_tutorial.html"];
+}

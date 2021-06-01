@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of full_vol</title>
+  <meta name="keywords" content="full_vol">
+  <meta name="description" content="returns vol with full path, from vols, or image names">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; full_vol.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>full_vol
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>returns vol with full path, from vols, or image names</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function V = full_vol(D, imgs) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns vol with full path, from vols, or image names
+ FORMAT V = full_vol(D, imgs)
+
+ Input 
+ D           - mardo design object
+ imgs        - image names or vol structs
+ 
+ Output
+ V           - vol structs with full path names
+ 
+ If the filename for the image does not exist, the routine returns an
+ empty vol struct - which has the filename set, but all other fields are
+ empty
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="swd.html" class="code" title="function res = swd(D, dir)">swd</a>	method to get/set design directory</li>
+<li><a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="get_vol_field.html" class="code" title="function V = get_vol_field(D, fieldn)">get_vol_field</a>	method to get named field, containing or referring to vol structs</li>
+<li><a href="../../marsbar/@mardo_2/design_vol.html" class="code" title="function V = design_vol(D, imgs)">design_vol</a>	returns vols in appropriate format for saving in design</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function V = full_vol(D, imgs)</a>
+0002 <span class="comment">% returns vol with full path, from vols, or image names</span>
+0003 <span class="comment">% FORMAT V = full_vol(D, imgs)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% D           - mardo design object</span>
+0007 <span class="comment">% imgs        - image names or vol structs</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Output</span>
+0010 <span class="comment">% V           - vol structs with full path names</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% If the filename for the image does not exist, the routine returns an</span>
+0013 <span class="comment">% empty vol struct - which has the filename set, but all other fields are</span>
+0014 <span class="comment">% empty</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $Id$</span>
+0017 
+0018 <span class="keyword">if</span> nargin &lt; 2
+0019   error(<span class="string">'Need image information'</span>);
+0020 <span class="keyword">end</span>
+0021 
+0022 Swd = <a href="swd.html" class="code" title="function res = swd(D, dir)">swd</a>(D);
+0023 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Swd)
+0024   error(<span class="string">'Need directory of design; it is missing'</span>);
+0025 <span class="keyword">end</span>
+0026 
+0027 def_struct = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'def_vol'</span>);
+0028 
+0029 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imgs)
+0030   V = def_struct; 
+0031   <span class="keyword">return</span>
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="keyword">if</span> iscell(imgs)
+0035   imgs = char(imgs);
+0036 <span class="keyword">end</span>
+0037 <span class="keyword">if</span> isstruct(imgs) <span class="comment">% vol struct, check for absolute path name</span>
+0038   V = imgs;
+0039   nimgs = prod(size(imgs));
+0040   <span class="keyword">for</span> i = 1:nimgs
+0041     fname = V(i).fname;
+0042     <span class="keyword">if</span> ~<a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'isabspath'</span>, fname);
+0043       fname = fullfile(Swd, fname);
+0044     <span class="keyword">end</span>
+0045     V(i).fname = fname;
+0046   <span class="keyword">end</span>
+0047 <span class="keyword">elseif</span> ischar(imgs)
+0048   <span class="keyword">for</span> i = 1:size(imgs, 1)
+0049     fname = deblank(imgs(i,:));
+0050     <span class="keyword">if</span> ~<a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'isabspath'</span>, fname)
+0051       fname = fullfile(Swd, fname);
+0052     <span class="keyword">end</span>
+0053     <span class="keyword">if</span> exist(fname, <span class="string">'file'</span>)
+0054       V(i) = spm_vol(fname);
+0055     <span class="keyword">else</span>
+0056       V(i).fname = fname;
+0057     <span class="keyword">end</span>
+0058   <span class="keyword">end</span>  
+0059 <span class="keyword">else</span>
+0060   error(<span class="string">'Odd input format for images'</span>);
+0061 <span class="keyword">end</span>
+0062 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

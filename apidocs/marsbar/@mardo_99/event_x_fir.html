@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_x_fir</title>
+  <meta name="keywords" content="event_x_fir">
+  <meta name="description" content="method to return FIR design matrix columns for session">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; event_x_fir.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_x_fir
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to return FIR design matrix columns for session</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to return FIR design matrix columns for session
+ FORMAT Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)
+ 
+ D          - design object
+ e_spec     - event specification for single event
+                [session no; event no]
+ bin_length - bin length in seconds
+ bin_no     - number of bins for FIR
+ opts       - structure, containing fields with options
+                'single' - if field present, gives single FIR 
+                 This option removes any duration information, and
+                 returns a simple per onset FIR model, where ones in the
+                 design matrix corresponds to 1 event at the given
+                 offset. See event_fitted_fir.m for more details.
+ 
+ Returns
+ Xn         - columns in design matrix for FIR model
+ 
+ Note that we have a problem, in that the assumed start bin is not saved
+ in the SPM99 design format, so we have to hope it has not changed from
+ the current defaults.
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@mardo_2/event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets onsets and durations for event/session</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_orth.html" class="code" title="function x = spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = spm_Volterra(U,bf,V)">pr_spm_volterra</a>	generalized convolution of inputs (U) with basis set (bf)</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_orth.html" class="code" title="function x = pr_spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = pr_spm_volterra(U,bf,V)">pr_spm_volterra</a>	generalized convolution of inputs (U) with basis set (bf)</li>
+<li><a href="event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets (estimated) onsets and durations for event/session</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_orth.html" class="code" title="function bf = pr_spm_orth(BF)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_volterra.html" class="code" title="function [X,Xn,IND,BF,name] = spm_Volterra(SF,BF,name,N)">pr_spm_volterra</a>	returns [design] matrix of explanatory variables</li>
+<li><a href="tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)</a>
+0002 <span class="comment">% method to return FIR design matrix columns for session</span>
+0003 <span class="comment">% FORMAT Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - design object</span>
+0006 <span class="comment">% e_spec     - event specification for single event</span>
+0007 <span class="comment">%                [session no; event no]</span>
+0008 <span class="comment">% bin_length - bin length in seconds</span>
+0009 <span class="comment">% bin_no     - number of bins for FIR</span>
+0010 <span class="comment">% opts       - structure, containing fields with options</span>
+0011 <span class="comment">%                'single' - if field present, gives single FIR</span>
+0012 <span class="comment">%                 This option removes any duration information, and</span>
+0013 <span class="comment">%                 returns a simple per onset FIR model, where ones in the</span>
+0014 <span class="comment">%                 design matrix corresponds to 1 event at the given</span>
+0015 <span class="comment">%                 offset. See event_fitted_fir.m for more details.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Returns</span>
+0018 <span class="comment">% Xn         - columns in design matrix for FIR model</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% Note that we have a problem, in that the assumed start bin is not saved</span>
+0021 <span class="comment">% in the SPM99 design format, so we have to hope it has not changed from</span>
+0022 <span class="comment">% the current defaults.</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $Id$</span>
+0025 
+0026 <span class="comment">% global parameters</span>
+0027 <span class="keyword">global</span> fMRI_T; 
+0028 <span class="keyword">global</span> fMRI_T0; 
+0029 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fMRI_T),  fMRI_T  = 16; <span class="keyword">end</span>;
+0030 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fMRI_T0), fMRI_T0 = 1;  <span class="keyword">end</span>;
+0031 
+0032 <span class="keyword">if</span> nargin &lt; 2
+0033   error(<span class="string">'Need event specfication'</span>);
+0034 <span class="keyword">end</span>
+0035 <span class="keyword">if</span> nargin &lt; 3
+0036   bin_length = [];
+0037 <span class="keyword">end</span>
+0038 <span class="keyword">if</span> nargin &lt; 4
+0039   bin_no = [];
+0040 <span class="keyword">end</span>
+0041 <span class="keyword">if</span> nargin &lt; 5
+0042   opts = [];
+0043 <span class="keyword">end</span>
+0044 
+0045 s = e_spec(1);
+0046 e = e_spec(2);
+0047 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(bin_length)
+0048   bin_length = <a href="tr.html" class="code" title="function t = tr(o)">tr</a>(D);
+0049 <span class="keyword">end</span>
+0050 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(bin_no)
+0051   bin_no = round(25/bin_length);
+0052 <span class="keyword">end</span>
+0053 
+0054 SPM         = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0055 Sess        = SPM.Sess{s};
+0056 dt          = SPM.xX.dt;
+0057 
+0058 <span class="comment">% Check dt against fMRI_T, warn if it differs</span>
+0059 recorded_fMRI_T = round(SPM.xX.RT / dt);
+0060 <span class="keyword">if</span> recorded_fMRI_T ~= fMRI_T &amp; <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D)
+0061   warning(sprintf([<span class="keyword">...</span>
+0062       <span class="string">'fMRI_T (%d) does not match recorded dt, using recorded dt (%d).\n'</span> <span class="keyword">...</span>
+0063       <span class="string">'The original fMRI_T0 has not been recorded, assuming %d.'</span>],<span class="keyword">...</span>
+0064           fMRI_T, recorded_fMRI_T, fMRI_T0));
+0065 <span class="keyword">end</span>
+0066 T           = recorded_fMRI_T;
+0067 bf          = kron(eye(bin_no),ones(round(bin_length/dt),1));
+0068 bf          = <a href="../../marsbar/@mardo_2/private/pr_spm_orth.html" class="code" title="function x = spm_orth(X)">pr_spm_orth</a>(bf);
+0069 
+0070 <span class="comment">% Reset columns to 1 after orthogonalization</span>
+0071 BF{1}       = bf / bf(1);
+0072 
+0073 k           = length(Sess.row);
+0074 
+0075 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(opts, <span class="string">'single'</span>)
+0076   [onsets durations] = <a href="event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>(D, e_spec);
+0077   ons   = sparse(k*T,1);
+0078   <span class="keyword">for</span> p = 1:length(onsets)
+0079     q  = round(onsets(p)*T + 1);
+0080     ons(q) = 1;
+0081   <span class="keyword">end</span>
+0082   SF{1} = ons(1:(k*T));
+0083   <span class="keyword">if</span> <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D) &amp; any(diff(durations))
+0084       warning([<span class="string">'Apparently there were different event durations; '</span> <span class="keyword">...</span>
+0085            <span class="string">'single FIR model likely to be invalid'</span>]);
+0086   <span class="keyword">end</span>
+0087 <span class="keyword">else</span>
+0088   SF{1}       = Sess.sf{e}(:,1);
+0089 <span class="keyword">end</span>
+0090 
+0091 Xn          = <a href="../../marsbar/@mardo_2/private/pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = spm_Volterra(U,bf,V)">pr_spm_volterra</a>(SF,BF,{<span class="string">'FIR'</span>},1);
+0092 
+0093 <span class="comment">% Resample design matrix {X} at acquisition times</span>
+0094 <span class="comment">%-----------------------------------------------</span>
+0095 Xn          = Xn([0:k-1]*T + fMRI_T0,:);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of estimate</title>
+  <meta name="keywords" content="estimate">
+  <meta name="description" content="estimate method - estimates GLM for SPM99 model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; estimate.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>estimate
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>estimate method - estimates GLM for SPM99 model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [marsD] = estimate(marsD, marsY, params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> estimate method - estimates GLM for SPM99 model
+
+ marsD           - SPM design object
+ marsY           - MarsBaR data object, or 2D matrix
+ param           - struct containing options
+                    (not currently used)
+
+ e.g.
+ % Estimate model on design D and data Y
+ E = estimate(D, Y);
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points in design</li>
+<li><a href="../../marsbar/@mardo_2/can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>	method returns 1 if design can be estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>	method returns 1 if design can be estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [marsD] = estimate(marsD, marsY, params)</a>
+0002 <span class="comment">% estimate method - estimates GLM for SPM99 model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% marsD           - SPM design object</span>
+0005 <span class="comment">% marsY           - MarsBaR data object, or 2D matrix</span>
+0006 <span class="comment">% param           - struct containing options</span>
+0007 <span class="comment">%                    (not currently used)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% e.g.</span>
+0010 <span class="comment">% % Estimate model on design D and data Y</span>
+0011 <span class="comment">% E = estimate(D, Y);</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $Id$</span>
+0014 
+0015 <span class="keyword">if</span> nargin &lt; 2
+0016   error(<span class="string">'Need data to estimate'</span>);
+0017 <span class="keyword">end</span>
+0018 <span class="keyword">if</span> nargin &lt; 3
+0019   params = [];
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="comment">% ensure we have a data object</span>
+0023 marsY = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(marsY);
+0024 
+0025 <span class="comment">% check design is complete</span>
+0026 <span class="keyword">if</span> ~<a href="can_mars_estimate.html" class="code" title="function tf = can_mars_estimate(D)">can_mars_estimate</a>(marsD)
+0027   error(<span class="string">'This design needs more information before it can be estimated'</span>);
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">% Check data and design dimensions</span>
+0031 <span class="keyword">if</span> <a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(marsY) ~= <a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(marsD)
+0032   error(<span class="string">'The data and design must have the same number of rows'</span>);
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="comment">% get SPM design structure</span>
+0036 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsD);
+0037   
+0038 <span class="comment">% do estimation</span>
+0039 SPM       = <a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>(SPM, marsY);
+0040 SPM.marsY = marsY;
+0041 
+0042 <span class="comment">% We must set SPMid to contain SPM99 string in order for the mardo_99 to</span>
+0043 <span class="comment">% recognize this as an SPM99 design</span>
+0044 SPM.SPMid  = sprintf(<span class="string">'SPM99: MarsBaR estimation. mardo_99 version %s'</span>, <span class="keyword">...</span>
+0045              marsD.cvs_version);
+0046 
+0047 <span class="comment">% return modified structure</span>
+0048 marsD = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(marsD, SPM);
+0049 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

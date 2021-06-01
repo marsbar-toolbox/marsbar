@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of summary</title>
+  <meta name="keywords" content="summary">
+  <meta name="description" content="method returns cell array of strings describing marsy object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; summary.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>summary
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method returns cell array of strings describing marsy object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function strs = summary(M) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method returns cell array of strings describing marsy object
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points in design</li>
+<li><a href="can_summarize.html" class="code" title="function tf = can_summarize(o)">can_summarize</a>	returns 1 if object contains enough information to be summarized</li>
+<li><a href="is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>	returns 1 if object contains calculated summary data</li>
+<li><a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>	get number of regions</li>
+<li><a href="n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points</li>
+<li><a href="region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="summary_descrip.html" class="code" title="function res = summary_descrip(o, descrip)">summary_descrip</a>	get/set method for summary data description</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/display.html" class="code" title="function display(obj)">display</a>	display method for mardo objects</li>
+<li><a href="../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+<li><a href="display.html" class="code" title="function display(obj)">display</a>	display method for marsy objects</li>
+<li><a href="../../marsbar/mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function str = sf_recode(tf)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function strs = summary(M)</a>
+0002 <span class="comment">% method returns cell array of strings describing marsy object</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 strs{1} = sprintf(<span class="string">'Description:           \t%s'</span>,  <a href="summary_descrip.html" class="code" title="function res = summary_descrip(o, descrip)">summary_descrip</a>(M));
+0007 strs{2} = sprintf(<span class="string">'Number of time points: \t%d'</span>,  <a href="n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(M));
+0008 strs{3} = sprintf(<span class="string">'Number of regions:     \t%d'</span>,  <a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>(M));
+0009 s_f = <a href="is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>(M);
+0010 strs{4} = sprintf(<span class="string">'Is summarized?:        \t%s'</span>,  <a href="#_sub1" class="code" title="subfunction str = sf_recode(tf)">sf_recode</a>(s_f));
+0011 strs{5} = sprintf(<span class="string">'Summary function:      \t%s'</span>,  <a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>(M));
+0012 <span class="keyword">if</span> ~s_f
+0013   strs{end+1} = sprintf(<span class="string">'Can be summarized?:    \t%s'</span>, <span class="keyword">...</span>
+0014             <a href="#_sub1" class="code" title="subfunction str = sf_recode(tf)">sf_recode</a>(<a href="can_summarize.html" class="code" title="function tf = can_summarize(o)">can_summarize</a>(M)));
+0015 <span class="keyword">end</span>
+0016 ns = <a href="region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(M, [], [], <span class="string">''</span>);
+0017 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(strvcat(ns))
+0018   strs{end+1} = sprintf(<span class="string">'Region names:          \t%s'</span>, <span class="keyword">...</span>
+0019       <span class="string">'not specified'</span>);
+0020 <span class="keyword">else</span>
+0021   strs{end+1} = <span class="string">'Region names:'</span>;
+0022   <span class="keyword">for</span> i = 1:length(ns)
+0023     strs{end+1} = sprintf(<span class="string">'Region %d:  %s'</span>, i, ns{i});
+0024   <span class="keyword">end</span>
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">return</span>
+0027 
+0028 <a name="_sub1" href="#_subfunctions" class="code">function str = sf_recode(tf)</a>
+0029 <span class="keyword">if</span> isnan(tf), str = <span class="string">'unknown'</span>;
+0030 <span class="keyword">elseif</span> tf,    str = <span class="string">'yes'</span>;
+0031 <span class="keyword">else</span>          str = <span class="string">'no'</span>;
+0032 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

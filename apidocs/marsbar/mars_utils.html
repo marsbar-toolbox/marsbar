@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_utils</title>
+  <meta name="keywords" content="mars_utils">
+  <meta name="description" content="collection of useful utility functions for MarsBaR etc">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_utils.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_utils
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>collection of useful utility functions for MarsBaR etc</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout=mars_utils(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> collection of useful utility functions for MarsBaR etc
+ 
+ fname = mars_utils('str2fname', str)
+    accepts string, attempts return of string for valid filename
+    The passed string should be without path or extension
+
+ tf = mars_utils('is_valid_varname', str)
+    accepts string, tests if it is a valid variable name
+    returns 1 for yes.
+
+ P = mars_utils('get_img_name', fname, flags);
+    gets name of image, if image exists, checks for overwrite  
+    returns filename, or empty string if overwrite not wanted
+
+ XYZ = mars_utils('e2xyz', els, dims);
+    takes element numbers in an image (e.g. find(img&gt;5)) and the
+    dimensions of the image [X Y Z] and returns the 3xN voxel
+    coordinates corresponding to the N elements
+
+ absf = mars_utils('isabspath', path);
+    Takes path name, and returns flag, 1 if path is absolute on this
+    system, 0 if relative or empty
+ 
+ mars_utils('graphic_text', strs, [title_str, [, figure_str]])
+    Displays cell array of text (strs) in SPM graphics window 
+    with optional title (char) title_string.  Can also set to display to
+    other figure window (string or figure handle).
+
+ mars_utils('spm_version', [check_global])
+    Gets SPM version string.  Robust version to allow there to be
+    versions of the spm.m file to not have Contents.m files in the same
+    directory.  If optional flag check_global is zero, does _not_ check
+    global SPM_VER variable for version, and tries to get directly from
+    spm.m / Contents.m pairs.
+ 
+ tf = mars_utils('is_swapped_wrong', V)
+    Deprecated - see version in mars_vol_utils
+
+ tf = mars_utils('version_less_than', v1, v2)
+    Returns 1 if version v1 is lower than version v2.
+    Versions can be numbers.  If strings, versions can contain more than
+    one '.' character. For example, '0.38.1' is less than '0.39', or
+    '0.38.2'
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+<li><a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/full_vol.html" class="code" title="function V = full_vol(D, imgs)">full_vol</a>	returns vol with full path, from vols, or image names</li>
+<li><a href="../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../marsbar/@mardo_2/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../marsbar/@mardo_99/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+<li><a href="mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>	creates ROIs from spm_results_ui SPM</li>
+<li><a href="mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function tf = sf_ver_lt(v1, v2)</a></li>
+<li><a href="#_sub2" class="code">function ns = sf_str_to_nums(str)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=mars_utils(varargin)</a>
+0002 <span class="comment">% collection of useful utility functions for MarsBaR etc</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% fname = mars_utils('str2fname', str)</span>
+0005 <span class="comment">%    accepts string, attempts return of string for valid filename</span>
+0006 <span class="comment">%    The passed string should be without path or extension</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% tf = mars_utils('is_valid_varname', str)</span>
+0009 <span class="comment">%    accepts string, tests if it is a valid variable name</span>
+0010 <span class="comment">%    returns 1 for yes.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% P = mars_utils('get_img_name', fname, flags);</span>
+0013 <span class="comment">%    gets name of image, if image exists, checks for overwrite</span>
+0014 <span class="comment">%    returns filename, or empty string if overwrite not wanted</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% XYZ = mars_utils('e2xyz', els, dims);</span>
+0017 <span class="comment">%    takes element numbers in an image (e.g. find(img&gt;5)) and the</span>
+0018 <span class="comment">%    dimensions of the image [X Y Z] and returns the 3xN voxel</span>
+0019 <span class="comment">%    coordinates corresponding to the N elements</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% absf = mars_utils('isabspath', path);</span>
+0022 <span class="comment">%    Takes path name, and returns flag, 1 if path is absolute on this</span>
+0023 <span class="comment">%    system, 0 if relative or empty</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% mars_utils('graphic_text', strs, [title_str, [, figure_str]])</span>
+0026 <span class="comment">%    Displays cell array of text (strs) in SPM graphics window</span>
+0027 <span class="comment">%    with optional title (char) title_string.  Can also set to display to</span>
+0028 <span class="comment">%    other figure window (string or figure handle).</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% mars_utils('spm_version', [check_global])</span>
+0031 <span class="comment">%    Gets SPM version string.  Robust version to allow there to be</span>
+0032 <span class="comment">%    versions of the spm.m file to not have Contents.m files in the same</span>
+0033 <span class="comment">%    directory.  If optional flag check_global is zero, does _not_ check</span>
+0034 <span class="comment">%    global SPM_VER variable for version, and tries to get directly from</span>
+0035 <span class="comment">%    spm.m / Contents.m pairs.</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% tf = mars_utils('is_swapped_wrong', V)</span>
+0038 <span class="comment">%    Deprecated - see version in mars_vol_utils</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% tf = mars_utils('version_less_than', v1, v2)</span>
+0041 <span class="comment">%    Returns 1 if version v1 is lower than version v2.</span>
+0042 <span class="comment">%    Versions can be numbers.  If strings, versions can contain more than</span>
+0043 <span class="comment">%    one '.' character. For example, '0.38.1' is less than '0.39', or</span>
+0044 <span class="comment">%    '0.38.2'</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">% $Id$</span>
+0047 
+0048 <span class="keyword">if</span> nargin &lt; 1
+0049   error(<span class="string">'Need action'</span>);
+0050 <span class="keyword">end</span>
+0051 Action = lower(varargin{1});
+0052 
+0053 <span class="keyword">switch</span>(Action)
+0054   
+0055 <span class="comment">%=======================================================================</span>
+0056 <span class="keyword">case</span> <span class="string">'str2fname'</span>                                   <span class="comment">%-string to file name</span>
+0057 <span class="comment">%=======================================================================</span>
+0058 <span class="keyword">if</span> nargin &lt; 2
+0059   error(<span class="string">'Need to specify string'</span>);
+0060 <span class="keyword">end</span>
+0061 str = varargin{2};
+0062 <span class="comment">% forbidden chars in file name</span>
+0063 badchars = unique([filesep <span class="string">'/\ :;.''&quot;~*?&lt;&gt;|&amp;'</span>]);
+0064 
+0065 tmp = find(ismember(str, badchars));   
+0066 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(tmp)
+0067   str(tmp) = <span class="string">'_'</span>;
+0068   dt = diff(tmp);
+0069   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dt)
+0070     str(tmp(dt==1))=[];
+0071   <span class="keyword">end</span>
+0072 <span class="keyword">end</span>
+0073 varargout={str};
+0074  
+0075 <span class="comment">%=======================================================================</span>
+0076 <span class="keyword">case</span> <span class="string">'is_valid_varname'</span>        <span class="comment">%- tests if string is valid variable name</span>
+0077 <span class="comment">%=======================================================================</span>
+0078 <span class="keyword">if</span> nargin &lt; 2
+0079   error(<span class="string">'Need to specify string'</span>);
+0080 <span class="keyword">end</span>
+0081 str = varargin{2};
+0082 <span class="keyword">try</span> 
+0083   eval([str <span class="string">'= [];'</span>]);
+0084   varargout={1};
+0085 <span class="keyword">catch</span>
+0086   varargout = {0};
+0087 <span class="keyword">end</span>
+0088 
+0089 <span class="comment">%=======================================================================</span>
+0090 <span class="keyword">case</span> <span class="string">'get_img_name'</span>          <span class="comment">%-gets name of image, checks for overwrite</span>
+0091 <span class="comment">%=======================================================================</span>
+0092 <span class="keyword">if</span> nargin &lt; 2
+0093   fname = <span class="string">''</span>;
+0094 <span class="keyword">else</span>
+0095   fname = varargin{2};
+0096 <span class="keyword">end</span>
+0097 <span class="keyword">if</span> nargin &lt; 3
+0098   flags = <span class="string">''</span>;
+0099 <span class="keyword">else</span> 
+0100   flags = varargin{3};
+0101 <span class="keyword">end</span>
+0102 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags)
+0103   flags = <span class="string">'k'</span>;
+0104 <span class="keyword">end</span>
+0105 
+0106 varargout = {<span class="string">''</span>};
+0107 fdir = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(-1, <span class="string">''</span>, <span class="string">'Directory to save image'</span>);
+0108 fname = spm_input(<span class="string">'Image filename'</span>, <span class="string">'+1'</span>, <span class="string">'s'</span>, fname);
+0109 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fname), <span class="keyword">return</span>, <span class="keyword">end</span>
+0110 
+0111 <span class="comment">% set img extension and make absolute path</span>
+0112 [pn fn ext] = fileparts(fname);
+0113 out_ext = <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'pref_img_out_ext'</span>);
+0114 fname = fullfile(fdir, [fn out_ext]);
+0115 fname = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'cpath'</span>, fname);
+0116 
+0117 <span class="keyword">if</span> any(flags == <span class="string">'k'</span>) &amp;&amp; exist(fname, <span class="string">'file'</span>)
+0118   <span class="keyword">if</span> ~spm_input([<span class="string">'Overwrite '</span> fn], <span class="string">'+1'</span>, <span class="keyword">...</span>
+0119         <span class="string">'b'</span>,<span class="string">'Yes|No'</span>,[1 0], 1)
+0120     <span class="keyword">return</span>
+0121   <span class="keyword">end</span>
+0122 <span class="keyword">end</span>
+0123 varargout = {fname};
+0124 
+0125 <span class="comment">%=======================================================================</span>
+0126 <span class="keyword">case</span> <span class="string">'e2xyz'</span>         <span class="comment">%-returns XYZ voxel coordinates for element numbers</span>
+0127 <span class="comment">%=======================================================================</span>
+0128 <span class="keyword">if</span> nargin &lt; 2
+0129   error(<span class="string">'Need element numbers'</span>);
+0130 <span class="keyword">end</span>
+0131 <span class="keyword">if</span> nargin &lt; 3
+0132   error(<span class="string">'Need image dimensions'</span>);
+0133 <span class="keyword">end</span>
+0134 els = varargin{2};
+0135 dim = varargin{3};
+0136 <span class="keyword">if</span> size(els, 2) == 1, els = els'; <span class="keyword">end</span>
+0137 nz = els-1;
+0138 pl_sz = dim(1)*dim(2);
+0139 Z = floor(nz / pl_sz);
+0140 nz = nz - Z*pl_sz;
+0141 Y = floor(nz / dim(1));
+0142 X = nz - Y*dim(1);
+0143 XYZ = [X; Y; Z] +1;
+0144 varargout = {XYZ};
+0145 
+0146 <span class="comment">%=======================================================================</span>
+0147 <span class="keyword">case</span> <span class="string">'isabspath'</span> <span class="comment">% Returns 1 for absolute path, 0 if relative (or empty)</span>
+0148 <span class="comment">%=======================================================================</span>
+0149 <span class="keyword">if</span> nargin &lt; 2
+0150   error(<span class="string">'Need path to test'</span>);
+0151 <span class="keyword">end</span>
+0152 pn = varargin{2};
+0153 <span class="keyword">switch</span> (spm_platform(<span class="string">'filesys'</span>))
+0154  <span class="keyword">case</span> <span class="string">'unx'</span>
+0155   <span class="keyword">if</span> (~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(pn) &amp;&amp; pn(1)==<span class="string">'/'</span>), absf=1; <span class="keyword">else</span>, absf=0; <span class="keyword">end</span>
+0156  <span class="keyword">case</span> <span class="string">'win'</span>
+0157   <span class="keyword">if</span> (length(pn)&gt;1 &amp;&amp; pn(2)==<span class="string">':'</span>), absf=1; <span class="keyword">else</span>, absf=0; <span class="keyword">end</span>
+0158  <span class="keyword">otherwise</span>
+0159   error(<span class="string">'isabspath not coded for this filesystem'</span>);
+0160 <span class="keyword">end</span>
+0161 varargout = {absf};
+0162 
+0163 <span class="comment">%=======================================================================</span>
+0164 <span class="keyword">case</span> <span class="string">'graphic_text'</span>                 <span class="comment">% Displays text in SPM figure window</span>
+0165 <span class="comment">%=======================================================================</span>
+0166 <span class="keyword">if</span> nargin &lt; 2, error(<span class="string">'Need text to show'</span>); <span class="keyword">else</span> S = varargin{2}; <span class="keyword">end</span>
+0167 <span class="keyword">if</span> ischar(S), S = cellstr(S); <span class="keyword">end</span>
+0168 <span class="keyword">if</span> nargin &lt; 3, TTitle = <span class="string">''</span>; <span class="keyword">else</span> TTitle = varargin{3}; <span class="keyword">end</span>
+0169 <span class="keyword">if</span> nargin &lt; 4, F = []; <span class="keyword">else</span>, F=varargin{4}; <span class="keyword">end</span>
+0170 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F), F=<span class="string">'Graphics'</span>; <span class="keyword">end</span>
+0171 <span class="keyword">if</span> ischar(F), F = spm_figure(<span class="string">'GetWin'</span>, F); <span class="keyword">end</span>
+0172 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(F), F = spm_figure(<span class="string">'GetWin'</span>, <span class="string">'Graphics'</span>); <span class="keyword">end</span>
+0173 
+0174 FS = spm(<span class="string">'FontSizes'</span>);
+0175 PF = spm_platform(<span class="string">'fonts'</span>);
+0176 
+0177 spm_figure(<span class="string">'clear'</span>, F);
+0178 figure(F);
+0179 hAxes = axes(<span class="string">'Position'</span>,[0.028,0.05,0.85,0.85],<span class="keyword">...</span>
+0180         <span class="string">'DefaultTextInterpreter'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0181         <span class="string">'Units'</span>,<span class="string">'Points'</span>,<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0182 AxPos = get(hAxes,<span class="string">'Position'</span>); set(hAxes,<span class="string">'YLim'</span>,[0,AxPos(4)])
+0183 
+0184 dy = FS(10)*1.2; y0 = floor(AxPos(4)) -dy; y  = y0;
+0185 
+0186 text(-0.03,y0,TTitle,<span class="string">'FontSize'</span>,FS(14),<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0187 y     = y0 - FS(14);
+0188 
+0189 <span class="comment">%-Loop over lines of text</span>
+0190 <span class="comment">%------------------------</span>
+0191 <span class="keyword">for</span> i = 1:prod(size(S))
+0192   d = S{i};
+0193   
+0194   <span class="comment">%-For some reason, '|' characters cause a CR.</span>
+0195   d = strrep(d,<span class="string">'|'</span>,<span class="string">'I'</span>);
+0196   h = text(0,y,d,<span class="string">'FontName'</span>,PF.courier,<span class="string">'FontSize'</span>,FS(10));
+0197   y = y - dy;
+0198 <span class="keyword">end</span>
+0199  
+0200 <span class="comment">%=======================================================================</span>
+0201 <span class="keyword">case</span> <span class="string">'spm_version'</span>                   <span class="comment">% Robust get for SPM version string</span>
+0202 <span class="comment">%=======================================================================</span>
+0203 <span class="comment">% The problem we are trying to solve here is how to take account of the</span>
+0204 <span class="comment">% unusual situation of the spm.m file _not_ being in the same directory</span>
+0205 <span class="comment">% as the Contents.m file.  SPM8 raises an error, SPM5 and probably</span>
+0206 <span class="comment">% previous just returns 'SPM'.  We raise an error always.</span>
+0207 
+0208 <span class="keyword">try</span>
+0209     ver = spm(<span class="string">'ver'</span>);
+0210 <span class="keyword">catch</span>
+0211     err = lasterr;
+0212     <span class="keyword">if</span> strcmp(<span class="string">'Undefined'</span>, err(1:length(<span class="string">'Undefined'</span>)))
+0213         error(<span class="string">'Marsbar needs SPM on the matlab path'</span>)
+0214     <span class="keyword">end</span>
+0215     error(lasterr)
+0216 <span class="keyword">end</span>
+0217 <span class="comment">% If version find failed, for SPM5, routine returns 'SPM'</span>
+0218 str = [<span class="string">'Can''t obtain SPM Revision information. Is spm.m in the same'</span> <span class="keyword">...</span>
+0219        <span class="string">' directory as Contents.m?'</span>];
+0220 <span class="keyword">if</span> strcmp(ver, <span class="string">'SPM'</span>)
+0221     error(str)
+0222 <span class="keyword">end</span>
+0223 varargout = {ver};
+0224 
+0225 <span class="comment">%=======================================================================</span>
+0226 <span class="keyword">case</span> <span class="string">'is_swapped_wrong'</span>    <span class="comment">% Returns 1 for if vol is incorrectly swapped</span>
+0227 <span class="comment">%=======================================================================</span>
+0228 warning(<span class="keyword">...</span>
+0229     sprintf([<span class="string">'mars_utils version of ''is_swapped_wrong'' deprecated\n'</span>,<span class="keyword">...</span>
+0230          <span class="string">'Please use same function in mars_vol_utils'</span>]));
+0231 varargout = {<a href="mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(varargin{:})};
+0232 
+0233 <span class="comment">%=======================================================================</span>
+0234 <span class="keyword">case</span> <span class="string">'version_less_than'</span> <span class="comment">% Returns 1 for if first version less than last</span>
+0235 <span class="comment">%=======================================================================</span>
+0236 
+0237 <span class="keyword">if</span> nargin &lt; 3
+0238   error(<span class="string">'Need two version strings to compare'</span>);
+0239 <span class="keyword">end</span>
+0240 varargout{1} = <a href="#_sub1" class="code" title="subfunction tf = sf_ver_lt(v1, v2)">sf_ver_lt</a>(varargin{2:3});
+0241 
+0242 <span class="keyword">otherwise</span>
+0243   error([Action <span class="string">' is too strange'</span>]);
+0244 <span class="keyword">end</span>
+0245 <span class="keyword">return</span>
+0246 
+0247 <span class="comment">% Subfunctions</span>
+0248 
+0249 <a name="_sub1" href="#_subfunctions" class="code">function tf = sf_ver_lt(v1, v2)</a>
+0250 <span class="comment">% Returns 1 if version string v1 is lower than v2</span>
+0251 vs = {v1, v2};
+0252 <span class="keyword">for</span> v = 1:2
+0253   ns = vs{v};
+0254   <span class="keyword">if</span> ~ischar(ns), ns = num2str(ns); <span class="keyword">end</span>
+0255   ns = <a href="#_sub2" class="code" title="subfunction ns = sf_str_to_nums(str)">sf_str_to_nums</a>(ns); 
+0256   cmp_mat(v, 1:length(ns)) = ns;
+0257 <span class="keyword">end</span>
+0258 dp = diff(cmp_mat) * -1;
+0259 <span class="keyword">for</span> i = 1:length(dp)
+0260   <span class="keyword">if</span> dp(i)&lt;0, tf = 1; <span class="keyword">return</span>, <span class="keyword">end</span>
+0261   <span class="keyword">if</span> dp(i)&gt;0, tf = 0; <span class="keyword">return</span>, <span class="keyword">end</span> 
+0262 <span class="keyword">end</span>
+0263 tf = 0;
+0264 <span class="keyword">return</span>
+0265 
+0266 <a name="_sub2" href="#_subfunctions" class="code">function ns = sf_str_to_nums(str)</a>
+0267 str = str(ismember(str, <span class="string">'0123456789.'</span>));
+0268 str = [<span class="string">'.'</span> str <span class="string">'.'</span>];
+0269 ps = find(str == <span class="string">'.'</span>);
+0270 ns = [];
+0271 <span class="keyword">for</span> p = 2:length(ps)
+0272   s = str(ps(p-1)+1:ps(p)-1);
+0273   ns = [ns str2num(s)];
+0274 <span class="keyword">end</span>
+0275 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

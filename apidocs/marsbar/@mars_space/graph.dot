@@ -1,0 +1,9 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+
+  display [URL="display.html"];
+  eq [URL="eq.html"];
+  mars_space [URL="mars_space.html"];
+  subsasgn [URL="subsasgn.html"];
+  subsref [URL="subsref.html"];
+}

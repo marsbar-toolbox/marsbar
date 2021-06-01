@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of convert_vols</title>
+  <meta name="keywords" content="convert_vols">
+  <meta name="description" content="method that converts vol structs in design and converts to format 'ver'">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; convert_vols.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>convert_vols
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method that converts vol structs in design and converts to format 'ver'</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = convert_vols(o, ver) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method that converts vol structs in design and converts to format 'ver'
+ FORMAT o = convert_fo(o, ver)
+ 
+ Input
+ o        - design object
+ ver      - optional version for vols from '99' or '5'
+            Defaults to version for current SPM version
+
+ Output
+ o        - object with converted vols
+ 
+ Example
+ % Convert vols to current format
+ o = convert_vols(o);
+ 
+ % Convert to native format for SPM99 designs
+ o = convert_vols(o, native_vol_ver(o));
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct as variables in .mat file</li>
+<li><a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../../marsbar/@mardo_2/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct into .mat file with variable name SPM</li>
+<li><a href="../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+<li><a href="save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function S = sf_conv(S, ver, varargin)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = convert_vols(o, ver)</a>
+0002 <span class="comment">% method that converts vol structs in design and converts to format 'ver'</span>
+0003 <span class="comment">% FORMAT o = convert_fo(o, ver)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% o        - design object</span>
+0007 <span class="comment">% ver      - optional version for vols from '99' or '5'</span>
+0008 <span class="comment">%            Defaults to version for current SPM version</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Output</span>
+0011 <span class="comment">% o        - object with converted vols</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Example</span>
+0014 <span class="comment">% % Convert vols to current format</span>
+0015 <span class="comment">% o = convert_vols(o);</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% % Convert to native format for SPM99 designs</span>
+0018 <span class="comment">% o = convert_vols(o, native_vol_ver(o));</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021 
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023   ver = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'current_ver'</span>);
+0024 <span class="keyword">end</span>
+0025 
+0026 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(o);
+0027 SPM = <a href="#_sub1" class="code" title="subfunction S = sf_conv(S, ver, varargin)">sf_conv</a>(SPM, ver, <span class="string">'VY'</span>);
+0028 SPM = <a href="#_sub1" class="code" title="subfunction S = sf_conv(S, ver, varargin)">sf_conv</a>(SPM, ver, <span class="string">'xM'</span>, <span class="string">'VM'</span>);
+0029 o = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(o, SPM);
+0030 
+0031 <span class="keyword">return</span>
+0032 
+0033 <a name="_sub1" href="#_subfunctions" class="code">function S = sf_conv(S, ver, varargin)</a>
+0034 V = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, S, varargin{:});
+0035 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(V)
+0036   V = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'convert'</span>, V, ver);
+0037   S = setfield(S, varargin{:}, V);
+0038 <span class="keyword">end</span>
+0039 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

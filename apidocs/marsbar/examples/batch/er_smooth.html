@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of er_smooth</title>
+  <meta name="keywords" content="er_smooth">
+  <meta name="description" content="smooth images prior to analysis">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; er_smooth.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>er_smooth
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>smooth images prior to analysis</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function er_smooth(subjroot, sesses, filt, fwhm) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> smooth images prior to analysis
+
+ Inputs
+ subjroot     - root directory containing session directories
+ sesses       - cell array containing session subdirectories
+ filt         - shell exp filter for selecting files
+ fwhm         - FWHM in mm for smoothing
+
+ $Id: er_smooth.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/fwhm.html" class="code" title="function f = fwhm(o)">fwhm</a>	method returns FWHM, or empty if not available</li>
+<li><a href="../../../marsbar/@mardo_99/fwhm.html" class="code" title="function f = fwhm(o)">fwhm</a>	method returns FWHM, or empty if not available</li>
+<li><a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="run_preprocess.html" class="code" title="">run_preprocess</a>	Run smoothing and SPM analysis for MarsBaR ER sample data</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function er_smooth(subjroot, sesses, filt, fwhm)</a>
+0002 <span class="comment">% smooth images prior to analysis</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">% subjroot     - root directory containing session directories</span>
+0006 <span class="comment">% sesses       - cell array containing session subdirectories</span>
+0007 <span class="comment">% filt         - shell exp filter for selecting files</span>
+0008 <span class="comment">% fwhm         - FWHM in mm for smoothing</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $Id: er_smooth.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $</span>
+0011 
+0012 nsesses = length(sesses);
+0013 
+0014 imgs = <span class="string">''</span>;
+0015 <span class="keyword">for</span> s = 1:nsesses
+0016   dirn = fullfile(subjroot,sesses{s});
+0017   <span class="comment">% get files in this directory</span>
+0018   imgs = strvcat(imgs, <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'files'</span>, dirn, filt));
+0019 <span class="keyword">end</span>
+0020 
+0021 <span class="comment">% and this is just spm_smooth_ui pasted/edited</span>
+0022 P     = imgs;
+0023 n     = size(P,1);
+0024 
+0025 <span class="comment">% implement the convolution</span>
+0026 <span class="comment">%---------------------------------------------------------------------------</span>
+0027 <span class="keyword">for</span> i = 1:n
+0028   Q = deblank(P(i,:));
+0029   [pth,nm,xt] = fileparts(deblank(Q));
+0030   U = fullfile(pth,[<span class="string">'s'</span> nm xt]);
+0031   spm_smooth(Q,U,<a href="../../../marsbar/@mardo_2/fwhm.html" class="code" title="function f = fwhm(o)">fwhm</a>);
+0032 <span class="keyword">end</span>
+0033 
+0034 
+0035 
+0036 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

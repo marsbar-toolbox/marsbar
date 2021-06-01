@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of verbose</title>
+  <meta name="keywords" content="verbose">
+  <meta name="description" content="get/set method for verbose field">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; verbose.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>verbose
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>get/set method for verbose field</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function res = verbose(obj, data) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> get/set method for verbose field
+
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>	method to get or set data object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>	method to add contrast definitions to design</li>
+<li><a href="../../marsbar/@mardo/cd_images.html" class="code" title="function D = cd_images(D, newpath, byteswap)">cd_images</a>	method for changing path to image files in design</li>
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_2/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../../marsbar/@mardo_5/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets (estimated) onsets and durations for event/session</li>
+<li><a href="../../marsbar/@mardo_99/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_99/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function res = verbose(obj, data)</a>
+0002 <span class="comment">% get/set method for verbose field</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 <span class="keyword">if</span> nargin &gt; 1
+0007   obj.verbose = <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0008   res = obj;
+0009 <span class="keyword">else</span>
+0010   res = obj.verbose;
+0011 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

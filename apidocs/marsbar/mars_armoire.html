@@ -1,0 +1,638 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_armoire</title>
+  <meta name="keywords" content="mars_armoire">
+  <meta name="description" content="multifunction function to get/set various stores of stuff">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_armoire.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_armoire
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>multifunction function to get/set various stores of stuff</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = mars_armoire(action, item, data, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> multifunction function to get/set various stores of stuff
+ (armoire is the French for cupboard).
+ FORMAT varargout = mars_armoire(action, item, data, filename)
+  
+ This cupboard is to put items which I will want to fish out 
+ from time to time.
+ 
+ The items may well be associated with a filename
+ If they are associated with a filename when set, they 
+ are assumed to have been saved already.
+ If not, they are flagged as awaiting a save
+
+ If the data changes, you can indicate this with the 
+ update method, which changes the data, and flags for a save
+ 
+ In terms of the program structure, the function acts an object container,
+ but where the objects are only half implemented, in this case as fields in
+ a global variable MARMOIRE. 
+
+ The permissable actions are:
+
+ add            - add an item to the armoire
+ exist          - ask if there an exists an item of given name
+ add_if_absent  - adds item if it does not yet exist
+ set            - sets data for item 
+ get            - gets data from item
+ set_ui         - sets data, getting via UI
+ save           - save data for item, if required
+ save_ui        - saves, using GUI to ask for filename
+                  For save and save_ui, the 'data' argument
+                  can contain a structure with flags.  
+                  Fields in flag structure can be
+                  'force' - force save even if not flagged as needed
+                  'warn_empty' - GUI warn if no data to save
+                  'ync' - start save with save y/n/cancel dialog
+                  'prompt' - prompt for save; 
+                  'prompt_suffix - suffix for prompt
+                  'prompt_prefix - prefix for prompt
+                  'ui' - use UI prompts for save - forced if save_ui
+                  'no_no_save' - if 'no' is chosen in the save dialog,
+                     contents are flagged as not needing a save in
+                     the future (has_changed flag set to 0)  
+ save 'all'     - saves data for all items, if required
+ update         - updates data, sets flag to show change
+ clear          - clears data for item
+ isempty        - returns 1 if no data for item
+ need_save      - returns 1 if this item needs a save
+
+ And for use in debugging:
+ dump           - returns contents of the underling variable
+   
+ for any other action string, mars_armoire will look to see if the action
+ matches any of the field names in the structures and get/set this
+ fieldname value (set if data is not empty, get otherwise)
+                 
+ Each item is stored in a field in the global variable
+
+ The name of the field is the 'item' argument to this function
+ Each item field requires the following fields
+                 
+ data            - the data 
+                   (or a filename which loads as the data - see the
+                   char_is_filename field)
+ has_changed     - flag, if set, means data has changed since first set
+ save_if_changed - flag, if set, will try to save changed data when a
+                   save is requested.  Saves can also be forced.
+ leave_as_file   - flag, if set, will attempt to leave the data, defined
+                   by the filename, on the disk, not in memory, and only
+                   load the data for a 'get'.  
+                   Otherwise, if a set occurs, and the data field is
+                   empty, will load data into the global variable when
+                   'set'ing field and leave it there.
+                   If the data changes, and requires a save, this field
+                   has no function, until the next save.
+ file_name       - file name of .mat file containing data
+                   If data is empty, and file_name is not, 
+                   an attempt to 'get' data will load contents of
+                   file_name
+ default_file_name - default filename offered for save 
+ file_type       - type of file to load ('mat' or 'ascii')
+ char_is_filename - flag, if set, char data is assumed to be a filename
+ filter_spec     - filter spec for uigetfile (see help uigetfile)
+ prompt          - prompt for uigetfile
+ verbose         - flag, if set, displays more information during
+                   processing
+ set_action      - actions to perform when item is set
+                   in form of callback string.  This is executed
+                   in the 'i_set' subfunction, and can use all
+                   variables functions defined therein.  See programmers
+                   notes in the function for callback format
+ set_action_if_update - flag, if set, applied set_action for 'update' as
+                   well as 'set'
+ set_action_if_clear - flag, if set, applied set_action for 'clear' as
+                   well as 'set'
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>	method to get or set data object</li>
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@mardo/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct as variables in .mat file</li>
+<li><a href="../marsbar/@mardo_2/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct into .mat file with variable name SPM</li>
+<li><a href="../marsbar/@marsy/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in y_struct as variables in .mat file</li>
+<li><a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>	multifunction function to get/set various stores of stuff</li>
+<li><a href="mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>	wrapper for matlab uiputfile/getfile; to resolve version differences</li>
+<li><a href="savestruct.html" class="code" title="function savestruct(varargin)">savestruct</a>	saves data in structure as variables in .mat file</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>	multifunction function to get/set various stores of stuff</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function I = i_def</a></li>
+<li><a href="#_sub2" class="code">function res = i_isempty(I)</a></li>
+<li><a href="#_sub3" class="code">function res = i_set_ui(I)</a></li>
+<li><a href="#_sub4" class="code">function res = i_set(I, data, filename)</a></li>
+<li><a href="#_sub5" class="code">function res = i_get(I)</a></li>
+<li><a href="#_sub6" class="code">function res = i_save_ui(I, flags, filename)</a></li>
+<li><a href="#_sub7" class="code">function res = i_save(I, flags, filename)</a></li>
+<li><a href="#_sub8" class="code">function res = i_need_save(I)</a></li>
+<li><a href="#_sub9" class="code">function res = is_nix(v)</a></li>
+<li><a href="#_sub10" class="code">function res = is_nan(v)</a></li>
+<li><a href="#_sub11" class="code">function items = i_item_list</a></li>
+<li><a href="#_sub12" class="code">function I = i_up_dump(i_name)</a></li>
+<li><a href="#_sub13" class="code">function I = i_dump</a></li>
+<li><a href="#_sub14" class="code">function I = i_down_dump(I)</a></li>
+<li><a href="#_sub15" class="code">function fns = g_fieldnames</a></li>
+<li><a href="#_sub16" class="code">function r = g_getfield(fn)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = mars_armoire(action, item, data, filename)</a>
+0002 <span class="comment">% multifunction function to get/set various stores of stuff</span>
+0003 <span class="comment">% (armoire is the French for cupboard).</span>
+0004 <span class="comment">% FORMAT varargout = mars_armoire(action, item, data, filename)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% This cupboard is to put items which I will want to fish out</span>
+0007 <span class="comment">% from time to time.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% The items may well be associated with a filename</span>
+0010 <span class="comment">% If they are associated with a filename when set, they</span>
+0011 <span class="comment">% are assumed to have been saved already.</span>
+0012 <span class="comment">% If not, they are flagged as awaiting a save</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% If the data changes, you can indicate this with the</span>
+0015 <span class="comment">% update method, which changes the data, and flags for a save</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% In terms of the program structure, the function acts an object container,</span>
+0018 <span class="comment">% but where the objects are only half implemented, in this case as fields in</span>
+0019 <span class="comment">% a global variable MARMOIRE.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% The permissable actions are:</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% add            - add an item to the armoire</span>
+0024 <span class="comment">% exist          - ask if there an exists an item of given name</span>
+0025 <span class="comment">% add_if_absent  - adds item if it does not yet exist</span>
+0026 <span class="comment">% set            - sets data for item</span>
+0027 <span class="comment">% get            - gets data from item</span>
+0028 <span class="comment">% set_ui         - sets data, getting via UI</span>
+0029 <span class="comment">% save           - save data for item, if required</span>
+0030 <span class="comment">% save_ui        - saves, using GUI to ask for filename</span>
+0031 <span class="comment">%                  For save and save_ui, the 'data' argument</span>
+0032 <span class="comment">%                  can contain a structure with flags.</span>
+0033 <span class="comment">%                  Fields in flag structure can be</span>
+0034 <span class="comment">%                  'force' - force save even if not flagged as needed</span>
+0035 <span class="comment">%                  'warn_empty' - GUI warn if no data to save</span>
+0036 <span class="comment">%                  'ync' - start save with save y/n/cancel dialog</span>
+0037 <span class="comment">%                  'prompt' - prompt for save;</span>
+0038 <span class="comment">%                  'prompt_suffix - suffix for prompt</span>
+0039 <span class="comment">%                  'prompt_prefix - prefix for prompt</span>
+0040 <span class="comment">%                  'ui' - use UI prompts for save - forced if save_ui</span>
+0041 <span class="comment">%                  'no_no_save' - if 'no' is chosen in the save dialog,</span>
+0042 <span class="comment">%                     contents are flagged as not needing a save in</span>
+0043 <span class="comment">%                     the future (has_changed flag set to 0)</span>
+0044 <span class="comment">% save 'all'     - saves data for all items, if required</span>
+0045 <span class="comment">% update         - updates data, sets flag to show change</span>
+0046 <span class="comment">% clear          - clears data for item</span>
+0047 <span class="comment">% isempty        - returns 1 if no data for item</span>
+0048 <span class="comment">% need_save      - returns 1 if this item needs a save</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% And for use in debugging:</span>
+0051 <span class="comment">% dump           - returns contents of the underling variable</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% for any other action string, mars_armoire will look to see if the action</span>
+0054 <span class="comment">% matches any of the field names in the structures and get/set this</span>
+0055 <span class="comment">% fieldname value (set if data is not empty, get otherwise)</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">% Each item is stored in a field in the global variable</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% The name of the field is the 'item' argument to this function</span>
+0060 <span class="comment">% Each item field requires the following fields</span>
+0061 <span class="comment">%</span>
+0062 <span class="comment">% data            - the data</span>
+0063 <span class="comment">%                   (or a filename which loads as the data - see the</span>
+0064 <span class="comment">%                   char_is_filename field)</span>
+0065 <span class="comment">% has_changed     - flag, if set, means data has changed since first set</span>
+0066 <span class="comment">% save_if_changed - flag, if set, will try to save changed data when a</span>
+0067 <span class="comment">%                   save is requested.  Saves can also be forced.</span>
+0068 <span class="comment">% leave_as_file   - flag, if set, will attempt to leave the data, defined</span>
+0069 <span class="comment">%                   by the filename, on the disk, not in memory, and only</span>
+0070 <span class="comment">%                   load the data for a 'get'.</span>
+0071 <span class="comment">%                   Otherwise, if a set occurs, and the data field is</span>
+0072 <span class="comment">%                   empty, will load data into the global variable when</span>
+0073 <span class="comment">%                   'set'ing field and leave it there.</span>
+0074 <span class="comment">%                   If the data changes, and requires a save, this field</span>
+0075 <span class="comment">%                   has no function, until the next save.</span>
+0076 <span class="comment">% file_name       - file name of .mat file containing data</span>
+0077 <span class="comment">%                   If data is empty, and file_name is not,</span>
+0078 <span class="comment">%                   an attempt to 'get' data will load contents of</span>
+0079 <span class="comment">%                   file_name</span>
+0080 <span class="comment">% default_file_name - default filename offered for save</span>
+0081 <span class="comment">% file_type       - type of file to load ('mat' or 'ascii')</span>
+0082 <span class="comment">% char_is_filename - flag, if set, char data is assumed to be a filename</span>
+0083 <span class="comment">% filter_spec     - filter spec for uigetfile (see help uigetfile)</span>
+0084 <span class="comment">% prompt          - prompt for uigetfile</span>
+0085 <span class="comment">% verbose         - flag, if set, displays more information during</span>
+0086 <span class="comment">%                   processing</span>
+0087 <span class="comment">% set_action      - actions to perform when item is set</span>
+0088 <span class="comment">%                   in form of callback string.  This is executed</span>
+0089 <span class="comment">%                   in the 'i_set' subfunction, and can use all</span>
+0090 <span class="comment">%                   variables functions defined therein.  See programmers</span>
+0091 <span class="comment">%                   notes in the function for callback format</span>
+0092 <span class="comment">% set_action_if_update - flag, if set, applied set_action for 'update' as</span>
+0093 <span class="comment">%                   well as 'set'</span>
+0094 <span class="comment">% set_action_if_clear - flag, if set, applied set_action for 'clear' as</span>
+0095 <span class="comment">%                   well as 'set'</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">% $Id$</span>
+0098   
+0099 <span class="comment">% Programmers' notes</span>
+0100 <span class="comment">% ------------------</span>
+0101 <span class="comment">% set_action callbacks</span>
+0102 <span class="comment">% callbacks should be one of the following two formats;</span>
+0103 <span class="comment">%</span>
+0104 <span class="comment">% [data errf msg] = my_function(args)  or</span>
+0105 <span class="comment">% [item_field errf msg] = my_function(args)</span>
+0106 <span class="comment">%</span>
+0107 <span class="comment">% The first form just returns the data desired to be set,</span>
+0108 <span class="comment">% the second returns the whole item field, where the data</span>
+0109 <span class="comment">% is contained in the field 'data'.</span>
+0110 <span class="comment">% if 'errf' is set, the routine warns, and abort the set with</span>
+0111 <span class="comment">% the 'msg'.</span>
+0112 <span class="comment">%</span>
+0113 <span class="comment">% The available args are:</span>
+0114 <span class="comment">% I      - proposed whole item field contents</span>
+0115 <span class="comment">% data   - proposed data to be inserted</span>
+0116 <span class="comment">% passed_filename - filename passed to function</span>
+0117 <span class="comment">%</span>
+0118 <span class="comment">% and anything else...</span>
+0119   
+0120 <span class="comment">% NaN for an argument signals it has not been passed</span>
+0121 <span class="comment">% empty means that it was passed, but was empty</span>
+0122 <span class="keyword">if</span> nargin &lt; 1 <span class="comment">% no action</span>
+0123   error(<span class="string">'Need action!'</span>);
+0124   <span class="keyword">return</span>
+0125 <span class="keyword">end</span>
+0126 <span class="keyword">if</span> ~ismember(action, {<span class="string">'dump'</span>})
+0127   <span class="keyword">if</span> nargin &lt; 2  <span class="comment">% no item</span>
+0128     error(<span class="string">'Need item!'</span>);
+0129     <span class="keyword">return</span>
+0130   <span class="keyword">end</span>
+0131 <span class="keyword">end</span>
+0132 <span class="keyword">if</span> nargin &lt; 3
+0133   <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = NaN;
+0134 <span class="keyword">end</span>
+0135 <span class="keyword">if</span> nargin &lt; 4
+0136   filename = NaN;
+0137 <span class="keyword">end</span>
+0138 
+0139 <span class="comment">% certain actions do not require valid item names</span>
+0140 <span class="keyword">if</span> ~ismember(action, <span class="keyword">...</span>
+0141          {<span class="string">'add'</span>, <span class="string">'add_if_absent'</span>, <span class="string">'exist'</span>, <span class="string">'dump'</span>, <span class="string">'save_all'</span>})
+0142   <span class="comment">% the rest do</span>
+0143   flist = <a href="#_sub11" class="code" title="subfunction items = i_item_list">i_item_list</a>;
+0144   <span class="keyword">switch</span> item
+0145    <span class="keyword">case</span> <span class="string">'all'</span>
+0146     <span class="comment">% If item is 'all', do this action for all items</span>
+0147     <span class="comment">% Watch for save_ui, as we need to look out for cancel</span>
+0148     s_u_f = strcmp(lower(action), <span class="string">'save_ui'</span>);
+0149     a = {};
+0150     <span class="keyword">for</span> fn = flist'
+0151       a{end+1} = <a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>(action, fn{1}, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename);
+0152       <span class="keyword">if</span> s_u_f &amp; (a{end} == -1), varargout = {-1}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0153     <span class="keyword">end</span>
+0154     varargout = a;
+0155     <span class="keyword">return</span>
+0156    <span class="keyword">otherwise</span>
+0157     <span class="comment">% item must be a field name in structure</span>
+0158     <span class="comment">% fetch and set name field</span>
+0159     <span class="keyword">if</span> ~ismember(item, flist)
+0160       error([item <span class="string">' is an unaccountable item'</span>]);
+0161     <span class="keyword">end</span>
+0162     i_contents = <a href="#_sub12" class="code" title="subfunction I = i_up_dump(i_name)">i_up_dump</a>(item);
+0163     i_contents.name = item;
+0164     i_contents.last_action = action;
+0165   <span class="keyword">end</span>
+0166 <span class="keyword">end</span>
+0167 
+0168 <span class="comment">% run actions</span>
+0169 <span class="keyword">switch</span> lower(action)
+0170  <span class="keyword">case</span> <span class="string">'add'</span>
+0171   data.name = item;
+0172   I = <a href="#_sub1" class="code" title="subfunction I = i_def">i_def</a>;
+0173   def_fns = fieldnames(I);
+0174   new_fns = def_fns(~ismember(def_fns, fieldnames(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>)));
+0175   <span class="keyword">for</span> fn = new_fns'
+0176     <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = setfield(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, fn{1}, getfield(I, fn{1}));
+0177   <span class="keyword">end</span>
+0178   <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>);
+0179  <span class="keyword">case</span> <span class="string">'add_if_absent'</span>
+0180   <span class="keyword">if</span> ~<a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>(<span class="string">'exist'</span>, item)
+0181     <a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>(<span class="string">'add'</span>, item, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>); 
+0182   <span class="keyword">end</span>
+0183  <span class="keyword">case</span> <span class="string">'exist'</span>
+0184   varargout = {ismember(item, <a href="#_sub11" class="code" title="subfunction items = i_item_list">i_item_list</a>)};
+0185  <span class="keyword">case</span> <span class="string">'default_item'</span>
+0186   varargout = {<a href="#_sub1" class="code" title="subfunction I = i_def">i_def</a>};
+0187  <span class="keyword">case</span> <span class="string">'set'</span>
+0188   <span class="keyword">if</span> <a href="#_sub10" class="code" title="subfunction res = is_nan(v)">is_nan</a>(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>) &amp; <a href="#_sub10" class="code" title="subfunction res = is_nan(v)">is_nan</a>(filename)
+0189     varargout = {<a href="#_sub3" class="code" title="subfunction res = i_set_ui(I)">i_set_ui</a>(i_contents)};
+0190   <span class="keyword">else</span>
+0191     varargout = {<a href="#_sub4" class="code" title="subfunction res = i_set(I, data, filename)">i_set</a>(i_contents, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename)};
+0192   <span class="keyword">end</span>
+0193  <span class="keyword">case</span> <span class="string">'get'</span>
+0194   <span class="keyword">if</span> <a href="#_sub2" class="code" title="subfunction res = i_isempty(I)">i_isempty</a>(i_contents)
+0195     varargout = {<a href="#_sub3" class="code" title="subfunction res = i_set_ui(I)">i_set_ui</a>(i_contents)};
+0196   <span class="keyword">else</span>
+0197     varargout = {<a href="#_sub5" class="code" title="subfunction res = i_get(I)">i_get</a>(i_contents)};
+0198   <span class="keyword">end</span>
+0199  <span class="keyword">case</span> <span class="string">'set_ui'</span>
+0200   varargout = {<a href="#_sub3" class="code" title="subfunction res = i_set_ui(I)">i_set_ui</a>(i_contents)};
+0201  <span class="keyword">case</span> <span class="string">'update'</span>
+0202   varargout = {<a href="#_sub4" class="code" title="subfunction res = i_set(I, data, filename)">i_set</a>(i_contents, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename)};
+0203   i_contents = <a href="#_sub12" class="code" title="subfunction I = i_up_dump(i_name)">i_up_dump</a>(item);
+0204   i_contents.has_changed = 1;
+0205   <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(i_contents);
+0206  <span class="keyword">case</span> <span class="string">'clear'</span>
+0207   varargout = {<a href="#_sub4" class="code" title="subfunction res = i_set(I, data, filename)">i_set</a>(i_contents, [], <span class="string">''</span>)}; 
+0208  <span class="keyword">case</span> <span class="string">'save'</span>
+0209   <span class="keyword">if</span> <a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(filename) &amp; <span class="keyword">...</span>
+0210     <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(i_contents.file_name)
+0211     varargout = {<a href="#_sub6" class="code" title="subfunction res = i_save_ui(I, flags, filename)">i_save_ui</a>(i_contents, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename)};
+0212   <span class="keyword">else</span>
+0213     varargout = {<a href="#_sub7" class="code" title="subfunction res = i_save(I, flags, filename)">i_save</a>(i_contents, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename)};
+0214   <span class="keyword">end</span>
+0215  <span class="keyword">case</span> <span class="string">'save_ui'</span>
+0216   <span class="comment">% data is used as flags for save call</span>
+0217   <span class="keyword">if</span> ~isstruct(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>), <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = []; <span class="keyword">end</span>
+0218   data.ui = 1;
+0219   varargout = {<a href="#_sub6" class="code" title="subfunction res = i_save_ui(I, flags, filename)">i_save_ui</a>(i_contents, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>, filename)};
+0220  <span class="keyword">case</span> <span class="string">'need_save'</span>
+0221   varargout = {<a href="#_sub8" class="code" title="subfunction res = i_need_save(I)">i_need_save</a>(i_contents)};
+0222  <span class="keyword">case</span> <span class="string">'isempty'</span>
+0223   varargout = {<a href="#_sub2" class="code" title="subfunction res = i_isempty(I)">i_isempty</a>(i_contents)};
+0224  <span class="keyword">case</span> <span class="string">'dump'</span>
+0225   varargout = {<a href="#_sub13" class="code" title="subfunction I = i_dump">i_dump</a>};
+0226  <span class="keyword">otherwise</span>
+0227   <span class="comment">% look in fieldnames</span>
+0228   <span class="keyword">if</span> ismember(action, fieldnames(i_contents))
+0229     <span class="keyword">if</span> ~<a href="#_sub10" class="code" title="subfunction res = is_nan(v)">is_nan</a>(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>) <span class="comment">% it's a set</span>
+0230       i_contents = setfield(i_contents, action, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>);
+0231       <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(i_contents);
+0232     <span class="keyword">end</span>
+0233     varargout = {getfield(i_contents, action)};
+0234   <span class="keyword">else</span> <span class="comment">% really, this must be a mistake</span>
+0235     error([<span class="string">'The suggested action, '</span> action <span class="string">', is disturbing'</span>]);
+0236   <span class="keyword">end</span>
+0237 <span class="keyword">end</span>
+0238 <span class="keyword">return</span> <span class="comment">% end of main function</span>
+0239 
+0240 <a name="_sub1" href="#_subfunctions" class="code">function I = i_def</a>
+0241 <span class="comment">% returns default item</span>
+0242 I = struct(<span class="string">'data'</span>, [],<span class="keyword">...</span>
+0243        <span class="string">'file_name'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0244        <span class="string">'default_file_name'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0245        <span class="string">'has_changed'</span>, 0,<span class="keyword">...</span>
+0246        <span class="string">'leave_as_file'</span>, 0,<span class="keyword">...</span>
+0247        <span class="string">'save_if_changed'</span>, 1,<span class="keyword">...</span>
+0248        <span class="string">'file_type'</span>, <span class="string">'mat'</span>,<span class="keyword">...</span>
+0249        <span class="string">'char_is_filename'</span>,1,<span class="keyword">...</span>
+0250        <span class="string">'set_action_if_update'</span>, 0 ,<span class="keyword">...</span>
+0251        <span class="string">'set_action_if_clear'</span>, 0 ,<span class="keyword">...</span>
+0252        <span class="string">'verbose'</span>, 1,<span class="keyword">...</span>
+0253        <span class="string">'title'</span>, <span class="string">'file'</span>,<span class="keyword">...</span>
+0254        <span class="string">'filter_spec'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0255        <span class="string">'set_action'</span>, <span class="string">''</span>);
+0256 <span class="keyword">return</span>
+0257 
+0258 <a name="_sub2" href="#_subfunctions" class="code">function res = i_isempty(I)</a>
+0259 res = <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(I.data) &amp; <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(I.file_name);
+0260 <span class="keyword">return</span>
+0261 
+0262 <a name="_sub3" href="#_subfunctions" class="code">function res = i_set_ui(I)</a>
+0263 [fn pn] = <a href="mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>(<span class="string">'get'</span>, I.filter_spec, [<span class="string">'Select '</span> I.title <span class="string">'...'</span>]);
+0264 <span class="keyword">if</span> isequal(fn,0) | isequal(pn,0), res = []; <span class="keyword">return</span>, <span class="keyword">end</span>
+0265 res = <a href="#_sub4" class="code" title="subfunction res = i_set(I, data, filename)">i_set</a>(I, [], fullfile(pn, fn));
+0266 <span class="keyword">return</span>
+0267 
+0268 
+0269 <a name="_sub4" href="#_subfunctions" class="code">function res = i_set(I, data, filename)</a>
+0270 
+0271 <span class="comment">% Keep copy of passed filename for set_action call</span>
+0272 passed_filename = filename;
+0273   
+0274 <span class="comment">% optionally, treat char data as filename</span>
+0275 <span class="comment">% but passed filename overrides char data</span>
+0276 <span class="keyword">if</span> I.char_is_filename &amp; ischar(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>)
+0277   <span class="keyword">if</span> ~<a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(filename)
+0278     warning(sprintf(<span class="keyword">...</span>
+0279     <span class="string">'Passed filename %s overrides data filename %s\n'</span>,<span class="keyword">...</span>
+0280     filename, <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>));
+0281   <span class="keyword">else</span>
+0282     filename = <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0283   <span class="keyword">end</span>
+0284   <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = [];
+0285 <span class="keyword">end</span>
+0286 
+0287 <span class="keyword">if</span> <a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(filename) <span class="comment">% may need to save if no associated filename</span>
+0288   I.has_changed = 1;
+0289 <span class="keyword">else</span> <span class="comment">% don't need to save, but may need to load from file</span>
+0290   I.has_changed = 0;
+0291   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>)
+0292     <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = load(filename, [<span class="string">'-'</span> I.file_type]);
+0293   <span class="keyword">end</span>
+0294 <span class="keyword">end</span>
+0295 I.data = <a href="../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0296 
+0297 <span class="comment">% If no filename passed:</span>
+0298 <span class="comment">% if new set, filename is empty</span>
+0299 <span class="comment">% if an update, filename stays</span>
+0300 is_update = strcmp(I.last_action, <span class="string">'update'</span>);
+0301 <span class="keyword">if</span> <a href="#_sub10" class="code" title="subfunction res = is_nan(v)">is_nan</a>(filename)
+0302   <span class="keyword">if</span> ~is_update
+0303     filename = <span class="string">''</span>;
+0304   <span class="keyword">end</span>
+0305 <span class="keyword">end</span>  
+0306 I.file_name = filename;
+0307 
+0308 <span class="comment">% If this was a clear, don't flag for save</span>
+0309 <span class="keyword">if</span> <a href="#_sub2" class="code" title="subfunction res = i_isempty(I)">i_isempty</a>(I), I.has_changed = 0; <span class="keyword">end</span>
+0310 
+0311 <span class="comment">% and here is where we do the rules stuff</span>
+0312 is_clear = strcmp(I.last_action, <span class="string">'clear'</span>);
+0313 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(I.set_action) &amp; <span class="keyword">...</span>
+0314       (ismember(I.last_action, {<span class="string">'get'</span>,<span class="string">'set'</span>,<span class="string">'set_ui'</span>}) | <span class="keyword">...</span>
+0315        (is_update &amp; I.set_action_if_update) | <span class="keyword">...</span>
+0316        (is_clear &amp; I.set_action_if_clear))  
+0317   [tmp errf msg] = eval(I.set_action);
+0318   <span class="keyword">if</span> errf
+0319       res = [];
+0320     warning([<span class="string">'Data not set: '</span> msg]);
+0321     <span class="keyword">return</span>
+0322   <span class="keyword">end</span>
+0323   <span class="comment">% work out if whole thing as been returned, or only data</span>
+0324   <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(tmp, <span class="string">'set_action'</span>) <span class="comment">% whole thing</span>
+0325     I = tmp;
+0326   <span class="keyword">else</span> <span class="comment">% it's just the data</span>
+0327     I.data = tmp;
+0328   <span class="keyword">end</span>
+0329 <span class="keyword">end</span>
+0330 
+0331 <span class="comment">% return set data</span>
+0332 res = I.data;
+0333 
+0334 <span class="comment">% possibly remove data from structure</span>
+0335 <span class="keyword">if</span> ~I.has_changed &amp; I.leave_as_file
+0336   I.data = [];
+0337 <span class="keyword">end</span>
+0338 
+0339 <span class="comment">% do the actual save into global structure</span>
+0340 <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(I);
+0341 
+0342 <span class="keyword">return</span>
+0343 
+0344 <a name="_sub5" href="#_subfunctions" class="code">function res = i_get(I)</a>
+0345 res = I.data;
+0346 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(res) &amp; ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(I.file_name)
+0347   res = load(I.file_name, [<span class="string">'-'</span> I.file_type]);
+0348 <span class="keyword">end</span>
+0349 <span class="keyword">return</span>
+0350 
+0351 <a name="_sub6" href="#_subfunctions" class="code">function res = i_save_ui(I, flags, filename)</a>
+0352 <span class="keyword">if</span> ~isstruct(flags), flags = []; <span class="keyword">end</span>
+0353 <span class="keyword">if</span> <a href="#_sub2" class="code" title="subfunction res = i_isempty(I)">i_isempty</a>(I) &amp; <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'warn'</span>)                             
+0354   msgbox(<span class="string">'Nothing to save'</span>, [I.title <span class="string">' is not set'</span>], <span class="string">'warn'</span>);
+0355   res = 0;
+0356   <span class="keyword">return</span>
+0357 <span class="keyword">end</span>
+0358 flags.ui = 1;
+0359 res = <a href="#_sub7" class="code" title="subfunction res = i_save(I, flags, filename)">i_save</a>(I, flags, filename);
+0360 <span class="keyword">return</span>
+0361 
+0362 <a name="_sub7" href="#_subfunctions" class="code">function res = i_save(I, flags, filename)</a>
+0363 <span class="comment">% data field is treated as flags</span>
+0364 <span class="keyword">if</span> <a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(flags) flags == []; <span class="keyword">end</span>
+0365 <span class="keyword">if</span> <a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(filename), filename = I.file_name; <span class="keyword">end</span>
+0366 <span class="keyword">if</span> <a href="#_sub9" class="code" title="subfunction res = is_nix(v)">is_nix</a>(filename), filename = I.default_file_name; <span class="keyword">end</span>
+0367 <span class="keyword">if</span> <a href="#_sub8" class="code" title="subfunction res = i_need_save(I)">i_need_save</a>(I) | <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'force'</span>) <span class="comment">% force flag</span>
+0368   <span class="comment">% prompt for filename if UI</span>
+0369   <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'ui'</span>)
+0370     <span class="comment">% Work out prompt</span>
+0371     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt'</span>)
+0372       prompt = flags.prompt;
+0373     <span class="keyword">else</span> 
+0374       prompt = I.title;
+0375     <span class="keyword">end</span>
+0376     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt_prefix'</span>)
+0377       prompt = [flags.prompt_prefix prompt];
+0378     <span class="keyword">end</span>
+0379     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt_suffix'</span>)
+0380       prompt = [prompt flags.prompt_suffix];
+0381     <span class="keyword">end</span>
+0382     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'ync'</span>)
+0383       save_yn = questdlg([<span class="string">'Save '</span> prompt <span class="string">'?'</span>],<span class="keyword">...</span>
+0384              <span class="string">'Save'</span>, <span class="string">'Yes'</span>, <span class="string">'No'</span>, <span class="string">'Cancel'</span>, <span class="string">'Yes'</span>);
+0385       <span class="keyword">if</span> strcmp(save_yn, <span class="string">'Cancel'</span>), res = -1; <span class="keyword">return</span>, <span class="keyword">end</span>      
+0386       <span class="keyword">if</span> strcmp(save_yn, <span class="string">'No'</span>)
+0387     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'no_no_save'</span>)
+0388       I.has_changed = 0; 
+0389       <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(I);
+0390     <span class="keyword">end</span>
+0391     res = 0; 
+0392     <span class="keyword">return</span>
+0393       <span class="keyword">end</span>
+0394     <span class="keyword">end</span>
+0395     pr = [<span class="string">'Filename to save '</span> prompt]; 
+0396     [f p] = <a href="mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>(<span class="string">'put'</span>, I.filter_spec, pr, filename);
+0397     <span class="keyword">if</span> all(f==0), res = -1, <span class="keyword">return</span>, <span class="keyword">end</span>
+0398     filename = fullfile(p, f);
+0399   <span class="keyword">end</span>
+0400   <a href="savestruct.html" class="code" title="function savestruct(varargin)">savestruct</a>(I.data, filename);
+0401   <span class="keyword">if</span> I.verbose
+0402     fprintf(<span class="string">'%s saved to %s\n'</span>, I.title, filename);
+0403   <span class="keyword">end</span>
+0404   I.file_name = filename;
+0405   I.has_changed = 0;
+0406   <span class="keyword">if</span> I.leave_as_file
+0407     <span class="comment">% maintain only on file, as it has beed saved</span>
+0408     I.data = [];
+0409   <span class="keyword">end</span>
+0410   res = 1;
+0411   <a href="#_sub14" class="code" title="subfunction I = i_down_dump(I)">i_down_dump</a>(I);
+0412 <span class="keyword">else</span>
+0413   res = 0;
+0414 <span class="keyword">end</span>
+0415 <span class="keyword">return</span>
+0416 
+0417 <a name="_sub8" href="#_subfunctions" class="code">function res = i_need_save(I)</a>
+0418 res = ~<a href="#_sub2" class="code" title="subfunction res = i_isempty(I)">i_isempty</a>(I) &amp; I.has_changed &amp; I.save_if_changed;
+0419 <span class="keyword">return</span>
+0420 
+0421 <a name="_sub9" href="#_subfunctions" class="code">function res = is_nix(v)</a>
+0422 res = <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(v) | <a href="#_sub10" class="code" title="subfunction res = is_nan(v)">is_nan</a>(v);
+0423 <span class="keyword">return</span>
+0424 
+0425 <a name="_sub10" href="#_subfunctions" class="code">function res = is_nan(v)</a>
+0426 res = 0;
+0427 <span class="keyword">if</span> isnumeric(v) &amp; ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(v)
+0428   res = isnan(v);
+0429 <span class="keyword">end</span>
+0430 <span class="keyword">return</span>
+0431 
+0432 <a name="_sub11" href="#_subfunctions" class="code">function items = i_item_list</a>
+0433 items = <a href="#_sub15" class="code" title="subfunction fns = g_fieldnames">g_fieldnames</a>;
+0434 <span class="keyword">return</span>
+0435 
+0436 <a name="_sub12" href="#_subfunctions" class="code">function I = i_up_dump(i_name)</a>
+0437 I = <a href="#_sub16" class="code" title="subfunction r = g_getfield(fn)">g_getfield</a>(i_name);
+0438 <span class="keyword">return</span>
+0439 
+0440 <span class="comment">% Routines below explicity manipulate global variable</span>
+0441 
+0442 <a name="_sub13" href="#_subfunctions" class="code">function I = i_dump</a>
+0443 <span class="keyword">global</span> MARMOIRE
+0444 I = MARMOIRE;
+0445 <span class="keyword">return</span>
+0446 
+0447 <a name="_sub14" href="#_subfunctions" class="code">function I = i_down_dump(I)</a>
+0448 <span class="keyword">global</span> MARMOIRE
+0449 MARMOIRE = setfield(MARMOIRE, I.name, I); 
+0450 <span class="keyword">return</span>
+0451 
+0452 <a name="_sub15" href="#_subfunctions" class="code">function fns = g_fieldnames</a>
+0453 <span class="keyword">global</span> MARMOIRE
+0454 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(MARMOIRE) | ~isstruct(MARMOIRE)
+0455   fns = {};
+0456 <span class="keyword">else</span>
+0457   fns = fieldnames(MARMOIRE);
+0458 <span class="keyword">end</span>
+0459 <span class="keyword">return</span>
+0460 
+0461 <a name="_sub16" href="#_subfunctions" class="code">function r = g_getfield(fn)</a>
+0462 <span class="keyword">global</span> MARMOIRE
+0463 r = getfield(MARMOIRE, fn);
+0464 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

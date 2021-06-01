@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_orth</title>
+  <meta name="keywords" content="pr_spm_orth">
+  <meta name="description" content="recursive orthogonalization of basis functions">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_orth.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_orth
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>recursive orthogonalization of basis functions</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function x = spm_orth(X) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> recursive orthogonalization of basis functions
+ FORMAT x = spm_orth(X)
+
+ serial orthogionalization starting with the first column
+_______________________________________________________________________
+ @(#)spm_orth.m    2.1 Karl Friston 02/02/07
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="pr_spm_get_ons.html" class="code" title="function [U] = pr_spm_get_ons(SPM,s)">pr_spm_get_ons</a>	returns input [designed effects] structures</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_ons.html" class="code" title="function [U] = pr_spm_get_ons(SPM,s)">pr_spm_get_ons</a>	returns input [designed effects] structures</li>
+<li><a href="../../../marsbar/@mardo_99/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>	creates basis functions for each trial type {i} in struct BF{i}</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function x = spm_orth(X)</a>
+0002 <span class="comment">% recursive orthogonalization of basis functions</span>
+0003 <span class="comment">% FORMAT x = spm_orth(X)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% serial orthogionalization starting with the first column</span>
+0006 <span class="comment">%_______________________________________________________________________</span>
+0007 <span class="comment">% @(#)spm_orth.m    2.1 Karl Friston 02/02/07</span>
+0008 
+0009 x     = X(:,1);
+0010 <span class="keyword">for</span> i = 2:size(X,2)
+0011         D     = X(:,i);
+0012         D     = D - x*(pinv(x)*D);
+0013         <span class="keyword">if</span> any(D)
+0014                 x = [x D];
+0015         <span class="keyword">end</span>
+0016 <span class="keyword">end</span>
+0017 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

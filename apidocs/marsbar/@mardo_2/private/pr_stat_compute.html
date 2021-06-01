@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_stat_compute</title>
+  <meta name="keywords" content="pr_stat_compute">
+  <meta name="description" content="private function to compute statistics for SPM2 design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_stat_compute.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_stat_compute
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>private function to compute statistics for SPM2 design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> private function to compute statistics for SPM2 design
+ FORMAT [con stat Ps Pc] = pr_stat_compute(SPM,Ic)
+ 
+ Input
+ SPM       - SPM design structure
+ Ic        - indices into contrast structure (xCon in SPM)
+
+ Output
+ con       - contrast value (ess for F test)
+ stat      - statistic value
+ Ps        - uncorrected p value
+ Pc        - P value Bonferroni corrected for number of columns analyzed
+
+ Based on:
+ @(#)spm_contrasts.m    2.3 Andrew Holmes, Karl Friston &amp; Jean-Baptiste Poline 02/12/30
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)</a>
+0002 <span class="comment">% private function to compute statistics for SPM2 design</span>
+0003 <span class="comment">% FORMAT [con stat Ps Pc] = pr_stat_compute(SPM,Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% SPM       - SPM design structure</span>
+0007 <span class="comment">% Ic        - indices into contrast structure (xCon in SPM)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Output</span>
+0010 <span class="comment">% con       - contrast value (ess for F test)</span>
+0011 <span class="comment">% stat      - statistic value</span>
+0012 <span class="comment">% Ps        - uncorrected p value</span>
+0013 <span class="comment">% Pc        - P value Bonferroni corrected for number of columns analyzed</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Based on:</span>
+0016 <span class="comment">% @(#)spm_contrasts.m    2.3 Andrew Holmes, Karl Friston &amp; Jean-Baptiste Poline 02/12/30</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019 
+0020 <span class="comment">%-Get contrast definitions (if available)</span>
+0021 <span class="comment">%-----------------------------------------------------------------------</span>
+0022 <span class="keyword">try</span>
+0023     xCon  = SPM.xCon;
+0024 <span class="keyword">catch</span>
+0025     xCon  = [];
+0026 <span class="keyword">end</span>
+0027 
+0028 <span class="comment">%-set all contrasts by default</span>
+0029 <span class="comment">%-----------------------------------------------------------------------</span>
+0030 <span class="keyword">if</span> nargin &lt; 2
+0031   Ic    = 1:length(xCon);
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> any(Ic &gt; length(xCon))
+0034   error(<span class="string">'Indices too large for contrast structure'</span>);
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="comment">% OLS estimators and error variance estimate</span>
+0038 <span class="comment">%----------------------------------------------------------------</span>
+0039 <a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a> = SPM.betas;
+0040 Hp    = SPM.ResidualMS;
+0041 
+0042 <span class="comment">%-Compute contrast and statistic parameters</span>
+0043 <span class="comment">%=======================================================================</span>
+0044 df = [NaN SPM.xX.erdf];
+0045 <span class="keyword">for</span> i = 1:length(Ic)
+0046 
+0047   <span class="comment">%-Canonicalise contrast structure with required fields</span>
+0048   <span class="comment">%-------------------------------------------------------------------</span>
+0049   ic  = Ic(i);
+0050   X1o           = spm_FcUtil(<span class="string">'X1o'</span>,xCon(ic),SPM.xX.xKXs);
+0051   [trMV,trMVMV] = spm_SpUtil(<span class="string">'trMV'</span>,X1o,SPM.xX.V);
+0052   df(1)         = trMV^2/trMVMV; <span class="comment">% eidf</span>
+0053   
+0054   <span class="keyword">switch</span>(xCon(ic).STAT)
+0055     
+0056    <span class="keyword">case</span> {<span class="string">'T'</span>} <span class="comment">%-Implement contrast as sum of betas</span>
+0057     
+0058     con(i,:)   = xCon(ic).c'*<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>;
+0059     VcB        = xCon(ic).c'*SPM.xX.Bcov*xCon(ic).c; 
+0060     stat(i,:)  = con(i,:)./sqrt(Hp*VcB);
+0061     Ps(i,:)    = 1 - spm_Tcdf(stat(i,:),df(2));
+0062 
+0063    <span class="keyword">case</span> <span class="string">'F'</span>  <span class="comment">%-Implement ESS</span>
+0064     
+0065     <span class="comment">%-Residual (in parameter space) forming mtx</span>
+0066     <span class="comment">%-----------------------------------------------------------</span>
+0067     h          = spm_FcUtil(<span class="string">'Hsqr'</span>,xCon(ic),SPM.xX.xKXs);
+0068     con(i,:)   = sum((h * <a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>).^2, 1);
+0069     stat(i,:)  = con(i,:) ./ Hp / trMV;
+0070     Ps(i,:)    = (1 - spm_Fcdf(stat(i,:),df));
+0071 
+0072    <span class="keyword">otherwise</span>
+0073     <span class="comment">%---------------------------------------------------------------</span>
+0074     error([<span class="string">'unknown STAT &quot;'</span>,xCon(ic).STAT,<span class="string">'&quot;'</span>])
+0075     
+0076   <span class="keyword">end</span> <span class="comment">% (switch(xCon...)</span>
+0077 <span class="keyword">end</span>
+0078 
+0079 <span class="comment">% Compute corrected Bonferroni (corrected for number of regions)</span>
+0080 n  = size(<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>, 2);
+0081 Pc = 1-(1-Ps).^n;
+0082 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of set_vol_field</title>
+  <meta name="keywords" content="set_vol_field">
+  <meta name="description" content="method to set named field, containing or referring to vol structs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; set_vol_field.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>set_vol_field
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to set named field, containing or referring to vol structs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = set_vol_field(D, fieldn, imgs) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to set named field, containing or referring to vol structs
+ FORMAT D = get_vol_field(D, fieldn, imgs)
+ 
+ D        - design object
+ fieldn   - field name
+ imgs     - image names or vol structs
+  
+ Returns
+ D        - changed object
+
+ e.g D = get_vol_field(D, 'Vbeta', Vbeta);
+ 
+ We need to deal with the fact that vol fields can be char or vol_structs.
+ SPM99, for good reason, stored the design structs from the results of the
+ estimation as file names, which then had to be remapped with spm_vol to
+ get the vol structs.  The good reason was that this avoided
+ byte-swapping problems if the design was copied to another system.
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo_2/design_vol.html" class="code" title="function V = design_vol(D, imgs)">design_vol</a>	returns vols in appropriate format for saving in design</li>
+<li><a href="../../marsbar/@mardo_99/design_vol.html" class="code" title="function V = design_vol(D, imgs)">design_vol</a>	returns vols in appropriate format for saving in design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = set_vol_field(D, fieldn, imgs)</a>
+0002 <span class="comment">% method to set named field, containing or referring to vol structs</span>
+0003 <span class="comment">% FORMAT D = get_vol_field(D, fieldn, imgs)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D        - design object</span>
+0006 <span class="comment">% fieldn   - field name</span>
+0007 <span class="comment">% imgs     - image names or vol structs</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Returns</span>
+0010 <span class="comment">% D        - changed object</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% e.g D = get_vol_field(D, 'Vbeta', Vbeta);</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% We need to deal with the fact that vol fields can be char or vol_structs.</span>
+0015 <span class="comment">% SPM99, for good reason, stored the design structs from the results of the</span>
+0016 <span class="comment">% estimation as file names, which then had to be remapped with spm_vol to</span>
+0017 <span class="comment">% get the vol structs.  The good reason was that this avoided</span>
+0018 <span class="comment">% byte-swapping problems if the design was copied to another system.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021 
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023   error(<span class="string">'Need field name'</span>);
+0024 <span class="keyword">end</span>
+0025 
+0026 SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0027 
+0028 V = <a href="../../marsbar/@mardo_2/design_vol.html" class="code" title="function V = design_vol(D, imgs)">design_vol</a>(D, imgs);
+0029 
+0030 SPM = setfield(SPM, fieldn, V);
+0031 D = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, SPM);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configure git &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configure git</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configure-git">
+<span id="id1"></span><h1>Configure git<a class="headerlink" href="#configure-git" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<span id="git-config-basic"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Your personal <a class="reference external" href="http://git-scm.com/">git</a> configurations are saved in the <code class="docutils literal notranslate"><span class="pre">.gitconfig</span></code> file in
+your home directory.
+Here is an example <code class="docutils literal notranslate"><span class="pre">.gitconfig</span></code> file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="n">Your</span> <span class="n">Name</span>
+        <span class="n">email</span> <span class="p">=</span> <span class="n">you</span><span class="p">@</span><span class="n">yourdomain</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">com</span>
+
+<span class="p">[</span><span class="n">alias</span><span class="p">]</span>
+        <span class="n">ci</span> <span class="p">=</span> <span class="n">commit</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">co</span> <span class="p">=</span> <span class="n">checkout</span>
+        <span class="n">st</span> <span class="p">=</span> <span class="n">status</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">stat</span> <span class="p">=</span> <span class="n">status</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">br</span> <span class="p">=</span> <span class="n">branch</span>
+        <span class="n">wdiff</span> <span class="p">=</span> <span class="n">diff</span> <span class="o">--</span><span class="n">color</span><span class="o">-</span><span class="n">words</span>
+
+<span class="p">[</span><span class="n">core</span><span class="p">]</span>
+        <span class="n">editor</span> <span class="p">=</span> <span class="n">vim</span>
+
+<span class="p">[</span><span class="n">merge</span><span class="p">]</span>
+        <span class="n">summary</span> <span class="p">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>You can edit this file directly or you can use the <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span></code>
+command:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">user.name</span> <span class="s">&quot;Your</span> <span class="s">Name&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">user.email</span> <span class="s">you@yourdomain.example.com</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.ci</span> <span class="s">&quot;commit</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.co</span> <span class="s">checkout</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.st</span> <span class="s">&quot;status</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.stat</span> <span class="s">&quot;status</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.br</span> <span class="s">branch</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.wdiff</span> <span class="s">&quot;diff</span> <span class="s">--color-words&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">core.editor</span> <span class="s">vim</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">merge.summary</span> <span class="s">true</span>
+</pre></div>
+</div>
+<p>To set up on another computer, you can copy your <code class="docutils literal notranslate"><span class="pre">~/.gitconfig</span></code> file,
+or run the commands above.</p>
+</div>
+<div class="section" id="in-detail">
+<h2>In detail<a class="headerlink" href="#in-detail" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="user-name-and-user-email">
+<h3>user.name and user.email<a class="headerlink" href="#user-name-and-user-email" title="Permalink to this headline">¶</a></h3>
+<p>It is good practice to tell <a class="reference external" href="http://git-scm.com/">git</a> who you are, for labeling any changes
+you make to the code.  The simplest way to do this is from the command
+line:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">user.name</span> <span class="s">&quot;Your</span> <span class="s">Name&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">user.email</span> <span class="s">you@yourdomain.example.com</span>
+</pre></div>
+</div>
+<p>This will write the settings into your git configuration file,  which
+should now contain a user section with your name and email:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">user</span><span class="p">]</span>
+      <span class="n">name</span> <span class="p">=</span> <span class="n">Your</span> <span class="n">Name</span>
+      <span class="n">email</span> <span class="p">=</span> <span class="n">you</span><span class="p">@</span><span class="n">yourdomain</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Of course you’ll need to replace <code class="docutils literal notranslate"><span class="pre">Your</span> <span class="pre">Name</span></code> and <code class="docutils literal notranslate"><span class="pre">you&#64;yourdomain.example.com</span></code>
+with your actual name and email address.</p>
+</div>
+<div class="section" id="aliases">
+<h3>Aliases<a class="headerlink" href="#aliases" title="Permalink to this headline">¶</a></h3>
+<p>You might well benefit from some aliases to common commands.</p>
+<p>For example, you might well want to be able to shorten <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span></code>
+to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">co</span></code>.  Or you may want to alias <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span> <span class="pre">--color-words</span></code>
+(which gives a nicely formatted output of the diff) to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">wdiff</span></code></p>
+<p>The following <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--global</span></code> commands:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.ci</span> <span class="s">&quot;commit</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.co</span> <span class="s">checkout</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.st</span> <span class="s">&quot;status</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.stat</span> <span class="s">&quot;status</span> <span class="s">-a&quot;</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.br</span> <span class="s">branch</span>
+<span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">alias.wdiff</span> <span class="s">&quot;diff</span> <span class="s">--color-words&quot;</span>
+</pre></div>
+</div>
+<p>will create an <code class="docutils literal notranslate"><span class="pre">alias</span></code> section in your <code class="docutils literal notranslate"><span class="pre">.gitconfig</span></code> file with contents
+like this:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">alias</span><span class="p">]</span>
+        <span class="n">ci</span> <span class="p">=</span> <span class="n">commit</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">co</span> <span class="p">=</span> <span class="n">checkout</span>
+        <span class="n">st</span> <span class="p">=</span> <span class="n">status</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">stat</span> <span class="p">=</span> <span class="n">status</span> <span class="o">-</span><span class="n">a</span>
+        <span class="n">br</span> <span class="p">=</span> <span class="n">branch</span>
+        <span class="n">wdiff</span> <span class="p">=</span> <span class="n">diff</span> <span class="o">--</span><span class="n">color</span><span class="o">-</span><span class="n">words</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="editor">
+<h3>Editor<a class="headerlink" href="#editor" title="Permalink to this headline">¶</a></h3>
+<p>You may also want to make sure that your editor of choice is used</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">core.editor</span> <span class="s">vim</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="merging">
+<h3>Merging<a class="headerlink" href="#merging" title="Permalink to this headline">¶</a></h3>
+<p>To enforce summaries when doing merges (<code class="docutils literal notranslate"><span class="pre">~/.gitconfig</span></code> file again):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merge</span><span class="p">]</span>
+   <span class="nb">log</span> <span class="p">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>Or from the command line:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">config</span> <span class="s">--global</span> <span class="s">merge.log</span> <span class="s">true</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configure git</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#in-detail">In detail</a><ul>
+<li><a class="reference internal" href="#user-name-and-user-email">user.name and user.email</a></li>
+<li><a class="reference internal" href="#aliases">Aliases</a></li>
+<li><a class="reference internal" href="#editor">Editor</a></li>
+<li><a class="reference internal" href="#merging">Merging</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/development/gitwash/configure_git.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Configure git</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

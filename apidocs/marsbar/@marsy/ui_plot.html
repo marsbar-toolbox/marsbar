@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_plot</title>
+  <meta name="keywords" content="ui_plot">
+  <meta name="description" content="method plots data in various formats">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; ui_plot.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_plot
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method plots data in various formats</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function r = ui_plot(o, plot_spec, plot_params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method plots data in various formats
+ FORMAT r = ui_plot(o, plot_spec, plot_params)
+
+ Input
+ o            - marsy object
+
+ plot_spec    - can be a
+                string, in which case it has the same meaning as
+                    the structure version below, with only field 'types'
+                    set to this value, OR 
+                structure, with none ore more of fields
+                (in all cases, field missing is the same as the field
+                being empty)
+                r_nos      - region number(s) 
+                             (if empty, -&gt; all regions)
+                b_nos      - session/subject numbers 
+                             (if empty, -&gt; all blocks)  
+                types      - string, or cell arrays of strings
+                             specifying plot type(s).  Plot types can be
+                             one or more of: 
+                  'raw'    - plots raw time series 
+                  'acf     - plots autocorrelation function
+                  'fft'    - plots fourier analysis of time series
+                  'all'    - all of the above 
+                  (defaults to 'raw')
+                graphics_obj - graphics object(s) for plot.  
+                            If empty, becomes handle SPM graphics
+                            window, otherwise, can be a handle to
+                            figure, or enough handles to axes for all
+                            requested plots.  This is useful for putting
+                            the plot on a convenient figure or axis 
+   
+ plot_params  - (optional) Parameters to pass to plots
+                Can be empty (giving defaults) or structure, or
+                cell array of structures, one per requested plot
+                Relevant fields of structure differ for different plot
+                types;
+                Plot 'fft': fields 'bin_length' distance between time
+                            points in seconds
+                     'acf': fields 'lags' no of lags to plot [10]
+
+ Returns
+ r            - results that were plotted; all the data for 'raw', all
+                the acf values for 'acf', all the fft coefficients for
+                'fft'.  Cell array, one cell per plot.
+
+ Examples
+ ui_plot(Y, 'all')  plots all plot types for all regions and sessions 
+ ui_plot(Y, 'acf')  just plots ACF, for all regions
+ ui_plot(Y, struct('types', 'fft', 'r_nos', 1))
+                    will plot fft for region 1 only
+ f = figure; ui_plot(Y, struct('graphics_obj', f))
+                    will plot all plot types to the new figure
+ ui_plot(Y, 'acf', struct('lags', 8))
+                    plots ACF for all regions, with lag of 8 rather than
+                    the default of 10
+
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>	method returns number of subjects/sessions in data</li>
+<li><a href="region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="summary_info.html" class="code" title="function res = summary_info(o, descrip)">summary_info</a>	get/set method for summary data info</li>
+<li><a href="summary_size.html" class="code" title="function [m,n] = summary_size(o, dim)">summary_size</a>	method returns number of time points x number of regions</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function r = ui_plot(o, plot_spec, plot_params)</a>
+0002 <span class="comment">% method plots data in various formats</span>
+0003 <span class="comment">% FORMAT r = ui_plot(o, plot_spec, plot_params)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% o            - marsy object</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% plot_spec    - can be a</span>
+0009 <span class="comment">%                string, in which case it has the same meaning as</span>
+0010 <span class="comment">%                    the structure version below, with only field 'types'</span>
+0011 <span class="comment">%                    set to this value, OR</span>
+0012 <span class="comment">%                structure, with none ore more of fields</span>
+0013 <span class="comment">%                (in all cases, field missing is the same as the field</span>
+0014 <span class="comment">%                being empty)</span>
+0015 <span class="comment">%                r_nos      - region number(s)</span>
+0016 <span class="comment">%                             (if empty, -&gt; all regions)</span>
+0017 <span class="comment">%                b_nos      - session/subject numbers</span>
+0018 <span class="comment">%                             (if empty, -&gt; all blocks)</span>
+0019 <span class="comment">%                types      - string, or cell arrays of strings</span>
+0020 <span class="comment">%                             specifying plot type(s).  Plot types can be</span>
+0021 <span class="comment">%                             one or more of:</span>
+0022 <span class="comment">%                  'raw'    - plots raw time series</span>
+0023 <span class="comment">%                  'acf     - plots autocorrelation function</span>
+0024 <span class="comment">%                  'fft'    - plots fourier analysis of time series</span>
+0025 <span class="comment">%                  'all'    - all of the above</span>
+0026 <span class="comment">%                  (defaults to 'raw')</span>
+0027 <span class="comment">%                graphics_obj - graphics object(s) for plot.</span>
+0028 <span class="comment">%                            If empty, becomes handle SPM graphics</span>
+0029 <span class="comment">%                            window, otherwise, can be a handle to</span>
+0030 <span class="comment">%                            figure, or enough handles to axes for all</span>
+0031 <span class="comment">%                            requested plots.  This is useful for putting</span>
+0032 <span class="comment">%                            the plot on a convenient figure or axis</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">% plot_params  - (optional) Parameters to pass to plots</span>
+0035 <span class="comment">%                Can be empty (giving defaults) or structure, or</span>
+0036 <span class="comment">%                cell array of structures, one per requested plot</span>
+0037 <span class="comment">%                Relevant fields of structure differ for different plot</span>
+0038 <span class="comment">%                types;</span>
+0039 <span class="comment">%                Plot 'fft': fields 'bin_length' distance between time</span>
+0040 <span class="comment">%                            points in seconds</span>
+0041 <span class="comment">%                     'acf': fields 'lags' no of lags to plot [10]</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% Returns</span>
+0044 <span class="comment">% r            - results that were plotted; all the data for 'raw', all</span>
+0045 <span class="comment">%                the acf values for 'acf', all the fft coefficients for</span>
+0046 <span class="comment">%                'fft'.  Cell array, one cell per plot.</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% Examples</span>
+0049 <span class="comment">% ui_plot(Y, 'all')  plots all plot types for all regions and sessions</span>
+0050 <span class="comment">% ui_plot(Y, 'acf')  just plots ACF, for all regions</span>
+0051 <span class="comment">% ui_plot(Y, struct('types', 'fft', 'r_nos', 1))</span>
+0052 <span class="comment">%                    will plot fft for region 1 only</span>
+0053 <span class="comment">% f = figure; ui_plot(Y, struct('graphics_obj', f))</span>
+0054 <span class="comment">%                    will plot all plot types to the new figure</span>
+0055 <span class="comment">% ui_plot(Y, 'acf', struct('lags', 8))</span>
+0056 <span class="comment">%                    plots ACF for all regions, with lag of 8 rather than</span>
+0057 <span class="comment">%                    the default of 10</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% $Id$</span>
+0060   
+0061 <span class="comment">% Get, check data from object</span>
+0062 [n_rows n_cols] = <a href="summary_size.html" class="code" title="function [m,n] = summary_size(o, dim)">summary_size</a>(o);
+0063 <span class="keyword">if</span> ~prod([n_rows n_cols]), warning(<span class="string">'No data to plot'</span>), <span class="keyword">return</span>, <span class="keyword">end</span>
+0064 rows = <a href="block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>(o);
+0065 Y    = <a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(o);
+0066 N    = <a href="region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(o);
+0067 S    = <a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>(o);
+0068 info = <a href="summary_info.html" class="code" title="function res = summary_info(o, descrip)">summary_info</a>(o);
+0069 <span class="keyword">if</span> strcmp(S, <span class="string">'unknown'</span>), S = <span class="string">''</span>; <span class="keyword">end</span>
+0070 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(S), S = [<span class="string">' - '</span> S]; <span class="keyword">end</span>
+0071 
+0072 def_spec = struct(<span class="string">'types'</span>, {{<span class="string">'raw'</span>}}, <span class="keyword">...</span>
+0073           <span class="string">'r_nos'</span>, 1:n_cols, <span class="keyword">...</span>
+0074           <span class="string">'b_nos'</span>, 1:length(rows),<span class="keyword">...</span>
+0075           <span class="string">'graphics_obj'</span>, []);
+0076 
+0077 <span class="comment">% Process plot type arguments</span>
+0078 <span class="keyword">if</span> nargin &lt; 2
+0079   plot_spec = [];
+0080 <span class="keyword">end</span>
+0081 <span class="keyword">if</span> ischar(plot_spec), plot_spec = struct(<span class="string">'types'</span>, plot_spec); <span class="keyword">end</span>
+0082 plot_spec = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>, plot_spec, def_spec);
+0083 
+0084 plot_types = plot_spec.types;
+0085 <span class="keyword">if</span> ~iscell(plot_types)
+0086   plot_types = {plot_types};
+0087 <span class="keyword">end</span>
+0088 <span class="keyword">if</span> strcmp(<span class="string">'all'</span>, plot_types{1})
+0089   plot_types = {<span class="string">'raw'</span>,<span class="string">'acf'</span>,<span class="string">'fft'</span>};
+0090 <span class="keyword">end</span>
+0091 n_p_t   = length(plot_types);
+0092 n_plots = n_p_t * length(plot_spec.r_nos); 
+0093 
+0094 <span class="comment">% Check passed graphics object(s)</span>
+0095 gr_ob = plot_spec.graphics_obj;
+0096 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(gr_ob)
+0097   gr_ob = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0098   spm_results_ui(<span class="string">'Clear'</span>, gr_ob, 0);
+0099 <span class="keyword">end</span>
+0100 <span class="keyword">if</span> ~all(ishandle(gr_ob))
+0101   error(<span class="string">'One or more graphics objects are not valid'</span>);
+0102 <span class="keyword">end</span>
+0103 o_t = get(gr_ob, <span class="string">'type'</span>);
+0104 <span class="keyword">if</span> iscell(o_t)
+0105   <span class="keyword">if</span> any(diff(strvcat(o_t{:}),[],1))
+0106     error(<span class="string">'All graphics objects must be of the same type'</span>);
+0107   <span class="keyword">end</span>
+0108   o_t = o_t{1};
+0109 <span class="keyword">end</span>
+0110 <span class="keyword">switch</span> o_t
+0111  <span class="keyword">case</span> <span class="string">'figure'</span>
+0112   figure(gr_ob);
+0113  <span class="keyword">case</span> <span class="string">'axes'</span>
+0114   <span class="keyword">if</span> n_plots &gt; length(gr_ob)
+0115     error(<span class="string">'Not enough axes for planned number of plots'</span>);
+0116   <span class="keyword">end</span>
+0117  <span class="keyword">otherwise</span>
+0118   error([<span class="string">'Completely confused by graphics object type: '</span> o_t]);
+0119 <span class="keyword">end</span>
+0120 
+0121 rows     = rows(plot_spec.b_nos);
+0122 <a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a> = length(rows);
+0123 
+0124 <span class="comment">% Process plot_param arguments</span>
+0125 <span class="keyword">if</span> nargin &lt; 3
+0126   plot_params = cell(1,n_p_t);
+0127 <span class="keyword">end</span>
+0128 <span class="keyword">if</span> ~iscell(plot_params)
+0129   plot_params = {plot_params};
+0130 <span class="keyword">end</span>
+0131 <span class="keyword">if</span> length(plot_params) == 1
+0132   plot_params = repmat(plot_params, 1, n_p_t);
+0133 <span class="keyword">elseif</span> length(plot_params) &lt; n_p_t
+0134   error(sprintf(<span class="string">'You need %d plot_param entries'</span>, n_p_t));
+0135 <span class="keyword">end</span>
+0136  
+0137 <span class="comment">% Default string, bin_length for fft plots</span>
+0138 <span class="keyword">if</span> <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'isthere'</span>, info, <span class="string">'TR'</span>)
+0139   bin_length = info.TR;
+0140   bin_str = <span class="string">'Hz'</span>;    
+0141 <span class="keyword">else</span>
+0142   bin_length = 1;
+0143   bin_str = <span class="string">'cycles per time point'</span>;
+0144 <span class="keyword">end</span>
+0145 
+0146 p_ctr = 1;
+0147 <span class="keyword">for</span> c = plot_spec.r_nos
+0148   <span class="keyword">for</span> p = 1:n_p_t
+0149     <span class="keyword">switch</span> o_t
+0150      <span class="keyword">case</span> <span class="string">'figure'</span>
+0151       subplot(n_plots, 1, p_ctr); 
+0152      <span class="keyword">case</span> <span class="string">'axes'</span>
+0153       axes(gr_ob(p_ctr));
+0154     <span class="keyword">end</span>
+0155 
+0156     y = Y(:,c);
+0157     
+0158     <span class="keyword">switch</span> lower(plot_types{p})
+0159      <span class="keyword">case</span> <span class="string">'raw'</span>
+0160       a_r = [];
+0161       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0162     a_r = [a_r; rows{s}(:)];
+0163       <span class="keyword">end</span>
+0164       plot(y(a_r));
+0165       axis tight
+0166       hold on
+0167       <span class="comment">% add session indicators</span>
+0168       yrg = [min(y) max(y)];
+0169       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0170     rw = rows{s};
+0171     <span class="keyword">if</span> s &gt; 1 <span class="comment">% session divider</span>
+0172       plot([rw(1) rw(1)]-0.5, yrg, <span class="string">'k:'</span>);
+0173     <span class="keyword">end</span>
+0174       <span class="keyword">end</span>
+0175       ylabel([<span class="string">'Signal intensity'</span> S])
+0176       xlabel(<span class="string">'Time point'</span>);
+0177       r{p_ctr} = y;
+0178       
+0179      <span class="keyword">case</span> <span class="string">'acf'</span>
+0180       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(plot_params{p}, <span class="string">'lags'</span>)
+0181     lags = plot_params{p}.lags;
+0182       <span class="keyword">else</span> lags = 10;
+0183       <span class="keyword">end</span>
+0184       mn_len = Inf;
+0185       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0186     <span class="keyword">if</span> length(rows{s}) &lt; mn_len, mn_len = length(rows{s}); <span class="keyword">end</span>
+0187       <span class="keyword">end</span>
+0188       lags = max([1 min([mn_len-4 lags])]);
+0189 
+0190       C = [];
+0191       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0192     by = y(rows{s});
+0193     nb_rows = length(by);
+0194     ty = toeplitz(by, [by(1) zeros(1, lags)]);
+0195     ty([1:lags n_rows+1:end], :) = [];
+0196     Cs      = corrcoef(ty);
+0197     C       = [C Cs(1,:)];
+0198     n       = nb_rows - 2;                   <span class="comment">% df for correlation</span>
+0199     t_th    = spm_invTcdf(1-0.025, n);       <span class="comment">% t for two tailed p=0.05</span>
+0200     r_th(s) = sqrt(1/(n/t_th.^2+1));         <span class="comment">% r equivalent</span>
+0201       <span class="keyword">end</span>
+0202       stem(C);
+0203       axis tight
+0204       hold on
+0205       <span class="comment">% add confidence intervals, labels, session indicators</span>
+0206       Crg = [min(C) max(C)];
+0207       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0208     s_vals = [0 lags] + (s-1)*(lags+1) + 1;
+0209     plot(s_vals,  [r_th(s) r_th(s)], <span class="string">'r:'</span>);
+0210     plot(s_vals, -[r_th(s) r_th(s)], <span class="string">'r:'</span>);
+0211     <span class="keyword">if</span> s &gt; 1 <span class="comment">% session divider line</span>
+0212       plot([s_vals(1) s_vals(1)]-0.5, Crg, <span class="string">'k:'</span>);
+0213     <span class="keyword">end</span>
+0214       <span class="keyword">end</span>
+0215       xtl = get(gca,<span class="string">'xticklabel'</span>);
+0216       xtl = num2str(mod(str2num(xtl)-1, lags+1));
+0217       set(gca, <span class="string">'xticklabel'</span>, xtl);
+0218 
+0219       ylabel(<span class="string">'Correlation coefficient'</span>)
+0220       xlabel(<span class="string">'Lag'</span>);
+0221       r{p_ctr} = C;
+0222      <span class="keyword">case</span> <span class="string">'fft'</span>
+0223       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(plot_params{p}, <span class="string">'bin_length'</span>)
+0224     b_len = plot_params{p}.bin_length;
+0225     b_str = <span class="string">'Hz'</span>;
+0226       <span class="keyword">else</span>
+0227     b_len = bin_length;
+0228     b_str = bin_str;
+0229       <span class="keyword">end</span>
+0230       P = []; H = []; St = [];
+0231       <span class="keyword">for</span> s = 1:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0232     by    = y(rows{s});
+0233     gX    = abs(fft(by)).^2;
+0234     gX    = gX*diag(1./sum(gX));
+0235     q     = size(gX,1);
+0236     Hz    = [0:(q - 1)]/(q * b_len);
+0237     q     = 2:fix(q/2);
+0238     P     = [P gX(q)'];
+0239     St(s) = length(H)+1;
+0240     H     = [H; Hz(q)'];
+0241       <span class="keyword">end</span>
+0242       plot(P)
+0243       hold on
+0244       Prg = [min(P) max(P)];
+0245       <span class="keyword">for</span> s = 2:<a href="n_blocks.html" class="code" title="function n = n_blocks(Y)">n_blocks</a>
+0246     plot([St(s) St(s)]-0.5, Prg, <span class="string">'k-'</span>);
+0247       <span class="keyword">end</span>
+0248       axis tight
+0249       <span class="comment">% Rename tick labels</span>
+0250       xt  = get(gca, <span class="string">'xtick'</span>);
+0251       xt  =  xt(xt==fix(xt));
+0252       set(gca, <span class="string">'xtick'</span>, xt);
+0253       <span class="keyword">for</span> t = 1:length(xt)
+0254     xtl_fft{t} = sprintf(<span class="string">'%5.3f'</span>, H(xt(t)));
+0255       <span class="keyword">end</span>
+0256       set(gca, <span class="string">'xticklabel'</span>, xtl_fft);
+0257       xlabel(sprintf(<span class="string">'Frequency (%s)'</span>, b_str))
+0258       ylabel(<span class="string">'Relative spectral density'</span>)
+0259       axis tight
+0260       r{p_ctr} = P;
+0261      <span class="keyword">otherwise</span>
+0262       error([<span class="string">'What is this plot type: '</span> plot_types{p} <span class="string">'?'</span>]);
+0263     <span class="keyword">end</span>
+0264     title(N{c}, <span class="string">'interpreter'</span>, <span class="string">'none'</span>);
+0265   
+0266     p_ctr = p_ctr + 1;
+0267   <span class="keyword">end</span>
+0268 <span class="keyword">end</span>
+0269 
+0270 <span class="keyword">return</span>
+0271 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

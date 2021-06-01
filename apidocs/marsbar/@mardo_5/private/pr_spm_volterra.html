@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_volterra</title>
+  <meta name="keywords" content="pr_spm_volterra">
+  <meta name="description" content="generalized convolution of inputs (U) with basis set (bf)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_volterra.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_volterra
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>generalized convolution of inputs (U) with basis set (bf)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [X,Xname,Fc] = pr_spm_volterra(U,bf,V) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> generalized convolution of inputs (U) with basis set (bf)
+ FORMAT [X,Xname,Fc] = pr_spm_volterra(U,bf,V);
+ U          -  input structure array
+ bf         -  Basis functions
+ V          -  [1 or 2] order of Volterra expansion [default = 1]
+
+ X          -  Design Matrix
+ Xname      -  names of regressors [columns] in X
+ Fc(j).i    -  indices pertaining to input i (and interactions)
+ Fc(j).name -  names pertaining to input i   (and interactions)
+___________________________________________________________________________
+
+ For first order expansions spm_Volterra simply convolves the causes
+ (e.g. stick functions) in U.u by the basis functions in bf to create
+ a design matrix X.  For second order expansions new entries appear
+ in ind, bf and name that correspond to the interaction among the
+ orginal causes. The basis functions for these efects are two dimensional
+ and are used to assemble the second order kernel in spm_graph.m.
+ Second order effects are computed for only the first column of U.u.
+___________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_99/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X,Xname,Fc] = pr_spm_volterra(U,bf,V)</a>
+0002 <span class="comment">% generalized convolution of inputs (U) with basis set (bf)</span>
+0003 <span class="comment">% FORMAT [X,Xname,Fc] = pr_spm_volterra(U,bf,V);</span>
+0004 <span class="comment">% U          -  input structure array</span>
+0005 <span class="comment">% bf         -  Basis functions</span>
+0006 <span class="comment">% V          -  [1 or 2] order of Volterra expansion [default = 1]</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% X          -  Design Matrix</span>
+0009 <span class="comment">% Xname      -  names of regressors [columns] in X</span>
+0010 <span class="comment">% Fc(j).i    -  indices pertaining to input i (and interactions)</span>
+0011 <span class="comment">% Fc(j).name -  names pertaining to input i   (and interactions)</span>
+0012 <span class="comment">%___________________________________________________________________________</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% For first order expansions spm_Volterra simply convolves the causes</span>
+0015 <span class="comment">% (e.g. stick functions) in U.u by the basis functions in bf to create</span>
+0016 <span class="comment">% a design matrix X.  For second order expansions new entries appear</span>
+0017 <span class="comment">% in ind, bf and name that correspond to the interaction among the</span>
+0018 <span class="comment">% orginal causes. The basis functions for these efects are two dimensional</span>
+0019 <span class="comment">% and are used to assemble the second order kernel in spm_graph.m.</span>
+0020 <span class="comment">% Second order effects are computed for only the first column of U.u.</span>
+0021 <span class="comment">%___________________________________________________________________________</span>
+0022 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0023 
+0024 <span class="comment">% Karl Friston</span>
+0025 <span class="comment">% $Id: spm_Volterra.m 112 2005-05-04 18:20:52Z john $</span>
+0026 
+0027 
+0028 
+0029 <span class="comment">% 1st order terms</span>
+0030 <span class="comment">%---------------------------------------------------------------------------</span>
+0031 <span class="keyword">if</span> nargin == 2, V = 1; <span class="keyword">end</span>
+0032 
+0033 <span class="comment">% Construct X</span>
+0034 <span class="comment">%===========================================================================</span>
+0035 
+0036 <span class="comment">% 1st order terms</span>
+0037 <span class="comment">%---------------------------------------------------------------------------</span>
+0038 X     = [];
+0039 Xname = {};
+0040 ind   = {};
+0041 Uname = {};
+0042 Fc    = {};
+0043 <span class="keyword">for</span> i = 1:length(U)
+0044     ind   = [];
+0045     <span class="keyword">for</span> k = 1:size(U(i).u,2)
+0046     <span class="keyword">for</span> p = 1:size(bf,2)
+0047         x      = U(i).u(:,k);
+0048         d      = 1:length(x);
+0049         x      = conv(full(x),bf(:,p));
+0050         x      = x(d);
+0051         X      = [X x];
+0052 
+0053         <span class="comment">% indices and regressor names</span>
+0054         <span class="comment">%-----------------------------------------------------------</span>
+0055         str            = sprintf(<span class="string">'%s*bf(%i)'</span>,U(i).name{k},p);
+0056         Xname{end + 1} = str;
+0057         ind(end + 1)   = size(X,2);
+0058     <span class="keyword">end</span>
+0059     <span class="keyword">end</span>
+0060     Fc(end + 1).i = ind;
+0061     Fc(end).name  = U(i).name{1};
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="comment">% return if first order</span>
+0065 <span class="comment">%---------------------------------------------------------------------------</span>
+0066 <span class="keyword">if</span> V == 1, <span class="keyword">return</span>, <span class="keyword">end</span>
+0067 
+0068 <span class="comment">% 2nd order terms</span>
+0069 <span class="comment">%---------------------------------------------------------------------------</span>
+0070 <span class="keyword">for</span> i = 1:length(U) 
+0071 <span class="keyword">for</span> j = i:length(U)
+0072     ind   = [];
+0073     <span class="keyword">for</span> p = 1:size(bf,2)
+0074     <span class="keyword">for</span> q = 1:size(bf,2)
+0075         x      = U(i).u(:,1);
+0076         y      = U(j).u(:,1);
+0077         x      = conv(full(x),bf(:,p));
+0078         y      = conv(full(y),bf(:,q));
+0079         x      = x(d);
+0080         y      = y(d);
+0081         X      = [X x.*y];
+0082 
+0083         <span class="comment">% indices and regressor names</span>
+0084         <span class="comment">%-----------------------------------------------------------</span>
+0085         str            = sprintf(<span class="string">'%s*bf(%i)x%s*bf(%i)'</span>,<span class="keyword">...</span>
+0086                           U(i).name{1},p,<span class="keyword">...</span>
+0087                           U(j).name{1},q);
+0088         Xname{end + 1} = str;
+0089         ind(end + 1)   = size(X,2);
+0090     <span class="keyword">end</span>
+0091     <span class="keyword">end</span>
+0092     Fc(end + 1).i = ind;
+0093     Fc(end).name  = [U(i).name{1} <span class="string">'x'</span> U(j).name{1}];
+0094 <span class="keyword">end</span>
+0095 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_diff</title>
+  <meta name="keywords" content="pr_spm_diff">
+  <meta name="description" content="matrix high-order differentials">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_diff.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_diff
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>matrix high-order differentials</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [J] = pr_spm_diff(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> matrix high-order differentials
+ FORMAT [dfdx] = pr_spm_diff(f,x,...,n)
+
+ f      - [inline] function f(x{1},...)
+ x      - input argument[s]
+ n      - arguments to differentiate w.r.t.
+
+ dfdx          - df/dx{i}                     ; n =  i
+ dfdx{p}...{q} - df/dx{i}dx{j}(q)...dx{k}(p)  ; n = [i j ... k]
+
+ - a cunning recursive routine
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix differential</li>
+<li><a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>	converts a cell array into a matrix</li>
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+<li><a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>	unvectorises a vectorised array</li>
+<li><a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>	vectorises a numeric, cell or structure array</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix differential</li>
+<li><a href="pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function dfdx = pr_spm_dfdx(f,f0,dx)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [J] = pr_spm_diff(varargin)</a>
+0002 <span class="comment">% matrix high-order differentials</span>
+0003 <span class="comment">% FORMAT [dfdx] = pr_spm_diff(f,x,...,n)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% f      - [inline] function f(x{1},...)</span>
+0006 <span class="comment">% x      - input argument[s]</span>
+0007 <span class="comment">% n      - arguments to differentiate w.r.t.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% dfdx          - df/dx{i}                     ; n =  i</span>
+0010 <span class="comment">% dfdx{p}...{q} - df/dx{i}dx{j}(q)...dx{k}(p)  ; n = [i j ... k]</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% - a cunning recursive routine</span>
+0013 <span class="comment">%__________________________________________________________________________</span>
+0014 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0015 
+0016 <span class="comment">% Karl Friston</span>
+0017 <span class="comment">% $Id: spm_diff.m 417 2006-02-01 13:50:14Z karl $</span>
+0018 
+0019 <span class="comment">% create inline object</span>
+0020 <span class="comment">%--------------------------------------------------------------------------</span>
+0021 f     = fcnchk(varargin{1});
+0022 x     = varargin(2:(end - 1));
+0023 n     = varargin{end};
+0024 m     = n(end);
+0025 xm    = <a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(x{m});
+0026 dx    = exp(-8);
+0027 J     = cell(1,length(xm));
+0028 
+0029 <span class="comment">% proceed to derivatives</span>
+0030 <span class="comment">%==========================================================================</span>
+0031 <span class="keyword">if</span> length(n) == 1
+0032 
+0033     <span class="comment">% dfdx</span>
+0034     <span class="comment">%----------------------------------------------------------------------</span>
+0035     f0    = feval(f,x{:});
+0036     <span class="keyword">for</span> i = 1:length(J)
+0037         xi       = x;
+0038         xmi      = xm;
+0039         xmi(i)   = xmi(i) + dx;
+0040         xi{n}    = <a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>(xmi,xi{n});
+0041         fi       = feval(f,xi{:});
+0042         J{i}     = <a href="#_sub1" class="code" title="subfunction dfdx = pr_spm_dfdx(f,f0,dx)">pr_spm_dfdx</a>(fi,f0,dx);
+0043     <span class="keyword">end</span>
+0044 
+0045 <span class="keyword">else</span>
+0046 
+0047     <span class="comment">% dfdxdxdx....</span>
+0048     <span class="comment">%----------------------------------------------------------------------</span>
+0049     f0    = <a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>(f,x{:},n(1:end - 1));
+0050     <span class="keyword">for</span> i = 1:length(J)
+0051         xi       = x;
+0052         xmi      = xm;
+0053         xmi(i)   = xmi(i) + dx;
+0054         xi{m}    = <a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>(xmi,xi{m});
+0055         fi       = <a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>(f,xi{:},n(1:end - 1));
+0056         J{i}     = <a href="#_sub1" class="code" title="subfunction dfdx = pr_spm_dfdx(f,f0,dx)">pr_spm_dfdx</a>(fi,f0,dx);
+0057     <span class="keyword">end</span>
+0058     <span class="keyword">return</span>
+0059 
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="comment">% return numeric array for first order derivatives</span>
+0063 <span class="comment">%==========================================================================</span>
+0064 
+0065 <span class="comment">% vectorise f</span>
+0066 <span class="comment">%--------------------------------------------------------------------------</span>
+0067 f  = <a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(f0);
+0068 
+0069 <span class="comment">% if there are no arguments to differentiate w.r.t. ...</span>
+0070 <span class="comment">%--------------------------------------------------------------------------</span>
+0071 <span class="keyword">if</span> ~length(xm)
+0072     J = sparse(length(f),0);
+0073     <span class="keyword">return</span>
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">% if there are no arguments to differentiate</span>
+0077 <span class="comment">%--------------------------------------------------------------------------</span>
+0078 <span class="keyword">if</span> ~length(f)
+0079     J = sparse(0,length(xm));
+0080     <span class="keyword">return</span>
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">% if f is a scalar</span>
+0084 <span class="comment">%--------------------------------------------------------------------------</span>
+0085 <span class="keyword">if</span> length(f) == 1
+0086     J = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(J);
+0087     <span class="keyword">return</span>
+0088 <span class="keyword">end</span>
+0089 
+0090 <span class="comment">% if x{n} is a scalar</span>
+0091 <span class="comment">%--------------------------------------------------------------------------</span>
+0092 <span class="keyword">if</span> length(xm) == 1
+0093     J = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(J);
+0094     <span class="keyword">return</span>
+0095 <span class="keyword">end</span>
+0096 
+0097 <span class="comment">% else f and xm are vectors return numeric array</span>
+0098 <span class="comment">%--------------------------------------------------------------------------</span>
+0099 <span class="keyword">for</span> i = 1:length(J)
+0100     J{i} = <a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(J{i});
+0101 <span class="keyword">end</span>
+0102 J    = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(J);
+0103 <span class="keyword">return</span>
+0104 
+0105 <a name="_sub1" href="#_subfunctions" class="code">function dfdx = pr_spm_dfdx(f,f0,dx)</a>
+0106 <span class="comment">% cell subtraction</span>
+0107 <span class="comment">%--------------------------------------------------------------------------</span>
+0108 <span class="keyword">if</span> iscell(f)
+0109     dfdx  = f;
+0110     <span class="keyword">for</span> i = 1:length(f(:))
+0111         dfdx{i} = <a href="#_sub1" class="code" title="subfunction dfdx = pr_spm_dfdx(f,f0,dx)">pr_spm_dfdx</a>(f{i},f0{i},dx);
+0112     <span class="keyword">end</span>
+0113 <span class="keyword">else</span>
+0114     dfdx  = (f - f0)/dx;
+0115 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

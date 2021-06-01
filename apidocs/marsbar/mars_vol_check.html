@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_vol_check</title>
+  <meta name="keywords" content="mars_vol_check">
+  <meta name="description" content="FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_vol_check.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_vol_check
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [samef, msg, chgf] = mars_vol_check(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)
+ checks spm_vol structs are in same space
+
+ V1, V2, etc      - arrays of spm_vol structs
+
+ samef            - true if images have same dims, mats
+ msg              - cell array containing helpful message if not
+ chgf             - logical Nx2 array of difference flags
+_______________________________________________________________________
+ Copyright (C) 2008 Wellcome Trust Centre for Neuroimaging
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_5/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+<li><a href="../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function s = sepcat(strs, sep)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [samef, msg, chgf] = mars_vol_check(varargin)</a>
+0002 <span class="comment">% FORMAT [samef, msg, chgf] = mars_vol_check(V1, V2, ...)</span>
+0003 <span class="comment">% checks spm_vol structs are in same space</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% V1, V2, etc      - arrays of spm_vol structs</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% samef            - true if images have same dims, mats</span>
+0008 <span class="comment">% msg              - cell array containing helpful message if not</span>
+0009 <span class="comment">% chgf             - logical Nx2 array of difference flags</span>
+0010 <span class="comment">%_______________________________________________________________________</span>
+0011 <span class="comment">% Copyright (C) 2008 Wellcome Trust Centre for Neuroimaging</span>
+0012 
+0013 <span class="comment">% Copied from spm_vol_check.m</span>
+0014 <span class="comment">% Matthew Brett</span>
+0015 <span class="comment">% $Id: spm_vol_check.m 2696 2009-02-05 20:29:48Z guillaume $</span>
+0016 
+0017 
+0018 [fnames samef msg] = deal({},1,{});
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 1,
+0021     <span class="keyword">return</span>;
+0022 <span class="keyword">end</span>
+0023 
+0024 <span class="keyword">for</span> i = 1:numel(varargin),
+0025     vols   = varargin{i};
+0026     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vols),
+0027         <span class="keyword">if</span> i == 1,
+0028             dims   = cat(3,vols(:).dim);
+0029             mats   = cat(3,vols(:).mat);
+0030         <span class="keyword">else</span>
+0031             dims   = cat(3,dims,vols(:).dim);
+0032             mats   = cat(3,mats,vols(:).mat);
+0033         <span class="keyword">end</span>
+0034         fnames = {fnames{:}, vols(:).fname};
+0035     <span class="keyword">end</span>
+0036 <span class="keyword">end</span>
+0037   
+0038 nimgs = size(dims, 3);
+0039 <span class="keyword">if</span> nimgs &lt; 2,
+0040     <span class="keyword">return</span>;
+0041 <span class="keyword">end</span>
+0042 
+0043 labs = {<span class="string">'dimensions'</span>, <span class="string">'orientation &amp; voxel size'</span>};
+0044 
+0045 dimf = any(diff(dims(:,1:3,:),1,3));
+0046 matf = any(any(diff(mats,1,3)));
+0047 chgf = logical([dimf(:) matf(:)]);
+0048 chgi = find(any(chgf, 2));
+0049 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(chgi),
+0050     samef = 0;
+0051     e1    = chgi(1);
+0052     msg   = {[<span class="string">'Images don''t all have the same '</span> <span class="keyword">...</span>
+0053           <a href="#_sub1" class="code" title="subfunction s = sepcat(strs, sep)">sepcat</a>(labs(chgf(e1,:)),<span class="string">', '</span>)],<span class="keyword">...</span>
+0054         <span class="string">'First difference between image pair:'</span>,<span class="keyword">...</span>
+0055         fnames{e1},<span class="keyword">...</span>
+0056         fnames{e1+1}};
+0057 <span class="keyword">end</span>
+0058 
+0059 <a name="_sub1" href="#_subfunctions" class="code">function s = sepcat(strs, sep)</a>
+0060 <span class="comment">% returns cell array of strings as one char string, separated by sep</span>
+0061 <span class="keyword">if</span> nargin &lt; 2,
+0062     sep = <span class="string">';'</span>;
+0063 <span class="keyword">end</span>
+0064 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(strs),
+0065     s = <span class="string">''</span>;
+0066     <span class="keyword">return</span>
+0067 <span class="keyword">end</span>
+0068 strs = strs(:)';
+0069 strs = [strs; repmat({sep}, 1, length(strs))];
+0070 s    = [strs{1:end-1}];
+0071 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

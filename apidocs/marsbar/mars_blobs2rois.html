@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_blobs2rois</title>
+  <meta name="keywords" content="mars_blobs2rois">
+  <meta name="description" content="creates ROIs from spm_results_ui SPM">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_blobs2rois.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_blobs2rois
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>creates ROIs from spm_results_ui SPM</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function mars_blobs2rois(xSPM, roipath, rootn) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> creates ROIs from spm_results_ui SPM
+ FORMAT mars_blobs2rois(xSPM, roipath, rootn)
+
+ Inputs
+ xSPM         - SPM results structure with needed fields
+                  title
+                  XYZ   - voxel coordinates of activated points
+                  Z     - statistic values for activated points
+                  M     - 4x4 matrix from voxels to mm
+ roipath      - directory in which to write ROIs
+ rootn        - root name for ROI(s)
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../marsbar/@maroi/saveroi.html" class="code" title="function roi = saveroi(roi, fname)">saveroi</a>	saveroi method - checks fname, sets source field, saves object</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/spm2/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm5/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm99/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function mars_blobs2rois(xSPM, roipath, rootn)</a>
+0002 <span class="comment">% creates ROIs from spm_results_ui SPM</span>
+0003 <span class="comment">% FORMAT mars_blobs2rois(xSPM, roipath, rootn)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% xSPM         - SPM results structure with needed fields</span>
+0007 <span class="comment">%                  title</span>
+0008 <span class="comment">%                  XYZ   - voxel coordinates of activated points</span>
+0009 <span class="comment">%                  Z     - statistic values for activated points</span>
+0010 <span class="comment">%                  M     - 4x4 matrix from voxels to mm</span>
+0011 <span class="comment">% roipath      - directory in which to write ROIs</span>
+0012 <span class="comment">% rootn        - root name for ROI(s)</span>
+0013 
+0014 <span class="keyword">if</span> nargin &lt; 1
+0015   error(<span class="string">'Need SPM structure'</span>);
+0016 <span class="keyword">end</span>
+0017 <span class="keyword">if</span> nargin &lt; 2
+0018   roipath = <span class="string">''</span>;
+0019 <span class="keyword">end</span>
+0020 <span class="keyword">if</span> nargin &lt; 3
+0021   rootn = <span class="string">''</span>;
+0022 <span class="keyword">end</span>
+0023 
+0024 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(roipath)
+0025   roipath = <a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>([-1 0], <span class="string">''</span>, <span class="string">'Directory to save ROI(s)'</span>);
+0026 <span class="keyword">end</span>
+0027 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(roipath)
+0028   <span class="keyword">return</span>
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(rootn)
+0031   rootn = <a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'str2fname'</span>, xSPM.title);
+0032   rootn = spm_input(<span class="string">'Root name for clusters'</span>, <span class="string">'+1'</span>, <span class="string">'s'</span>, rootn);
+0033 <span class="keyword">end</span>
+0034 
+0035 pre_ones = ones(1, size(xSPM.XYZ,2));
+0036 clusters = spm_clusters(xSPM.XYZ);
+0037 [N Z maxes A] = spm_max(xSPM.Z,xSPM.XYZ);
+0038 
+0039 <span class="keyword">for</span> c = unique(A(:)')
+0040   <span class="comment">% maximum maximum for this cluster</span>
+0041   tmp = Z; tmp(A~=c) = -Inf; 
+0042   [tmp mi] = max(tmp);
+0043   <span class="comment">% voxel coordinate of max</span>
+0044   vco = maxes(:, mi);
+0045   <span class="comment">% in mm</span>
+0046   maxmm = xSPM.M * [vco; 1];
+0047   maxmm = maxmm(1:3);
+0048   <span class="comment">% corresponding cluster in spm_clusters, XYZ for cluster</span>
+0049   my_c = clusters(all(xSPM.XYZ == vco * pre_ones));
+0050   XYZ = xSPM.XYZ(:, clusters == my_c(1));
+0051   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(XYZ)
+0052     <span class="comment">% file name and labels</span>
+0053     d = sprintf(<span class="string">'%s cluster at [%0.1f %0.1f %0.1f]'</span>, rootn, maxmm);
+0054     l = sprintf(<span class="string">'%s_%0.0f_%0.0f_%0.0f'</span>, rootn, maxmm);
+0055     fn = <a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'str2fname'</span>, l);
+0056     fname = <a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'filename'</span>, fullfile(roipath, fn));
+0057     o = <a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>(struct(<span class="string">'XYZ'</span>,XYZ,<span class="string">'mat'</span>,xSPM.M,<span class="keyword">...</span>
+0058         <span class="string">'descrip'</span>,d, <span class="string">'label'</span>, l), <span class="keyword">...</span>
+0059         <span class="string">'vox'</span>);
+0060     fprintf(<span class="string">'\nSaving %s as %s...'</span>, d, fname);
+0061     <a href="../marsbar/@maroi/saveroi.html" class="code" title="function roi = saveroi(roi, fname)">saveroi</a>(o, fname);
+0062   <span class="keyword">end</span>
+0063 <span class="keyword">end</span>
+0064 fprintf(<span class="string">'\nDone...\n'</span>);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

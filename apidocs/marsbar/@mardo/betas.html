@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of betas</title>
+  <meta name="keywords" content="betas">
+  <meta name="description" content="method to get estimated betas">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; betas.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>betas
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get estimated betas</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function r = betas(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get estimated betas
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="adjusted_data.html" class="code" title="function Ya = adjusted_data(D, Ic)">adjusted_data</a>	Return adjusted data for estimated design and contrast no</li>
+<li><a href="event_fitted.html" class="code" title="function [tc, dt] = event_fitted(D, e_spec, dur)">event_fitted</a>	method to compute fitted event time course</li>
+<li><a href="event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_stat_compute.html" class="code" title="function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)">pr_stat_compute</a>	private function to compute statistics for SPM2 design</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_stat_compute.html" class="code" title="function [con,stat,Ps,Pc] = pr_stat_compute(SPM,Ic)">pr_stat_compute</a>	private function to compute statistics for SPM2 design</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_stat_compute.html" class="code" title="function [Num, Stat, P, Pc] = pr_stat_compute(xCon, Xs, V, betas, ResidualMS);">pr_stat_compute</a>	calculates contrast value, stats and p values for contrasts</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_stat_compute_mv.html" class="code" title="function [MVres]= pr_stat_compute_mv(xCon, Xs, V, betas, ResidualMS, Y)">pr_stat_compute_mv</a>	compute multivariate statistics across ROIs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function r = betas(o)</a>
+0002 <span class="comment">% method to get estimated betas</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="keyword">if</span> ~<a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(o)
+0007   error(<span class="string">'No betas, model not estimated'</span>);
+0008 <span class="keyword">end</span>
+0009 SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(o);
+0010 r   = SPM.betas;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

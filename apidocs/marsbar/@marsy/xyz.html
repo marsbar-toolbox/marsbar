@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of xyz</title>
+  <meta name="keywords" content="xyz">
+  <meta name="description" content="gets XYZ coordinates for region">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; xyz.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>xyz
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>gets XYZ coordinates for region</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [XYZ, M]= xyz(o, r_no, xyz_type) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> gets XYZ coordinates for region 
+ FORMAT [XYZ M]= xyz(o, r_no, xyz_type)
+ 
+ Inputs
+ o         - marsy object
+ r_no      - region number
+ xyz_type  - string, one of 'mm','real','vox' 
+             where 'real' is a synonym for 'mm'
+             and 'mm' is the default (if not passed)
+             'mm' results in coordinates in mm
+             'vox' gives coordinates in voxels
+ 
+ Outputs
+ XYZ       - coordinates in specified reference
+ M         - 4x4 transformation mapping voxels to mm
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>	get number of regions</li>
+<li><a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>	get/set method for y_struct field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>	Display Orthogonal Views of a Normalized Image</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [XYZ, M]= xyz(o, r_no, xyz_type)</a>
+0002 <span class="comment">% gets XYZ coordinates for region</span>
+0003 <span class="comment">% FORMAT [XYZ M]= xyz(o, r_no, xyz_type)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% o         - marsy object</span>
+0007 <span class="comment">% r_no      - region number</span>
+0008 <span class="comment">% xyz_type  - string, one of 'mm','real','vox'</span>
+0009 <span class="comment">%             where 'real' is a synonym for 'mm'</span>
+0010 <span class="comment">%             and 'mm' is the default (if not passed)</span>
+0011 <span class="comment">%             'mm' results in coordinates in mm</span>
+0012 <span class="comment">%             'vox' gives coordinates in voxels</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Outputs</span>
+0015 <span class="comment">% XYZ       - coordinates in specified reference</span>
+0016 <span class="comment">% M         - 4x4 transformation mapping voxels to mm</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019 
+0020 r = <a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>(o);
+0021 <span class="keyword">if</span> nargin &lt; 2
+0022   error(<span class="string">'Need region number to get XYZ coordinates'</span>)
+0023 <span class="keyword">end</span>
+0024 <span class="keyword">if</span> r_no &gt; r
+0025   error(<span class="string">'Region number too large'</span>);
+0026 <span class="keyword">end</span>
+0027 <span class="keyword">if</span> nargin &lt; 3
+0028   xyz_type = <span class="string">'mm'</span>;
+0029 <span class="keyword">end</span>
+0030 
+0031 XYZ = [];
+0032 M = eye(4);
+0033 st = <a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>(o);
+0034 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'regions'</span>)
+0035   <span class="keyword">return</span>
+0036 <span class="keyword">end</span>
+0037 r_st = st.regions{r_no};
+0038 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(r_st, <span class="string">'vXYZ'</span>) |  ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(r_st, <span class="string">'mat'</span>)
+0039   <span class="keyword">return</span>
+0040 <span class="keyword">end</span>
+0041 XYZ = r_st.vXYZ;
+0042 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(XYZ), <span class="keyword">return</span>, <span class="keyword">end</span>
+0043 <span class="keyword">switch</span> xyz_type
+0044  <span class="keyword">case</span> <span class="string">'vox'</span>
+0045  <span class="keyword">case</span> {<span class="string">'mm'</span>, <span class="string">'real'</span>}
+0046   [m n] = size(XYZ);
+0047   <span class="keyword">if</span> m == 3, XYZ = [XYZ; ones(1, n)]; <span class="keyword">end</span>
+0048   M = r_st.mat;
+0049   XYZ = M * XYZ;
+0050  <span class="keyword">otherwise</span>
+0051   error([<span class="string">'Unknown coordinate type: '</span> xyz_type]);
+0052 <span class="keyword">end</span>
+0053 XYZ = XYZ(1:3,:);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_reml</title>
+  <meta name="keywords" content="pr_spm_reml">
+  <meta name="description" content="ReML estimation of covariance components from y*y'">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_reml.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_reml
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>ReML estimation of covariance components from y*y'</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ReML estimation of covariance components from y*y'
+ FORMAT [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,[OPT]);
+
+ YY  - (m x m) sample covariance matrix Y*Y'  {Y = (m x N) data matrix}
+ X   - (m x p) design matrix
+ Q   - {1 x q} covariance components
+ N   - number of samples
+
+ OPT = 1 : log-normal hyper-parameterisation (with hyperpriors)
+
+ C   - (m x m) estimated errors = h(1)*Q{1} + h(2)*Q{2} + ...
+ h   - (q x 1) ReML hyperparameters h
+ Ph  - (q x q) conditional precision of h [or log(h), if OPT(1)]
+
+ F   - [-ve] free energy F = log evidence = p(Y|X,Q) = ReML objective
+
+ Performs a Fisher-Scoring ascent on F to find ReML variance parameter
+ estimates.
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="pr_spm_logdet.html" class="code" title="function [H] = pr_spm_logdet(C)">pr_spm_logdet</a>	returns the log of the determinant of positive semi-definite matrix C</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT);</a>
+0002 <span class="comment">% ReML estimation of covariance components from y*y'</span>
+0003 <span class="comment">% FORMAT [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,[OPT]);</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% YY  - (m x m) sample covariance matrix Y*Y'  {Y = (m x N) data matrix}</span>
+0006 <span class="comment">% X   - (m x p) design matrix</span>
+0007 <span class="comment">% Q   - {1 x q} covariance components</span>
+0008 <span class="comment">% N   - number of samples</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% OPT = 1 : log-normal hyper-parameterisation (with hyperpriors)</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% C   - (m x m) estimated errors = h(1)*Q{1} + h(2)*Q{2} + ...</span>
+0013 <span class="comment">% h   - (q x 1) ReML hyperparameters h</span>
+0014 <span class="comment">% Ph  - (q x q) conditional precision of h [or log(h), if OPT(1)]</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% F   - [-ve] free energy F = log evidence = p(Y|X,Q) = ReML objective</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Performs a Fisher-Scoring ascent on F to find ReML variance parameter</span>
+0019 <span class="comment">% estimates.</span>
+0020 <span class="comment">%__________________________________________________________________________</span>
+0021 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0022 
+0023 <span class="comment">% John Ashburner &amp; Karl Friston</span>
+0024 <span class="comment">% $Id: spm_reml.m 456 2006-02-22 18:46:29Z karl $</span>
+0025 
+0026 <span class="comment">% assume a single sample if not specified</span>
+0027 <span class="comment">%--------------------------------------------------------------------------</span>
+0028 <span class="keyword">try</span>
+0029     N;
+0030 <span class="keyword">catch</span>
+0031     N  = 1;
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="comment">% assume OPT = [0 0]</span>
+0035 <span class="comment">%--------------------------------------------------------------------------</span>
+0036 <span class="keyword">try</span>
+0037     OPT;
+0038 <span class="keyword">catch</span>
+0039     OPT = 0;
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">% ortho-normalise X</span>
+0043 <span class="comment">%--------------------------------------------------------------------------</span>
+0044 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(X)
+0045     X = sparse(length(Q{1}),1);
+0046 <span class="keyword">end</span>
+0047 X     = orth(full(X));
+0048 [n p] = size(X);
+0049 
+0050 <span class="comment">% initialise h</span>
+0051 <span class="comment">%--------------------------------------------------------------------------</span>
+0052 m     = length(Q);
+0053 h     = zeros(m,1);
+0054 dh    = zeros(m,1);
+0055 dFdh  = zeros(m,1);
+0056 dFdhh = zeros(m,m);
+0057 
+0058 
+0059 <span class="comment">% initialise and specify hyperpriors</span>
+0060 <span class="comment">%--------------------------------------------------------------------------</span>
+0061 <span class="keyword">if</span> OPT
+0062     hP  = eye(m,m)/32;
+0063     hE  = h - 32;
+0064     <span class="keyword">for</span> i = 1:m
+0065         h(i) = -log(normest(Q{i}));
+0066     <span class="keyword">end</span>
+0067 <span class="keyword">else</span>
+0068     hE  = zeros(m,1);
+0069     hP  = zeros(m,m);
+0070     <span class="keyword">for</span> i = 1:m
+0071         h(i) = any(diag(Q{i}));
+0072     <span class="keyword">end</span>
+0073 <span class="keyword">end</span>
+0074 
+0075 
+0076 <span class="comment">% ReML (EM/VB)</span>
+0077 <span class="comment">%--------------------------------------------------------------------------</span>
+0078 <span class="keyword">for</span> k = 1:64
+0079 
+0080     <span class="comment">% compute current estimate of covariance</span>
+0081     <span class="comment">%----------------------------------------------------------------------</span>
+0082     C     = sparse(n,n);
+0083     <span class="keyword">for</span> i = 1:m
+0084         <span class="keyword">if</span> OPT
+0085             C = C + Q{i}*exp(h(i));
+0086         <span class="keyword">else</span>
+0087             C = C + Q{i}*h(i);
+0088         <span class="keyword">end</span>
+0089     <span class="keyword">end</span>
+0090     iC    = inv(C);
+0091 
+0092     <span class="comment">% E-step: conditional covariance cov(B|y) {Cq}</span>
+0093     <span class="comment">%======================================================================</span>
+0094     iCX   = iC*X;
+0095     Cq    = pinv(X'*iCX);
+0096     XCXiC = X*Cq*iCX';
+0097 
+0098     <span class="comment">% M-step: ReML estimate of hyperparameters</span>
+0099     <span class="comment">%======================================================================</span>
+0100 
+0101     <span class="comment">% Gradient dF/dh (first derivatives)</span>
+0102     <span class="comment">%----------------------------------------------------------------------</span>
+0103     P     = iC - iC*XCXiC;
+0104     U     = speye(n) - P*YY/N;
+0105     <span class="keyword">for</span> i = 1:m
+0106 
+0107         <span class="comment">% dF/dh = -trace(dF/diC*iC*Q{i}*iC)</span>
+0108         <span class="comment">%------------------------------------------------------------------</span>
+0109         PQ{i}     = P*Q{i};
+0110         <span class="keyword">if</span> OPT
+0111             PQ{i} = PQ{i}*exp(h(i));
+0112         <span class="keyword">end</span>
+0113         dFdh(i)   = -trace(PQ{i}*U)*N/2;
+0114 
+0115     <span class="keyword">end</span>
+0116 
+0117     <span class="comment">% Expected curvature E{dF/dhh} (second derivatives)</span>
+0118     <span class="comment">%----------------------------------------------------------------------</span>
+0119     <span class="keyword">for</span> i = 1:m
+0120         <span class="keyword">for</span> j = i:m
+0121 
+0122             <span class="comment">% dF/dhh = -trace{P*Q{i}*P*Q{j}}</span>
+0123             <span class="comment">%--------------------------------------------------------------</span>
+0124             dFdhh(i,j) = -trace(PQ{i}*PQ{j})*N/2;
+0125             dFdhh(j,i) =  dFdhh(i,j);
+0126 
+0127         <span class="keyword">end</span>
+0128     <span class="keyword">end</span>
+0129 
+0130     <span class="comment">% add hyperpriors</span>
+0131     <span class="comment">%----------------------------------------------------------------------</span>
+0132     dFdh  = dFdh  - hP*(h - hE);
+0133     dFdhh = dFdhh - hP;
+0134     
+0135     <span class="comment">% Fisher scoring: update dh = -inv(ddF/dhh)*dF/dh</span>
+0136     <span class="comment">%----------------------------------------------------------------------</span>
+0137     Ph    = -dFdhh;
+0138     dh    = -pinv(dFdhh)*dFdh;
+0139 
+0140     <span class="comment">% preclude numerical overflow</span>
+0141     <span class="comment">%----------------------------------------------------------------------</span>
+0142     <span class="keyword">if</span> OPT
+0143         dh = min(dh, 8);
+0144         dh = max(dh,-8);
+0145     <span class="keyword">end</span>
+0146     h     = h + dh;
+0147     
+0148     <span class="comment">% Convergence (1% change in log-evidence)</span>
+0149     <span class="comment">%======================================================================</span>
+0150     w     = dFdh'*dh;
+0151     fprintf(<span class="string">'%-30s: %i %30s%e\n'</span>,<span class="string">'  ReML Iteration'</span>,k,<span class="string">'...'</span>,full(w));
+0152     <span class="keyword">if</span> w &lt; 1e-2, <span class="keyword">break</span>, <span class="keyword">end</span>
+0153 
+0154 <span class="keyword">end</span>
+0155 
+0156 <span class="comment">% log evidence = ln p(y|X,Q) = ReML objective = F = trace(R'*iC*R*YY)/2 ...</span>
+0157 <span class="comment">%--------------------------------------------------------------------------</span>
+0158 <span class="keyword">if</span> nargout &gt; 3
+0159 
+0160     F = - trace(C*P*YY*P)/2 <span class="keyword">...</span>
+0161         - N*n*log(2*pi)/2 <span class="keyword">...</span>
+0162         - N*<a href="pr_spm_logdet.html" class="code" title="function [H] = pr_spm_logdet(C)">pr_spm_logdet</a>(C)/2 <span class="keyword">...</span>
+0163         + N*<a href="pr_spm_logdet.html" class="code" title="function [H] = pr_spm_logdet(C)">pr_spm_logdet</a>(Cq)/2 <span class="keyword">...</span>
+0164         -   <a href="pr_spm_logdet.html" class="code" title="function [H] = pr_spm_logdet(C)">pr_spm_logdet</a>(Ph)/2 <span class="keyword">...</span>
+0165         +   <a href="pr_spm_logdet.html" class="code" title="function [H] = pr_spm_logdet(C)">pr_spm_logdet</a>(hP)/2;
+0166 <span class="keyword">end</span>
+0167 
+0168 <span class="comment">% return exp(h) if log-normal hyperpriors</span>
+0169 <span class="comment">%--------------------------------------------------------------------------</span>
+0170 <span class="keyword">if</span> OPT
+0171     h  = exp(h);
+0172 <span class="keyword">end</span>
+0173     
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

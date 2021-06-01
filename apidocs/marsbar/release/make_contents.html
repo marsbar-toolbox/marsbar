@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of make_contents</title>
+  <meta name="keywords" content="make_contents">
+  <meta name="description" content="MAKECONTENTS makes Contents file, usually in current working directory.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">release</a> &gt; make_contents.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/release&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>make_contents
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>MAKECONTENTS makes Contents file, usually in current working directory.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function make_contents(aString, flags, start_dir) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MAKECONTENTS makes Contents file, usually in current working directory.
+   MAKECONTENTS(STRING [FLAGS [START_DIR]]) 
+   creates a standard &quot;Contents.m&quot; file in the
+   current directory by assembling the first comment (H1) line in
+   each function found in the current working directory.  If a 
+   &quot;Contents.m&quot; file exists, it is renamed to &quot;Contents.old&quot;, before
+   a new &quot;Contents.m&quot; file is created.  STRING is inserted as the 
+   first line of the &quot;Contents.m&quot; file;  if omitted, a blank line 
+   is inserted instead.  The function changes permission on the 
+   resultant &quot;Contents.m&quot; file to rw-r--r-- on Unix systems.
+
+   FLAGS can contain none or more of
+      'n'    - suppress path name at top of Contents file
+      'f'    - include first word of first line (excluded by default)
+      'c'    - use filename 'contents.m' instead of 'Contents.m'
+      'r'    - recursively list subdirectory contents also
+      'i'    - include starting directory from file name path list
+      'p'    - save contents file in current rather than listed directory 
+      'd'    - don't make backup of old contents file  
+ 
+   START_DIR can be omitted, giving a listing of current working
+       directory, or it can specify the directory to list
+
+ Updated 29 June 2000.
+ Revised to recurse down directories, handle options by
+ Matthew Brett; 28 June 2003
+
+ See also CONTENTS.
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="pre_release.html" class="code" title="function pre_release(rname, outdir, proj, proj_descrip, proj_url)">pre_release</a>	Runs pre-release export, cleanup</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function do_list(dirname, fcontents, flags)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function make_contents(aString, flags, start_dir)</a>
+0002 <span class="comment">% MAKECONTENTS makes Contents file, usually in current working directory.</span>
+0003 <span class="comment">%   MAKECONTENTS(STRING [FLAGS [START_DIR]])</span>
+0004 <span class="comment">%   creates a standard &quot;Contents.m&quot; file in the</span>
+0005 <span class="comment">%   current directory by assembling the first comment (H1) line in</span>
+0006 <span class="comment">%   each function found in the current working directory.  If a</span>
+0007 <span class="comment">%   &quot;Contents.m&quot; file exists, it is renamed to &quot;Contents.old&quot;, before</span>
+0008 <span class="comment">%   a new &quot;Contents.m&quot; file is created.  STRING is inserted as the</span>
+0009 <span class="comment">%   first line of the &quot;Contents.m&quot; file;  if omitted, a blank line</span>
+0010 <span class="comment">%   is inserted instead.  The function changes permission on the</span>
+0011 <span class="comment">%   resultant &quot;Contents.m&quot; file to rw-r--r-- on Unix systems.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   FLAGS can contain none or more of</span>
+0014 <span class="comment">%      'n'    - suppress path name at top of Contents file</span>
+0015 <span class="comment">%      'f'    - include first word of first line (excluded by default)</span>
+0016 <span class="comment">%      'c'    - use filename 'contents.m' instead of 'Contents.m'</span>
+0017 <span class="comment">%      'r'    - recursively list subdirectory contents also</span>
+0018 <span class="comment">%      'i'    - include starting directory from file name path list</span>
+0019 <span class="comment">%      'p'    - save contents file in current rather than listed directory</span>
+0020 <span class="comment">%      'd'    - don't make backup of old contents file</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%   START_DIR can be omitted, giving a listing of current working</span>
+0023 <span class="comment">%       directory, or it can specify the directory to list</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% Updated 29 June 2000.</span>
+0026 <span class="comment">% Revised to recurse down directories, handle options by</span>
+0027 <span class="comment">% Matthew Brett; 28 June 2003</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% See also CONTENTS.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% $Id$</span>
+0032 
+0033 <span class="comment">% Author(s): L. Bertuccioli</span>
+0034 <span class="comment">%            A. Prasad</span>
+0035 
+0036 <span class="comment">% Based on mkcontents.m by Denis Gilbert</span>
+0037 
+0038 <span class="comment">% Default value of input string</span>
+0039 <span class="keyword">if</span> nargin &lt; 1,
+0040   aString =<span class="string">' '</span>;
+0041 <span class="keyword">end</span>
+0042 <span class="keyword">if</span> nargin &lt; 2
+0043   flags = <span class="string">''</span>;
+0044 <span class="keyword">end</span>
+0045 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags)
+0046   flags = <span class="string">' '</span>;
+0047 <span class="keyword">end</span>
+0048 <span class="keyword">if</span> nargin &lt; 3
+0049   start_dir = <span class="string">''</span>;
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(start_dir)
+0052   start_dir = pwd;
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">% parse flags</span>
+0056 <span class="keyword">if</span> any(flags == <span class="string">'c'</span>)
+0057   cont_file = <span class="string">'contents.m'</span>;
+0058 <span class="keyword">else</span>
+0059   cont_file = <span class="string">'Contents.m'</span>;
+0060 <span class="keyword">end</span>
+0061 <span class="keyword">if</span> any(flags == <span class="string">'p'</span>)
+0062   cont_dir = pwd;
+0063 <span class="keyword">else</span>
+0064   cont_dir = start_dir;
+0065 <span class="keyword">end</span>
+0066 disp([<span class="string">'Creating &quot;'</span> cont_file <span class="string">'&quot; in '</span> cont_dir])
+0067 cont_path = fullfile(cont_dir, cont_file);
+0068 <span class="keyword">if</span> ~any(flags == <span class="string">'d'</span>)  
+0069   <span class="keyword">if</span> exist(cont_path, <span class="string">'file'</span>) 
+0070     copyfile(cont_path, <span class="keyword">...</span>
+0071          fullfile(cont_dir, [cont_file(1:end-1) <span class="string">'old'</span>]));
+0072     delete(cont_path)
+0073   <span class="keyword">end</span>
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">% Header lines</span>
+0077 line1 = [<span class="string">'% '</span> aString];
+0078 fcontents = fopen(cont_path,<span class="string">'wt'</span>);
+0079 <span class="keyword">if</span> fcontents == -1
+0080   error([<span class="string">'Could not open file: '</span> cont_path]);
+0081 <span class="keyword">end</span>
+0082 fprintf(fcontents,<span class="string">'%s\n'</span>,line1);     
+0083 <span class="keyword">if</span> ~any(flags == <span class="string">'n'</span>)
+0084   line2 = [<span class="string">'% Path -&gt;  '</span> start_dir];
+0085   fprintf(fcontents,<span class="string">'%s\n'</span>,line2);     
+0086 <span class="keyword">end</span>
+0087 
+0088 <span class="comment">% set first past flag</span>
+0089 flags = [flags <span class="string">'1'</span>];
+0090 
+0091 <span class="comment">% do write</span>
+0092 <a href="#_sub1" class="code" title="subfunction do_list(dirname, fcontents, flags)">do_list</a>(start_dir, fcontents, flags);
+0093 fclose(fcontents);
+0094 
+0095 <span class="comment">% Change permissions on Contents.m file</span>
+0096 <span class="comment">% only valid for Unix systems, no effect in Win32 systems</span>
+0097 <span class="keyword">if</span> isunix
+0098   unix([<span class="string">'chmod go+r '</span> cont_path]);
+0099 <span class="keyword">end</span>
+0100 <span class="keyword">return</span>
+0101 
+0102 <a name="_sub1" href="#_subfunctions" class="code">function do_list(dirname, fcontents, flags)</a>
+0103 <span class="keyword">persistent</span> START_DIR ST_D_LEN;
+0104 <span class="keyword">if</span> any(flags == <span class="string">'1'</span>) <span class="comment">% first pass through</span>
+0105   START_DIR = dirname;
+0106   ST_D_LEN = length(dirname) + 2; 
+0107 <span class="keyword">end</span>
+0108 
+0109 <span class="keyword">if</span> any(flags == <span class="string">'r'</span>)
+0110   <span class="comment">% find directories</span>
+0111   dirlist = dir(dirname);
+0112   dirnames = {dirlist([dirlist.isdir]).name};
+0113   dirnames = dirnames(~(strcmp(<span class="string">'.'</span>, dirnames) | strcmp(<span class="string">'..'</span>, dirnames)));
+0114 <span class="keyword">else</span>
+0115   dirnames = {};
+0116 <span class="keyword">end</span>
+0117 
+0118 <span class="comment">% find m files</span>
+0119 files = what(dirname);  
+0120 
+0121 <span class="comment">% fix apparent bug in what function</span>
+0122 files = files(1);
+0123 
+0124 <span class="comment">% exclude any contents files</span>
+0125 files.m  = files.m(logical(~strcmpi(files.m,<span class="string">'contents.m'</span>)));
+0126 <span class="keyword">if</span> length(files.m)==0
+0127      warning([<span class="string">'No m-files found in directory '</span> dirname])
+0128      <span class="keyword">return</span>
+0129 <span class="keyword">end</span>
+0130 fprintf(fcontents,<span class="string">'%%\n'</span>); 
+0131 
+0132 <span class="comment">% maybe exclude starting path from listing</span>
+0133 <span class="keyword">if</span> ~any(flags == <span class="string">'i'</span>)  
+0134   dirlab = dirname(ST_D_LEN:end);
+0135   <span class="keyword">if</span> ~any(flags == <span class="string">'1'</span>) <span class="comment">% not first pass</span>
+0136     dirlab = [dirlab filesep];
+0137   <span class="keyword">end</span>
+0138 <span class="keyword">else</span> <span class="comment">% not excluding starting directory</span>
+0139   dirlab = [dirname filesep];
+0140 <span class="keyword">end</span>
+0141     
+0142 maxlen = size(char(files.m),2) + length(dirlab);
+0143 
+0144 <span class="comment">% Write first lines to Contents.m if they exist</span>
+0145 <span class="keyword">for</span> i = 1:length(files.m)
+0146   fname = fullfile(files.path, files.m{i});
+0147   fid=fopen(fname, <span class="string">'rt'</span>); 
+0148   <span class="keyword">if</span> fid == -1, error([<span class="string">'Error opening file: '</span> fname]); <span class="keyword">end</span>
+0149   aLine = <span class="string">''</span>;
+0150   <span class="keyword">while</span>(<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(aLine) | length(aLine) &lt; 8)
+0151     aLine = fgetl(fid);
+0152   <span class="keyword">end</span>
+0153   <span class="keyword">if</span> strcmp(aLine(1:8),<span class="string">'function'</span>),
+0154     count_percent = 0;
+0155     <span class="keyword">while</span> count_percent &lt; 1 &amp; feof(fid)==0; 
+0156       line = fgetl(fid);
+0157       <span class="keyword">if</span> length(line) &gt; 0 
+0158     <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(findstr(line,<span class="string">'%'</span>)) 
+0159       count_percent = count_percent + 1;
+0160       rr=line(2:length(line));
+0161       <span class="keyword">if</span> ~any(flags == <span class="string">'f'</span>) <span class="comment">% remove first word</span>
+0162         [tt,rr]=strtok(line(2:length(line)));
+0163       <span class="keyword">end</span>
+0164       rr = fliplr(deblank(fliplr(rr)));
+0165       fn = [dirlab strtok(char(files.m(i)),<span class="string">'.'</span>)];
+0166       n = maxlen - length(fn) - 1;
+0167       line = [<span class="string">'%   '</span> fn blanks(n) <span class="string">'- '</span> rr];
+0168       fprintf(fcontents,<span class="string">'%s\n'</span>,line);
+0169     <span class="keyword">end</span> <span class="comment">% if ~isempty</span>
+0170       <span class="keyword">end</span> <span class="comment">% if length</span>
+0171       <span class="keyword">if</span> feof(fid)==1  
+0172     fn = [dirlab strtok(char(files.m(i)),<span class="string">'.'</span>)];
+0173     n = maxlen - length(fn) - 1;
+0174     line = [<span class="string">'%   '</span> fn blanks(n) <span class="string">'- (No help available)'</span>];
+0175     fprintf(fcontents,<span class="string">'%s\n'</span>,line); 
+0176       <span class="keyword">end</span> <span class="comment">% if feof</span>
+0177     <span class="keyword">end</span> <span class="comment">% while</span>
+0178   <span class="keyword">end</span> <span class="comment">% if strcmp</span>
+0179   fclose(fid);
+0180 <span class="keyword">end</span>
+0181 <span class="comment">% recurse down directory tree</span>
+0182 flags = flags(flags ~= <span class="string">'1'</span>); <span class="comment">% reset first pass flag</span>
+0183 <span class="keyword">for</span> d = 1:length(dirnames)
+0184   <a href="#_sub1" class="code" title="subfunction do_list(dirname, fcontents, flags)">do_list</a>(fullfile(dirname, dirnames{d}), fcontents, flags);
+0185 <span class="keyword">end</span>
+0186 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

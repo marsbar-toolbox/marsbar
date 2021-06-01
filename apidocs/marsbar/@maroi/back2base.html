@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of back2base</title>
+  <meta name="keywords" content="back2base">
+  <meta name="description" content="back2base method - check for spacebase, transform thereto">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; back2base.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>back2base
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>back2base method - check for spacebase, transform thereto</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = back2base(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> back2base method - check for spacebase, transform thereto
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>	my_classdata method - sets/gets class data</li>
+<li><a href="../../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="and.html" class="code" title="function o = and(o1, o2)">and</a>	overloaded add function</li>
+<li><a href="eq.html" class="code" title="function o = eq(o1, o2)">eq</a>	overloaded eq function</li>
+<li><a href="ge.html" class="code" title="function o = ge(o1, o2)">ge</a>	overloaded ge function</li>
+<li><a href="gt.html" class="code" title="function o = gt(o1, o2)">gt</a>	overloaded gt (greater than) function</li>
+<li><a href="le.html" class="code" title="function o = le(o1, o2)">le</a>	overloaded le (less than or equal to) function</li>
+<li><a href="lt.html" class="code" title="function o = lt(o1, o2)">lt</a>	overloaded lt (less than) function</li>
+<li><a href="minus.html" class="code" title="function o = minus(o1, o2)">minus</a>	overloaded minus function</li>
+<li><a href="mrdivide.html" class="code" title="function o = mrdivide(o1, o2)">mrdivide</a>	overloaded mrdivide (matrix right divide) function</li>
+<li><a href="mtimes.html" class="code" title="function o = mtimes(o1, o2)">mtimes</a>	overloaded mtimes function</li>
+<li><a href="ne.html" class="code" title="function o = ne(o1, o2)">ne</a>	overloaded ne function</li>
+<li><a href="not.html" class="code" title="function o = not(o1)">not</a>	overloaded not function</li>
+<li><a href="or.html" class="code" title="function o = or(o1, o2)">or</a>	overloaded or function</li>
+<li><a href="plus.html" class="code" title="function o = plus(o1, o2)">plus</a>	overloaded plus function</li>
+<li><a href="rdivide.html" class="code" title="function o = rdivide(o1, o2)">rdivide</a>	overloaded rdivide function</li>
+<li><a href="times.html" class="code" title="function o = times(o1, o2)">times</a>	overloaded times function</li>
+<li><a href="xor.html" class="code" title="function o = xor(o1, o2)">xor</a>	overloaded xor function</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = back2base(o)</a>
+0002 <span class="comment">% back2base method - check for spacebase, transform thereto</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 spb = <a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>(<span class="string">'spacebase'</span>);
+0007 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(spb)
+0008   error(<span class="string">'Cannot do arithmetic without defined base space'</span>);
+0009 <span class="keyword">end</span>
+0010 o = <a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(o, spb);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

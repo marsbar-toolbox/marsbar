@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_logdet</title>
+  <meta name="keywords" content="pr_spm_logdet">
+  <meta name="description" content="returns the log of the determinant of positive semi-definite matrix C">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_logdet.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_logdet
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns the log of the determinant of positive semi-definite matrix C</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [H] = pr_spm_logdet(C) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns the log of the determinant of positive semi-definite matrix C
+ FORMAT [H] = pr_spm_logdet(C)
+ H = log(det(C))
+
+ spm_logdet is a computationally efficient operator that can deal with
+ sparse matrices
+_______________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_reml.html" class="code" title="function [C,h,Ph,F] = pr_spm_reml(YY,X,Q,N,OPT);">pr_spm_reml</a>	ReML estimation of covariance components from y*y'</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [H] = pr_spm_logdet(C)</a>
+0002 <span class="comment">% returns the log of the determinant of positive semi-definite matrix C</span>
+0003 <span class="comment">% FORMAT [H] = pr_spm_logdet(C)</span>
+0004 <span class="comment">% H = log(det(C))</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% spm_logdet is a computationally efficient operator that can deal with</span>
+0007 <span class="comment">% sparse matrices</span>
+0008 <span class="comment">%_______________________________________________________________________</span>
+0009 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0010 
+0011 <span class="comment">% Karl Friston</span>
+0012 <span class="comment">% $Id: spm_logdet.m 309 2005-11-24 16:24:04Z karl $</span>
+0013 
+0014 <span class="comment">% assume diagonal form</span>
+0015 <span class="comment">%-----------------------------------------------------------------------</span>
+0016 TOL   = 1e-8;                                        <span class="comment">% c.f. n*max(s)*eps</span>
+0017 n     = length(C);
+0018 s     = diag(C);
+0019 i     = find(s &gt; TOL &amp; s &lt; 1/TOL);
+0020 C     = C(i,i);
+0021 H     = sum(log(diag(C)));
+0022 
+0023 <span class="comment">% invoke det if non-diagonal</span>
+0024 <span class="comment">%-----------------------------------------------------------------------</span>
+0025 w     = warning;
+0026 warning off
+0027 [i j] = find(C);
+0028 <span class="keyword">if</span> any(i ~= j)
+0029       n = length(C);
+0030       a = exp(H/n);
+0031       H = H + log(det(C/a));           
+0032 <span class="keyword">end</span>
+0033 warning(w)
+0034 
+0035 <span class="comment">% invoke svd is rank deficient</span>
+0036 <span class="comment">%-----------------------------------------------------------------------</span>
+0037 <span class="keyword">if</span> imag(H) | isinf(H)
+0038     s  = svd(full(C));
+0039     H  = sum(log(s(s &gt; TOL &amp; s &lt; 1/TOL)));
+0040 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

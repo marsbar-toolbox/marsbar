@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_fmri_design</title>
+  <meta name="keywords" content="pr_fmri_design">
+  <meta name="description" content="MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_fmri_design.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_fmri_design
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [SPM] = pr_fmri_design(SPM) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies
+ FORMAT [SPM] = pr_fmri_design(SPM)
+
+ This file is a hardly edited version of:
+ @(#)spm_fMRI_design.m    2.34 Karl Friston 03/01/30
+ See that (SPM2) version for comments etc
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="pr_spm_get_ons.html" class="code" title="function [U] = pr_spm_get_ons(SPM,s)">pr_spm_get_ons</a>	returns input [designed effects] structures</li>
+<li><a href="pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = spm_Volterra(U,bf,V)">pr_spm_volterra</a>	generalized convolution of inputs (U) with basis set (bf)</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_ons.html" class="code" title="function [U] = pr_spm_get_ons(SPM,s)">pr_spm_get_ons</a>	returns input [designed effects] structures</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = pr_spm_volterra(U,bf,V)">pr_spm_volterra</a>	generalized convolution of inputs (U) with basis set (bf)</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>	creates basis functions for each trial type {i} in struct BF{i}</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_get_ons.html" class="code" title="function [sf,Cname,Pv,Pname,DSstr] = pr_spm_get_ons(k,T,dt,STOC,Fstr,v,Cname,s)">pr_spm_get_ons</a>	returns onset times for events</li>
+<li><a href="../../../marsbar/@mardo_99/private/pr_spm_volterra.html" class="code" title="function [X,Xn,IND,BF,name] = spm_Volterra(SF,BF,name,N)">pr_spm_volterra</a>	returns [design] matrix of explanatory variables</li>
+<li><a href="../../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+<li><a href="../../../marsbar/@mardo_5/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+<li><a href="../../../marsbar/@mardo_99/ui_build.html" class="code" title="function D = ui_build(D, dtype)">ui_build</a>	method to create / fill design via GUI</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [SPM] = pr_fmri_design(SPM)</a>
+0002 <span class="comment">% MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</span>
+0003 <span class="comment">% FORMAT [SPM] = pr_fmri_design(SPM)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% This file is a hardly edited version of:</span>
+0006 <span class="comment">% @(#)spm_fMRI_design.m    2.34 Karl Friston 03/01/30</span>
+0007 <span class="comment">% See that (SPM2) version for comments etc</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $Id$</span>
+0010   
+0011 <span class="comment">%-GUI setup</span>
+0012 <span class="comment">%-----------------------------------------------------------------------</span>
+0013 SPMid    = spm(<span class="string">'SFnBanner'</span>,mfilename,<a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>));
+0014 [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'fMRI stats model setup'</span>,0);
+0015 spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0016 
+0017 <span class="comment">% construct Design matrix {X} - cycle over sessions</span>
+0018 <span class="comment">%=======================================================================</span>
+0019 
+0020 <span class="comment">% global parameters</span>
+0021 <span class="comment">%-----------------------------------------------------------------------</span>
+0022 <span class="keyword">try</span>
+0023     fMRI_T     = SPM.xBF.T;
+0024     fMRI_T0    = SPM.xBF.T0;
+0025 <span class="keyword">catch</span>
+0026     <span class="keyword">global</span> defaults
+0027     d_fmri = <a href="../../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, defaults, <span class="string">'stats'</span>, <span class="string">'fmri'</span>);
+0028     <span class="keyword">if</span> <a href="../../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'isthere'</span>, d_fmri, <span class="string">'t'</span>)
+0029       fMRI_T  = d_fmri.t;
+0030       fMRI_T0 = d_fmri.t0;
+0031     <span class="keyword">else</span>,
+0032       fMRI_T  = 16;
+0033       fMRI_T0 = 1;
+0034     <span class="keyword">end</span>;
+0035     SPM.xBF.T  = fMRI_T;
+0036     SPM.xBF.T0 = fMRI_T0;
+0037 <span class="keyword">end</span>
+0038 
+0039 
+0040 <span class="comment">% get nscan and RT if not in SPM</span>
+0041 <span class="comment">%-----------------------------------------------------------------------</span>
+0042 <span class="keyword">try</span>
+0043     SPM.xY.RT;
+0044 <span class="keyword">catch</span>
+0045     spm_input(<span class="string">'Basic parameters...'</span>,1,<span class="string">'d'</span>,mfilename)
+0046     SPM.xY.RT = spm_input(<span class="string">'Interscan interval {secs}'</span>,<span class="string">'+1'</span>,<span class="string">'r'</span>,[],1);
+0047 <span class="keyword">end</span>
+0048 <span class="keyword">try</span>
+0049     SPM.nscan;
+0050 <span class="keyword">catch</span>
+0051         SPM.nscan = spm_input([<span class="string">'scans per session e.g. 64 64 64'</span>],<span class="string">'+1'</span>);
+0052 <span class="keyword">end</span>
+0053 
+0054 <span class="comment">% time units, dt = time bin {secs}</span>
+0055 <span class="comment">%-----------------------------------------------------------------------</span>
+0056 SPM.xBF.dt = SPM.xY.RT/SPM.xBF.T;
+0057 <span class="keyword">try</span>
+0058     SPM.xBF.UNITS;
+0059 <span class="keyword">catch</span>    
+0060     str           = <span class="string">'specify design in'</span>;
+0061     SPM.xBF.UNITS = spm_input(str,<span class="string">'+1'</span>,<span class="string">'scans|secs'</span>);
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="comment">% separate specifications for non-relicated sessions</span>
+0065 <span class="comment">%-----------------------------------------------------------------------</span>
+0066 rep     = 0;
+0067 <span class="keyword">if</span> length(SPM.nscan) &gt; 1 &amp; ~any(diff(SPM.nscan)) &amp; ~<a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM,<span class="string">'Sess'</span>)
+0068     str = <span class="string">'are sessions replications'</span>;
+0069     rep = spm_input(str,<span class="string">'+1'</span>,<span class="string">'yes|no'</span>,[1 0]);
+0070 <span class="keyword">end</span>
+0071 
+0072 <span class="comment">% Get basis functions</span>
+0073 <span class="comment">%-----------------------------------------------------------------------</span>
+0074 <span class="keyword">try</span>
+0075     bf      = SPM.xBF.bf;
+0076 <span class="keyword">catch</span>
+0077     SPM.xBF = <a href="pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>(SPM.xBF);
+0078     bf      = SPM.xBF.bf;
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">% 1st or 2nd order Volterra expansion?</span>
+0082 <span class="comment">%-----------------------------------------------------------------------</span>
+0083 <span class="keyword">try</span>
+0084     V   = SPM.xBF.Volterra;
+0085 <span class="keyword">catch</span>
+0086     str = <span class="string">'model interactions (Volterra)'</span>;
+0087     V   = spm_input(str,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[2 1]);
+0088     SPM.xBF.Volterra  = V;
+0089 <span class="keyword">end</span>
+0090 
+0091 
+0092 <span class="comment">% get session specific design parameters</span>
+0093 <span class="comment">%=======================================================================</span>
+0094 Xx    = [];
+0095 Xb    = [];
+0096 Xname = {};
+0097 Bname = {};
+0098 <span class="keyword">for</span> s = 1:length(SPM.nscan)
+0099 
+0100     <span class="comment">% number of scans for this session</span>
+0101     <span class="comment">%---------------------------------------------------------------</span>
+0102     k   = SPM.nscan(s);
+0103 
+0104     <span class="keyword">if</span> (s == 1) | ~rep
+0105 
+0106         <span class="comment">% create convolved stimulus functions or inputs</span>
+0107         <span class="comment">%=======================================================</span>
+0108 
+0109         <span class="comment">% Get inputs, neuronal causes or stimulus functions U</span>
+0110         <span class="comment">%-------------------------------------------------------</span>
+0111             U = <a href="pr_spm_get_ons.html" class="code" title="function [U] = pr_spm_get_ons(SPM,s)">pr_spm_get_ons</a>(SPM,s);
+0112 
+0113         <span class="comment">% Convolve stimulus functions with basis functions</span>
+0114         <span class="comment">%-------------------------------------------------------</span>
+0115         [X,Xn,Fc] = <a href="pr_spm_volterra.html" class="code" title="function [X,Xname,Fc] = spm_Volterra(U,bf,V)">pr_spm_volterra</a>(U,bf,V);
+0116 
+0117         <span class="comment">% Resample regressors at acquisition times (32 bin offset)</span>
+0118         <span class="comment">%-------------------------------------------------------</span>
+0119         <span class="keyword">try</span>
+0120             X = X([0:(k - 1)]*fMRI_T + fMRI_T0 + 32,:);
+0121         <span class="keyword">end</span>
+0122 
+0123 
+0124         <span class="comment">% get user specified regressors</span>
+0125         <span class="comment">%=======================================================</span>
+0126         <span class="keyword">try</span> 
+0127             C     = SPM.Sess(s).C.C;
+0128             Cname = SPM.Sess(s).C.name;
+0129         <span class="keyword">catch</span>
+0130 
+0131             <span class="comment">% covariates - C</span>
+0132             <span class="comment">%-----------------------------------------------</span>
+0133             str   = sprintf(<span class="string">'Session %d'</span>,s);
+0134             spm_input(<span class="string">'Other regressors'</span>,1,<span class="string">'d'</span>,str)
+0135             C     = [];
+0136             c     = spm_input(<span class="string">'user specified'</span>,<span class="string">'+1'</span>,<span class="string">'w1'</span>,0);
+0137                   <span class="keyword">while</span> size(C,2) &lt; c
+0138                      str = sprintf(<span class="string">'regressor %i'</span>,size(C,2) + 1);
+0139                       C  = [C spm_input(str,2,<span class="string">'e'</span>,[],[k Inf])];
+0140             <span class="keyword">end</span>
+0141 
+0142             <span class="comment">% and their names - Cnames</span>
+0143             <span class="comment">%-----------------------------------------------</span>
+0144             Cname = {};
+0145             <span class="keyword">for</span> i = 1:size(C,2)
+0146                 str      = sprintf(<span class="string">'regressor %i'</span>,i);
+0147                 Cname{i} = spm_input(<span class="string">'name of'</span>,<span class="string">'+0'</span>,<span class="string">'s'</span>,str);
+0148             <span class="keyword">end</span>
+0149         <span class="keyword">end</span>
+0150 
+0151         <span class="comment">% append mean-corrected regressors and names</span>
+0152         <span class="comment">%-------------------------------------------------------</span>
+0153         X      = [X spm_detrend(C)];
+0154         Xn     = {Xn{:}   Cname{:}};
+0155 
+0156         <span class="comment">% Confounds: Session effects</span>
+0157         <span class="comment">%=======================================================</span>
+0158         B      = ones(k,1);
+0159         Bn{1}  = sprintf(<span class="string">'constant'</span>);
+0160 
+0161     <span class="keyword">end</span>
+0162 
+0163     <span class="comment">% Session structure array</span>
+0164     <span class="comment">%---------------------------------------------------------------</span>
+0165     SPM.Sess(s).U      = U;
+0166     SPM.Sess(s).C.C    = C;
+0167     SPM.Sess(s).C.name = Cname;
+0168     SPM.Sess(s).row    = size(Xx,1) + [1:k];
+0169     SPM.Sess(s).col    = size(Xx,2) + [1:size(X,2)];
+0170     SPM.Sess(s).Fc     = Fc;
+0171 
+0172     <span class="comment">% Append names</span>
+0173     <span class="comment">%---------------------------------------------------------------</span>
+0174     <span class="keyword">for</span> i = 1:length(Xn) 
+0175         Xname{end + 1} = [sprintf(<span class="string">'Sn(%i) '</span>,s) Xn{i}];
+0176     <span class="keyword">end</span>
+0177     <span class="keyword">for</span> i = 1:length(Bn) 
+0178         Bname{end + 1} = [sprintf(<span class="string">'Sn(%i) '</span>,s) Bn{i}];
+0179     <span class="keyword">end</span>
+0180 
+0181     <span class="comment">% append into Xx and Xb</span>
+0182     <span class="comment">%===============================================================</span>
+0183     Xx    = blkdiag(Xx,X);
+0184     Xb    = blkdiag(Xb,B);
+0185 
+0186 <span class="keyword">end</span> <span class="comment">%- for s</span>
+0187 
+0188 
+0189 <span class="comment">% finished</span>
+0190 <span class="comment">%-----------------------------------------------------------------------</span>
+0191 SPM.xX.X      = [Xx Xb];
+0192 SPM.xX.iH     = [];
+0193 SPM.xX.iC     = [1:size(Xx,2)];
+0194 SPM.xX.iB     = [1:size(Xb,2)] + size(Xx,2);
+0195 SPM.xX.iG     = [];
+0196 SPM.xX.name   = {Xname{:} Bname{:}};
+0197 
+0198 
+0199 <span class="comment">%-End</span>
+0200 <span class="comment">%-----------------------------------------------------------------------</span>
+0201 spm_input(<span class="string">'!DeleteInputObj'</span>)
+0202 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

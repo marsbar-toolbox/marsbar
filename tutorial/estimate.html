@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Running the ROI analysis &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic results" href="results.html" />
+    <link rel="prev" title="Defining ROIs" href="define.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="results.html" title="Basic results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="define.html" title="Defining ROIs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running the ROI analysis</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="running-the-roi-analysis">
+<h1>Running the ROI analysis<a class="headerlink" href="#running-the-roi-analysis" title="Permalink to this headline">¶</a></h1>
+<p>First, let us estimate the activation within the ROI for the first run. There
+are three stages to the analysis:</p>
+<ol class="arabic simple">
+<li><p>Choosing the design</p></li>
+<li><p>Extracting the data</p></li>
+<li><p>Estimating the design model with the data</p></li>
+</ol>
+<p>The preprocessing for the example data created an SPM model for all three EPI
+runs, so we already have a design made for the first run. We are going to use
+this design and the <code class="docutils literal notranslate"><span class="pre">trim_stim</span></code> ROI to extract ROI data from the functional
+scans. Then we will use the design and the extracted data to estimate the
+model.</p>
+<div class="section" id="stage-1-choosing-the-design">
+<h2>Stage 1: choosing the design<a class="headerlink" href="#stage-1-choosing-the-design" title="Permalink to this headline">¶</a></h2>
+<p>Click on the Design button in the MarsBaR window. You should get a menu like
+this:</p>
+<img alt="../_images/design_menu.png" src="../_images/design_menu.png" />
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - design menu</p>
+<p>The design menu offers options for creating, reviewing, estimating and
+processing SPM / MarsBaR designs.</p>
+<p>Oddly, let us start at the end:</p>
+<dl class="simple">
+<dt>Show default design summary</dt><dd><p>Displays a summary of the currently loaded design in the SPM graphics window</p>
+</dd>
+<dt>Set design from file</dt><dd><p>will ask for a design file, and load the specified design into
+MarsBaR. The loaded design then becomes the default
+design. MarsBaR will from now on assume that you want to work with
+this design, unless you tell it otherwise by loading a different
+design.</p>
+</dd>
+<dt>Save design to file</dt><dd><p>will save the current default design to a file.</p>
+</dd>
+<dt>Set design from estimated</dt><dd><p>as we will see later, when MarsBaR estimates a design, it stores
+the estimated design in memory. Sometimes it is useful to take
+this estimated design and set it to be the default design, in
+order to be able to use the various of these menu options to
+review the design.</p>
+</dd>
+</dl>
+<p>Now, from the top of the menu:</p>
+<dl class="simple">
+<dt>PET models, FMRI models, and Basic models</dt><dd><p>will use the SPM design routines to make a design, and store it in
+memory as the default design.</p>
+</dd>
+<dt>Explore</dt><dd><p>runs the SPM interface for reviewing and exploring designs.</p>
+</dd>
+<dt>Frequencies (event+data)</dt><dd><p>can be useful for FMRI designs. The option gives a plot of the
+frequencies present in ROI data and the design regressors for a
+particular FMRI event. This allows you to choose a high-pass
+filter that will not remove much of the frequencies in the design,
+but will remove low frequencies in the data, which are usually
+dominated by noise.</p>
+</dd>
+<dt>Add images to FMRI design</dt><dd><p>allows you to specify images for an FMRI design that does not yet
+contain images. SPM and MarsBaR can create FMRI designs without
+images. If you want to extract data using the design (see below),
+you may want to add images to the design using this menu item.</p>
+</dd>
+<dt>Add/edit filter for FMRI design</dt><dd><p>gives menu options for specifying high pass and possibly (SPM99)
+low-pass filters, as well as autocorrelation options (SPM2 and later).</p>
+</dd>
+<dt>Check images in the design</dt><dd><p>looks for the images names in a design, and simply checks if they
+exist on the disk, printing out a message on the matlab console
+window. A common problem in using saved SPM designs is that the
+images specified in the design have since moved or deleted; this
+option is a useful check to see it that has occurred.</p>
+</dd>
+<dt>Change path to images</dt><dd><p>allows you to change the path of the image filenames saved in the
+SPM design, to deal with the situation when images have moved
+since the design was saved.</p>
+</dd>
+<dt>Convert to unsmoothed</dt><dd><p>takes the image names in a design, and changes them so that they
+refer to the unsmoothed version of the same images – in fact it
+just removes the “s” prefix from the filenames. This can be useful
+when you want to use an SPM design that was originally run on
+smoothed images, but your ROI is very precise, so you want to
+avoid running the ROI analysis on smoothed data, which will blur
+unwanted signal into your ROI.</p>
+</dd>
+</dl>
+</div>
+<p>If you have been reading the interface summary, welcome back. Isn’t it strange
+how time just seems to stop when you are reading about graphical user
+interfaces?</p>
+<p>Our plan was to choose our design. Select the Set design from file
+option in the design menu and choose the <code class="docutils literal notranslate"><span class="pre">SPM.mat</span></code> file in the
+<code class="docutils literal notranslate"><span class="pre">sess1/SPM8_ana</span></code> directory.  MarsBaR loads the design into memory and
+displays the design matrix in the SPM graphics window.</p>
+</div>
+<div class="section" id="stage-2-extracting-the-data">
+<h2>Stage 2: extracting the data<a class="headerlink" href="#stage-2-extracting-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Before we can run the model, we need to extract the ROI data from the
+functional scans. This brings us to the data menu:</p>
+<img alt="../_images/data_menu.png" src="../_images/data_menu.png" />
+<p>We are going to choose <em>Extract ROI data(default)</em>, and for simple analyses this
+may be all you will ever need. For those with a thirst for knowledge, here is
+the:</p>
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - data menu</p>
+<dl class="simple">
+<dt>Extract ROI data (default)</dt><dd><p>takes one or more ROI files and a design, and extracts the data
+within the ROI(s) for all the images in the design. As for the
+default design, MarsBaR stores the data in memory for further use.</p>
+</dd>
+<dt>Extract ROI data (full options)</dt><dd><p>allows you to specify any set of images to extract data from, and
+will give you a full range of image scaling options for extracting
+the data.</p>
+</dd>
+<dt>Default region…</dt><dd><p>is useful when you have extracted data for more than one ROI.  In
+this case you may want to restrict the plotting functions (below)
+to look only at one of these regions; you can set which region to
+use with this option.  If you do not specify, MarsBaR will assume
+you want to look at all regions.</p>
+</dd>
+<dt>Plot data (simple)</dt><dd><p>draws time course plots of the ROI data to the SPM graphics
+window. Plot data (full) has options for filtering the data with
+the SPM design filter before plotting, and for other types of
+plots, such as Frequency plots or plots of autocorrelation
+coefficients.</p>
+</dd>
+<dt>Import data</dt><dd><p>allows you to import data for analysis from matlab, text files or
+spreadsheets. With Export data you can export data to matlab
+variables, text files or spreadsheets.</p>
+</dd>
+<dt>Split regions into files</dt><dd><p>is useful in the situation where you have extracted data from more
+than one ROI, but you want to estimate with the data from only one
+of these ROIs. This can be a good idea for SPM2 (and later)
+designs, because, like SPM2 (and later), MarsBaR will pool the
+data from all ROIs when calculating autocorrelation. This may not
+be valid, as different brain regions can have different levels of
+autocorrelation. Split regions into files takes the current set of
+data and saves the data for each ROI as a separate MarsBaR data
+file.</p>
+</dd>
+<dt>Merge data files</dt><dd><p>reverses the process of <em>Split files</em> above, by taking a series of
+ROI data files and making them into one set of data with many
+ROIs.</p>
+</dd>
+<dt>Set data from file</dt><dd><p>will ask for a MarsBaR data file (default suffix <code class="docutils literal notranslate"><span class="pre">_mdata.mat</span></code>) and
+load it into memory as the current set of data.</p>
+</dd>
+<dt>Save data to file</dt><dd><p>will save the current set of data to a MarsBaR data file.</p>
+</dd>
+<dt>Show data summary</dt><dd><p>outputs some summary text to the SPM graphics window</p>
+</dd>
+</dl>
+</div>
+<p>Again, welcome back to our linear readers. For the tutorial, we want to
+extract the data for our ROI, from the images in our design. Choose
+<em>Extract ROI data(default)</em>; the GUI will ask you to select one or more
+ROIs files; select the <code class="docutils literal notranslate"><span class="pre">trim_stim_roi.mat</span></code> file. MarsBaR starts to
+whirr. As it whirrs, it will:</p>
+<ol class="arabic simple">
+<li><p>Take each image in the design (you had already set the default design
+from the design menu);</p></li>
+<li><p>Extract all the data within the ROI for each image, to give voxel time
+courses for each voxel in the ROI.</p></li>
+</ol>
+<p>When it has finished, MarsBaR will calculate a new summary time course for each
+ROI. The summary time course has one value per scan, per ROI; by default,
+this new time course is made up of the means of all the voxel values in the
+ROI. For example, if there are only 5 voxels in the ROI, the first value in
+the summary time series will be the mean of the 5 voxel values for scan 1, the
+second value will be the mean of the 5 voxel values for scan 2, and so on.
+You can change the method of summarizing voxel data using the Statistics, Data
+summary function item in the MarsBaR options interface.</p>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - the summary function</p>
+<p>There are many ways to use ROI data, but the simplest approach, used by
+MarsBaR, is to treat the voxel values within the region of an image as many
+samples of the same signal. So, for each image, we find the voxels that are
+within the ROI, and calculate a single summary value to represent all the
+voxels in the ROI. This gives us one ROI summary value per image, and we can
+run the statistical model on this time-course of summary values.</p>
+<p>The most obvious way of summarizing the values within the ROI is to
+take the mean. This is the default in MarsBaR. The mean can be
+greatly affected by outliers. If we suspect there may be outlier
+voxels in the ROI, the median may be more robust as a summary
+function. The other option offered as a summary function is the
+weighted mean. Usually ROIs are binary – meaning that they contain
+ones within the ROI and zeros elsewhere. In this case the weighted
+mean will be identical to the mean. However, it is possible to define
+ROIs which contain weighting values, where high values represent high
+confidence that this voxel is within the region of interest, and
+values near zero represent low confidence. In this situation, it can
+be useful to use the ROI values to weight the mean value.</p>
+<p>Earlier versions of MarsBaR also offered the option of taking the
+first eigenvector of the signal.  We removed it for version 0.42
+because it seemed as if it was replicating the behavior of the SPM
+VOI routines - but it was not.</p>
+</div>
+<p>As MarsBaR extracts the data you will see its progress printed to the matlab
+console. When the extraction is done, the data is kept in memory. You can
+save the data to disk if you want using the Save data to file option on the
+data menu.</p>
+<p>Now we have the design and the data we can estimate the model.</p>
+</div>
+<div class="section" id="stage-3-estimating-the-model">
+<h2>Stage 3: estimating the model<a class="headerlink" href="#stage-3-estimating-the-model" title="Permalink to this headline">¶</a></h2>
+<p>As the sweat pours from your brow, you click on the Results menu in the
+MarsBaR window. Scarcely believing it could be this easy, you choose the
+first item on the menu, <em>Estimate results</em>. It was that easy! MarsBaR
+takes the default design and the extracted data, and runs the
+model. There are more progress reports to the matlab console; finally
+you see the suggestion that you use the results section for assessment.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running the ROI analysis</a><ul>
+<li><a class="reference internal" href="#stage-1-choosing-the-design">Stage 1: choosing the design</a></li>
+<li><a class="reference internal" href="#stage-2-extracting-the-data">Stage 2: extracting the data</a></li>
+<li><a class="reference internal" href="#stage-3-estimating-the-model">Stage 3: estimating the model</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="define.html"
+                        title="previous chapter">Defining ROIs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="results.html"
+                        title="next chapter">Basic results</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/estimate.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="results.html" title="Basic results"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="define.html" title="Defining ROIs"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running the ROI analysis</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

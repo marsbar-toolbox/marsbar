@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of maroi_sphere</title>
+  <meta name="keywords" content="maroi_sphere">
+  <meta name="description" content="maroi_sphere - class constructor">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_sphere</a> &gt; maroi_sphere.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_sphere&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>maroi_sphere
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>maroi_sphere - class constructor</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = maroi_sphere(params) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> maroi_sphere - class constructor
+ FORMAT [o, others] = maroi_sphere(params)
+ Inputs [defaults]
+ params  - a structure containing any fields for a maroi parent and
+            .centre - a 1x3 coordinate in mm 
+            .radius - a 1x1 radius in mm
+
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi_shape/maroi_shape.html" class="code" title="function [o, others] = maroi_shape(params)">maroi_shape</a>	maroi_shape - (virtual) shape roi class constructor</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = maroi_sphere(params)</a>
+0002 <span class="comment">% maroi_sphere - class constructor</span>
+0003 <span class="comment">% FORMAT [o, others] = maroi_sphere(params)</span>
+0004 <span class="comment">% Inputs [defaults]</span>
+0005 <span class="comment">% params  - a structure containing any fields for a maroi parent and</span>
+0006 <span class="comment">%            .centre - a 1x3 coordinate in mm</span>
+0007 <span class="comment">%            .radius - a 1x1 radius in mm</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% $Id$</span>
+0011 
+0012 myclass = <span class="string">'maroi_sphere'</span>;
+0013 defstruct = struct(<span class="string">'centre'</span>, [0 0 0],<span class="string">'radius'</span>, 0);
+0014 
+0015 <span class="keyword">if</span> nargin &lt; 1
+0016   params = [];
+0017 <span class="keyword">end</span>
+0018 <span class="keyword">if</span> isa(params, myclass)
+0019   o = params;
+0020   <span class="keyword">return</span>
+0021 <span class="keyword">end</span>
+0022 
+0023 <span class="comment">% fill with defaults</span>
+0024 pparams = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, defstruct, params);
+0025 
+0026 <span class="comment">% umbrella object, parse out fields for (this object and children)</span>
+0027 [uo, pparams] = <a href="../../marsbar/@maroi_shape/maroi_shape.html" class="code" title="function [o, others] = maroi_shape(params)">maroi_shape</a>(pparams);
+0028 
+0029 <span class="comment">% reparse parameters into those for this object, children</span>
+0030 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, pparams, defstruct);
+0031 
+0032 <span class="comment">% check resulting input</span>
+0033 <span class="keyword">if</span> size(pparams.centre, 2) == 1
+0034   pparams.centre = pparams.centre';
+0035 <span class="keyword">end</span>
+0036 <span class="comment">% enforce radius as double for vox-&gt;mm conversions</span>
+0037 pparams.radius = double(pparams.radius)
+0038 
+0039 o = class(pparams, myclass, uo);
+0040 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_vec</title>
+  <meta name="keywords" content="pr_spm_vec">
+  <meta name="description" content="vectorises a numeric, cell or structure array">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_vec.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_vec
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>vectorises a numeric, cell or structure array</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [vX] = pr_spm_vec(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> vectorises a numeric, cell or structure array
+ FORMAT [vX] = pr_spm_vec(X);
+ X  - numeric, cell or stucture array[s]
+ vX - vec(X)
+__________________________________________________________________________
+
+ e.g.:
+ spm_vec({eye(2) 3}) = [1 0 0 1 3]'
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>	vectorises a numeric, cell or structure array</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+<li><a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>	unvectorises a vectorised array</li>
+<li><a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>	vectorises a numeric, cell or structure array</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [vX] = pr_spm_vec(varargin)</a>
+0002 <span class="comment">% vectorises a numeric, cell or structure array</span>
+0003 <span class="comment">% FORMAT [vX] = pr_spm_vec(X);</span>
+0004 <span class="comment">% X  - numeric, cell or stucture array[s]</span>
+0005 <span class="comment">% vX - vec(X)</span>
+0006 <span class="comment">%__________________________________________________________________________</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% e.g.:</span>
+0009 <span class="comment">% spm_vec({eye(2) 3}) = [1 0 0 1 3]'</span>
+0010 <span class="comment">%__________________________________________________________________________</span>
+0011 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0012  
+0013 <span class="comment">% Karl Friston</span>
+0014 <span class="comment">% $Id: spm_vec.m 279 2005-11-08 19:11:28Z karl $</span>
+0015 
+0016 <span class="comment">% initialise X and vX</span>
+0017 <span class="comment">%--------------------------------------------------------------------------</span>
+0018 X     = varargin;
+0019 <span class="keyword">if</span> length(X) == 1
+0020     X = X{1};
+0021 <span class="keyword">end</span>
+0022 vX    = [];
+0023 
+0024 <span class="comment">% vectorise structure into cell arrays</span>
+0025 <span class="comment">%--------------------------------------------------------------------------</span>
+0026 <span class="keyword">if</span> isstruct(X)
+0027     f = fieldnames(X);
+0028     X = X(:);
+0029     <span class="keyword">for</span> i = 1:length(f)
+0030             vX = cat(1,vX,<a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>({X.(f{i})}));
+0031     <span class="keyword">end</span>
+0032     <span class="keyword">return</span>
+0033 <span class="keyword">end</span>
+0034  
+0035 <span class="comment">% vectorise cells into numerical arrays</span>
+0036 <span class="comment">%--------------------------------------------------------------------------</span>
+0037 <span class="keyword">if</span> iscell(X)
+0038     X     = X(:);
+0039     <span class="keyword">for</span> i = 1:length(X)
+0040          vX = cat(1,vX,<a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(X{i}));
+0041     <span class="keyword">end</span>
+0042     <span class="keyword">return</span>
+0043 <span class="keyword">end</span>
+0044  
+0045 <span class="comment">% vectorise numerical arrays</span>
+0046 <span class="comment">%--------------------------------------------------------------------------</span>
+0047 <span class="keyword">if</span> isnumeric(X)
+0048     vX = X(:);
+0049 <span class="keyword">end</span>
+0050 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

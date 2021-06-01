@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarsBaR region of interest toolbox for SPM &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About MarsBaR" href="about.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="about.html" title="About MarsBaR"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MarsBaR region of interest toolbox for SPM</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="marsbar-region-of-interest-toolbox-for-spm">
+<h1>MarsBaR region of interest toolbox for SPM<a class="headerlink" href="#marsbar-region-of-interest-toolbox-for-spm" title="Permalink to this headline">¶</a></h1>
+<p>MarsBaR (MARSeille Boîte À Région d’Intérêt) is a toolbox for
+<a class="reference external" href="http://www.fil.ion.ucl.ac.uk/spm">SPM</a> which provides routines for region of interest analysis.
+Features include region of interest definition, combination of
+regions of interest with simple algebra, extraction of data for
+regions with and without SPM preprocessing (scaling, filtering), and
+statistical analyses of ROI data using the SPM statistics machinery.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Release</dt>
+<dd class="field-odd"><p>0.44</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>Jun 01, 2021</p>
+</dd>
+</dl>
+<p>Download <a class="reference external" href="marsbar.pdf">MarsBaR documentation as PDF</a></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About MarsBaR</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#citing-marsbar">Citing MarsBaR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#thanks">Thanks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#installing-marsbar">Installing MarsBaR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download.html#other-marsbar-downloads">Other MarsBaR downloads</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">MarsBaR tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/gettingstarted.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/interface.html">The MarsBaR / SPM interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/define.html">Defining ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/estimate.html">Running the ROI analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/results.html">Basic results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/andmore.html">Using a structural ROI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/andmore.html#batch-mode">Batch mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/andmore.html#the-end">The end</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">MarsBaR FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-s-with-the-fish">What’s with the fish?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-do-i-get-an-error-cant-open-image-file-when-estimating-a-design">Why do I get an error “Cant open image file” when estimating a design?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-is-the-percent-signal-change-calculated">How is the percent signal change calculated?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-run-a-marsbar-analysis-in-batch-mode">How do I run a MarsBaR analysis in batch mode?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-can-i-extract-the-percent-of-activated-voxels-from-an-roi">How can I extract the percent of activated voxels from an ROI?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-get-timecourses-from-images-in-an-spm-design">How do I get timecourses from images in an SPM design?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#i-just-want-to-get-raw-timecourses-from-some-images-how-do-i-do-that">I just want to get raw timecourses from some images; how do I do that?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#i-get-errors-using-the-spm-reml-estimation-for-fmri-designs-can-i-try-something-else">I get errors using the SPM ReML estimation for FMRI designs. Can I try something else?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-is-the-fir-or-psth-calculated">How is the FIR (or PSTH) calculated?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-extract-all-the-fir-timecourses-from-my-design">How do I extract all the FIR timecourses from my design?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-extract-percent-signal-change-from-my-design-using-batch">How do I extract percent signal change from my design using batch?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-do-i-do-a-random-effect-analysis-in-marsbar">How do I do a random effect analysis in MarsBaR?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#should-i-use-marsbar-roi-analysis-or-small-volume-correction-svc-in-spm">Should I use MarsBaR ROI analysis, or small volume correction (SVC) in SPM?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#should-i-use-smoothed-or-unsmoothed-images-for-my-marsbar-analysis">Should I use smoothed or unsmoothed images for my MarsBaR analysis?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-can-t-i-select-files-like-spm-designs-in-the-matlab-gui">Why can’t I select files like SPM designs in the matlab GUI?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#why-do-i-get-a-no-valid-data-for-roi-warning-when-extracting-data">Why do I get a “No valid data for roi” warning when extracting data?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/index.html">Reading and writing MarsBaR code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development/code.html">Getting the latest development code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development/apidocs.html">API documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MarsBaR region of interest toolbox for SPM</a><ul>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="about.html"
+                        title="next chapter">About MarsBaR</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="about.html" title="About MarsBaR"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">MarsBaR region of interest toolbox for SPM</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

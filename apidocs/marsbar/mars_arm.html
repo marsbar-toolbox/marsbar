@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_arm</title>
+  <meta name="keywords" content="mars_arm">
+  <meta name="description" content="wrapper function for MarsBaR marmoire object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_arm.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_arm
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>wrapper function for MarsBaR marmoire object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = mars_arm(action, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> wrapper function for MarsBaR marmoire object
+ FORMAT varargout = mars_arm(action, varargin)
+ 
+ This only to make the marsbar.m code prettier
+ See the help for the marmoire object for details
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@mardo/summary.html" class="code" title="function strs = summary(D)">summary</a>	method returns cell array of strings describing design</li>
+<li><a href="../marsbar/@marmoire/clear_item_data.html" class="code" title="function [o, errf] = clear_item_data(o, item)">clear_item_data</a>	sets data for item to empty</li>
+<li><a href="../marsbar/@marmoire/get_item_data.html" class="code" title="function [res, o, errf] = get_item_data(o, item)">get_item_data</a>	get data for item</li>
+<li><a href="../marsbar/@marmoire/get_item_param.html" class="code" title="function value = get_item_param(o, item, param)">get_item_param</a>	method to get item parameters</li>
+<li><a href="../marsbar/@marmoire/isempty_item_data.html" class="code" title="function tf = isempty_item_data(o, item)">isempty_item_data</a>	returns 1 if no data for this item</li>
+<li><a href="../marsbar/@marmoire/item_exists.html" class="code" title="function tf = item_exists(o, item)">item_exists</a>	returns true if there is an item of this name</li>
+<li><a href="../marsbar/@marmoire/save_item_data.html" class="code" title="function [saved_f, o] = save_item_data(o, item, flags, filename)">save_item_data</a>	save data for item to file</li>
+<li><a href="../marsbar/@marmoire/save_item_data_ui.html" class="code" title="function [saved_f, o] = save_item_data_ui(o, item, flags, filename)">save_item_data_ui</a>	save data for item to file using GUI</li>
+<li><a href="../marsbar/@marmoire/set_item_data.html" class="code" title="function [o, errf] = set_item_data(o, item, data, filename)">set_item_data</a>	sets data for item</li>
+<li><a href="../marsbar/@marmoire/set_item_data_ui.html" class="code" title="function [o, errf] = set_item_data_ui(o, item)">set_item_data_ui</a>	sets data for item using GUI</li>
+<li><a href="../marsbar/@marmoire/set_item_param.html" class="code" title="function o = set_item_param(o, item, param, value)">set_item_param</a>	method to set item parameters</li>
+<li><a href="../marsbar/@marmoire/update_item_data.html" class="code" title="function [o, errf] = update_item_data(o, item, data, filename)">update_item_data</a>	updates data for item (sets data, flags change)</li>
+<li><a href="../marsbar/@marsy/summary.html" class="code" title="function strs = summary(M)">summary</a>	method returns cell array of strings describing marsy object</li>
+<li><a href="mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+<li><a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = mars_arm(action, varargin)</a>
+0002 <span class="comment">% wrapper function for MarsBaR marmoire object</span>
+0003 <span class="comment">% FORMAT varargout = mars_arm(action, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% This only to make the marsbar.m code prettier</span>
+0006 <span class="comment">% See the help for the marmoire object for details</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id$</span>
+0009 
+0010 <span class="keyword">global</span> MARS
+0011 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(MARS, <span class="string">'ARMOIRE'</span>)
+0012   error(<span class="string">'Global structure does not contain marmoire object'</span>);
+0013 <span class="keyword">end</span>
+0014 
+0015 <span class="keyword">if</span> nargin &lt; 1
+0016   error(<span class="string">'Need action'</span>);
+0017 <span class="keyword">end</span>
+0018 
+0019 o = MARS.ARMOIRE;
+0020 
+0021 <span class="keyword">switch</span> lower(action)
+0022  <span class="keyword">case</span> <span class="string">'get'</span>
+0023   [varargout{1} o varargout{2}] = <a href="../marsbar/@marmoire/get_item_data.html" class="code" title="function [res, o, errf] = get_item_data(o, item)">get_item_data</a>(o, varargin{:});
+0024  <span class="keyword">case</span> <span class="string">'set'</span>
+0025   [o varargout{1}] = <a href="../marsbar/@marmoire/set_item_data.html" class="code" title="function [o, errf] = set_item_data(o, item, data, filename)">set_item_data</a>(o, varargin{:});
+0026  <span class="keyword">case</span> <span class="string">'clear'</span>
+0027   [o varargout{1}] = <a href="../marsbar/@marmoire/clear_item_data.html" class="code" title="function [o, errf] = clear_item_data(o, item)">clear_item_data</a>(o, varargin{:});
+0028  <span class="keyword">case</span> <span class="string">'set_ui'</span>
+0029   [o varargout{1}] = <a href="../marsbar/@marmoire/set_item_data_ui.html" class="code" title="function [o, errf] = set_item_data_ui(o, item)">set_item_data_ui</a>(o, varargin{:});  
+0030  <span class="keyword">case</span> <span class="string">'update'</span>
+0031   [o varargout{1}] = <a href="../marsbar/@marmoire/update_item_data.html" class="code" title="function [o, errf] = update_item_data(o, item, data, filename)">update_item_data</a>(o, varargin{:});
+0032  <span class="keyword">case</span> <span class="string">'set_param'</span>
+0033   o = <a href="../marsbar/@marmoire/set_item_param.html" class="code" title="function o = set_item_param(o, item, param, value)">set_item_param</a>(o, varargin{:});
+0034  <span class="keyword">case</span> <span class="string">'get_param'</span>
+0035   varargout{1} = <a href="../marsbar/@marmoire/get_item_param.html" class="code" title="function value = get_item_param(o, item, param)">get_item_param</a>(o, varargin{:});
+0036  <span class="keyword">case</span> <span class="string">'save'</span>
+0037   [varargout{1} o] = <a href="../marsbar/@marmoire/save_item_data.html" class="code" title="function [saved_f, o] = save_item_data(o, item, flags, filename)">save_item_data</a>(o, varargin{:});
+0038  <span class="keyword">case</span> <span class="string">'save_ui'</span>
+0039   [varargout{1} o] = <a href="../marsbar/@marmoire/save_item_data_ui.html" class="code" title="function [saved_f, o] = save_item_data_ui(o, item, flags, filename)">save_item_data_ui</a>(o, varargin{:});
+0040  <span class="keyword">case</span> <span class="string">'isempty'</span>
+0041   varargout{1} = <a href="../marsbar/@marmoire/isempty_item_data.html" class="code" title="function tf = isempty_item_data(o, item)">isempty_item_data</a>(o, varargin{:});
+0042  <span class="keyword">case</span> <span class="string">'item_exists'</span>
+0043   varargout{1} = <a href="../marsbar/@marmoire/item_exists.html" class="code" title="function tf = item_exists(o, item)">item_exists</a>(o, varargin{:});
+0044  <span class="keyword">case</span> <span class="string">'show_summary'</span>
+0045   <span class="keyword">if</span> nargin &lt; 2, error(<span class="string">'Need item name'</span>); <span class="keyword">end</span>
+0046   item_name = varargin{1};
+0047   <span class="keyword">if</span> ~<a href="../marsbar/@marmoire/item_exists.html" class="code" title="function tf = item_exists(o, item)">item_exists</a>(o, item_name)
+0048     error([<span class="string">'What is '</span> item_name <span class="string">'?'</span>]);
+0049   <span class="keyword">end</span>
+0050   <span class="keyword">if</span> <a href="mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>(<span class="string">'isempty'</span>, item_name)
+0051     S = {<span class="string">'[Empty]'</span>};
+0052   <span class="keyword">else</span>
+0053     S  = <a href="../marsbar/@mardo/summary.html" class="code" title="function strs = summary(D)">summary</a>(<a href="../marsbar/@marmoire/get_item_data.html" class="code" title="function [res, o, errf] = get_item_data(o, item)">get_item_data</a>(o, item_name));
+0054     fn = <a href="../marsbar/@marmoire/get_item_param.html" class="code" title="function value = get_item_param(o, item, param)">get_item_param</a>(o, item_name, <span class="string">'file_name'</span>);
+0055     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fn), fn = <span class="string">'[Not set]'</span>; <span class="keyword">end</span>
+0056     S  = [{[<span class="string">'Filename: '</span> fn]} S];
+0057   <span class="keyword">end</span>  
+0058   <a href="mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'graphic_text'</span>, S, <a href="../marsbar/@marmoire/get_item_param.html" class="code" title="function value = get_item_param(o, item, param)">get_item_param</a>(o, item_name, <span class="string">'title'</span>));
+0059  <span class="keyword">otherwise</span>
+0060   error([<span class="string">'Weird: '</span> action]);
+0061 <span class="keyword">end</span>
+0062 
+0063 MARS.ARMOIRE = o;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

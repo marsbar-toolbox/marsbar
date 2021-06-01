@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_diff</title>
+  <meta name="keywords" content="pr_spm_diff">
+  <meta name="description" content="matrix differential">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_2</a> &gt; <a href="index.html">private</a> &gt; pr_spm_diff.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_diff
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>matrix differential</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [J] = pr_spm_diff(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> matrix differential
+ FORMAT [dfdx] = pr_spm_diff(f,x,...,P,n)
+ 
+ f   - [inline] function f(x,P)
+ x   - argument[s]
+ P   - parameter[s]
+ n   - argument or parameter to differentiate w.r.t.
+
+ dfdx - df(x,P)/dx{n}
+___________________________________________________________________________
+ @(#)pr_spm_diff.m    2.1 Karl Friston 03/03/03
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix differential</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix differential</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [J] = pr_spm_diff(varargin)</a>
+0002 <span class="comment">% matrix differential</span>
+0003 <span class="comment">% FORMAT [dfdx] = pr_spm_diff(f,x,...,P,n)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% f   - [inline] function f(x,P)</span>
+0006 <span class="comment">% x   - argument[s]</span>
+0007 <span class="comment">% P   - parameter[s]</span>
+0008 <span class="comment">% n   - argument or parameter to differentiate w.r.t.</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% dfdx - df(x,P)/dx{n}</span>
+0011 <span class="comment">%___________________________________________________________________________</span>
+0012 <span class="comment">% @(#)pr_spm_diff.m    2.1 Karl Friston 03/03/03</span>
+0013 
+0014 
+0015 <span class="comment">% create inline object</span>
+0016 <span class="comment">%---------------------------------------------------------------------------</span>
+0017 f     = fcnchk(varargin{1});
+0018 x     = varargin(2:(end - 1));
+0019 n     = varargin{end};
+0020 dx    = 1e-6;
+0021 
+0022 <span class="keyword">if</span> length(n) == 1
+0023 
+0024     <span class="comment">% dfdx</span>
+0025     <span class="comment">%------------------------------------------------------------------</span>
+0026     f0    = feval(f,x{:});
+0027     J     = sparse(length(f0(:)),length(x{n}(:)));
+0028     <span class="keyword">for</span> i = 1:length(x{n}(:))
+0029         xi         = x;
+0030         xi{n}(i)   = xi{n}(i) + dx;
+0031         dfdx       = (feval(f,xi{:}) - f0)/dx;
+0032         J(:,i)     = sparse(dfdx(:));
+0033     <span class="keyword">end</span>
+0034 <span class="keyword">else</span>
+0035     <span class="comment">% dfdxdx</span>
+0036     <span class="comment">%------------------------------------------------------------------</span>
+0037     f0    = <a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>(f,x{:},n(1));
+0038     J     = cell(1,length(x{n(2)}(:)));
+0039     <span class="keyword">for</span> i = 1:length(x{n(2)}(:))
+0040         xi          = x;
+0041         xi{n(2)}(i) = xi{n(2)}(i) + dx;
+0042         dfdx        = (<a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>(f,xi{:},n(1)) - f0)/dx;
+0043         J{i}        = sparse(dfdx);
+0044     <span class="keyword">end</span>
+0045 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

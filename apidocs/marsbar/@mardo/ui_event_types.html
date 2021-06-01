@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_event_types</title>
+  <meta name="keywords" content="ui_event_types">
+  <meta name="description" content="ui method for selection / editing of event types">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; ui_event_types.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_event_types
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>ui method for selection / editing of event types</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [D, ic, status] = ui_event_types(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ui method for selection / editing of event types
+ FORMAT [D, ic, status] = ui_event_types(D)
+ 
+ Input
+ D          - design object
+ 
+ Returns  
+ D          - possibly modified design object
+ ic         - indices of selected event types (empty for none)
+ status     - 0 for Cancel or window quit
+              1 for OK, but no edits to event types
+              2 for OK, with edits to event types
+ 
+ The routine sets up the event type window, and waits until that window
+ is done, then returns with the modified values.
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>	method to get / set event types for design</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [F, hDone, hList, hEdit] = sf_start_window(D)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [D, ic, status] = ui_event_types(D)</a>
+0002 <span class="comment">% ui method for selection / editing of event types</span>
+0003 <span class="comment">% FORMAT [D, ic, status] = ui_event_types(D)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% D          - design object</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Returns</span>
+0009 <span class="comment">% D          - possibly modified design object</span>
+0010 <span class="comment">% ic         - indices of selected event types (empty for none)</span>
+0011 <span class="comment">% status     - 0 for Cancel or window quit</span>
+0012 <span class="comment">%              1 for OK, but no edits to event types</span>
+0013 <span class="comment">%              2 for OK, with edits to event types</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% The routine sets up the event type window, and waits until that window</span>
+0016 <span class="comment">% is done, then returns with the modified values.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% $Id$</span>
+0019   
+0020 <span class="comment">% Put up window and initialize callbacks</span>
+0021 [F hDone hList hEdit] = <a href="#_sub1" class="code" title="subfunction [F, hDone, hList, hEdit] = sf_start_window(D)">sf_start_window</a>(D);
+0022 
+0023 <span class="comment">% Wait for OK, Cancel, figure cleared.</span>
+0024 waitfor(hDone,<span class="string">'UserData'</span>)
+0025 
+0026 <span class="comment">% Get what was pressed, assume cancel if window has died</span>
+0027 ic = [];
+0028 <span class="keyword">if</span> ~ishandle(hDone)
+0029   status = 0;
+0030 <span class="keyword">else</span>
+0031   status = get(hDone, <span class="string">'UserData'</span>);
+0032   <span class="keyword">if</span> status
+0033     <span class="comment">% Edit control contains info as to whether edits done</span>
+0034     status = status + get(hEdit, <span class="string">'UserData'</span>);
+0035     D = get(F, <span class="string">'UserData'</span>);
+0036     <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D))
+0037       ic = get(hList, <span class="string">'Value'</span>);
+0038     <span class="keyword">end</span>
+0039   <span class="keyword">end</span>
+0040   close(F);
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="keyword">return</span>
+0044 
+0045 <a name="_sub1" href="#_subfunctions" class="code">function [F, hDone, hList, hEdit] = sf_start_window(D)</a>
+0046 <span class="comment">% Put up window and set up callbacks</span>
+0047 
+0048 <span class="comment">% Window tag</span>
+0049 w_tag = <span class="string">'ui_event_types'</span>;
+0050   
+0051 <span class="comment">% Close any event_types windows currently open</span>
+0052 close(findobj(<span class="string">'Tag'</span>, w_tag))
+0053   
+0054 <span class="comment">%-Generic CallBack code to get embedded object</span>
+0055 cb = [<span class="string">'et_D = get(findobj(''Tag'', '''</span> w_tag <span class="string">'''),''UserData''); '</span>];
+0056 
+0057 <span class="comment">%-Create window, compute scaling for screen size</span>
+0058 <span class="comment">%-----------------------------------------------------------------------</span>
+0059 WS = spm(<span class="string">'WinScale'</span>);                <span class="comment">%-Window scaling factors</span>
+0060 FS = spm(<span class="string">'FontSizes'</span>);                <span class="comment">%-Scaled font sizes</span>
+0061 PF = spm_platform(<span class="string">'fonts'</span>);            <span class="comment">%-Font names (for this platform)</span>
+0062 S0 = get(0,<span class="string">'ScreenSize'</span>);            <span class="comment">%-Screen size</span>
+0063 
+0064 <span class="comment">% Window size, button size, position, in WS units</span>
+0065 win_sz      = [400 300];
+0066 ratio_dor   = (1 + sqrt(5))/2;
+0067 
+0068 <span class="comment">% Button sizes and positions</span>
+0069 n_buttons   = 5;
+0070 button_sz_x = 75;
+0071 button_border = [12 12]; 
+0072 button_sz   = [button_sz_x button_sz_x / ratio_dor];
+0073 button_x    = win_sz(1) - button_sz(1) - button_border(1);
+0074 l_b         = button_border(2);
+0075 h_b         = win_sz(2) - button_border(2) - button_sz(2);
+0076 gap_b       = (h_b - l_b) / (n_buttons-1);
+0077 buttons_y   = l_b:gap_b:h_b;
+0078 
+0079 <span class="comment">% Event list size, position</span>
+0080 elist_border = button_border;
+0081 elist_pos    = elist_border;
+0082 elist_sz(1)  = button_x - elist_border(1)*2;
+0083 elist_sz(2)  = win_sz(2) - elist_border(2)*2;
+0084 
+0085 F = figure(<span class="string">'IntegerHandle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0086        <span class="string">'Tag'</span>, w_tag,<span class="keyword">...</span>
+0087        <span class="string">'UserData'</span>, D, <span class="keyword">...</span>
+0088        <span class="string">'Name'</span>,<span class="string">'Event type'</span>, <span class="keyword">...</span>
+0089        <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0090        <span class="string">'Position'</span>,[S0(3)/2,S0(4)/2,0,0] + [-250,-200, win_sz].*WS,<span class="keyword">...</span>
+0091        <span class="string">'Resize'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0092        <span class="string">'Color'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+0093        <span class="string">'MenuBar'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0094        <span class="string">'DefaultTextColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0095        <span class="string">'DefaultTextFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+0096        <span class="string">'DefaultTextFontSize'</span>,FS(10),<span class="keyword">...</span>
+0097        <span class="string">'DefaultAxesFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+0098        <span class="string">'DefaultUicontrolBackgroundColor'</span>,[1 1 1]*.7,<span class="keyword">...</span>
+0099        <span class="string">'DefaultUicontrolFontName'</span>,PF.helvetica,<span class="keyword">...</span>
+0100        <span class="string">'DefaultUicontrolFontSize'</span>,FS(10),<span class="keyword">...</span>
+0101        <span class="string">'DefaultUicontrolInterruptible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0102        <span class="string">'Colormap'</span>,gray(64),<span class="keyword">...</span>
+0103        <span class="string">'Renderer'</span>,<span class="string">'painters'</span>,<span class="keyword">...</span>
+0104        <span class="string">'Visible'</span>,<span class="string">'on'</span>);
+0105 
+0106 <span class="comment">% OK</span>
+0107 hDone = uicontrol(F,<span class="keyword">...</span>
+0108           <span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'OK'</span>,<span class="keyword">...</span>
+0109           <span class="string">'ToolTipString'</span>,<span class="string">'OK - press after selecting selected events types'</span>,<span class="keyword">...</span>
+0110           <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0111           <span class="string">'Tag'</span>,<span class="string">'Done'</span>,<span class="string">'UserData'</span>,-1,<span class="keyword">...</span>
+0112           <span class="string">'Callback'</span>,[cb <span class="string">'ui_event_types_cb(et_D, ''OK'')'</span>] ,<span class="keyword">...</span>
+0113           <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0114           <span class="string">'Position'</span>,[button_x buttons_y(1) button_sz].*WS);
+0115 
+0116 <span class="comment">% Cancel</span>
+0117 uicontrol(F,<span class="keyword">...</span>
+0118       <span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0119       <span class="string">'ToolTipString'</span>,<span class="string">'Cancel UI and return without changes'</span>,<span class="keyword">...</span>
+0120       <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0121       <span class="string">'Tag'</span>,<span class="string">'Cancel'</span>,<span class="string">'UserData'</span>,-1,<span class="keyword">...</span>
+0122       <span class="string">'Callback'</span>,[cb <span class="string">'ui_event_types_cb(et_D, ''Cancel'')'</span>] ,<span class="keyword">...</span>
+0123       <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0124       <span class="string">'Position'</span>,[button_x buttons_y(2) button_sz].*WS);
+0125 
+0126 <span class="comment">% Delete</span>
+0127 uicontrol(F,<span class="keyword">...</span>
+0128       <span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Delete'</span>,<span class="keyword">...</span>
+0129       <span class="string">'ToolTipString'</span>,<span class="string">'Delete - press after selecting events type(s)'</span>,<span class="keyword">...</span>
+0130       <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0131       <span class="string">'Tag'</span>,<span class="string">'Delete'</span>,<span class="string">'UserData'</span>,-1,<span class="keyword">...</span>
+0132       <span class="string">'Callback'</span>,[cb <span class="string">'ui_event_types_cb(et_D, ''Delete'')'</span>] ,<span class="keyword">...</span>
+0133       <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0134       <span class="string">'Position'</span>,[button_x buttons_y(3) button_sz].*WS);
+0135 
+0136 <span class="comment">% Edit</span>
+0137 hEdit = uicontrol(F,<span class="keyword">...</span>
+0138           <span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'Edit'</span>,<span class="keyword">...</span>
+0139           <span class="string">'ToolTipString'</span>,<span class="string">'Edit - press after selecting an event type'</span>,<span class="keyword">...</span>
+0140           <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0141           <span class="string">'Tag'</span>,<span class="string">'eEdit'</span>,<span class="string">'UserData'</span>,0,<span class="keyword">...</span>
+0142           <span class="string">'Callback'</span>,[cb <span class="string">'ui_event_types_cb(et_D, ''Edit'')'</span>] ,<span class="keyword">...</span>
+0143           <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0144           <span class="string">'Position'</span>,[button_x buttons_y(4) button_sz].*WS);
+0145 
+0146 <span class="comment">% New</span>
+0147 uicontrol(F,<span class="keyword">...</span>
+0148       <span class="string">'Style'</span>,<span class="string">'Pushbutton'</span>,<span class="string">'String'</span>,<span class="string">'New'</span>,<span class="keyword">...</span>
+0149       <span class="string">'ToolTipString'</span>,<span class="string">'New - create new event type'</span>,<span class="keyword">...</span>
+0150       <span class="string">'ForegroundColor'</span>,<span class="string">'k'</span>,<span class="keyword">...</span>
+0151       <span class="string">'Tag'</span>,<span class="string">'New'</span>,<span class="string">'UserData'</span>,-1,<span class="keyword">...</span>
+0152       <span class="string">'Callback'</span>,[cb <span class="string">'ui_event_types_cb(et_D, ''New'')'</span>] ,<span class="keyword">...</span>
+0153       <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0154       <span class="string">'Position'</span>,[button_x buttons_y(5) button_sz].*WS);
+0155 
+0156 <span class="comment">% Event type list</span>
+0157 et = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D);
+0158 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(et, <span class="string">'name'</span>)
+0159   eNames = {et(:).name};
+0160 <span class="keyword">else</span>
+0161   eNames = {};
+0162 <span class="keyword">end</span>
+0163 
+0164 hList = uicontrol(F,<span class="string">'Style'</span>,<span class="string">'ListBox'</span>,<span class="string">'Tag'</span>,<span class="string">'eList'</span>,<span class="keyword">...</span>
+0165           <span class="string">'ToolTipString'</span>,[<span class="string">'Select events(s) - drag/shift-click'</span>,<span class="keyword">...</span>
+0166             <span class="string">'/ctrl-click to select multiple events'</span>],<span class="keyword">...</span>
+0167           <span class="string">'String'</span>,eNames,<span class="keyword">...</span>
+0168           <span class="string">'Max'</span>,2,<span class="keyword">...</span>
+0169           <span class="string">'CallBack'</span>, <span class="string">''</span> ,<span class="keyword">...</span>
+0170           <span class="string">'Interruptible'</span>,<span class="string">'off'</span>,<span class="string">'BusyAction'</span>,<span class="string">'Queue'</span>,<span class="keyword">...</span>
+0171           <span class="string">'BackgroundColor'</span>,<span class="string">'w'</span>,<span class="keyword">...</span>
+0172           <span class="string">'Position'</span>,[elist_pos elist_sz].*WS);
+0173 
+0174 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

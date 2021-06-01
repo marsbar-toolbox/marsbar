@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of marmoire</title>
+  <meta name="keywords" content="marmoire">
+  <meta name="description" content="marmoire - class constructor for marmoire container type">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; marmoire.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>marmoire
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>marmoire - class constructor for marmoire container type</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = marmoire(params, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> marmoire - class constructor for marmoire container type
+ FORMAT [o, others] = marmoire(params, varargin)
+  
+ the marmoire object is to store various bits of stuff
+ (armoire is the French for cupboard).
+ This cupboard is to put items which I will want to fish out 
+ from time to time.
+ 
+ The items may well be associated with a filename
+ If they are associated with a filename when set, they 
+ are assumed to have been saved already.
+ If not, they are flagged as awaiting a save
+
+ If the data changes, you can indicate this with the 
+ update method, which changes the data, and flags for a save
+
+ The permissable actions are:
+
+ add_item         - add an item to the armoire
+ item_exists      - ask if there an exists an item of given name
+ add_if_absent    - adds item if it does not yet exist
+ set_item_data    - sets data for item 
+ get_item_data    - gets data from item
+ set_item_data_ui - sets data, getting via UI
+ save_item_data   - save data for item, if required
+ save_item_data_ui - saves, using GUI to ask for filename
+ update_item_data  - updates data, sets flag to show change
+ clear_item_data   - clears data for item
+ isempty_item_data - returns 1 if no data for item
+ item_needs_save   - returns 1 if this item needs a save
+
+ Each item is stored in a field 'items' in the object
+
+ The name of item is the same as the name of the field in the items field
+ of the object, and this is the 'item' argument to the various methods.
+
+ Each item field cotains a structure, widh the data contained in a field
+ 'data'. The rest of the fields in the structure are parameters telling
+ the object how to deal with the various manipulations of the data.  So,
+ each item requires the following fields:
+                 
+ data            - the data 
+                   (or a filename which loads as the data - see the
+                   char_is_filename field)
+ has_changed     - flag, if set, means data has changed since first set
+ save_if_changed - flag, if set, will try to save changed data when a
+                   save is requested.  Saves can also be forced.
+ leave_as_file   - flag, if set, will attempt to leave the data, defined
+                   by the filename, on the disk, not in memory, and only
+                   load the data for a 'get'.  
+                   Otherwise, if a set occurs, and the data field is
+                   empty, will load data into the global variable when
+                   'set'ing field and leave it there.
+                   If the data changes, and requires a save, this field
+                   has no function, until the next save.
+ file_name       - file name of .mat file containing data
+                   If data is empty, and file_name is not, 
+                   an attempt to 'get' data will load contents of
+                   file_name
+ default_file_name - default filename offered for save 
+ file_type       - type of file to load ('mat' or 'ascii')
+ char_is_filename - flag, if set, char data is assumed to be a filename
+ filter_spec     - filter spec for uigetfile (see help uigetfile)
+ prompt          - prompt for uigetfile
+ verbose         - flag, if set, displays more information during
+                   processing
+ set_action      - actions to perform when item is set
+                   in form of callback string.  This is executed
+                   in the 'i_set' subfunction, and can use all
+                   variables functions defined therein.  See programmers
+                   notes in the function for callback format
+ set_action_if_update - flag, if set, applied set_action for 'update' as
+                   well as 'set'
+ set_action_if_clear - flag, if set, applied set_action for 'clear' as
+                   well as 'set'
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = marmoire(params, varargin)</a>
+0002 <span class="comment">% marmoire - class constructor for marmoire container type</span>
+0003 <span class="comment">% FORMAT [o, others] = marmoire(params, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% the marmoire object is to store various bits of stuff</span>
+0006 <span class="comment">% (armoire is the French for cupboard).</span>
+0007 <span class="comment">% This cupboard is to put items which I will want to fish out</span>
+0008 <span class="comment">% from time to time.</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% The items may well be associated with a filename</span>
+0011 <span class="comment">% If they are associated with a filename when set, they</span>
+0012 <span class="comment">% are assumed to have been saved already.</span>
+0013 <span class="comment">% If not, they are flagged as awaiting a save</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% If the data changes, you can indicate this with the</span>
+0016 <span class="comment">% update method, which changes the data, and flags for a save</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% The permissable actions are:</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% add_item         - add an item to the armoire</span>
+0021 <span class="comment">% item_exists      - ask if there an exists an item of given name</span>
+0022 <span class="comment">% add_if_absent    - adds item if it does not yet exist</span>
+0023 <span class="comment">% set_item_data    - sets data for item</span>
+0024 <span class="comment">% get_item_data    - gets data from item</span>
+0025 <span class="comment">% set_item_data_ui - sets data, getting via UI</span>
+0026 <span class="comment">% save_item_data   - save data for item, if required</span>
+0027 <span class="comment">% save_item_data_ui - saves, using GUI to ask for filename</span>
+0028 <span class="comment">% update_item_data  - updates data, sets flag to show change</span>
+0029 <span class="comment">% clear_item_data   - clears data for item</span>
+0030 <span class="comment">% isempty_item_data - returns 1 if no data for item</span>
+0031 <span class="comment">% item_needs_save   - returns 1 if this item needs a save</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% Each item is stored in a field 'items' in the object</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% The name of item is the same as the name of the field in the items field</span>
+0036 <span class="comment">% of the object, and this is the 'item' argument to the various methods.</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% Each item field cotains a structure, widh the data contained in a field</span>
+0039 <span class="comment">% 'data'. The rest of the fields in the structure are parameters telling</span>
+0040 <span class="comment">% the object how to deal with the various manipulations of the data.  So,</span>
+0041 <span class="comment">% each item requires the following fields:</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% data            - the data</span>
+0044 <span class="comment">%                   (or a filename which loads as the data - see the</span>
+0045 <span class="comment">%                   char_is_filename field)</span>
+0046 <span class="comment">% has_changed     - flag, if set, means data has changed since first set</span>
+0047 <span class="comment">% save_if_changed - flag, if set, will try to save changed data when a</span>
+0048 <span class="comment">%                   save is requested.  Saves can also be forced.</span>
+0049 <span class="comment">% leave_as_file   - flag, if set, will attempt to leave the data, defined</span>
+0050 <span class="comment">%                   by the filename, on the disk, not in memory, and only</span>
+0051 <span class="comment">%                   load the data for a 'get'.</span>
+0052 <span class="comment">%                   Otherwise, if a set occurs, and the data field is</span>
+0053 <span class="comment">%                   empty, will load data into the global variable when</span>
+0054 <span class="comment">%                   'set'ing field and leave it there.</span>
+0055 <span class="comment">%                   If the data changes, and requires a save, this field</span>
+0056 <span class="comment">%                   has no function, until the next save.</span>
+0057 <span class="comment">% file_name       - file name of .mat file containing data</span>
+0058 <span class="comment">%                   If data is empty, and file_name is not,</span>
+0059 <span class="comment">%                   an attempt to 'get' data will load contents of</span>
+0060 <span class="comment">%                   file_name</span>
+0061 <span class="comment">% default_file_name - default filename offered for save</span>
+0062 <span class="comment">% file_type       - type of file to load ('mat' or 'ascii')</span>
+0063 <span class="comment">% char_is_filename - flag, if set, char data is assumed to be a filename</span>
+0064 <span class="comment">% filter_spec     - filter spec for uigetfile (see help uigetfile)</span>
+0065 <span class="comment">% prompt          - prompt for uigetfile</span>
+0066 <span class="comment">% verbose         - flag, if set, displays more information during</span>
+0067 <span class="comment">%                   processing</span>
+0068 <span class="comment">% set_action      - actions to perform when item is set</span>
+0069 <span class="comment">%                   in form of callback string.  This is executed</span>
+0070 <span class="comment">%                   in the 'i_set' subfunction, and can use all</span>
+0071 <span class="comment">%                   variables functions defined therein.  See programmers</span>
+0072 <span class="comment">%                   notes in the function for callback format</span>
+0073 <span class="comment">% set_action_if_update - flag, if set, applied set_action for 'update' as</span>
+0074 <span class="comment">%                   well as 'set'</span>
+0075 <span class="comment">% set_action_if_clear - flag, if set, applied set_action for 'clear' as</span>
+0076 <span class="comment">%                   well as 'set'</span>
+0077 <span class="comment">%</span>
+0078 <span class="comment">% $Id$</span>
+0079   
+0080 <span class="comment">% Programmers' notes</span>
+0081 <span class="comment">% ------------------</span>
+0082 <span class="comment">% set_action callbacks</span>
+0083 <span class="comment">% callbacks should in the following formats;</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">% [o errf msg] = my_function(args)</span>
+0086 <span class="comment">%</span>
+0087 <span class="comment">%  The return argument 'o' is the modified whole object. If</span>
+0088 <span class="comment">% 'errf' is set, the routine warns, and aborts the set action with the</span>
+0089 <span class="comment">% 'msg'.</span>
+0090 <span class="comment">%</span>
+0091 <span class="comment">% The preferred args will give a format of are:</span>
+0092 <span class="comment">% [o errf msg] = my_function(o, item, old_o)</span>
+0093 <span class="comment">%</span>
+0094 <span class="comment">% where o is the object after the data has been set, item is the name of</span>
+0095 <span class="comment">% the item which has just been set, and old_o is the object before the</span>
+0096 <span class="comment">% data was set.</span>
+0097 <span class="comment">%</span>
+0098 <span class="comment">% The available args are:</span>
+0099 <span class="comment">% o               - the whole object with new data set</span>
+0100 <span class="comment">% item            - the name of the item which has been set</span>
+0101 <span class="comment">% old_o           - the object before the data was set.</span>
+0102 <span class="comment">%</span>
+0103 <span class="comment">% as well as:</span>
+0104 <span class="comment">%</span>
+0105 <span class="comment">% item_struct     - proposed whole item field contents</span>
+0106 <span class="comment">% data            - proposed data to be inserted</span>
+0107 <span class="comment">% passed_filename - filename passed to function</span>
+0108 <span class="comment">%</span>
+0109 <span class="comment">% and anything else you can see in context, for the line containing the</span>
+0110 <span class="comment">% 'eval' statement in the do_set method</span>
+0111   
+0112 myclass = <span class="string">'marmoire'</span>;
+0113 defstruct = struct(<span class="string">'items'</span>, []);
+0114 
+0115 <span class="keyword">if</span> nargin &lt; 1
+0116   params = [];
+0117 <span class="keyword">end</span>
+0118 <span class="keyword">if</span> isa(params, myclass)
+0119   o = params;
+0120   <span class="keyword">return</span>
+0121 <span class="keyword">end</span>
+0122 
+0123 <span class="comment">% fill with defaults, parse into fields for this object, children</span>
+0124 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0125 
+0126 <span class="comment">% add version tag (was CVS; now marsbar version)</span>
+0127 pparams.cvs_version = <a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>);
+0128 
+0129 <span class="comment">% Set as object</span>
+0130 o  = class(pparams, myclass);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

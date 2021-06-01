@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of maroi_pointlist</title>
+  <meta name="keywords" content="maroi_pointlist">
+  <meta name="description" content="maroi_pointlist - class constructor">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_pointlist</a> &gt; maroi_pointlist.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_pointlist&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>maroi_pointlist
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>maroi_pointlist - class constructor</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = maroi_pointlist(params, type) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> maroi_pointlist - class constructor
+ FORMAT [o, others] = maroi_pointlist(params, type)
+ Inputs [defaults]
+  params  - one of
+            structure containing fields XYZ, mat
+
+  type    - one of 'vox', 'real' or 'mm' ['real']
+            ('mm' is the same as 'real')
+            specifies if XYZ matrix is in real (mm) or voxel space
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@mardo_2/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@mardo_5/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@mardo_99/type.html" class="code" title="function str = type(o)">type</a>	returns SPM version string corresponding to design type</li>
+<li><a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>	binarize - returns / sets binarize value for object</li>
+<li><a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>	roithresh - returns / sets roithresh value for object</li>
+<li><a href="../../marsbar/@maroi_pointlist/private/my_voxblock.html" class="code" title="function vblock = my_voxblock(pts, mat, vals)">my_voxblock</a>	returns voxel block and modified mat file for pointlist</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/mars_blob2roi.html" class="code" title="function mars_blob2roi(xSPM, pt)">mars_blob2roi</a>	saves ROI for cluster in xSPM structure, containing point pt</li>
+<li><a href="../../marsbar/mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>	creates ROIs from spm_results_ui SPM</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_img2rois.html" class="code" title="function mars_img2rois(P, roipath, rootn, flags)">mars_img2rois</a>	creates ROIs from cluster image or image containing ROIs defined by unique nos</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = maroi_pointlist(params, type)</a>
+0002 <span class="comment">% maroi_pointlist - class constructor</span>
+0003 <span class="comment">% FORMAT [o, others] = maroi_pointlist(params, type)</span>
+0004 <span class="comment">% Inputs [defaults]</span>
+0005 <span class="comment">%  params  - one of</span>
+0006 <span class="comment">%            structure containing fields XYZ, mat</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%  type    - one of 'vox', 'real' or 'mm' ['real']</span>
+0009 <span class="comment">%            ('mm' is the same as 'real')</span>
+0010 <span class="comment">%            specifies if XYZ matrix is in real (mm) or voxel space</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013   
+0014 myclass = <span class="string">'maroi_pointlist'</span>;
+0015 defstruct = struct(<span class="string">'XYZ'</span>, [],<span class="keyword">...</span>
+0016            <span class="string">'mat'</span>, eye(4),<span class="keyword">...</span>
+0017          <span class="string">'vals'</span>,[],<span class="keyword">...</span>
+0018          <span class="string">'voxblock'</span>,[]);
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 1
+0021   params = [];
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   <a href="../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a> = <span class="string">'real'</span>;  
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> isa(params, myclass)
+0027   o = params;
+0028   <span class="keyword">return</span>
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="comment">% fill with defaults</span>
+0032 pparams = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, defstruct, params);
+0033 
+0034 <span class="comment">% umbrella object, parse out fields for (this object and children)</span>
+0035 [uo, pparams] = <a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(pparams);
+0036 
+0037 <span class="comment">% reparse parameters into those for this object, children</span>
+0038 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, pparams, defstruct);
+0039 
+0040 <span class="comment">% return if no points passed</span>
+0041 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(pparams.XYZ)
+0042   o = class(pparams, myclass, uo);
+0043   <span class="keyword">return</span>
+0044 <span class="keyword">end</span>
+0045 
+0046 <span class="comment">% reset points vector if wrong size</span>
+0047 <span class="keyword">if</span> size(pparams.XYZ, 1) == 1
+0048   pparams.XYZ = pparams.XYZ';
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="keyword">if</span> strcmp(<a href="../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a>, <span class="string">'real'</span>) | strcmp(<a href="../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a>, <span class="string">'mm'</span>) 
+0052   <span class="comment">% point list is in real space -&gt; convert</span>
+0053   pparams.XYZ = inv(pparams.mat) * <span class="keyword">...</span>
+0054       [pparams.XYZ; ones(1, size(pparams.XYZ,2))];
+0055   pparams.XYZ = pparams.XYZ(1:3,:);
+0056 <span class="keyword">end</span>
+0057 
+0058 <span class="comment">% check that the points are in a sensible voxel space</span>
+0059 tiny = 0.001; <span class="comment">% tolerance for non-integer voxel values</span>
+0060 <span class="keyword">if</span> any(any((abs(pparams.XYZ - round(pparams.XYZ))) &gt; tiny))
+0061   error([<span class="string">'Non integer points in voxel space - '</span> <span class="keyword">...</span>
+0062      <span class="string">'are points really of type '''</span> <a href="../../marsbar/@mardo/type.html" class="code" title="function str = type(o)">type</a> <span class="string">'''?'</span>]);
+0063 <span class="keyword">end</span>
+0064 pparams.XYZ = round(pparams.XYZ);
+0065 
+0066 <span class="comment">% make temporary voxel block for further resampling etc</span>
+0067 pparams.voxblock = <a href="../../marsbar/@maroi_pointlist/private/my_voxblock.html" class="code" title="function vblock = my_voxblock(pts, mat, vals)">my_voxblock</a>(pparams.XYZ, pparams.mat, pparams.vals);
+0068 
+0069 <span class="comment">% apply implied thresholding</span>
+0070 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(pparams.vals)
+0071   tmp = find(~isnan(pparams.vals) &amp; <span class="keyword">...</span>
+0072          abs(pparams.vals) &gt;= <a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>(uo));
+0073   pparams.XYZ = pparams.XYZ(:, tmp);
+0074   <span class="keyword">if</span> <a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>(uo)
+0075     pparams.vals = [];
+0076   <span class="keyword">else</span>
+0077     pparams.vals = pparams.vals(tmp);
+0078   <span class="keyword">end</span>
+0079 <span class="keyword">end</span>
+0080 
+0081 <span class="comment">% make object</span>
+0082 o = class(pparams, myclass, uo);
+0083 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

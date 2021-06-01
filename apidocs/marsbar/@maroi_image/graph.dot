@@ -1,0 +1,14 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  flip_lr -> flip_lr;
+  flip_lr -> maroi_matrix;
+  maroi_image -> maroi_matrix;
+  maroi_matrix -> maroi_matrix;
+
+  flip_lr [URL="flip_lr.html"];
+  loadobj [URL="loadobj.html"];
+  maroi_image [URL="maroi_image.html"];
+  maroi_matrix [URL="maroi_matrix.html"];
+  saveobj [URL="saveobj.html"];
+  vol [URL="vol.html"];
+}

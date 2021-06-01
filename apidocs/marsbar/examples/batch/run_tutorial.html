@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of run_tutorial</title>
+  <meta name="keywords" content="run_tutorial">
+  <meta name="description" content="MarsBaR batch script to show off MarsBaR batching">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; run_tutorial.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>run_tutorial
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MarsBaR batch script to show off MarsBaR batching</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MarsBaR batch script to show off MarsBaR batching
+ This script replicates most of the work in the MarsBaR tutorial.
+ See http://marsbar.sourceforge.net
+
+ The script assumes that the current directory is the 'batch' directory
+ of the example data set files.
+
+ $Id: run_tutorial.m,v 1.3 2004/08/15 01:19:43 matthewbrett Exp $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>	method to add contrast definitions to design</li>
+<li><a href="../../../marsbar/@mardo/block_means.html" class="code" title="function bms = block_means(D)">block_means</a>	method returns means for blocks in design</li>
+<li><a href="../../../marsbar/@mardo/error_df.html" class="code" title="function e = error_df(D)">error_df</a>	method returns error df from design</li>
+<li><a href="../../../marsbar/@mardo/event_fitted.html" class="code" title="function [tc, dt] = event_fitted(D, e_spec, dur)">event_fitted</a>	method to compute fitted event time course</li>
+<li><a href="../../../marsbar/@mardo/get_contrast_by_name.html" class="code" title="function [xc, ic] = get_contrast_by_name(D, cname)">get_contrast_by_name</a>	get named contrast(s) from design contrast structure</li>
+<li><a href="../../../marsbar/@mardo/is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>	returns 1 if design has been estimated in SPM</li>
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+<li><a href="../../../marsbar/@mardo_99/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM99 model</li>
+<li><a href="../../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>	gets data in ROIs from images</li>
+<li><a href="../../../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>	label - returns / sets label value for object</li>
+<li><a href="../../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../../marsbar/@maroi/save_as_image.html" class="code" title="function v = save_as_image(o, fname, sp)">save_as_image</a>	method save_as_image - saves ROI as image</li>
+<li><a href="../../../marsbar/@maroi/saveroi.html" class="code" title="function roi = saveroi(roi, fname)">saveroi</a>	saveroi method - checks fname, sets source field, saves object</li>
+<li><a href="../../../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>	maroi_box - class constructor</li>
+<li><a href="../../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>	batch script wrapper to configure model for MarsBaR ER data</li>
+<li><a href="get_subjroot.html" class="code" title="function subjroot = get_subjroot()">get_subjroot</a>	FORMAT subjroot = get_subjroot()</li>
+<li><a href="../../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% MarsBaR batch script to show off MarsBaR batching</span>
+0002 <span class="comment">% This script replicates most of the work in the MarsBaR tutorial.</span>
+0003 <span class="comment">% See http://marsbar.sourceforge.net</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% The script assumes that the current directory is the 'batch' directory</span>
+0006 <span class="comment">% of the example data set files.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id: run_tutorial.m,v 1.3 2004/08/15 01:19:43 matthewbrett Exp $</span>
+0009 
+0010 <span class="comment">% Start marsbar to make sure spm_get works</span>
+0011 <a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'on'</span>)
+0012 
+0013 <span class="comment">% You might want to define the path to the example data here, as in</span>
+0014 <span class="comment">% subjroot = '/my/path/somewhere';</span>
+0015 subjroot = <a href="get_subjroot.html" class="code" title="function subjroot = get_subjroot()">get_subjroot</a>();
+0016 
+0017 <span class="comment">% Directory to store (and load) ROIs</span>
+0018 roi_dir = fullfile(subjroot, <span class="string">'rois'</span>);
+0019 
+0020 <span class="comment">% MarsBaR version check</span>
+0021 v = str2num(<a href="../../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>));
+0022 <span class="keyword">if</span> v &lt; 0.35
+0023   error(<span class="string">'Batch script only works for MarsBaR &gt;= 0.35'</span>);
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="comment">% SPM version check. We need this to guess which model directory to use and</span>
+0027 <span class="comment">% to get the SPM configured design name.</span>
+0028 spm_ver = spm(<span class="string">'ver'</span>);
+0029 sdirname = [spm_ver <span class="string">'_ana'</span>];
+0030 <span class="keyword">if</span> strcmp(spm_ver, <span class="string">'SPM99'</span>)
+0031   conf_design_name = <span class="string">'SPMcfg.mat'</span>;
+0032 <span class="keyword">else</span>
+0033   spm_defaults;
+0034   conf_design_name = <span class="string">'SPM.mat'</span>;
+0035 <span class="keyword">end</span>
+0036 
+0037 <span class="comment">% Set up the SPM defaults, just in case</span>
+0038 spm(<span class="string">'defaults'</span>, <span class="string">'fmri'</span>);
+0039 
+0040 <span class="comment">% Subdirectory for reconfigured design</span>
+0041 mars_sdir = <span class="string">'Mars_ana'</span>;
+0042 
+0043 <span class="comment">% Get SPM model for session 2</span>
+0044 sess2_model_dir = fullfile(subjroot, <span class="string">'sess2'</span>, sdirname);
+0045 sess2_model = <a href="../../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>(fullfile(sess2_model_dir, <span class="string">'SPM.mat'</span>));
+0046 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/is_spm_estimated.html" class="code" title="function tf = is_spm_estimated(D)">is_spm_estimated</a>(sess2_model)
+0047   error([<span class="string">'Session 2 model has not been estimated. '</span> <span class="keyword">...</span>
+0048     <span class="string">'You may need to run the run_preprocess script'</span>]);
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">% Get activation cluster by loading T image</span>
+0052 con_name = <span class="string">'stim_hrf'</span>;
+0053 t_con = <a href="../../../marsbar/@mardo/get_contrast_by_name.html" class="code" title="function [xc, ic] = get_contrast_by_name(D, cname)">get_contrast_by_name</a>(sess2_model, con_name);
+0054 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(t_con)
+0055   error([<span class="string">'Cannot find the contrast '</span> con_name <span class="keyword">...</span>
+0056     <span class="string">' in the design; has it been estimated?'</span>]);
+0057 <span class="keyword">end</span>
+0058 <span class="comment">% SPM2 stores contrasts as vols, SPM99 as filenames</span>
+0059 <span class="keyword">if</span> isstruct(t_con.Vspm)
+0060   t_con_fname = t_con.Vspm.fname;
+0061 <span class="keyword">else</span>
+0062   t_con_fname = t_con.Vspm;
+0063 <span class="keyword">end</span>
+0064 <span class="comment">% SPM5 designs can have full paths in their Vspm.fnames</span>
+0065 t_pth = fileparts(t_con_fname);
+0066 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(t_pth)
+0067     t_con_fname = fullfile(sess2_model_dir, t_con_fname);
+0068 <span class="keyword">end</span>
+0069 <span class="keyword">if</span> ~exist(t_con_fname)
+0070   error([<span class="string">'Cannot find t image '</span> t_con_fname <span class="keyword">...</span>
+0071      <span class="string">'; has it been estimated?'</span>]);
+0072 <span class="keyword">end</span>
+0073 
+0074 <span class="comment">% Get t threshold of uncorrected p &lt; 0.05</span>
+0075 p_thresh = 0.05;
+0076 erdf = <a href="../../../marsbar/@mardo/error_df.html" class="code" title="function e = error_df(D)">error_df</a>(sess2_model);
+0077 t_thresh = spm_invTcdf(1-p_thresh, erdf);
+0078 
+0079 <span class="comment">% get all voxels from t image above threshold</span>
+0080 V = spm_vol(t_con_fname);
+0081 img = spm_read_vols(V);
+0082 tmp = find(img(:) &gt; t_thresh);
+0083 img = img(tmp);
+0084 XYZ = <a href="../../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>(<span class="string">'e2xyz'</span>, tmp, V.dim(1:3));
+0085 
+0086 <span class="comment">% make into clusters, find max cluster</span>
+0087 cluster_nos = spm_clusters(XYZ);
+0088 [mx max_index] = max(img);
+0089 max_cluster = cluster_nos(max_index);
+0090 cluster_XYZ = XYZ(:, cluster_nos == max_cluster);
+0091 
+0092 <span class="comment">% Make ROI from max cluster</span>
+0093 act_roi = <a href="../../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>(struct(<span class="string">'XYZ'</span>, cluster_XYZ, <span class="keyword">...</span>
+0094                  <span class="string">'mat'</span>, V.mat), <span class="string">'vox'</span>);
+0095 
+0096 <span class="comment">% Make box ROI to do trimming</span>
+0097 box_limits = [-20 20; -66 -106; -20 7]';
+0098 box_centre = mean(box_limits);
+0099 box_widths = abs(diff(box_limits));
+0100 box_roi = <a href="../../../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>(struct(<span class="string">'centre'</span>, box_centre, <span class="keyword">...</span>
+0101                <span class="string">'widths'</span>, box_widths));
+0102 
+0103 <span class="comment">% Combine for trimmed ROI</span>
+0104 trim_stim = box_roi &amp; act_roi;
+0105 
+0106 <span class="comment">% Give it a name</span>
+0107 trim_stim = <a href="../../../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(trim_stim, <span class="string">'batch_trim_stim'</span>);
+0108 
+0109 <span class="comment">% save ROI to MarsBaR ROI file, in current directory, just to show how</span>
+0110 <a href="../../../marsbar/@maroi/saveroi.html" class="code" title="function roi = saveroi(roi, fname)">saveroi</a>(trim_stim, fullfile(roi_dir, <span class="string">'batch_trim_stim_roi.mat'</span>));
+0111 
+0112 <span class="comment">% Save as image</span>
+0113 <a href="../../../marsbar/@maroi/save_as_image.html" class="code" title="function v = save_as_image(o, fname, sp)">save_as_image</a>(trim_stim, fullfile(subjroot, <span class="string">'batch_trim_stim.img'</span>));
+0114 
+0115 <span class="comment">% We will do estimation for the trimmed functional ROI, and for two</span>
+0116 <span class="comment">% anatomical ROIs</span>
+0117 bg_L_name = fullfile(roi_dir, <span class="string">'MNI_Putamen_L_roi.mat'</span>);
+0118 bg_R_name = fullfile(roi_dir, <span class="string">'MNI_Putamen_R_roi.mat'</span>);
+0119 roi_array{1} = trim_stim;
+0120 roi_array{2} = <a href="../../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(bg_L_name);
+0121 roi_array{3} = <a href="../../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(bg_R_name);
+0122 
+0123 <span class="comment">% MarsBaR estimation for sessions 1 and 3 follows</span>
+0124 pwd_orig = pwd;
+0125 sesses = {<span class="string">'sess1'</span>, <span class="string">'sess3'</span>};
+0126 
+0127 <span class="comment">% event specification for getting fitted event time-courses</span>
+0128 <span class="comment">% A bit silly here, as we only have one session per model and one event type</span>
+0129 event_session_no = 1;
+0130 event_type_no = 1;
+0131 event_spec = [event_session_no; event_type_no];
+0132 event_duration = 0; <span class="comment">% default SPM event duration</span>
+0133 
+0134 clear model_file
+0135 <span class="keyword">for</span> roi_no = 1:length(roi_array)
+0136   roi = roi_array{roi_no};
+0137   <span class="keyword">for</span> ss = 1:length(sesses)
+0138     <span class="comment">% Run SPM model configuration, just to show we don't need to do SPM</span>
+0139     <span class="comment">% estimation before using MarsBaR</span>
+0140     <span class="comment">% We only need to do this for the first ROI, because we reuse the</span>
+0141     <span class="comment">% design for each ROI</span>
+0142     <span class="keyword">if</span> roi_no == 1
+0143       model_file{ss} = <a href="configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>(subjroot, sesses{ss}, mars_sdir);
+0144     <span class="keyword">end</span>
+0145     D = <a href="../../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>(model_file{ss});
+0146     <span class="comment">% Extract data</span>
+0147     Y = <a href="../../../marsbar/@maroi/get_marsy.html" class="code" title="function marsY = get_marsy(varargin)">get_marsy</a>(roi, D, <span class="string">'mean'</span>);
+0148     <span class="comment">% MarsBaR estimation</span>
+0149     E = <a href="../../../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>(D, Y);
+0150     <span class="comment">% Add contrast, return model, and contrast index</span>
+0151     [E Ic] = <a href="../../../marsbar/@mardo/add_contrasts.html" class="code" title="function [D,Ic,changef] = add_contrasts(D, C, varargin)">add_contrasts</a>(E, <span class="string">'stim_hrf'</span>, <span class="string">'T'</span>, [1 0 0]);
+0152     <span class="comment">% Get, store statistics</span>
+0153     stat_struct(ss) = <a href="../../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>(E, Ic);
+0154     <span class="comment">% And fitted time courses</span>
+0155     [this_tc dt] = <a href="../../../marsbar/@mardo/event_fitted.html" class="code" title="function [tc, dt] = event_fitted(D, e_spec, dur)">event_fitted</a>(E, event_spec, event_duration);
+0156     <span class="comment">% Make fitted time course into ~% signal change</span>
+0157     tc(:, ss) = this_tc / <a href="../../../marsbar/@mardo/block_means.html" class="code" title="function bms = block_means(D)">block_means</a>(E) * 100;
+0158   <span class="keyword">end</span>
+0159   <span class="comment">% Show calculated t statistics and contrast values</span>
+0160   <span class="comment">% NB this next line only works when we have only one stat/contrast</span>
+0161   <span class="comment">% value per analysis</span>
+0162   vals = [ [1 3]; [stat_struct(:).con]; [stat_struct(:).stat]; ];
+0163   fprintf(<span class="string">'Statistics for %s\n'</span>, <a href="../../../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(roi));
+0164   fprintf(<span class="string">'Session %d; contrast value %5.4f; t stat %5.4f\n'</span>, vals);
+0165   <span class="comment">% Show fitted event time courses</span>
+0166   figure
+0167   secs = [0:length(tc) - 1] * dt; 
+0168   plot(secs, tc)
+0169   title([<span class="string">'Time courses for '</span> <a href="../../../marsbar/@maroi/label.html" class="code" title="function h = label(obj, val)">label</a>(roi)], <span class="string">'Interpreter'</span>, <span class="string">'none'</span>);
+0170   xlabel(<span class="string">'Seconds'</span>)
+0171   ylabel(<span class="string">'% signal change'</span>);
+0172   legend(sesses)
+0173 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

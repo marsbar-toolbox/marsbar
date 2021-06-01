@@ -1,0 +1,49 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  add_if_absent -> add_item;
+  add_if_absent -> item_exists;
+  add_item -> default_item;
+  add_item -> set_item_struct;
+  clear_item_data -> do_set;
+  do_save -> get_item_struct;
+  do_save -> set_item_param;
+  do_save -> set_item_struct;
+  do_set -> get_item_struct;
+  do_set -> set_item_struct;
+  get_item_data -> do_set;
+  get_item_data -> get_item_struct;
+  get_item_data -> isempty_item_data;
+  get_item_param -> get_item_struct;
+  get_item_struct -> item_exists;
+  isempty_item_data -> get_item_struct;
+  item_needs_save -> get_item_struct;
+  save_item_data -> do_save;
+  save_item_data -> get_item_struct;
+  save_item_data_ui -> save_item_data;
+  set_item_data -> do_set;
+  set_item_data_ui -> do_set;
+  set_item_param -> get_item_struct;
+  set_item_param -> set_item_struct;
+  update_item_data -> do_set;
+
+  add_if_absent [URL="add_if_absent.html"];
+  add_item [URL="add_item.html"];
+  clear_item_data [URL="clear_item_data.html"];
+  default_item [URL="default_item.html"];
+  do_save [URL="do_save.html"];
+  do_set [URL="do_set.html"];
+  get_item_data [URL="get_item_data.html"];
+  get_item_param [URL="get_item_param.html"];
+  get_item_struct [URL="get_item_struct.html"];
+  isempty_item_data [URL="isempty_item_data.html"];
+  item_exists [URL="item_exists.html"];
+  item_needs_save [URL="item_needs_save.html"];
+  marmoire [URL="marmoire.html"];
+  save_item_data [URL="save_item_data.html"];
+  save_item_data_ui [URL="save_item_data_ui.html"];
+  set_item_data [URL="set_item_data.html"];
+  set_item_data_ui [URL="set_item_data_ui.html"];
+  set_item_param [URL="set_item_param.html"];
+  set_item_struct [URL="set_item_struct.html"];
+  update_item_data [URL="update_item_data.html"];
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of flip_images</title>
+  <meta name="keywords" content="flip_images">
+  <meta name="description" content="flips images in design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; flip_images.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>flip_images
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>flips images in design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = flip_images(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> flips images in design
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols to design</li>
+<li><a href="../../marsbar/@mardo_99/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols into design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = flip_images(o)</a>
+0002 <span class="comment">% flips images in design</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 <span class="keyword">if</span> ~<a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(o), <span class="keyword">return</span>, <span class="keyword">end</span>
+0007 VY = <a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(o);
+0008 M = diag([-1 1 1 1]);
+0009 <span class="keyword">for</span> i = 1:length(VY)
+0010   VY(i).mat = M * VY(i).mat;
+0011 <span class="keyword">end</span>
+0012 o = <a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>(o, VY);
+0013   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

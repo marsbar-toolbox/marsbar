@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_space</title>
+  <meta name="keywords" content="mars_space">
+  <meta name="description" content="mars_space - class constructor for space defining object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mars_space</a> &gt; mars_space.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mars_space&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mars_space
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>mars_space - class constructor for space defining object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = mars_space(params, params2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mars_space - class constructor for space defining object
+ FORMAT [o, others] = mars_space(params, params2)
+ Inputs [defaults]
+ params  - either 
+           a structure, containing fields to construct the object
+           an spm vol struct (see spm_vol)
+           a string, giving and image name (see spm_vol)
+           a matrix (for which, only the dimensions are used)
+           a 3x1 or 1x3 dimension vector
+ params2   in the latter 2 cases, might contain a 4x4 transformation matrix
+           [eye(4)]
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/getdata.html" class="code" title="function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)">getdata</a>	getdata method - fetches time series data for ROI from images</li>
+<li><a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>	my_classdata method - sets/gets class data</li>
+<li><a href="../../marsbar/@maroi_box/voxpts.html" class="code" title="function [pts, vals] = voxpts(obj, sp)">voxpts</a>	voxpts method - voxels within a box in given space</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_matrix/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_matrix/rebase.html" class="code" title="function [pts, vals] = rebase(obj, sp, flags)">rebase</a>	rebase method - returns data from maroi_matrix in new space</li>
+<li><a href="../../marsbar/@maroi_pointlist/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_pointlist/voxpts.html" class="code" title="function [pts, vals] = voxpts(o, sp)">voxpts</a>	voxpts method - returns 3xN ijk matrix in voxels</li>
+<li><a href="../../marsbar/@maroi_sphere/voxpts.html" class="code" title="function [pts, vals] = voxpts(obj, sp)">voxpts</a>	voxpts method - voxels within a sphere in given space</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = mars_space(params, params2)</a>
+0002 <span class="comment">% mars_space - class constructor for space defining object</span>
+0003 <span class="comment">% FORMAT [o, others] = mars_space(params, params2)</span>
+0004 <span class="comment">% Inputs [defaults]</span>
+0005 <span class="comment">% params  - either</span>
+0006 <span class="comment">%           a structure, containing fields to construct the object</span>
+0007 <span class="comment">%           an spm vol struct (see spm_vol)</span>
+0008 <span class="comment">%           a string, giving and image name (see spm_vol)</span>
+0009 <span class="comment">%           a matrix (for which, only the dimensions are used)</span>
+0010 <span class="comment">%           a 3x1 or 1x3 dimension vector</span>
+0011 <span class="comment">% params2   in the latter 2 cases, might contain a 4x4 transformation matrix</span>
+0012 <span class="comment">%           [eye(4)]</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015   
+0016 myclass = <span class="string">'mars_space'</span>;
+0017 defstruct = struct(<span class="string">'dim'</span>, [1 1 1],<span class="keyword">...</span>
+0018            <span class="string">'mat'</span>, eye(4));
+0019 
+0020 <span class="keyword">if</span> nargin &lt; 1
+0021   params = [];
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   params2 = [];
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> isa(params, myclass)
+0027   o = params;
+0028   <span class="keyword">return</span>
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="comment">% check inputs</span>
+0032 <span class="keyword">if</span> ~isstruct(params)
+0033   <span class="comment">% Matlab 7 does not like assigment of struct to non empty var</span>
+0034   inp1 = params;
+0035   clear params;
+0036   <span class="keyword">if</span> ischar(inp1) <span class="comment">% maybe it is an image filename</span>
+0037     params = spm_vol(inp1);
+0038     params.dim = params.dim(1:3);
+0039   <span class="keyword">elseif</span> prod(size(inp1)) == 3 
+0040     <span class="comment">% could be the dimensions of a space</span>
+0041     params.dim = inp1(:)';
+0042     <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(params2), params.mat = params2; <span class="keyword">end</span>
+0043   <span class="keyword">else</span>                               
+0044     <span class="comment">% lets hope it's a useful matrix, but with a mat parameter, quoi</span>
+0045     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(params2)
+0046       error([<span class="string">'Need to pass a ''mat'' definition with a'</span><span class="keyword">...</span>
+0047          <span class="string">' matrix'</span>])
+0048     <span class="keyword">end</span>
+0049     params.mat = params2;
+0050     m = inp1;
+0051     sz = size(m);
+0052     params.dim = [1 1 1];
+0053     params.dim(1:length(sz)) = sz;
+0054   <span class="keyword">end</span>
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="comment">% fill with defaults, parse into fields for this object, children</span>
+0058 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0059 
+0060 o  = class(pparams, myclass);
+0061 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

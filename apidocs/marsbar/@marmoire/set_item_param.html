@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of set_item_param</title>
+  <meta name="keywords" content="set_item_param">
+  <meta name="description" content="method to set item parameters">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; set_item_param.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>set_item_param
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to set item parameters</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = set_item_param(o, item, param, value) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to set item parameters
+ FORMAT o = set_item_param(o, item, param, value)
+
+ o     - object
+ item  - item name
+ param - parameter name
+ value - value to set
+
+ Returns
+ o     - object
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>	get whole item structure, including parameters</li>
+<li><a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>	set whole item structure, including parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="do_save.html" class="code" title="function [res, o] = do_save(o, item, flags, filename)">do_save</a>	method  to save data for item</li>
+<li><a href="../../marsbar/mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = set_item_param(o, item, param, value)</a>
+0002 <span class="comment">% method to set item parameters</span>
+0003 <span class="comment">% FORMAT o = set_item_param(o, item, param, value)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o     - object</span>
+0006 <span class="comment">% item  - item name</span>
+0007 <span class="comment">% param - parameter name</span>
+0008 <span class="comment">% value - value to set</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Returns</span>
+0011 <span class="comment">% o     - object</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% $Id$</span>
+0014   
+0015 <span class="keyword">if</span> nargin &lt; 2
+0016   error(<span class="string">'Need item name'</span>);
+0017 <span class="keyword">end</span>
+0018 <span class="keyword">if</span> nargin &lt; 3
+0019   error(<span class="string">'Need parameter name'</span>);
+0020 <span class="keyword">end</span>
+0021 <span class="keyword">if</span> nargin &lt; 4
+0022   error(<span class="string">'Need value to set'</span>)
+0023 <span class="keyword">end</span>
+0024 
+0025 I = <a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>(o, item);
+0026 
+0027 fns = fieldnames(I);
+0028 tmp = strmatch(<span class="string">'data'</span>, fns, <span class="string">'exact'</span>);
+0029 fns(tmp) = [];
+0030 
+0031 <span class="keyword">if</span> ~ismember(param, fns)
+0032   error([<span class="string">'There is no parameter callled: '</span> param]);
+0033 <span class="keyword">end</span>
+0034 
+0035 I = setfield(I, param, value);
+0036 o = <a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>(o, item, I);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

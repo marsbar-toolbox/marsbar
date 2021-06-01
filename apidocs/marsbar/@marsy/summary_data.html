@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of summary_data</title>
+  <meta name="keywords" content="summary_data">
+  <meta name="description" content="method to get summary data, maybe set sumfunc">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; summary_data.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>summary_data
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get summary data, maybe set sumfunc</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [Y,Yvar,o] = summary_data(o, sumfunc_str) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get summary data, maybe set sumfunc
+ 
+ Inputs
+ o              - marsy data object
+ sumfunc_str    - [optional] summary function string; one of
+                  'mean', 'median', 'eig1', 'wtmean'
+                  If not specified, defaults to previous summary
+                  function for this object
+
+ Output
+ Y              - (re)calculated summary time course
+ Yvar           - [optional] variance time course
+ o              - possibly changed marsy data object
+
+ e.g. 
+ Y = summary_data(o);
+ [Y Yvar o] = summary_data(o, 'median');
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@marsy/private/pr_sum_func.html" class="code" title="function [sumY, varY] = pr_sum_func(y, sumfunc, wt)">pr_sum_func</a>	creates summary stats for region data</li>
+<li><a href="region_data.html" class="code" title="function res = region_data(varargin)">region_data</a>	method gets or sets data for region(s) as cell array</li>
+<li><a href="region_size.html" class="code" title="function [m,n] = region_size(o, r_no, dim)">region_size</a>	method to get size of specified region data</li>
+<li><a href="region_weights.html" class="code" title="function res = region_weights(varargin)">region_weights</a>	method gets or sets weights for region(s) as cell array</li>
+<li><a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="summary_size.html" class="code" title="function [m,n] = summary_size(o, dim)">summary_size</a>	method returns number of time points x number of regions</li>
+<li><a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>	get/set method for y_struct field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_fitted_fir.html" class="code" title="function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)">event_fitted_fir</a>	method to compute fitted event time courses using FIR</li>
+<li><a href="../../marsbar/@mardo/residuals.html" class="code" title="function r = residuals(D)">residuals</a>	method returns residuals from model</li>
+<li><a href="../../marsbar/@mardo/ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+<li><a href="../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_stat_compute_mv.html" class="code" title="function [MVres] = pr_stat_compute_mv(SPM,Ic)">pr_stat_compute_mv</a>	private function to compute mutlivariate statistics across ROIs</li>
+<li><a href="../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+<li><a href="../../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="eq.html" class="code" title="function tf = eq(Y1, Y2)">eq</a>	method overrides == operator</li>
+<li><a href="join.html" class="code" title="function o = join(varargin)">join</a>	joins marsy objects into one object</li>
+<li><a href="resummarize.html" class="code" title="function o = resummarize(o)">resummarize</a>	recalculate summary data if possible</li>
+<li><a href="summary_block_means.html" class="code" title="function mus = summary_block_means(Y)">summary_block_means</a>	return raw means over blocks in summary data</li>
+<li><a href="ui_plot.html" class="code" title="function r = ui_plot(o, plot_spec, plot_params)">ui_plot</a>	method plots data in various formats</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Y,Yvar,o] = summary_data(o, sumfunc_str)</a>
+0002 <span class="comment">% method to get summary data, maybe set sumfunc</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">% o              - marsy data object</span>
+0006 <span class="comment">% sumfunc_str    - [optional] summary function string; one of</span>
+0007 <span class="comment">%                  'mean', 'median', 'eig1', 'wtmean'</span>
+0008 <span class="comment">%                  If not specified, defaults to previous summary</span>
+0009 <span class="comment">%                  function for this object</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Output</span>
+0012 <span class="comment">% Y              - (re)calculated summary time course</span>
+0013 <span class="comment">% Yvar           - [optional] variance time course</span>
+0014 <span class="comment">% o              - possibly changed marsy data object</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% e.g.</span>
+0017 <span class="comment">% Y = summary_data(o);</span>
+0018 <span class="comment">% [Y Yvar o] = summary_data(o, 'median');</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021   
+0022 <span class="keyword">if</span> nargin &gt; 1
+0023   o = <a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>(o, sumfunc_str);
+0024 <span class="keyword">end</span>
+0025 s_f = <a href="sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>(o);
+0026 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(s_f)
+0027   error(<span class="string">'No summary function specified'</span>);
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">% Get a copy of object structure</span>
+0031 st = <a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>(o);
+0032 
+0033 <span class="comment">% refresh summary data if necessary</span>
+0034 <span class="comment">% (if sumfunc passed, OR if data is not yet available)</span>
+0035 <span class="keyword">if</span> nargin &gt; 1 | <span class="keyword">...</span><span class="comment">              % sumfunc passed</span>
+0036       ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'Y'</span>) | <span class="keyword">...</span><span class="comment">    % Y not yet calculated</span>
+0037       (nargout &gt; 2 &amp; ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'Yvar'</span>)) <span class="comment">% Yvar needed</span>
+0038   
+0039   <span class="comment">% If we only have one (or zero) columns per ROI, job is simple</span>
+0040   Ys      = <a href="region_data.html" class="code" title="function res = region_data(varargin)">region_data</a>(o);
+0041   sz      = <a href="summary_size.html" class="code" title="function [m,n] = summary_size(o, dim)">summary_size</a>(o);
+0042   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ys)
+0043     error(<span class="string">'No region data to summarize'</span>);
+0044   <span class="keyword">elseif</span> <a href="region_size.html" class="code" title="function [m,n] = region_size(o, r_no, dim)">region_size</a>(o, <span class="string">'all'</span>, 2) == sz(2) <span class="comment">% One column per ROI</span>
+0045     Y = [Ys{:}];
+0046     Yvar = ones(sz) * Inf;
+0047   <span class="keyword">else</span> <span class="comment">% More than one column per ROI</span>
+0048     <span class="keyword">if</span> strcmp(s_f, <span class="string">'unknown'</span>)
+0049       error(<span class="string">'Cannot recalculate from unknown sumfunc'</span>);
+0050     <span class="keyword">end</span>
+0051     Ws = <a href="region_weights.html" class="code" title="function res = region_weights(varargin)">region_weights</a>(o);
+0052     Y = zeros(sz);
+0053     Yvar = zeros(sz);
+0054     <span class="keyword">for</span> i = 1:sz(2);
+0055       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ys{i}) <span class="comment">% set to NaN if no data to summarize</span>
+0056     Y(:,i) = NaN;
+0057     Yvar(:,i) = NaN;
+0058       <span class="keyword">else</span>      
+0059     [Y(:,i) Yvar(:,i)] = <a href="../../marsbar/@marsy/private/pr_sum_func.html" class="code" title="function [sumY, varY] = pr_sum_func(y, sumfunc, wt)">pr_sum_func</a>(Ys{i}, s_f, Ws{i});
+0060       <span class="keyword">end</span>
+0061     <span class="keyword">end</span>
+0062     <span class="keyword">if</span> <a href="verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(o)
+0063       fprintf(<span class="string">'Summarizing data with summary function: %s\n'</span>, s_f);
+0064     <span class="keyword">end</span>
+0065   <span class="keyword">end</span>
+0066   <span class="keyword">if</span> nargout &gt; 2
+0067     st.Y = Y;
+0068     st.Yvar = Yvar;
+0069     o = <a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>(o, st);
+0070   <span class="keyword">end</span>
+0071 <span class="keyword">else</span> <span class="comment">% not recalculated</span>
+0072   Y = st.Y;
+0073   <span class="keyword">if</span> nargout &gt; 1
+0074     Yvar = st.Yvar;
+0075   <span class="keyword">end</span>
+0076 <span class="keyword">end</span>
+0077 
+0078 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

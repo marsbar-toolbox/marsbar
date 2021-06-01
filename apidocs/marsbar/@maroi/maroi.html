@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of maroi</title>
+  <meta name="keywords" content="maroi">
+  <meta name="description" content="maroi - class constructor for umbrella ROI object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; maroi.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>maroi
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>maroi - class constructor for umbrella ROI object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = maroi(params, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> maroi - class constructor for umbrella ROI object
+ Can be called as a simple contructor:
+ inputs [defaults]
+ params  - a structure, containing fields to construct the object
+  
+ or to load objects of this (or child) type)
+ o = maroi('load', fname);
+ or
+ o = maroi(fname);
+ (where fname is a string)
+ or
+ o_cell_arr = maroi(name_cell_arr);
+ (where 
+ o_cell_arr is a cell array of ROI objects and
+ name_cell_arr is a cell array of filenames)
+ or 
+ o_cell_arr = maroi('load_cell', fnames)
+ to load strings/cell array of strings into cell array of objects
+
+ or to access class data
+ res = maroi('classdata', p1, p2); (see classdata method)
+
+ or to process a filename to be suitable for saving an ROI
+ new_fn = maroi('filename', old_fn);
+
+ An ROI is a definition of a region in space. As currently implemented,
+ an ROI can be of three types:
+
+ a shape - a geometric shape defined independent of any image
+           e.g. sphere, box
+ a point list - a list of points which are within the region, maybe with
+                associated values (see below)
+ a volume - a 3D volume, containing values for the ROI at each point
+           e.g. matrix, image 
+
+ Usually, the ROI will be binary; i.e. any point that is within the
+ region will have a value of 1, and all points outside have a value of
+ 0.  Because regions may be resampled into new image spaces, this
+ binaryness needs to be enforced in the resampling; this is done if the
+ 'binarize' flag is set for the object; the 'roithresh' field determines
+ the value above which a point is considered within the region, after
+ resampling.
+
+ In addition to defining the region in space, the ROI may also define
+ values for the points within the region.  If an ROI defines values then it
+ is a 'weighting' ROI (such as 0-&gt;1 probability weighting); those ROIs can
+ contain different values across the region.  Because of the problem of
+ missing values when resampling an ROI (e.g sampling at the edge of a
+ volume when using anything other than nearest neighbour resampling),
+ weighting ROIs should be zero based, so that a value outside the
+ region will be considered to have the value 0 in resampling.  Values of
+ NaN and 0 will always be assumed to be outside the region after
+ resampling
+ 
+ At the moment, each ROI is saved as a separate mat file, with filename
+ &lt;name&gt;_roi.mat
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>	my_classdata method - sets/gets class data</li>
+<li><a href="../../marsbar/@maroi/private/my_loadroi.html" class="code" title="function o = my_loadroi(fname)">my_loadroi</a>	my_loadroi function - loads ROI from file, sets source field</li>
+<li><a href="../../marsbar/@maroi/private/my_roifname.html" class="code" title="function roifname = my_roifname(fname)">my_roifname</a>	changes fname to appropriate ROI format</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi/private/my_roifname.html" class="code" title="function roifname = my_roifname(fname)">my_roifname</a>	changes fname to appropriate ROI format</li>
+<li><a href="../../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="../../marsbar/@maroi_matrix/domaths.html" class="code" title="function o = domaths(func, dat1, dat2)">domaths</a>	helper function to do maths on matrix object</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_shape.html" class="code" title="function [o, others] = maroi_shape(params)">maroi_shape</a>	maroi_shape - (virtual) shape roi class constructor</li>
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>	creates ROIs from spm_results_ui SPM</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_img2rois.html" class="code" title="function mars_img2rois(P, roipath, rootn, flags)">mars_img2rois</a>	creates ROIs from cluster image or image containing ROIs defined by unique nos</li>
+<li><a href="../../marsbar/mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="../../marsbar/mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = maroi(params, varargin)</a>
+0002 <span class="comment">% maroi - class constructor for umbrella ROI object</span>
+0003 <span class="comment">% Can be called as a simple contructor:</span>
+0004 <span class="comment">% inputs [defaults]</span>
+0005 <span class="comment">% params  - a structure, containing fields to construct the object</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% or to load objects of this (or child) type)</span>
+0008 <span class="comment">% o = maroi('load', fname);</span>
+0009 <span class="comment">% or</span>
+0010 <span class="comment">% o = maroi(fname);</span>
+0011 <span class="comment">% (where fname is a string)</span>
+0012 <span class="comment">% or</span>
+0013 <span class="comment">% o_cell_arr = maroi(name_cell_arr);</span>
+0014 <span class="comment">% (where</span>
+0015 <span class="comment">% o_cell_arr is a cell array of ROI objects and</span>
+0016 <span class="comment">% name_cell_arr is a cell array of filenames)</span>
+0017 <span class="comment">% or</span>
+0018 <span class="comment">% o_cell_arr = maroi('load_cell', fnames)</span>
+0019 <span class="comment">% to load strings/cell array of strings into cell array of objects</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% or to access class data</span>
+0022 <span class="comment">% res = maroi('classdata', p1, p2); (see classdata method)</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% or to process a filename to be suitable for saving an ROI</span>
+0025 <span class="comment">% new_fn = maroi('filename', old_fn);</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% An ROI is a definition of a region in space. As currently implemented,</span>
+0028 <span class="comment">% an ROI can be of three types:</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% a shape - a geometric shape defined independent of any image</span>
+0031 <span class="comment">%           e.g. sphere, box</span>
+0032 <span class="comment">% a point list - a list of points which are within the region, maybe with</span>
+0033 <span class="comment">%                associated values (see below)</span>
+0034 <span class="comment">% a volume - a 3D volume, containing values for the ROI at each point</span>
+0035 <span class="comment">%           e.g. matrix, image</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% Usually, the ROI will be binary; i.e. any point that is within the</span>
+0038 <span class="comment">% region will have a value of 1, and all points outside have a value of</span>
+0039 <span class="comment">% 0.  Because regions may be resampled into new image spaces, this</span>
+0040 <span class="comment">% binaryness needs to be enforced in the resampling; this is done if the</span>
+0041 <span class="comment">% 'binarize' flag is set for the object; the 'roithresh' field determines</span>
+0042 <span class="comment">% the value above which a point is considered within the region, after</span>
+0043 <span class="comment">% resampling.</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% In addition to defining the region in space, the ROI may also define</span>
+0046 <span class="comment">% values for the points within the region.  If an ROI defines values then it</span>
+0047 <span class="comment">% is a 'weighting' ROI (such as 0-&gt;1 probability weighting); those ROIs can</span>
+0048 <span class="comment">% contain different values across the region.  Because of the problem of</span>
+0049 <span class="comment">% missing values when resampling an ROI (e.g sampling at the edge of a</span>
+0050 <span class="comment">% volume when using anything other than nearest neighbour resampling),</span>
+0051 <span class="comment">% weighting ROIs should be zero based, so that a value outside the</span>
+0052 <span class="comment">% region will be considered to have the value 0 in resampling.  Values of</span>
+0053 <span class="comment">% NaN and 0 will always be assumed to be outside the region after</span>
+0054 <span class="comment">% resampling</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% At the moment, each ROI is saved as a separate mat file, with filename</span>
+0057 <span class="comment">% &lt;name&gt;_roi.mat</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">% $Id$</span>
+0060   
+0061 <span class="comment">% Programmers' notes</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">% maroi is the parent for all ROI objects. It can contain no useful ROI</span>
+0064 <span class="comment">% itself, but implements functions for all objects of maroi type.  Children</span>
+0065 <span class="comment">% will generally call this parent constructor with passed arguments.  This</span>
+0066 <span class="comment">% constructor routine then sets fields contained in the parent maroi object,</span>
+0067 <span class="comment">% and removes the relevant fields from the passed structure, then returns</span>
+0068 <span class="comment">% the stripped structure to the caller, so that it can use any extra</span>
+0069 <span class="comment">% arguments to set child properties, etc</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">% Fields are [defaults - which may well be overidden by children]:</span>
+0072 <span class="comment">% source   - filename for roi object ['']</span>
+0073 <span class="comment">% label    - 16 character label for outputting</span>
+0074 <span class="comment">% descrip  - (maybe) prolix description of ROI ['']</span>
+0075 <span class="comment">% history  - string specifying processing done to ROI ['']</span>
+0076 <span class="comment">% spm_hold - defines resampling method when reslicing ROI into different</span>
+0077 <span class="comment">%            space (see spm_sample_vol.m) [1]</span>
+0078 <span class="comment">% binarize - flag to indicate this is a binary ROI.</span>
+0079 <span class="comment">%            if == 1, The object will always return binary values; this is</span>
+0080 <span class="comment">%            enforced at object initialization, and during during</span>
+0081 <span class="comment">%            resampling [1]</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">% roithresh - absolute threshold above which a point is considered within</span>
+0084 <span class="comment">%            the ROI. With binarize flad set, this value</span>
+0085 <span class="comment">%            will usually be 0.5 (see defaults set in classdata).  With</span>
+0086 <span class="comment">%            binarize flag unset, iw will usually be eps. These defaults</span>
+0087 <span class="comment">%            are set using the classdata variable</span>
+0088 <span class="comment">%</span>
+0089 <span class="comment">% Methods that must be defined for a maroi object are</span>
+0090 <span class="comment">% [pts vals] = voxpts(obj, space)</span>
+0091 <span class="comment">% [pts vals] = realpts(obj, space)</span>
+0092 <span class="comment">% timeseries = getdata(obj, images, [flags]);</span>
+0093 <span class="comment">% mobj = maroi_matrix(obj, [space])</span>
+0094 <span class="comment">%</span>
+0095 <span class="comment">% In constructor calls:</span>
+0096 <span class="comment">% params passed are fields for current object, and for any parents</span>
+0097 <span class="comment">% (thus there must be no overlap in field names between child and parent</span>
+0098 <span class="comment">% objects, which in can in any case be confusing).</span>
+0099 <span class="comment">%</span>
+0100 <span class="comment">% Matthew Brett 21/9/01 (AR)</span>
+0101 
+0102 myclass = <span class="string">'maroi'</span>;
+0103 defstruct = struct(<span class="keyword">...</span>
+0104     <span class="string">'source'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0105     <span class="string">'label'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0106     <span class="string">'descrip'</span>, <span class="string">''</span>,<span class="keyword">...</span>
+0107     <span class="string">'history'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0108     <span class="string">'spm_hold'</span>,  <a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>(<span class="string">'def_hold'</span>),<span class="keyword">...</span>
+0109     <span class="string">'binarize'</span>,1,<span class="keyword">...</span>
+0110     <span class="string">'roithresh'</span>, <a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>(<span class="string">'def_binthresh'</span>));
+0111 
+0112 <span class="keyword">if</span> nargin &lt; 1
+0113   params = [];
+0114 <span class="keyword">end</span>
+0115 <span class="keyword">if</span> isa(params, myclass)
+0116   o = params;
+0117   <span class="keyword">return</span>
+0118 <span class="keyword">end</span>
+0119 
+0120 <span class="comment">% parse out string action calls (class data, helper functions)</span>
+0121 <span class="keyword">if</span> ischar(params)
+0122   <span class="keyword">switch</span> params
+0123    <span class="keyword">case</span> <span class="string">'classdata'</span>
+0124     o = <a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>(varargin{:});
+0125    <span class="keyword">case</span> <span class="string">'load'</span>
+0126     o = <a href="../../marsbar/@maroi/private/my_loadroi.html" class="code" title="function o = my_loadroi(fname)">my_loadroi</a>(varargin{1});
+0127    <span class="keyword">case</span> <span class="string">'load_cell'</span>
+0128     params = varargin{1};
+0129     <span class="keyword">if</span> ischar(params), params = cellstr(params); 
+0130     <span class="keyword">elseif</span> ~iscell(params), params = {params}; <span class="keyword">end</span>
+0131     o = <a href="maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(params);
+0132    <span class="keyword">case</span> <span class="string">'filename'</span>
+0133     o = <a href="../../marsbar/@maroi/private/my_roifname.html" class="code" title="function roifname = my_roifname(fname)">my_roifname</a>(varargin{:});
+0134    <span class="keyword">otherwise</span> <span class="comment">% single filename</span>
+0135     <span class="keyword">if</span> size(params, 1) &gt; 1
+0136       error(<span class="string">'Use cell form of call to load multiple objects'</span>);
+0137     <span class="keyword">end</span>
+0138     o = <a href="../../marsbar/@maroi/private/my_loadroi.html" class="code" title="function o = my_loadroi(fname)">my_loadroi</a>(params);
+0139   <span class="keyword">end</span>
+0140   <span class="keyword">return</span>
+0141 <span class="keyword">end</span>
+0142 
+0143 <span class="comment">% cell array - array of filenames, or objects, or something</span>
+0144 <span class="keyword">if</span> iscell(params)
+0145   sz = size(params);
+0146   o = cell(sz);
+0147   <span class="keyword">for</span> r = 1:prod(sz)
+0148     o{r} = <a href="maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(params{r});
+0149   <span class="keyword">end</span>
+0150   <span class="keyword">return</span>
+0151 <span class="keyword">end</span>
+0152 
+0153 <span class="comment">% fill with defaults, parse into fields for this object, children</span>
+0154 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, defstruct, params);
+0155 
+0156 <span class="comment">% Check for default thresholds according to binarize flag</span>
+0157 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params, <span class="string">'binarize'</span>) &amp;&amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(params.binarize) &amp;&amp; <span class="keyword">...</span>
+0158       params.binarize == 0 &amp;&amp; ( ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(params, <span class="string">'roithresh'</span>) || <span class="keyword">...</span>
+0159       <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(params.roithresh))
+0160   pparams.roithresh = <a href="../../marsbar/@maroi/private/my_classdata.html" class="code" title="function cdata = my_classdata(fieldname, value)">my_classdata</a>(<span class="string">'def_wtthresh'</span>);
+0161 <span class="keyword">end</span>
+0162   
+0163 <span class="comment">% add version tag (was CVS; now marsbar version)</span>
+0164 pparams.cvs_version = <a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'ver'</span>);
+0165 
+0166 <span class="comment">% Set as object</span>
+0167 o  = class(pparams, myclass);
+0168 
+0169 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

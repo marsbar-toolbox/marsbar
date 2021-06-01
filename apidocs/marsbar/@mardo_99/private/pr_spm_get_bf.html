@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_get_bf</title>
+  <meta name="keywords" content="pr_spm_get_bf">
+  <meta name="description" content="creates basis functions for each trial type {i} in struct BF{i}">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_spm_get_bf.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_get_bf
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>creates basis functions for each trial type {i} in struct BF{i}</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> creates basis functions for each trial type {i} in struct BF{i}
+ FORMAT [BF BFstr] = spm_get_bf(name,T,dt,Fstr,n_s [,n_c])
+
+ name  - name{1 x n} name of trials or conditions
+ T     - time bins per scan
+ dt    - time bin length {seconds}
+ Fstr  - Prompt string (usually indicates session)
+ n_s   - Session number
+ n_c   - Condition number (optional)
+
+ BF{i} - Array of basis functions for trial type {i}
+ BFstr - description of basis functions specified
+_______________________________________________________________________
+
+ spm_get_bf prompts for basis functions to model event or epoch-related
+ responses.  The basis functions returned are unitary and orthonormal
+ when defined as a function of peri-stimulus time in time-bins.
+ It is at this point that the distinction between event and epoch-related 
+ responses enters.
+_______________________________________________________________________
+ @(#)spm_get_bf.m    2.20  Karl Friston 01/08/22
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>	returns a hemodynamic response function</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_orth.html" class="code" title="function x = spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_get_bf.html" class="code" title="function [xBF] = pr_spm_get_bf(xBF)">pr_spm_get_bf</a>	fills in basis function structure</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>	returns a hemodynamic response function</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_orth.html" class="code" title="function x = pr_spm_orth(X)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+<li><a href="pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>	creates basis functions for each trial type {i} in struct BF{i}</li>
+<li><a href="pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>	returns a hemodynamic response function</li>
+<li><a href="pr_spm_orth.html" class="code" title="function bf = pr_spm_orth(BF)">pr_spm_orth</a>	recursive orthogonalization of basis functions</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>	creates basis functions for each trial type {i} in struct BF{i}</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function bf = spm_gamma_bf(u)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)</a>
+0002 <span class="comment">% creates basis functions for each trial type {i} in struct BF{i}</span>
+0003 <span class="comment">% FORMAT [BF BFstr] = spm_get_bf(name,T,dt,Fstr,n_s [,n_c])</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% name  - name{1 x n} name of trials or conditions</span>
+0006 <span class="comment">% T     - time bins per scan</span>
+0007 <span class="comment">% dt    - time bin length {seconds}</span>
+0008 <span class="comment">% Fstr  - Prompt string (usually indicates session)</span>
+0009 <span class="comment">% n_s   - Session number</span>
+0010 <span class="comment">% n_c   - Condition number (optional)</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% BF{i} - Array of basis functions for trial type {i}</span>
+0013 <span class="comment">% BFstr - description of basis functions specified</span>
+0014 <span class="comment">%_______________________________________________________________________</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% spm_get_bf prompts for basis functions to model event or epoch-related</span>
+0017 <span class="comment">% responses.  The basis functions returned are unitary and orthonormal</span>
+0018 <span class="comment">% when defined as a function of peri-stimulus time in time-bins.</span>
+0019 <span class="comment">% It is at this point that the distinction between event and epoch-related</span>
+0020 <span class="comment">% responses enters.</span>
+0021 <span class="comment">%_______________________________________________________________________</span>
+0022 <span class="comment">% @(#)spm_get_bf.m    2.20  Karl Friston 01/08/22</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $Id$</span>
+0025 
+0026 
+0027 <span class="comment">%-GUI setup</span>
+0028 <span class="comment">%-----------------------------------------------------------------------</span>
+0029 spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0030 
+0031 <span class="comment">%-Condition arguments</span>
+0032 <span class="comment">%-----------------------------------------------------------------------</span>
+0033 <span class="keyword">if</span> nargin &lt; 6, n_c = []; <span class="keyword">end</span>
+0034 
+0035 
+0036 <span class="comment">% if no trials</span>
+0037 <span class="comment">%-----------------------------------------------------------------------</span>
+0038 n      = length(name);
+0039 <span class="keyword">if</span> ~n
+0040     BF    = {};
+0041     BFstr = <span class="string">'none'</span>;
+0042     <span class="keyword">return</span>
+0043 <span class="keyword">end</span>
+0044 
+0045 <span class="comment">% determine sort of basis functions</span>
+0046 <span class="comment">%-----------------------------------------------------------------------</span>
+0047 Rtype = {<span class="string">'events'</span>,<span class="keyword">...</span>
+0048      <span class="string">'epochs'</span>,<span class="keyword">...</span>
+0049      <span class="string">'mixed'</span>};
+0050 <span class="keyword">if</span> n == 1
+0051     Rtype = Rtype(1:2);
+0052     spm_input(name{1},1,<span class="string">'d'</span>,Fstr)
+0053 <span class="keyword">else</span>
+0054     spm_input(Fstr,1,<span class="string">'d'</span>)
+0055 <span class="keyword">end</span>
+0056 
+0057 Rov   = spm_input(<span class="string">'are these trials'</span>,2,<span class="string">'b'</span>,Rtype);
+0058 Fstr=<span class="string">''</span>;
+0059 
+0060 <span class="keyword">switch</span> Rov
+0061 
+0062     <span class="comment">% assemble basis functions {bf}</span>
+0063     <span class="comment">%===============================================================</span>
+0064     <span class="keyword">case</span> <span class="string">'events'</span>
+0065 
+0066     <span class="comment">% model event-related responses</span>
+0067     <span class="comment">%---------------------------------------------------------------</span>
+0068     Ctype = {
+0069         <span class="string">'hrf (alone)'</span>,<span class="keyword">...</span>
+0070         <span class="string">'hrf (with time derivative)'</span>,<span class="keyword">...</span>
+0071         <span class="string">'hrf (with time and dispersion derivatives)'</span>,<span class="keyword">...</span>
+0072         <span class="string">'basis functions (Fourier set)'</span>,<span class="keyword">...</span>
+0073         <span class="string">'basis functions (Fourier set with Hanning)'</span>,<span class="keyword">...</span>
+0074         <span class="string">'basis functions (Gamma functions)'</span>,<span class="keyword">...</span>
+0075         <span class="string">'basis functions (Gamma functions with derivatives)'</span>,<span class="keyword">...</span>
+0076         <span class="string">'basis functions (Finite Impulse Response)'</span>};
+0077     str   = <span class="string">'Select basis set'</span>;
+0078     Cov   = spm_input(str,2,<span class="string">'m'</span>,Ctype);
+0079     BFstr = Ctype{Cov};
+0080 
+0081 
+0082     <span class="comment">% create basis functions</span>
+0083     <span class="comment">%---------------------------------------------------------------</span>
+0084     <span class="keyword">if</span>     Cov == 4 | Cov == 5
+0085 
+0086         <span class="comment">% Windowed (Hanning) Fourier set</span>
+0087         <span class="comment">%-------------------------------------------------------</span>
+0088         str   = <span class="string">'window length {secs}'</span>;
+0089         pst   = spm_input(str,3,<span class="string">'e'</span>,32);
+0090         pst   = [0:dt:pst]';
+0091         pst   = pst/max(pst);
+0092         h     = spm_input(<span class="string">'order'</span>,4,<span class="string">'e'</span>,4);
+0093 
+0094 
+0095         <span class="comment">% hanning window</span>
+0096         <span class="comment">%-------------------------------------------------------</span>
+0097         <span class="keyword">if</span> Cov == 4
+0098             g = ones(size(pst));
+0099         <span class="keyword">else</span>
+0100             g = (1 - cos(2*pi*pst))/2;
+0101         <span class="keyword">end</span>
+0102 
+0103         <span class="comment">% zeroth and higher terms</span>
+0104         <span class="comment">%-------------------------------------------------------</span>
+0105         bf    = g;
+0106         <span class="keyword">for</span> i = 1:h
+0107             bf = [bf g.*sin(i*2*pi*pst)];
+0108             bf = [bf g.*cos(i*2*pi*pst)];    
+0109         <span class="keyword">end</span>
+0110 
+0111     <span class="keyword">elseif</span> Cov == 6 | Cov == 7
+0112 
+0113 
+0114         <span class="comment">% Gamma functions alone</span>
+0115         <span class="comment">%-------------------------------------------------------</span>
+0116         pst   = [0:dt:32]';
+0117         dx    = 0.01;
+0118         bf    = <a href="#_sub1" class="code" title="subfunction bf = spm_gamma_bf(u)">spm_gamma_bf</a>(pst);
+0119 
+0120         <span class="comment">% Gamma functions and derivatives</span>
+0121         <span class="comment">%-------------------------------------------------------</span>
+0122         <span class="keyword">if</span> Cov == 7
+0123             bf  = [bf (<a href="#_sub1" class="code" title="subfunction bf = spm_gamma_bf(u)">spm_gamma_bf</a>(pst - dx) - bf)/dx];
+0124         <span class="keyword">end</span>
+0125 
+0126 
+0127     <span class="keyword">elseif</span> Cov == 8
+0128 
+0129 
+0130         <span class="comment">% Finite Impulse Response</span>
+0131         <span class="comment">%-------------------------------------------------------</span>
+0132         bin   = spm_input(<span class="string">'bin size (seconds)'</span>,3,<span class="string">'e'</span>,2);    
+0133         nb    = spm_input(<span class="string">'number of bins'</span>,4,<span class="string">'e'</span>,8);
+0134 
+0135         bf    = kron(eye(nb),ones(round(bin/dt),1));
+0136 
+0137 
+0138     <span class="keyword">elseif</span> Cov == 1 | Cov == 2 | Cov == 3
+0139 
+0140 
+0141         <span class="comment">% hrf and derivatives</span>
+0142         <span class="comment">%-------------------------------------------------------</span>
+0143         [bf p] = <a href="pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>(dt);
+0144 
+0145         <span class="comment">% add time derivative</span>
+0146         <span class="comment">%-------------------------------------------------------</span>
+0147         <span class="keyword">if</span> Cov == 2 | Cov == 3
+0148 
+0149             dp    = 1;
+0150             p(6)  = p(6) + dp;
+0151             D     = (bf(:,1) - <a href="pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>(dt,p))/dp;
+0152             bf    = [bf D(:)];
+0153             p(6)  = p(6) - dp;
+0154 
+0155             <span class="comment">% add dispersion derivative</span>
+0156             <span class="comment">%-----------------------------------------------</span>
+0157             <span class="keyword">if</span> Cov == 3
+0158 
+0159                 dp    = 0.01;
+0160                 p(3)  = p(3) + dp;
+0161                 D     = (bf(:,1) - <a href="pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>(dt,p))/dp;
+0162                 bf    = [bf D(:)];
+0163             <span class="keyword">end</span>
+0164         <span class="keyword">end</span>
+0165     <span class="keyword">end</span>
+0166 
+0167 
+0168     <span class="comment">% Orthogonalize and fill in basis function structure</span>
+0169     <span class="comment">%---------------------------------------------------------------</span>
+0170     bf    =  <a href="pr_spm_orth.html" class="code" title="function bf = pr_spm_orth(BF)">pr_spm_orth</a>(bf);
+0171     <span class="keyword">for</span> i = 1:n
+0172         BF{i}  =  bf;
+0173     <span class="keyword">end</span>
+0174 
+0175 
+0176     <span class="comment">% assemble basis functions {bf}</span>
+0177     <span class="comment">%===============================================================</span>
+0178     <span class="keyword">case</span> <span class="string">'epochs'</span>
+0179 
+0180 
+0181     <span class="comment">% covariates of interest - Type</span>
+0182     <span class="comment">%---------------------------------------------------------------</span>
+0183     Ctype = {<span class="string">'basis functions  (Discrete Cosine Set)'</span>,<span class="keyword">...</span>
+0184          <span class="string">'basis functions  (Mean &amp; exponential decay)'</span>,<span class="keyword">...</span>
+0185          <span class="string">'fixed response   (Half-sine)'</span>,<span class="keyword">...</span>
+0186          <span class="string">'fixed response   (Box-car)'</span>};
+0187     str   = <span class="string">'Select type of response'</span>;
+0188     Cov   = spm_input(str,2,<span class="string">'m'</span>,Ctype);
+0189 
+0190     BFstr = Ctype{Cov};
+0191 
+0192     <span class="comment">% convolve with HRF?</span>
+0193     <span class="comment">%---------------------------------------------------------------</span>
+0194     <span class="keyword">if</span> Cov == 1
+0195         str = <span class="string">'number of basis functions'</span>;
+0196         h   = spm_input(str,3,<span class="string">'e'</span>,2);
+0197     <span class="keyword">end</span>
+0198 
+0199     <span class="comment">% convolve with HRF?</span>
+0200     <span class="comment">%---------------------------------------------------------------</span>
+0201     HRF   = spm_input(<span class="string">'convolve with hrf'</span>,3,<span class="string">'b'</span>,<span class="string">'yes|no'</span>,[1 0]);
+0202 
+0203     <span class="comment">% ask for temporal differences</span>
+0204     <span class="comment">%---------------------------------------------------------------</span>
+0205     str   = <span class="string">'add temporal derivatives'</span>;
+0206     TD    = spm_input(str,4,<span class="string">'b'</span>,<span class="string">'yes|no'</span>,[1 0]);
+0207  
+0208 
+0209     <span class="comment">% Assemble basis functions for each trial type</span>
+0210     <span class="comment">%---------------------------------------------------------------</span>
+0211     <span class="keyword">for</span> i = 1:n
+0212 
+0213         str   = [<span class="string">'epoch length {scans} for '</span> name{i}];
+0214         W     = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,<span class="string">''</span>,1);
+0215         pst   = [1:W*T]' - 1;
+0216         pst   = pst/max(pst);
+0217 
+0218         <span class="comment">% Discrete cosine set</span>
+0219         <span class="comment">%-------------------------------------------------------</span>
+0220         <span class="keyword">if</span>     Cov == 1
+0221 
+0222             bf    = [];
+0223             <span class="keyword">for</span> j = 0:(h - 1)
+0224                 bf = [bf cos(j*pi*pst)];    
+0225             <span class="keyword">end</span>
+0226 
+0227         <span class="comment">% Mean and exponential</span>
+0228         <span class="comment">%-------------------------------------------------------</span>
+0229         <span class="keyword">elseif</span> Cov == 2
+0230         
+0231             bf    = [ones(size(pst)) exp(-pst/4)];
+0232 
+0233         <span class="comment">% Half sine wave</span>
+0234         <span class="comment">%-------------------------------------------------------</span>
+0235         <span class="keyword">elseif</span> Cov == 3
+0236 
+0237             bf    = sin(pi*pst);
+0238 
+0239         <span class="comment">% Box car</span>
+0240         <span class="comment">%-------------------------------------------------------</span>
+0241         <span class="keyword">elseif</span> Cov == 4
+0242 
+0243             bf    = ones(size(pst));
+0244 
+0245         <span class="keyword">end</span>
+0246 
+0247         <span class="comment">% convolve with hemodynamic response function - hrf</span>
+0248         <span class="comment">%-------------------------------------------------------</span>
+0249         <span class="keyword">if</span> HRF
+0250             hrf   = <a href="pr_spm_hrf.html" class="code" title="function [hrf,p] = pr_spm_hrf(RT,P);">pr_spm_hrf</a>(dt);
+0251             [p q] = size(bf);
+0252             D     = [];
+0253             <span class="keyword">for</span> j = 1:q
+0254                 D = [D conv(bf(:,j),hrf)];
+0255             <span class="keyword">end</span>
+0256             bf    = D;
+0257         <span class="keyword">end</span>
+0258 
+0259         <span class="comment">% add temporal differences if specified</span>
+0260         <span class="comment">%-------------------------------------------------------</span>
+0261         <span class="keyword">if</span> TD
+0262             bf    = [bf [diff(bf); zeros(1,size(bf,2))]/dt];
+0263         <span class="keyword">end</span>
+0264 
+0265         <span class="comment">% Orthogonalize and fill in Sess structure</span>
+0266         <span class="comment">%-------------------------------------------------------</span>
+0267         BF{i}         =  <a href="pr_spm_orth.html" class="code" title="function bf = pr_spm_orth(BF)">pr_spm_orth</a>(bf);
+0268     <span class="keyword">end</span>
+0269 
+0270 
+0271     <span class="comment">% mixed event and epoch model</span>
+0272     <span class="comment">%===============================================================</span>
+0273     <span class="keyword">case</span> <span class="string">'mixed'</span>
+0274     <span class="keyword">for</span> i = 1:n
+0275         BF(i)  = <a href="pr_spm_get_bf.html" class="code" title="function [BF,BFstr] = pr_spm_get_bf(name,T,dt,Fstr,n_s,n_c)">pr_spm_get_bf</a>(name(i),T,dt,<span class="string">''</span>,n_s,i);
+0276     <span class="keyword">end</span>
+0277     BFstr = <span class="string">'mixed'</span>;
+0278 <span class="keyword">end</span>
+0279 
+0280 
+0281 
+0282 <span class="comment">%=======================================================================</span>
+0283 <span class="comment">%- S U B - F U N C T I O N S</span>
+0284 <span class="comment">%=======================================================================</span>
+0285 
+0286 
+0287 <span class="comment">% compute Gamma functions functions</span>
+0288 <span class="comment">%-----------------------------------------------------------------------</span>
+0289 <a name="_sub1" href="#_subfunctions" class="code">function bf = spm_gamma_bf(u)</a>
+0290 <span class="comment">% returns basis functions used for Volterra expansion</span>
+0291 <span class="comment">% FORMAT bf = spm_gamma_bf(u);</span>
+0292 <span class="comment">% u   - times {seconds}</span>
+0293 <span class="comment">% bf  - basis functions (mixture of Gammas)</span>
+0294 <span class="comment">%_______________________________________________________________________</span>
+0295 u     = u(:);
+0296 bf    = [];
+0297 <span class="keyword">for</span> i = 2:4
+0298         m   = 2^i;
+0299         s   = sqrt(m);
+0300         bf  = [bf spm_Gpdf(u,(m/s)^2,m/s^2)];
+0301 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

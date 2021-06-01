@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_veropts</title>
+  <meta name="keywords" content="mars_veropts">
+  <meta name="description" content="returns SPM version specific parameters">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm99</a> &gt; mars_veropts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mars_veropts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>returns SPM version specific parameters</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = mars_veropts(arg, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns SPM version specific parameters
+ FORMAT varargout = mars_veropts(arg, varargin)
+  
+ This the SPM 99 version
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@mardo_99/mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_image_scaling.html" class="code" title="function [VY,row] = mars_image_scaling(marsD)">mars_image_scaling</a>	get image scaling data for images, maybe via SPM design</li>
+<li><a href="../../marsbar/mars_img2rois.html" class="code" title="function mars_img2rois(P, roipath, rootn, flags)">mars_img2rois</a>	creates ROIs from cluster image or image containing ROIs defined by unique nos</li>
+<li><a href="../../marsbar/mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="../../marsbar/mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>	Display Orthogonal Views of a Normalized Image</li>
+<li><a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = mars_veropts(arg, varargin)</a>
+0002 <span class="comment">% returns SPM version specific parameters</span>
+0003 <span class="comment">% FORMAT varargout = mars_veropts(arg, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% This the SPM 99 version</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $Id$</span>
+0008   
+0009 <span class="keyword">if</span> nargin &lt; 1
+0010   varargout = {};
+0011   <span class="keyword">return</span>
+0012 <span class="keyword">end</span>
+0013 
+0014 <span class="keyword">switch</span> lower(arg)
+0015  <span class="keyword">case</span> <span class="string">'defaults'</span>
+0016   varargout = {};
+0017  <span class="keyword">case</span> <span class="string">'default_design'</span>
+0018   varargout = {<a href="../../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>};
+0019  <span class="keyword">case</span> <span class="string">'template_ext'</span> <span class="comment">% extension for template images</span>
+0020   varargout = {<span class="string">'.img'</span>};
+0021  <span class="keyword">case</span> <span class="string">'get_img_ext'</span>  <span class="comment">% default image extension for spm_get</span>
+0022   varargout = {<span class="string">'img'</span>}; 
+0023  <span class="keyword">case</span> <span class="string">'pref_img_out_ext'</span> <span class="comment">% preferred extension for writing images</span>
+0024   varargout = {<span class="string">'img'</span>}; 
+0025  <span class="keyword">case</span> <span class="string">'des_conf'</span>     <span class="comment">% filter for configured, not estimated SPM designs</span>
+0026   varargout = {<span class="string">'SPMcfg.mat'</span>};
+0027  <span class="keyword">case</span> <span class="string">'flip_option'</span>
+0028   varargout = {0};
+0029  <span class="keyword">case</span> <span class="string">'design_filter_spec'</span> 
+0030   varargout = {{<span class="keyword">...</span>
+0031     <span class="string">'SPMcfg.mat'</span>,<span class="string">'99 with imgs: SPMcfg.mat'</span>;<span class="keyword">...</span>
+0032     <span class="string">'SPM.mat'</span>,<span class="string">'SPM.mat; 2(all)/99 (estimated: SPM.mat)'</span>;<span class="keyword">...</span>
+0033     <span class="string">'SPM_fMRIDesMtx.mat'</span>,<span class="string">'99,FMRI,no imgs: SPM*fMRI*'</span>}}; 
+0034  <span class="keyword">otherwise</span>
+0035   error([<span class="string">'You asked for '</span> arg <span class="string">', which is strange'</span>]);
+0036 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,23 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  maroi_matrix -> maroi_matrix;
+  maroi_matrix -> matrixdata;
+  maroi_matrix -> native_space;
+  maroi_matrix -> rebase;
+  matrixdata -> maroi_matrix;
+  rebase -> spm_mat;
+  voxpts -> rebase;
+
+  do_write_image [URL="do_write_image.html"];
+  domaths [URL="domaths.html"];
+  flip_lr [URL="flip_lr.html"];
+  is_empty_roi [URL="is_empty_roi.html"];
+  loadobj [URL="loadobj.html"];
+  maroi_matrix [URL="maroi_matrix.html"];
+  matrixdata [URL="matrixdata.html"];
+  native_space [URL="native_space.html"];
+  rebase [URL="rebase.html"];
+  saveobj [URL="saveobj.html"];
+  spm_mat [URL="spm_mat.html"];
+  voxpts [URL="voxpts.html"];
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of region_descrip</title>
+  <meta name="keywords" content="region_descrip">
+  <meta name="description" content="method gets or sets descrip for region(s) as cell array">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; region_descrip.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>region_descrip
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method gets or sets descrip for region(s) as cell array</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function res = region_descrip(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method gets or sets descrip for region(s) as cell array
+ FORMAT res = region_descrip(o, r_nos) (get) OR 
+ FORMAT res = region_descrip(o, r_nos, new_data) (set)
+ 
+ See region_field for details
+  
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="region_field.html" class="code" title="function res = region_field(fieldname, o, r_nos, new_data)">region_field</a>	method gets or sets data for region field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function res = region_descrip(varargin)</a>
+0002 <span class="comment">% method gets or sets descrip for region(s) as cell array</span>
+0003 <span class="comment">% FORMAT res = region_descrip(o, r_nos) (get) OR</span>
+0004 <span class="comment">% FORMAT res = region_descrip(o, r_nos, new_data) (set)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% See region_field for details</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id$</span>
+0009 
+0010 res = <a href="region_field.html" class="code" title="function res = region_field(fieldname, o, r_nos, new_data)">region_field</a>(<span class="string">'descrip'</span>, varargin{:});
+0011   
+0012   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

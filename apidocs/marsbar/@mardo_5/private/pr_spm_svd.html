@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_svd</title>
+  <meta name="keywords" content="pr_spm_svd">
+  <meta name="description" content="computationally efficient SVD (that can handle sparse arguments)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_svd.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_svd
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>computationally efficient SVD (that can handle sparse arguments)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [U,S,V] = pr_spm_svd(X,U,T) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> computationally efficient SVD (that can handle sparse arguments)
+ FORMAT [U,S,V] = pr_spm_svd(X,u,t);
+ X    - {m x n} matrix
+ u    - threshold for normalized eigenvalues (default = 1e-6)
+ t    - threshold for raw eigenvalues        (default = 0)
+
+ U    - {m x p} singular vectors
+ V    - {m x p} singular variates
+ S    - {p x p} singular values
+___________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_en.html" class="code" title="function [X] = pr_spm_en(X)">pr_spm_en</a>	Euclidean normalization</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_reml.html" class="code" title="function [Ce,h,W,u] = spm_reml(Cy,X,Q,TOL);">pr_spm_reml</a>	REML estimation of covariance components from Cov{y}</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [U,S,V] = pr_spm_svd(X,U,T)</a>
+0002 <span class="comment">% computationally efficient SVD (that can handle sparse arguments)</span>
+0003 <span class="comment">% FORMAT [U,S,V] = pr_spm_svd(X,u,t);</span>
+0004 <span class="comment">% X    - {m x n} matrix</span>
+0005 <span class="comment">% u    - threshold for normalized eigenvalues (default = 1e-6)</span>
+0006 <span class="comment">% t    - threshold for raw eigenvalues        (default = 0)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% U    - {m x p} singular vectors</span>
+0009 <span class="comment">% V    - {m x p} singular variates</span>
+0010 <span class="comment">% S    - {p x p} singular values</span>
+0011 <span class="comment">%___________________________________________________________________________</span>
+0012 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0013 
+0014 <span class="comment">% Karl Friston</span>
+0015 <span class="comment">% $Id: spm_svd.m 112 2005-05-04 18:20:52Z john $</span>
+0016 
+0017 
+0018 
+0019 <span class="comment">% default thresholds</span>
+0020 <span class="comment">%---------------------------------------------------------------------------</span>
+0021 <span class="keyword">if</span> nargin &lt; 2
+0022     U = 1e-6;
+0023 <span class="keyword">end</span>
+0024 
+0025 <span class="keyword">if</span> nargin &lt; 3
+0026     T = 0;
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="comment">% deal with sparse matrices</span>
+0030 <span class="comment">%---------------------------------------------------------------------------</span>
+0031 [M N] = size(X);
+0032 p     = find(any(X,2));
+0033 q     = find(any(X,1));
+0034 X     = X(p,q);
+0035 
+0036 <span class="comment">% SVD</span>
+0037 <span class="comment">%---------------------------------------------------------------------------</span>
+0038 [i j s] = find(X);
+0039 [m n]   = size(X);
+0040 <span class="keyword">if</span> any(i - j)
+0041 
+0042     <span class="comment">% off-leading diagonal elements - full SVD</span>
+0043     <span class="comment">%-------------------------------------------------------------------</span>
+0044     X     = full(X);
+0045     <span class="keyword">if</span> m &gt; n
+0046 
+0047         [v S v] = svd(spm_atranspa(X),0);
+0048         S       = sparse(S);
+0049         s       = diag(S);
+0050         j       = find(s*length(s)/sum(s) &gt;= U &amp; s &gt;= T);
+0051         v       = v(:,j);
+0052         u       = <a href="pr_spm_en.html" class="code" title="function [X] = pr_spm_en(X)">pr_spm_en</a>(X*v);
+0053         S       = sqrt(S(j,j));
+0054 
+0055     <span class="keyword">elseif</span> m &lt; n
+0056 
+0057         [u S u] = svd(spm_atranspa(X'),0);
+0058         S       = sparse(S);
+0059         s       = diag(S);
+0060         j       = find(s*length(s)/sum(s) &gt;= U &amp; s &gt;= T);
+0061         u       = u(:,j);
+0062         v       = <a href="pr_spm_en.html" class="code" title="function [X] = pr_spm_en(X)">pr_spm_en</a>(X'*u);
+0063         S       = sqrt(S(j,j));
+0064 
+0065     <span class="keyword">else</span>
+0066 
+0067         [u S v] = svd(X,0);
+0068         S       = sparse(S);
+0069         s       = diag(S).^2;
+0070           j       = find(s*length(s)/sum(s) &gt;= U &amp; s &gt;= T);
+0071         v       = v(:,j);
+0072         u       = u(:,j);
+0073         S       = S(j,j);
+0074     <span class="keyword">end</span>
+0075 
+0076 <span class="keyword">else</span>
+0077     S     = sparse(1:n,1:n,s,m,n);
+0078     u     = speye(m,n);
+0079     v     = speye(m,n);
+0080     [i j] = sort(-s);
+0081     S     = S(j,j);
+0082     v     = v(:,j);
+0083     u     = u(:,j);
+0084     s     = diag(S).^2;
+0085      j     = find(s*length(s)/sum(s) &gt;= U &amp; s &gt;= T);
+0086     v     = v(:,j);
+0087     u     = u(:,j);
+0088     S     = S(j,j);
+0089 
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">% replace in full matrices</span>
+0093 <span class="comment">%---------------------------------------------------------------------------</span>
+0094 j      = length(j);
+0095 U      = sparse(M,j);
+0096 V      = sparse(N,j);
+0097 <span class="keyword">if</span> j
+0098     U(p,:) = u;
+0099     V(q,:) = v;
+0100 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

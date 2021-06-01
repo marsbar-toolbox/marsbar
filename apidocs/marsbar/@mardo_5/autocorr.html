@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of autocorr</title>
+  <meta name="keywords" content="autocorr">
+  <meta name="description" content="method to set autocorrelation types for design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_5</a> &gt; autocorr.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>autocorr
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to set autocorrelation types for design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = autocorr(D, autocorr_type, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to set autocorrelation types for design
+ FORMAT D = autocorr(D, autocorr_type, varargin)
+ 
+ D             - design object
+ autocorr_type - autocorrelation type specification, one of
+                 'SPM'
+                 'fmristat'
+                 'none'
+ varargin      - parameters defining autocorrelation model.  
+                 If autocorr type is 'SPM':
+                   varargin{1} should be vector with estimated AR
+                      coefficients (default is [0.2])
+                   varargin{2} is optional, and is flag; non-zero value
+                   specifies voxel-wise covariance estimates (default 1)
+                 If autocorr type is 'fmristat'
+                   varargin{1} is scalar value for order of fmristat
+                   model (default is 1);
+ 
+ $Id: autocorr.m 539 2004-12-02 18:46:37Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="../../marsbar/@mardo_5/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>	return error covariance constraints for serially correlated data</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = autocorr(D, autocorr_type, varargin)</a>
+0002 <span class="comment">% method to set autocorrelation types for design</span>
+0003 <span class="comment">% FORMAT D = autocorr(D, autocorr_type, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D             - design object</span>
+0006 <span class="comment">% autocorr_type - autocorrelation type specification, one of</span>
+0007 <span class="comment">%                 'SPM'</span>
+0008 <span class="comment">%                 'fmristat'</span>
+0009 <span class="comment">%                 'none'</span>
+0010 <span class="comment">% varargin      - parameters defining autocorrelation model.</span>
+0011 <span class="comment">%                 If autocorr type is 'SPM':</span>
+0012 <span class="comment">%                   varargin{1} should be vector with estimated AR</span>
+0013 <span class="comment">%                      coefficients (default is [0.2])</span>
+0014 <span class="comment">%                   varargin{2} is optional, and is flag; non-zero value</span>
+0015 <span class="comment">%                   specifies voxel-wise covariance estimates (default 1)</span>
+0016 <span class="comment">%                 If autocorr type is 'fmristat'</span>
+0017 <span class="comment">%                   varargin{1} is scalar value for order of fmristat</span>
+0018 <span class="comment">%                   model (default is 1);</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id: autocorr.m 539 2004-12-02 18:46:37Z matthewbrett $</span>
+0021   
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023   error(<span class="string">'Need autocorr type'</span>);
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0027   warning(<span class="string">'Can only set autocorrelation for FMRI design types'</span>);
+0028   <span class="keyword">return</span>
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="comment">% Get design, put into some useful variables</span>
+0032 v_f = <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D);
+0033 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0034 nscan = SPM.nscan;
+0035 
+0036 SPM.xVi.cov_calc = <span class="string">'summary'</span>;
+0037 
+0038 <span class="keyword">switch</span> lower(autocorr_type)
+0039  <span class="keyword">case</span> <span class="string">'fmristat'</span>
+0040   <span class="comment">% Fit fmristat model AR(n)</span>
+0041   <span class="keyword">if</span> nargin &lt; 3, varargin{1} = 1; <span class="keyword">end</span>
+0042   cVi = varargin{1};
+0043   <span class="keyword">if</span> prod(size(cVi)) &gt; 1
+0044     error(<span class="string">'Expecting scalar for fmristat order'</span>);
+0045   <span class="keyword">end</span>
+0046   SPM.xVi.Vi = struct(<span class="string">'type'</span>, <span class="string">'fmristat'</span>, <span class="string">'order'</span>, cVi);
+0047   cVi        = sprintf(<span class="string">'fmristat AR(%d)'</span>,cVi);
+0048   f2cl       = <span class="string">'V'</span>; <span class="comment">% Field to CLear</span>
+0049   
+0050  <span class="keyword">case</span> <span class="string">'spm'</span>
+0051   <span class="comment">% SPM AR coefficient(s) to be specified</span>
+0052   <span class="keyword">if</span> nargin &lt; 3, varargin{1} = 0.2; <span class="keyword">end</span>
+0053   <span class="keyword">if</span> nargin &lt; 4, varargin{2} = 1; <span class="keyword">end</span>
+0054   cVi = varargin{1};
+0055   <span class="keyword">if</span> any(cVi &gt; 1 | cVi &lt; 0)
+0056     error(<span class="string">'Rho estimates should be &gt; 0 and &lt; 1'</span>);
+0057   <span class="keyword">end</span>
+0058   SPM.xVi.Vi = <a href="../../marsbar/@mardo_2/private/pr_spm_ce.html" class="code" title="function [C] = pr_spm_ce(v,a)">pr_spm_ce</a>(nscan, cVi);
+0059   cVi        = sprintf(<span class="string">'AR(%0.1f)'</span>,cVi(1));
+0060   f2cl       = <span class="string">'V'</span>; 
+0061   <span class="keyword">if</span> varargin{2}
+0062     SPM.xVi.cov_calc = <span class="string">'vox'</span>;
+0063   <span class="keyword">end</span>
+0064   
+0065  <span class="keyword">case</span> <span class="string">'none'</span>        
+0066   <span class="comment">%  xVi.V is i.i.d</span>
+0067   <span class="comment">%---------------------------------------------------------------</span>
+0068   SPM.xVi.V  = speye(sum(nscan));
+0069   cVi        = <span class="string">'i.i.d'</span>;
+0070   f2cl       = <span class="string">'Vi'</span>; 
+0071   
+0072  <span class="keyword">otherwise</span>        
+0073   error([<span class="string">'Eccentric autocorr type '</span> autocorr_type]);
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="comment">% If we've set V, need to clear Vi, because the</span>
+0077 <span class="comment">% estimate method takes the presence of Vi to mean that</span>
+0078 <span class="comment">% V can be cleared, with 'redo_covar' flag</span>
+0079 <span class="comment">% Conversely V needs to be cleared if Vi was estimated</span>
+0080 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xVi, f2cl)
+0081   SPM.xVi = rmfield(SPM.xVi, f2cl);
+0082   <span class="keyword">if</span> v_f, fprintf(<span class="string">'Clearing previous %s matrix\n'</span>, f2cl); <span class="keyword">end</span>
+0083 <span class="keyword">end</span>
+0084 
+0085 <span class="comment">% Also: remove previous W matrices</span>
+0086 <span class="comment">% Either will need to be recalculated or won't be used</span>
+0087 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xX, <span class="string">'W'</span>)
+0088   SPM.xX = rmfield(SPM.xX, <span class="string">'W'</span>);
+0089   <span class="keyword">if</span> v_f, fprintf(<span class="string">'Clearing previous W matrix\n'</span>); <span class="keyword">end</span>
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">% fill into design</span>
+0093 SPM.xVi.form = cVi;
+0094 xsDes = struct(<span class="string">'Serial_correlations'</span>, SPM.xVi.form);
+0095 SPM.xsDes = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, SPM.xsDes, xsDes);
+0096 
+0097 <span class="comment">% put stuff into object</span>
+0098 D = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D,SPM);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

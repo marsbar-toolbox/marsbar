@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_unvec</title>
+  <meta name="keywords" content="pr_spm_unvec">
+  <meta name="description" content="unvectorises a vectorised array">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_unvec.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_unvec
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>unvectorises a vectorised array</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [varargout] = pr_spm_unvec(vX,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> unvectorises a vectorised array
+ FORMAT [X] = pr_spm_unvec(vX,X);
+ X  - numeric, cell or stucture array
+ vX - pr_spm_vec(X)
+
+ i.e. X      = pr_spm_unvec(pr_spm_vec(X),X)
+      [X{:}] = pr_spm_unvec(pr_spm_vec(X{:}),X{:})
+                                              - (i.e. can also deal)
+
+ see pr_spm_vec
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>	unvectorises a vectorised array</li>
+<li><a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>	vectorises a numeric, cell or structure array</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+<li><a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>	unvectorises a vectorised array</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [varargout] = pr_spm_unvec(vX,varargin)</a>
+0002 <span class="comment">% unvectorises a vectorised array</span>
+0003 <span class="comment">% FORMAT [X] = pr_spm_unvec(vX,X);</span>
+0004 <span class="comment">% X  - numeric, cell or stucture array</span>
+0005 <span class="comment">% vX - pr_spm_vec(X)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% i.e. X      = pr_spm_unvec(pr_spm_vec(X),X)</span>
+0008 <span class="comment">%      [X{:}] = pr_spm_unvec(pr_spm_vec(X{:}),X{:})</span>
+0009 <span class="comment">%                                              - (i.e. can also deal)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% see pr_spm_vec</span>
+0012 <span class="comment">%__________________________________________________________________________</span>
+0013 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0014 
+0015 <span class="comment">% Karl Friston</span>
+0016 <span class="comment">% $Id: spm_vec.m 184 2005-05-31 13:23:32Z karl $</span>
+0017 
+0018 <span class="comment">% deal to multiple outputs if necessary</span>
+0019 <span class="comment">%--------------------------------------------------------------------------</span>
+0020 <span class="keyword">if</span> nargout &gt; 1
+0021     varargout = <a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>(vX,varargin);
+0022     <span class="keyword">return</span>
+0023 <span class="keyword">end</span>
+0024 <span class="keyword">if</span> length(varargin) == 1
+0025     X = varargin{1};
+0026 <span class="keyword">else</span>
+0027     X = varargin;
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">% fill in structure arrays</span>
+0031 <span class="comment">%--------------------------------------------------------------------------</span>
+0032 <span class="keyword">if</span> isstruct(X)
+0033     f = fieldnames(X);
+0034     <span class="keyword">for</span> i = 1:length(f)
+0035         c          = {X.(f{i})};
+0036         n          = length(<a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(c));
+0037         c          = <a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>(vX(1:n),c);
+0038         [X.(f{i})] = deal(c{:});
+0039         vX         = vX(n + 1:end);
+0040     <span class="keyword">end</span>
+0041     varargout      = {X};
+0042     <span class="keyword">return</span>
+0043 <span class="keyword">end</span>
+0044 
+0045 <span class="comment">% fill in cells arrays</span>
+0046 <span class="comment">%--------------------------------------------------------------------------</span>
+0047 <span class="keyword">if</span> iscell(X)
+0048     <span class="keyword">for</span> i = 1:length(X(:))
+0049         n     = length(<a href="pr_spm_vec.html" class="code" title="function [vX] = pr_spm_vec(varargin)">pr_spm_vec</a>(X{i}));
+0050         X{i}  = <a href="pr_spm_unvec.html" class="code" title="function [varargout] = pr_spm_unvec(vX,varargin)">pr_spm_unvec</a>(vX(1:n),X{i});
+0051         vX    = vX(n + 1:end);
+0052     <span class="keyword">end</span>
+0053     varargout      = {X};
+0054     <span class="keyword">return</span>
+0055 <span class="keyword">end</span>
+0056 
+0057 <span class="comment">% reshape numerical arrays</span>
+0058 <span class="comment">%--------------------------------------------------------------------------</span>
+0059 <span class="keyword">if</span> isnumeric(X)
+0060     X(:)  = vX;
+0061 <span class="keyword">else</span>
+0062     X     = [];
+0063 <span class="keyword">end</span>
+0064 varargout = {X};
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

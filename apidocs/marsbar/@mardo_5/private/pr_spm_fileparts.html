@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_fileparts</title>
+  <meta name="keywords" content="pr_spm_fileparts">
+  <meta name="description" content="Like fileparts, but separates off a comma separated list at the end">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_fileparts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_fileparts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Like fileparts, but separates off a comma separated list at the end</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [pth,nam,ext,num] = spm_fileparts(fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Like fileparts, but separates off a comma separated list at the end
+ FORMAT [pth,nam,ext,num] = spm_fileparts(fname)
+ fname - original filename
+ pth   - path
+ nam   - filename
+ ext   - extension
+ num   - comma separated list of values
+
+_______________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>	File selector</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [pth,nam,ext,num] = spm_fileparts(fname)</a>
+0002 <span class="comment">% Like fileparts, but separates off a comma separated list at the end</span>
+0003 <span class="comment">% FORMAT [pth,nam,ext,num] = spm_fileparts(fname)</span>
+0004 <span class="comment">% fname - original filename</span>
+0005 <span class="comment">% pth   - path</span>
+0006 <span class="comment">% nam   - filename</span>
+0007 <span class="comment">% ext   - extension</span>
+0008 <span class="comment">% num   - comma separated list of values</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%_______________________________________________________________________</span>
+0011 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0012 
+0013 <span class="comment">% John Ashburner</span>
+0014 <span class="comment">% $Id: spm_fileparts.m 112 2005-05-04 18:20:52Z john $</span>
+0015 
+0016 
+0017 num = <span class="string">''</span>;
+0018 [pth,nam,ext] = fileparts(fname);
+0019 ind = find(ext==<span class="string">','</span>);
+0020 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ind),
+0021     num = ext(ind(1):end);
+0022     ext = ext(1:(ind(1)-1));
+0023 <span class="keyword">end</span>;
+0024 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

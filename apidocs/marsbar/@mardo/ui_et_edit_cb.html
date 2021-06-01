@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_et_edit_cb</title>
+  <meta name="keywords" content="ui_et_edit_cb">
+  <meta name="description" content="method to handle callbacks from ui_et_edit">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; ui_et_edit_cb.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_et_edit_cb
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to handle callbacks from ui_et_edit</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = ui_et_edit_cb(D, action, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to handle callbacks from ui_et_edit 
+ FORMAT varargout = ui_et_edit_cb(D, action, varargin)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>	method to get / set event types for design</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/private/pr_sort_evs.html" class="code" title="function evs = pr_sort_evs(evs, sort_type, downf)">pr_sort_evs</a>	function to sort event according to sort type</li>
+<li><a href="ui_et_edit_cb.html" class="code" title="function varargout = ui_et_edit_cb(D, action, varargin)">ui_et_edit_cb</a>	method to handle callbacks from ui_et_edit</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="ui_et_edit_cb.html" class="code" title="function varargout = ui_et_edit_cb(D, action, varargin)">ui_et_edit_cb</a>	method to handle callbacks from ui_et_edit</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = ui_et_edit_cb(D, action, varargin)</a>
+0002 <span class="comment">% method to handle callbacks from ui_et_edit</span>
+0003 <span class="comment">% FORMAT varargout = ui_et_edit_cb(D, action, varargin)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% $Id$</span>
+0006 
+0007 <span class="keyword">if</span> nargin &lt; 2
+0008   error(<span class="string">'Need action'</span>);
+0009 <span class="keyword">end</span>
+0010 
+0011 F  = gcbf;
+0012 action = lower(action);
+0013 <span class="keyword">switch</span> action
+0014  <span class="keyword">case</span> <span class="string">'ok'</span>
+0015   <span class="comment">% Deblank name, and check name is not empty</span>
+0016   hName = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_name'</span>);
+0017   new_name = get(hName, <span class="string">'String'</span>);
+0018   old_name = get(hName, <span class="string">'UserData'</span>);
+0019   new_name = deblank(fliplr(deblank(fliplr(new_name))));
+0020   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(new_name) | strcmp(new_name, <span class="string">'New event'</span>)
+0021     msgbox(<span class="string">'Need a name for this event type'</span>); <span class="keyword">return</span>
+0022   <span class="keyword">end</span>
+0023   <span class="comment">% Check if name has been changed</span>
+0024   <span class="keyword">if</span> ~strcmp(new_name, old_name)
+0025     <span class="comment">% Check name has not been used</span>
+0026     ets = <a href="event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>(D);
+0027     <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ets)
+0028       <span class="keyword">if</span> ismember(new_name, {ets(:).name})
+0029     msgbox([<span class="string">'Event type '</span> new_name <span class="string">' already exists'</span>]); <span class="keyword">return</span>
+0030       <span class="keyword">end</span>    
+0031     <span class="keyword">end</span>
+0032   <span class="keyword">end</span>
+0033   <span class="comment">% Check events not empty</span>
+0034   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(get(findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_IN'</span>), <span class="string">'String'</span>))
+0035     msgbox(<span class="string">'Need events for this event type'</span>); <span class="keyword">return</span>
+0036   <span class="keyword">end</span>
+0037   <span class="comment">% Put (deblanked) string back, and set Done flag</span>
+0038   set(hName, <span class="string">'String'</span>, new_name);
+0039   set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'ui_et_done'</span>),<span class="string">'UserData'</span>,1);
+0040  <span class="keyword">case</span> <span class="string">'cancel'</span>
+0041   set(findobj(F,<span class="string">'Tag'</span>,<span class="string">'ui_et_done'</span>),<span class="string">'UserData'</span>,0);
+0042  <span class="keyword">case</span> {<span class="string">'add'</span>, <span class="string">'remove'</span>}
+0043   <span class="keyword">switch</span> action
+0044    <span class="keyword">case</span> <span class="string">'add'</span>
+0045     hListTO   = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_IN'</span>);
+0046     hListFROM = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_OUT'</span>);
+0047    <span class="keyword">case</span> <span class="string">'remove'</span>
+0048     hListFROM   = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_IN'</span>);
+0049     hListTO     = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_OUT'</span>);
+0050   <span class="keyword">end</span>
+0051   TO_evs  = get(hListTO,  <span class="string">'UserData'</span>);
+0052   FROM_evs = get(hListFROM, <span class="string">'UserData'</span>);
+0053   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(FROM_evs), msgbox([<span class="string">'No events to '</span> action]); <span class="keyword">end</span>
+0054   es_to_add = get(hListFROM, <span class="string">'Value'</span>);
+0055   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(es_to_add)
+0056     msgbox([<span class="string">'Please select events to '</span> action]); <span class="keyword">return</span>
+0057   <span class="keyword">end</span>
+0058   TO_evs.names   = [TO_evs.names; FROM_evs.names(es_to_add)];
+0059   FROM_evs.names(es_to_add) = [];
+0060   TO_evs.e_spec = [TO_evs.e_spec FROM_evs.e_spec(:, es_to_add)];
+0061   FROM_evs.e_spec(:, es_to_add) = [];
+0062   set(hListTO, <span class="string">'UserData'</span>, TO_evs);
+0063   set(hListFROM, <span class="string">'UserData'</span>, FROM_evs);
+0064   set(hListFROM, <span class="string">'Value'</span>, []);
+0065   <a href="ui_et_edit_cb.html" class="code" title="function varargout = ui_et_edit_cb(D, action, varargin)">ui_et_edit_cb</a>(D, <span class="string">'sort'</span>);
+0066  <span class="keyword">case</span> <span class="string">'sort'</span>
+0067   sort_obj  = findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_sort'</span>);
+0068   sort_strs = cellstr(get(sort_obj, <span class="string">'String'</span>));
+0069   sort_type = sort_strs{get(sort_obj, <span class="string">'Value'</span>)};
+0070   <span class="keyword">for</span> H = [findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_IN'</span>) findobj(F, <span class="string">'Tag'</span>, <span class="string">'ui_et_OUT'</span>)]
+0071     evs = <a href="../../marsbar/@mardo/private/pr_sort_evs.html" class="code" title="function evs = pr_sort_evs(evs, sort_type, downf)">pr_sort_evs</a>(get(H, <span class="string">'UserData'</span>), sort_type);
+0072     set(H, <span class="string">'String'</span>, evs.names);
+0073     set(H, <span class="string">'UserData'</span>, evs);
+0074   <span class="keyword">end</span>
+0075  <span class="keyword">otherwise</span>
+0076   error([ action <span class="string">' is deviant'</span> ]);
+0077 <span class="keyword">end</span>
+0078 
+0079 <span class="keyword">return</span>
+0080 
+0081 
+0082   
+0083   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of c_o_m</title>
+  <meta name="keywords" content="c_o_m">
+  <meta name="description" content="c_o_m method - calculates centre of mass">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_shape</a> &gt; c_o_m.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_shape&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>c_o_m
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>c_o_m method - calculates centre of mass</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function pt = c_o_m(o, sp, pt_type) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> c_o_m method - calculates centre of mass
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@maroi_box/centre.html" class="code" title="function c = centre(obj, val)">centre</a>	centre method - sets / returns centre of ROI in mm</li>
+<li><a href="../../marsbar/@maroi_sphere/centre.html" class="code" title="function c = centre(obj, val)">centre</a>	centre method - sets / returns centre of ROI in mm</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function pt = c_o_m(o, sp, pt_type)</a>
+0002 <span class="comment">% c_o_m method - calculates centre of mass</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 <span class="keyword">if</span> nargin &lt; 2
+0007   sp = <span class="string">''</span>;
+0008 <span class="keyword">end</span>
+0009 <span class="keyword">if</span> nargin &lt; 3
+0010   pt_type = <span class="string">'real'</span>;
+0011 <span class="keyword">end</span>
+0012 pt = <a href="../../marsbar/@maroi_box/centre.html" class="code" title="function c = centre(obj, val)">centre</a>(o);
+0013 <span class="keyword">switch</span> pt_type
+0014  <span class="keyword">case</span> {<span class="string">'real'</span>,<span class="string">'mm'</span>}
+0015  <span class="keyword">case</span> <span class="string">'vox'</span>
+0016   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp)
+0017     error(<span class="string">'Need space to define voxel centre of mass'</span>);
+0018   <span class="keyword">end</span>
+0019   pt = sp.mat * [pt; 1];
+0020   pt = pt(1:3)';
+0021  <span class="keyword">otherwise</span>
+0022   error([<span class="string">'Do not recognize point type'</span> pt_type]);
+0023 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

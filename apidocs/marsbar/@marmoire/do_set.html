@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of do_set</title>
+  <meta name="keywords" content="do_set">
+  <meta name="description" content="private function to set data into item">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; do_set.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>do_set
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>private function to set data into item</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, errf] = do_set(o, item, flags, data, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> private function to set data into item
+ FORMAT [o, errf] = do_set(o, item, flags, data, filename)
+
+ o           - object
+ item        - name of item to set to
+ flags       - containing fields:
+                 action: one of: 'set' 'set_ui' 'get' 'clear' 'update'
+ data        - the data to set into this item
+ filename    - (possibly) filename for these data
+
+ Returns
+ o           - returned object, probably modified
+ errf        - flag set to 1 if error, meaning object was not modified
+
+ The flags argument at the moment is a bit redundant, as it only
+ contains one field, but allows for future expansion, and is more
+ compatible with the do_save method.
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>	method to get or set data object</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>	get whole item structure, including parameters</li>
+<li><a href="../../marsbar/@marmoire/private/pr_is_nan.html" class="code" title="function res = pr_is_nan(v)">pr_is_nan</a>	</li>
+<li><a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>	</li>
+<li><a href="../../marsbar/@marmoire/private/pr_isempty.html" class="code" title="function res = pr_isempty(I)">pr_isempty</a>	private function returns 1 if there is no data, or filename</li>
+<li><a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>	set whole item structure, including parameters</li>
+<li><a href="../../marsbar/mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>	wrapper for matlab uiputfile/getfile; to resolve version differences</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="clear_item_data.html" class="code" title="function [o, errf] = clear_item_data(o, item)">clear_item_data</a>	sets data for item to empty</li>
+<li><a href="get_item_data.html" class="code" title="function [res, o, errf] = get_item_data(o, item)">get_item_data</a>	get data for item</li>
+<li><a href="set_item_data.html" class="code" title="function [o, errf] = set_item_data(o, item, data, filename)">set_item_data</a>	sets data for item</li>
+<li><a href="set_item_data_ui.html" class="code" title="function [o, errf] = set_item_data_ui(o, item)">set_item_data_ui</a>	sets data for item using GUI</li>
+<li><a href="update_item_data.html" class="code" title="function [o, errf] = update_item_data(o, item, data, filename)">update_item_data</a>	updates data for item (sets data, flags change)</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, errf] = do_set(o, item, flags, data, filename)</a>
+0002 <span class="comment">% private function to set data into item</span>
+0003 <span class="comment">% FORMAT [o, errf] = do_set(o, item, flags, data, filename)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o           - object</span>
+0006 <span class="comment">% item        - name of item to set to</span>
+0007 <span class="comment">% flags       - containing fields:</span>
+0008 <span class="comment">%                 action: one of: 'set' 'set_ui' 'get' 'clear' 'update'</span>
+0009 <span class="comment">% data        - the data to set into this item</span>
+0010 <span class="comment">% filename    - (possibly) filename for these data</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Returns</span>
+0013 <span class="comment">% o           - returned object, probably modified</span>
+0014 <span class="comment">% errf        - flag set to 1 if error, meaning object was not modified</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% The flags argument at the moment is a bit redundant, as it only</span>
+0017 <span class="comment">% contains one field, but allows for future expansion, and is more</span>
+0018 <span class="comment">% compatible with the do_save method.</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021 
+0022 <span class="keyword">if</span> nargin &lt; 2
+0023   error(<span class="string">'Need item'</span>);
+0024 <span class="keyword">end</span>
+0025 <span class="keyword">if</span> nargin &lt; 3
+0026   error(<span class="string">'Need calling flags'</span>);
+0027 <span class="keyword">end</span>
+0028 <span class="keyword">if</span> nargin &lt; 4
+0029   <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = NaN;
+0030 <span class="keyword">end</span>
+0031 <span class="keyword">if</span> nargin &lt; 5
+0032   filename = NaN;
+0033 <span class="keyword">end</span>
+0034 
+0035 <span class="comment">% Errf for return</span>
+0036 errf = 0;
+0037 
+0038 <span class="comment">% process flags</span>
+0039 <span class="keyword">if</span> ischar(flags)  <span class="comment">% can be string, with action</span>
+0040   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags)
+0041     flags = struct(<span class="string">'action'</span>, flags);
+0042   <span class="keyword">end</span>
+0043 <span class="keyword">end</span>
+0044 <span class="keyword">if</span> ~isstruct(flags), flags = []; <span class="keyword">end</span>
+0045 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'action'</span>), flags.action = <span class="string">'set'</span>; <span class="keyword">end</span>
+0046 action = flags.action;
+0047 
+0048 <span class="comment">% get item to work on</span>
+0049 item_struct = <a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>(o, item);
+0050 
+0051 <span class="comment">% get filename for data if set_ui</span>
+0052 <span class="keyword">if</span> strcmp(action, <span class="string">'set_ui'</span>)
+0053   [fn pn] = <a href="../../marsbar/mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>(<span class="string">'get'</span>, <span class="keyword">...</span>
+0054             item_struct.filter_spec, <span class="keyword">...</span>
+0055             [<span class="string">'Select '</span> item_struct.title <span class="string">'...'</span>]);
+0056   <span class="keyword">if</span> isequal(fn,0) | isequal(pn,0), errf = 1;, <span class="keyword">return</span>, <span class="keyword">end</span>
+0057   filename = fullfile(pn, fn);
+0058   <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = [];
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="comment">% Keep copy of passed filename for set_action call</span>
+0062 passed_filename = filename;
+0063   
+0064 <span class="comment">% optionally, treat char data as filename</span>
+0065 <span class="comment">% but passed filename overrides char data</span>
+0066 <span class="keyword">if</span> item_struct.char_is_filename &amp; ischar(<a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>)
+0067   <span class="keyword">if</span> ~<a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>(filename)
+0068     warning(sprintf(<span class="keyword">...</span>
+0069     <span class="string">'Passed filename %s overrides data filename %s\n'</span>,<span class="keyword">...</span>
+0070     filename, <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>));
+0071   <span class="keyword">else</span>
+0072     filename = <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0073   <span class="keyword">end</span>
+0074   <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = [];
+0075 <span class="keyword">end</span>
+0076 
+0077 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>(filename) <span class="comment">% may need to save if no associated filename</span>
+0078   item_struct.has_changed = 1;
+0079 <span class="keyword">else</span> <span class="comment">% don't need to save, but may need to load from file</span>
+0080   item_struct.has_changed = 0;
+0081   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>)
+0082     <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a> = load(filename, [<span class="string">'-'</span> item_struct.file_type]);
+0083   <span class="keyword">end</span>
+0084 <span class="keyword">end</span>
+0085 item_struct.data = <a href="../../marsbar/@mardo/data.html" class="code" title="function r = data(o, Y)">data</a>;
+0086 
+0087 <span class="comment">% If no filename passed:</span>
+0088 <span class="comment">% if new set, filename is empty</span>
+0089 <span class="comment">% if an update, filename stays</span>
+0090 is_update = strcmp(action, <span class="string">'update'</span>);
+0091 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_is_nan.html" class="code" title="function res = pr_is_nan(v)">pr_is_nan</a>(filename)
+0092   <span class="keyword">if</span> ~is_update
+0093     filename = <span class="string">''</span>;
+0094   <span class="keyword">end</span>
+0095 <span class="keyword">end</span>  
+0096 item_struct.file_name = filename;
+0097 
+0098 <span class="comment">% If this was a clear, don't flag for save</span>
+0099 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_isempty.html" class="code" title="function res = pr_isempty(I)">pr_isempty</a>(item_struct), item_struct.has_changed = 0; <span class="keyword">end</span>
+0100 
+0101 <span class="comment">% Put processed stuff into object, and copy old object</span>
+0102 <span class="comment">% This so we can pass the candidate new object to the set_action routines</span>
+0103 <span class="comment">% for checking and/or changing, but still roll back if we need to.</span>
+0104 old_o = o; 
+0105 o = <a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>(o, item, item_struct);
+0106 
+0107 <span class="comment">% and here is where we do the rules stuff</span>
+0108 is_clear = strcmp(action, <span class="string">'clear'</span>);
+0109 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(item_struct.set_action) &amp; <span class="keyword">...</span>
+0110       (ismember(action, {<span class="string">'get'</span>,<span class="string">'set'</span>,<span class="string">'set_ui'</span>}) | <span class="keyword">...</span>
+0111        (is_update &amp; item_struct.set_action_if_update) | <span class="keyword">...</span>
+0112        (is_clear &amp; item_struct.set_action_if_clear))  
+0113   [tmp errf msg] = eval(item_struct.set_action);
+0114   <span class="keyword">if</span> errf
+0115     o = old_o;
+0116     warning([<span class="string">'Data not set: '</span> msg]);
+0117     <span class="keyword">return</span>
+0118   <span class="keyword">end</span>
+0119   <span class="comment">% work out what has been returned.  It can be:</span>
+0120   <span class="comment">% object, item_struct, or data; we much prefer the object, to be</span>
+0121   <span class="comment">% consistent</span>
+0122   <span class="keyword">if</span> isa(tmp, <span class="string">'marmoire'</span>)   <span class="comment">% object</span>
+0123     o = tmp;
+0124     item_struct = <a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>(o, item);
+0125   <span class="keyword">elseif</span> isstruct(tmp) &amp; <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(tmp, <span class="string">'set_action'</span>) <span class="comment">% item struct</span>
+0126     item_struct = tmp;
+0127   <span class="keyword">else</span> <span class="comment">% it's just the data</span>
+0128     item_struct.data = tmp;
+0129   <span class="keyword">end</span>
+0130 <span class="keyword">end</span>
+0131 
+0132 <span class="comment">% set has_changed, if update</span>
+0133 <span class="keyword">if</span> strcmp(action, <span class="string">'update'</span>)
+0134   item_struct.has_changed = 1;
+0135 <span class="keyword">end</span>
+0136 
+0137 <span class="comment">% possibly remove data from structure</span>
+0138 <span class="keyword">if</span> ~item_struct.has_changed &amp; item_struct.leave_as_file
+0139   item_struct.data = [];
+0140 <span class="keyword">end</span>
+0141 
+0142 <span class="comment">% return object with data set</span>
+0143 o = <a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>(o, item, item_struct);
+0144 
+0145 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

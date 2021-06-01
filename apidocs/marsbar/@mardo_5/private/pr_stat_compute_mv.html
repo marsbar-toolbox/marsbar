@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_stat_compute_mv</title>
+  <meta name="keywords" content="pr_stat_compute_mv">
+  <meta name="description" content="private function to compute mutlivariate statistics across ROIs">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_stat_compute_mv.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_stat_compute_mv
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>private function to compute mutlivariate statistics across ROIs</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [MVres] = pr_stat_compute_mv(SPM,Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> private function to compute mutlivariate statistics across ROIs
+ FORMAT [MVres] = pr_stat_compute_mv(SPM,Ic)
+ 
+ Input
+ SPM       - SPM design structure
+ Ic        - indices into contrast structure (xCon in SPM)
+  
+ Output
+ MVres     - mulitvariate result structure
+
+ $Id: pr_stat_compute_mv.m 92 2004-01-07 08:37:16Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+<li><a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [NF,nu,h,d,M12,XG,sXG] = sf_model_mlm(Xs, V, nROI, xC, erdf);</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [MVres] = pr_stat_compute_mv(SPM,Ic)</a>
+0002 <span class="comment">% private function to compute mutlivariate statistics across ROIs</span>
+0003 <span class="comment">% FORMAT [MVres] = pr_stat_compute_mv(SPM,Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% SPM       - SPM design structure</span>
+0007 <span class="comment">% Ic        - indices into contrast structure (xCon in SPM)</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Output</span>
+0010 <span class="comment">% MVres     - mulitvariate result structure</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id: pr_stat_compute_mv.m 92 2004-01-07 08:37:16Z matthewbrett $</span>
+0013   
+0014 <span class="comment">%-Get contrast definitions (if available)</span>
+0015 <span class="comment">%-----------------------------------------------------------------------</span>
+0016 <span class="keyword">try</span>
+0017   xCon  = SPM.xCon;
+0018 <span class="keyword">catch</span>
+0019   xCon  = [];
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="comment">%-set all contrasts by default</span>
+0023 <span class="comment">%-----------------------------------------------------------------------</span>
+0024 <span class="keyword">if</span> nargin &lt; 2
+0025   Ic    = 1:length(xCon);
+0026 <span class="keyword">end</span>
+0027 <span class="keyword">if</span> any(Ic &gt; length(xCon))
+0028   error(<span class="string">'Indices too large for contrast structure'</span>);
+0029 <span class="keyword">end</span>
+0030 
+0031 
+0032 <span class="comment">% Get relevant fields from design</span>
+0033 xCon = xCon(Ic);
+0034 Xs = SPM.xX.xKXs;
+0035 V = SPM.xX.V;
+0036 <a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a> = SPM.betas;
+0037 ResidualMS = SPM.ResidualMS;  
+0038 Y = <a href="../../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(SPM.marsY);
+0039 
+0040 <span class="comment">% setup calculation</span>
+0041 [nBetas nROI]   = size(<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>);
+0042 nCon          = length(xCon);
+0043 [trRV trRVRV] = spm_SpUtil(<span class="string">'trRV'</span>,Xs,V);
+0044 erdf = trRV^2/trRVRV;
+0045 RMS = sqrt(ResidualMS);
+0046 
+0047 <span class="comment">%--------------------------------------------------------------------</span>
+0048 <span class="comment">%- Multivariate analysis</span>
+0049 <span class="comment">%--------------------------------------------------------------------</span>
+0050 
+0051 MVres = struct(<span class="string">'y_pre'</span>,[], <span class="string">'y_obs'</span>, [], <span class="string">'Pf'</span>, [], <span class="string">'u'</span>, [], <span class="string">'ds'</span>, [] );
+0052 
+0053 <span class="keyword">if</span> nCon == 1, <span class="keyword">return</span>, <span class="keyword">end</span>
+0054 
+0055 YpY     = Y'*Y;
+0056 
+0057 <span class="keyword">for</span> ii = 1:nCon
+0058 
+0059      xC  = xCon(ii); 
+0060 
+0061      <span class="comment">%--------------------------------------------------------------------</span>
+0062      [NF, nu, h, d, M12, XG, sXG] = <a href="#_sub1" class="code" title="subfunction [NF,nu,h,d,M12,XG,sXG] = sf_model_mlm(Xs, V, nROI, xC, erdf);">sf_model_mlm</a>(Xs, V, nROI, xC, erdf);
+0063 
+0064      <span class="comment">%--------------------------------------------------------------------</span>
+0065      <span class="comment">%- Compute svd</span>
+0066      <span class="comment">%--------------------------------------------------------------------</span>
+0067      <span class="comment">%- fprintf('%-40s\n','Computing Principal Components')</span>
+0068 
+0069      Z    = ((NF*<a href="../../../marsbar/@mardo/betas.html" class="code" title="function r = betas(o)">betas</a>)./(ones(size(NF,1),1)*RMS));
+0070      S    = Z*Z';
+0071      S    = S/sum(nROI);
+0072      [u s u] = svd(S,0);
+0073      ds    = diag(s);
+0074      clear  s;
+0075 
+0076 
+0077      <span class="comment">%--------------------------------------------------------------------</span>
+0078      <span class="comment">%- STATISTICS if any ...</span>
+0079      <span class="comment">%--------------------------------------------------------------------</span>
+0080      <span class="comment">%- Fq : F values for the last q eigein values.</span>
+0081      <span class="comment">%- P  : P values.for the last q eigein values.</span>
+0082 
+0083      Fq = zeros(1,h);
+0084      <span class="keyword">for</span> q = 0:h-1;
+0085               nu1    = d*(h-q);
+0086              nu2    = d*nu - (d-1)*(4*(h-q)+2*nu)/(h-q+2);
+0087              Fq(q+1)    = ((nu-2)/nu) * nu2/(nu2-2)*sum(ds(q+1:h))/(h-q);
+0088      <span class="keyword">end</span>
+0089      Pf    = 1 - spm_Fcdf(Fq,nu1,nu2);
+0090 
+0091 
+0092      <span class="comment">%- fprintf('%-40s\n','Computing predicted and observed temporal reponse')</span>
+0093 <span class="comment">%keyboard</span>
+0094 
+0095      y_pre    = (pinv(XG)'* M12 * u)*diag(sqrt(ds)); <span class="comment">% predicted temporal reponse</span>
+0096      
+0097      gV = (diag(1./sqrt(ds))*Z)'*u;
+0098      y_obs    = (Y./(ones(size(Y,1),1)*RMS)/nROI)*gV;
+0099      
+0100     <span class="comment">%- save results for this constrast</span>
+0101     MVres(ii).y_pre  = y_pre;
+0102     MVres(ii).y_obs  = y_obs;
+0103     MVres(ii).Pf     = Pf;
+0104     MVres(ii).u      = u;
+0105     MVres(ii).ds     = ds;
+0106     MVres(ii).df     = [nu1 nu2];    
+0107     
+0108 <span class="keyword">end</span>
+0109 
+0110 
+0111 
+0112 
+0113 
+0114 
+0115 <span class="comment">%===================================================================</span>
+0116 <a name="_sub1" href="#_subfunctions" class="code">function [NF,nu,h,d,M12,XG,sXG] = sf_model_mlm(Xs, V, nROI, xC, erdf);</a>
+0117 <span class="comment">% Set sub-space of interest and the related matrix of normalisation.</span>
+0118 <span class="comment">% FORMAT [NF,nu,h,d,M12,XG] = mm_model();</span>
+0119 <span class="comment">%- nu, h, d : degrees of freedom</span>
+0120 <span class="comment">%- NF : matrix of normalisation</span>
+0121 <span class="comment">%===================================================================</span>
+0122 
+0123 
+0124 <span class="comment">%--------------------------------------------------------------------</span>
+0125 <span class="comment">%- SET, COMPUTE,NORMALIZE SPACES OF INTEREST</span>
+0126 <span class="comment">%--------------------------------------------------------------------</span>
+0127 <span class="comment">%- set X10 and XG</span>
+0128 <span class="comment">%- XG= X -PG(X), PG projection operator on XG (cf. eq 1, 2)</span>
+0129 <span class="comment">%--------------------------------------------------------------------</span>
+0130 sX1o    = spm_sp(<span class="string">'set'</span>,spm_FcUtil(<span class="string">'X1o'</span>,xC,Xs));
+0131 sXG    = spm_sp(<span class="string">'set'</span>,spm_FcUtil(<span class="string">'X0'</span>,xC,Xs));
+0132 X1o     = spm_sp(<span class="string">'oP'</span>,sX1o,Xs.X);
+0133 XG      = spm_sp(<span class="string">'r'</span>,sXG,Xs.X);
+0134 
+0135 <span class="comment">%- Compute Normalized effexts : M1/2=X'G*V*XG (cf eq 3)</span>
+0136 <span class="comment">%--------------------------------------------------------------------</span>
+0137 <span class="comment">% warning off;</span>
+0138 up    = spm_sp(<span class="string">'ox'</span>,sX1o); ; <span class="comment">%- PG=up*up'</span>
+0139 qi    = up'*Xs.X;
+0140 sigma    = up'*V*up;
+0141 M12    = (chol(sigma)*qi)';
+0142 M_12    = pinv(M12);
+0143 
+0144 <span class="comment">%- Compute NF : normalise factor (cf eq 4)</span>
+0145 <span class="comment">%--------------------------------------------------------------------</span>
+0146 NF    = M_12*spm_sp(<span class="string">'X'</span>,Xs)'*spm_sp(<span class="string">'r'</span>,sXG,spm_sp(<span class="string">'X'</span>,Xs));
+0147 
+0148 <span class="comment">%- degrees of freedom</span>
+0149 <span class="comment">%- nROI : number of ROI (corresponds to the number of Resels)</span>
+0150 <span class="comment">%--------------------------------------------------------------------</span>
+0151 d    = nROI*(4*log(2)/pi)^(3/2);
+0152 h    = sX1o.rk; <span class="comment">%-rank of the sub-space of interest.</span>
+0153 nu    = erdf;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

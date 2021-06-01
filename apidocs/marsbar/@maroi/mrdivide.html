@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mrdivide</title>
+  <meta name="keywords" content="mrdivide">
+  <meta name="description" content="overloaded mrdivide (matrix right divide) function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; mrdivide.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mrdivide
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>overloaded mrdivide (matrix right divide) function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = mrdivide(o1, o2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> overloaded mrdivide (matrix right divide) function 
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="back2base.html" class="code" title="function o = back2base(o)">back2base</a>	back2base method - check for spacebase, transform thereto</li>
+<li><a href="../../marsbar/@maroi_matrix/domaths.html" class="code" title="function o = domaths(func, dat1, dat2)">domaths</a>	helper function to do maths on matrix object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = mrdivide(o1, o2)</a>
+0002 <span class="comment">% overloaded mrdivide (matrix right divide) function</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="keyword">if</span> isa(o1, <span class="string">'maroi'</span>),o1 = <a href="back2base.html" class="code" title="function o = back2base(o)">back2base</a>(o1);<span class="keyword">end</span>
+0007 <span class="keyword">if</span> isa(o2, <span class="string">'maroi'</span>),o2 = <a href="back2base.html" class="code" title="function o = back2base(o)">back2base</a>(o2);<span class="keyword">end</span>
+0008 o = <a href="../../marsbar/@maroi_matrix/domaths.html" class="code" title="function o = domaths(func, dat1, dat2)">domaths</a>(<span class="string">'divide'</span>, o1, o2);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

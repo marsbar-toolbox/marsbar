@@ -1,0 +1,16 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  maroi_matrix -> maroi_matrix;
+  voxpts -> maroi_matrix;
+  voxpts -> voxpts;
+
+  flip_lr [URL="flip_lr.html"];
+  getvals [URL="getvals.html"];
+  is_empty_roi [URL="is_empty_roi.html"];
+  loadobj [URL="loadobj.html"];
+  maroi_matrix [URL="maroi_matrix.html"];
+  maroi_pointlist [URL="maroi_pointlist.html"];
+  native_space [URL="native_space.html"];
+  saveobj [URL="saveobj.html"];
+  voxpts [URL="voxpts.html"];
+}

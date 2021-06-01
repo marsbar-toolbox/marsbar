@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of display</title>
+  <meta name="keywords" content="display">
+  <meta name="description" content="display - method">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; display.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>display
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>display - method</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function display(obj) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> display - method 
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>	binarize - returns / sets binarize value for object</li>
+<li><a href="descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>	name - returns / sets name value for object</li>
+<li><a href="label.html" class="code" title="function h = label(obj, val)">label</a>	label - returns / sets label value for object</li>
+<li><a href="roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>	roithresh - returns / sets roithresh value for object</li>
+<li><a href="source.html" class="code" title="function h = source(obj, val)">source</a>	source - returns / sets source value for object</li>
+<li><a href="spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>	hold - returns / sets hold value for object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function display(obj)</a>
+0002 <span class="comment">% display - method</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 inp_str = [inputname(1) <span class="string">' ='</span>];
+0007 
+0008 sz = size(obj);
+0009 <span class="keyword">if</span> prod(sz)&gt;1
+0010   arr_str = num2str(sz(1));
+0011   <span class="keyword">for</span> d = 2:length(sz)
+0012     arr_str = [arr_str <span class="string">'x'</span> num2str(sz(d))];
+0013   <span class="keyword">end</span>
+0014   arr_str = [arr_str <span class="string">' maroi array with first element:'</span>];
+0015   
+0016   <span class="keyword">if</span> isequal(get(0,<span class="string">'FormatSpacing'</span>),<span class="string">'compact'</span>)
+0017     disp(inp_str);
+0018     disp(arr_str);
+0019   <span class="keyword">else</span>
+0020     disp(<span class="string">' '</span>)
+0021     disp(inp_str);
+0022     disp(<span class="string">' '</span>);
+0023     disp(arr_str);
+0024   <span class="keyword">end</span>
+0025   inp_str = [inputname(1) <span class="string">'(1) ='</span>];
+0026   obj = obj(1);
+0027 <span class="keyword">end</span>
+0028 
+0029 X = struct(obj);
+0030 bO.label = <a href="label.html" class="code" title="function h = label(obj, val)">label</a>(obj);
+0031 bO.source = <a href="source.html" class="code" title="function h = source(obj, val)">source</a>(obj);
+0032 bO.binarize = <a href="binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>(obj);
+0033 bO.roithresh = <a href="roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>(obj);
+0034 bO.spm_hold = <a href="spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>(obj);
+0035 
+0036 n =  <a href="descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>(obj);
+0037 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(n), n = <span class="string">'(no descrip)'</span>;<span class="keyword">end</span>
+0038 src = [<span class="string">'['</span> class(obj) <span class="string">' - '</span> n <span class="string">']'</span>];
+0039 <span class="keyword">if</span> isequal(get(0,<span class="string">'FormatSpacing'</span>),<span class="string">'compact'</span>)
+0040   disp(inp_str);
+0041   disp(src);
+0042   disp(bO)
+0043   disp(X)
+0044 <span class="keyword">else</span>
+0045   disp(<span class="string">' '</span>)
+0046   disp(inp_str);
+0047   disp(<span class="string">' '</span>);
+0048   disp(src);
+0049   disp(<span class="string">' '</span>);
+0050   disp(bO)
+0051   disp(<span class="string">' '</span>);
+0052   disp(X)
+0053 <span class="keyword">end</span>    
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

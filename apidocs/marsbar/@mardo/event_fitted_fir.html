@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_fitted_fir</title>
+  <meta name="keywords" content="event_fitted_fir">
+  <meta name="description" content="method to compute fitted event time courses using FIR">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; event_fitted_fir.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_fitted_fir
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to compute fitted event time courses using FIR</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to compute fitted event time courses using FIR
+ FORMAT [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)
+ 
+ (defaults are in [])
+ D          - design
+ e_spec     - 2 by N array specifying events to combine
+                 with row 1 giving session number
+                 and row 2 giving event number in session
+                 This may in due course become an object type
+ bin_length  - duration of time bin for FIR in seconds [TR]
+ bin_no      - number of time bins [24 seconds / TR]
+ opts       - structure, containing fields with options
+                'single' - if field present, gives single FIR 
+                  This option removes any duration information, and
+                  returns a simple per onset FIR model, where 1s in the
+                  design matrix corresponds to 1 event at the given
+                  offset.  
+                'percent' - if field present, gives results as percent
+                  of block means
+ 
+ Returns
+ tc         - fitted event time course, averaged over events
+ dt         - time units (seconds per row in tc = bin_length)
+
+ Here, just some notes to explain 'single' and 'stacked' FIR models.  Imagine
+ you have an event of duration 10 seconds, and you want an FIR model.  To
+ make things simple, let's say the TR is 1 second, and that a standard
+ haemodynamic response function (HRF) lasts 24 seconds.
+  
+ In order to do the FIR model, there are two ways to go.  The first is to
+ make an FIR model which estimates the signal (say) at every second (TR)
+ after event onset, where your model (Impulse Response) lasts long enough
+ to capture the event and its HRF response - say 10+24 = 34 seconds.  This
+ is what I will call a 'single' FIR model.  Another approach - and this is
+ what SPM does by default - is to think of the 10 second event as (say)
+ 10 events one after the other, each starting 1 second after the last.
+ Here the FIR model estimates the effect of one of these 1 second events,
+ and the length of your FIR model (Impulse response) is just the length of
+ the HRF (24 seconds).  This second approach I will call a 'stacked' FIR
+ model, because the events are stacking up one upon another.
+ 
+ The single and stacked models are the same thing, if you specify a
+ duration of 0 for all your events.  If your events have different
+ durations, it is very difficult to model the event response sensibly with
+ a single FIR, because, for the later FIR time bins, some events will have
+ stopped, and activity will be dropping to baseline, whereas other events
+ will still be continuing.  In this case the stacked model can make sense,
+ as it just models longer events as having more (say) 1 second events.
+ However, if your events have non-zero durations, but each duration is the
+ same, then it may be that you do not want the stacked model, because your
+ interest is in the event time course across the whole event, rather than
+ some average response which pools together responses in the start middle
+ and end of your actual event response, as the stacked model does.  In such
+ a case, you may want to switch to a single FIR model.
+
+ There is an added problem for the stacked models, which is what to do
+ about the actual height of the regressors.  That problem also requires
+ a bit of exposition which I hope to get down to in due course.
+  
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="betas.html" class="code" title="function r = betas(o)">betas</a>	method to get estimated betas</li>
+<li><a href="block_means.html" class="code" title="function bms = block_means(D)">block_means</a>	method returns means for blocks in design</li>
+<li><a href="data.html" class="code" title="function r = data(o, Y)">data</a>	method to get or set data object</li>
+<li><a href="design_matrix.html" class="code" title="function X = design_matrix(D)">design_matrix</a>	method returns design matrix from design</li>
+<li><a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_2/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_99/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="../../marsbar/@mardo_99/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)</a>
+0002 <span class="comment">% method to compute fitted event time courses using FIR</span>
+0003 <span class="comment">% FORMAT [tc, dt] = event_fitted_fir(D, e_spec, bin_length, bin_no, opts)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% (defaults are in [])</span>
+0006 <span class="comment">% D          - design</span>
+0007 <span class="comment">% e_spec     - 2 by N array specifying events to combine</span>
+0008 <span class="comment">%                 with row 1 giving session number</span>
+0009 <span class="comment">%                 and row 2 giving event number in session</span>
+0010 <span class="comment">%                 This may in due course become an object type</span>
+0011 <span class="comment">% bin_length  - duration of time bin for FIR in seconds [TR]</span>
+0012 <span class="comment">% bin_no      - number of time bins [24 seconds / TR]</span>
+0013 <span class="comment">% opts       - structure, containing fields with options</span>
+0014 <span class="comment">%                'single' - if field present, gives single FIR</span>
+0015 <span class="comment">%                  This option removes any duration information, and</span>
+0016 <span class="comment">%                  returns a simple per onset FIR model, where 1s in the</span>
+0017 <span class="comment">%                  design matrix corresponds to 1 event at the given</span>
+0018 <span class="comment">%                  offset.</span>
+0019 <span class="comment">%                'percent' - if field present, gives results as percent</span>
+0020 <span class="comment">%                  of block means</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% Returns</span>
+0023 <span class="comment">% tc         - fitted event time course, averaged over events</span>
+0024 <span class="comment">% dt         - time units (seconds per row in tc = bin_length)</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">% Here, just some notes to explain 'single' and 'stacked' FIR models.  Imagine</span>
+0027 <span class="comment">% you have an event of duration 10 seconds, and you want an FIR model.  To</span>
+0028 <span class="comment">% make things simple, let's say the TR is 1 second, and that a standard</span>
+0029 <span class="comment">% haemodynamic response function (HRF) lasts 24 seconds.</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% In order to do the FIR model, there are two ways to go.  The first is to</span>
+0032 <span class="comment">% make an FIR model which estimates the signal (say) at every second (TR)</span>
+0033 <span class="comment">% after event onset, where your model (Impulse Response) lasts long enough</span>
+0034 <span class="comment">% to capture the event and its HRF response - say 10+24 = 34 seconds.  This</span>
+0035 <span class="comment">% is what I will call a 'single' FIR model.  Another approach - and this is</span>
+0036 <span class="comment">% what SPM does by default - is to think of the 10 second event as (say)</span>
+0037 <span class="comment">% 10 events one after the other, each starting 1 second after the last.</span>
+0038 <span class="comment">% Here the FIR model estimates the effect of one of these 1 second events,</span>
+0039 <span class="comment">% and the length of your FIR model (Impulse response) is just the length of</span>
+0040 <span class="comment">% the HRF (24 seconds).  This second approach I will call a 'stacked' FIR</span>
+0041 <span class="comment">% model, because the events are stacking up one upon another.</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% The single and stacked models are the same thing, if you specify a</span>
+0044 <span class="comment">% duration of 0 for all your events.  If your events have different</span>
+0045 <span class="comment">% durations, it is very difficult to model the event response sensibly with</span>
+0046 <span class="comment">% a single FIR, because, for the later FIR time bins, some events will have</span>
+0047 <span class="comment">% stopped, and activity will be dropping to baseline, whereas other events</span>
+0048 <span class="comment">% will still be continuing.  In this case the stacked model can make sense,</span>
+0049 <span class="comment">% as it just models longer events as having more (say) 1 second events.</span>
+0050 <span class="comment">% However, if your events have non-zero durations, but each duration is the</span>
+0051 <span class="comment">% same, then it may be that you do not want the stacked model, because your</span>
+0052 <span class="comment">% interest is in the event time course across the whole event, rather than</span>
+0053 <span class="comment">% some average response which pools together responses in the start middle</span>
+0054 <span class="comment">% and end of your actual event response, as the stacked model does.  In such</span>
+0055 <span class="comment">% a case, you may want to switch to a single FIR model.</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">% There is an added problem for the stacked models, which is what to do</span>
+0058 <span class="comment">% about the actual height of the regressors.  That problem also requires</span>
+0059 <span class="comment">% a bit of exposition which I hope to get down to in due course.</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">% $Id$</span>
+0062 
+0063 <span class="keyword">if</span> nargin &lt; 2
+0064   error(<span class="string">'Need event specification'</span>);
+0065 <span class="keyword">end</span>
+0066 <span class="keyword">if</span> nargin &lt; 3
+0067   bin_length = [];
+0068 <span class="keyword">end</span>
+0069 <span class="keyword">if</span> nargin &lt; 4
+0070   bin_no = [];
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">if</span> nargin &lt; 5
+0073   opts = [];
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="keyword">if</span> ~<a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D) | <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(e_spec)
+0077   tc = []; dt = [];
+0078   <span class="keyword">return</span>
+0079 <span class="keyword">end</span>
+0080 <span class="keyword">if</span> ~<a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(D)
+0081   error(<span class="string">'Need a MarsBaR estimated design'</span>);
+0082 <span class="keyword">end</span>
+0083 
+0084 <span class="keyword">if</span> size(e_spec, 1) == 1, e_spec = e_spec'; <span class="keyword">end</span>
+0085 [SN EN] = deal(1, 2);
+0086 e_s_l = size(e_spec, 2);
+0087 
+0088 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(bin_length)
+0089   bin_length = <a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>(D);
+0090 <span class="keyword">end</span>
+0091 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(bin_no)
+0092   bin_no = 25/bin_length;
+0093 <span class="keyword">end</span>
+0094 bin_no = round(bin_no);
+0095 
+0096 <span class="comment">% build a simple FIR model subpartition (X)</span>
+0097 <span class="comment">%------------------------------------------</span>
+0098 dt          = <a href="../../marsbar/@mardo_2/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>(D);
+0099 blk_rows    = <a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>(D);
+0100 oX          = <a href="design_matrix.html" class="code" title="function X = design_matrix(D)">design_matrix</a>(D);
+0101 [n_t_p n_eff] = size(oX);
+0102 y           = <a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(<a href="data.html" class="code" title="function r = data(o, Y)">data</a>(D));
+0103 y           = <a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(D, y);
+0104 n_rois      = size(y, 2);
+0105 tc          = zeros(bin_no, n_rois);
+0106 blk_mns     = <a href="block_means.html" class="code" title="function bms = block_means(D)">block_means</a>(D);
+0107 
+0108 <span class="comment">% for each session</span>
+0109 <span class="keyword">for</span> s = 1:length(blk_rows)
+0110   sess_events = e_spec(EN, e_spec(SN, :) == s);
+0111   brX         = blk_rows{s};
+0112   iX_out      = [];
+0113   X           = [];
+0114   n_s_e       = length(sess_events);
+0115   <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(n_s_e), <span class="keyword">break</span>, <span class="keyword">end</span>
+0116   
+0117   <span class="keyword">for</span> ei = 1:n_s_e
+0118     e           = sess_events(ei);
+0119     
+0120     <span class="comment">% New design bit for FIR model for this trial type</span>
+0121     Xn          = <a href="../../marsbar/@mardo_2/event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>(D, [s e]', bin_length, bin_no, opts);
+0122     
+0123     <span class="comment">% Columns from original design that need to be removed</span>
+0124     iX_out      = [iX_out <a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>(D, [s e])];
+0125     
+0126     <span class="comment">% Columns in new design matrix for basic FIR model</span>
+0127     iX_in(ei,:) = size(X, 2) + [1:size(Xn,2)];
+0128     
+0129     X           = [X Xn];
+0130   <span class="keyword">end</span>
+0131 
+0132   <span class="comment">% put into previous design for this session, and filter</span>
+0133   <span class="comment">%------------------------------------------------------</span>
+0134   iX0         = [1:n_eff];
+0135   iX0(iX_out) = [];
+0136   aX          = [X oX(brX,iX0)];
+0137   KX          = <a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(D, aX, struct(<span class="string">'sessions'</span>, s));
+0138   
+0139   <span class="comment">% Reestimate to get FIR time courses</span>
+0140   <span class="comment">%------------------------------------------------------</span>
+0141   xX          = spm_sp(<span class="string">'Set'</span>,KX);
+0142   pX          = spm_sp(<span class="string">'x-'</span>,xX);
+0143   <a href="betas.html" class="code" title="function r = betas(o)">betas</a>       = pX*y(brX,:);
+0144   tc_s        = <a href="betas.html" class="code" title="function r = betas(o)">betas</a>(1:size(X,2), :);
+0145   
+0146   <span class="comment">% Sum over events</span>
+0147   tc_s        = reshape(tc_s, bin_no, n_s_e, n_rois);
+0148   tc_s        = squeeze(sum(tc_s, 2));  
+0149   
+0150   <span class="comment">% Do percent if necessary</span>
+0151   <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(opts, <span class="string">'percent'</span>), tc_s = tc_s / blk_mns(s) * 100; <span class="keyword">end</span>
+0152   
+0153   <span class="comment">% Sum over sessions</span>
+0154   tc            = tc + tc_s;
+0155   
+0156 <span class="keyword">end</span>
+0157 tc = tc / e_s_l;
+0158 dt = bin_length;
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

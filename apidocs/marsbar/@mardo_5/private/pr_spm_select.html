@@ -1,0 +1,1293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_select</title>
+  <meta name="keywords" content="pr_spm_select">
+  <meta name="description" content="File selector">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_select.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_select
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>File selector</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [t,sts] = pr_spm_select(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> File selector
+ FORMAT [t,sts] = pr_spm_select(n,typ,mesg,sel,wd,filt,frames)
+     n    - Number of files
+            A single value or a range.  e.g.
+            1       - Select one file
+            Inf     - Select any number of files
+            [1 Inf] - Select 1 to Inf files
+            [0 1]   - select 0 or 1 files
+            [10 12] - select from 10 to 12 files
+     typ  - file type
+           'any'   - all files
+           'image' - Image files (&quot;.img&quot; and &quot;.nii&quot;)
+                     Note that it gives the option to select
+                     individual volumes of the images.
+           'xml'   - XML files
+           'mat'   - Matlab .mat files
+           'batch' - SPM batch files (.mat and XML)
+           'dir'   - select a directory
+           Other strings act as a filter to regexp.  This means
+           that e.g. DCM*.mat files should have a typ of '^DCM.*\.mat$'
+      mesg - a prompt (default 'Select files...')
+      sel  - list of already selected files
+      wd   - Directory to start off in
+      filt - value for user-editable filter (default '.*')
+      frames - Image frame numbers to include (default '1')
+
+      t    - selected files
+      sts  - status (1 means OK, 0 means window quit)
+
+ Files can be selected from disk, but &quot;virtual&quot; files can also be selected.
+ Virtual filenames are passed by
+     pr_spm_select('addvfiles',list)
+         where list is a cell array of filenames
+ The list can be cleared by
+     pr_spm_select('clearvfiles')
+
+ FORMAT cpath = pr_spm_select('CPath',path,cwd)
+ function to canonicalise paths: Prepends cwd to relative paths, processes
+ '..' &amp; '.' directories embedded in path.
+ path     - string matrix containing path name
+ cwd      - current working directory [defaut '.']
+ cpath    - conditioned paths, in same format as input path argument
+
+ FORMAT [files,dirs]=pr_spm_select('List',direc,filt)
+ Returns files matching the filter (filt) and directories within dire
+ direc    - directory to search
+ filt     - filter to select files with (see regexp) e.g. '^w.*\.img$'
+ files    - files matching 'filt' in directory 'direc'
+ dirs     - subdirectories of 'direc'
+____________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="pr_spm_fileparts.html" class="code" title="function [pth,nam,ext,num] = spm_fileparts(fname)">pr_spm_fileparts</a>	Like fileparts, but separates off a comma separated list at the end</li>
+<li><a href="pr_spm_justify.html" class="code" title="function out = pr_spm_justify(n,varargin)">pr_spm_justify</a>	Justify text</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: Setting up the general linear model for independent data</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function [t,ok] = selector(n,typ,mesg,already,wd,filt,frames,varargin)</a></li>
+<li><a href="#_sub2" class="code">function null(varargin)</a></li>
+<li><a href="#_sub3" class="code">function msg(ob,str)</a></li>
+<li><a href="#_sub4" class="code">function setdrive(ob,varargin)</a></li>
+<li><a href="#_sub5" class="code">function resize_fun(fg,varargin)</a></li>
+<li><a href="#_sub6" class="code">function [d,mch] = prevdirs(d)</a></li>
+<li><a href="#_sub7" class="code">function clearfilt(ob,varargin)</a></li>
+<li><a href="#_sub8" class="code">function click_dir_list(ob,varargin)</a></li>
+<li><a href="#_sub9" class="code">function edit_dir(ob,varargin)</a></li>
+<li><a href="#_sub10" class="code">function click_dir_box(lb,varargin)</a></li>
+<li><a href="#_sub11" class="code">function dr = current_dir(lb,varargin)</a></li>
+<li><a href="#_sub12" class="code">function re = getfilt(ob)</a></li>
+<li><a href="#_sub13" class="code">function update(lb,dr)</a></li>
+<li><a href="#_sub14" class="code">function update_frames(lb,varargin)</a></li>
+<li><a href="#_sub15" class="code">function select_all(ob,varargin)</a></li>
+<li><a href="#_sub16" class="code">function click_file_box(lb,varargin)</a></li>
+<li><a href="#_sub17" class="code">function obj = sib(ob,tag)</a></li>
+<li><a href="#_sub18" class="code">function unselect(lb,varargin)</a></li>
+<li><a href="#_sub19" class="code">function unselect_all(ob,varargin)</a></li>
+<li><a href="#_sub20" class="code">function varargout = vfiles(option,varargin)</a></li>
+<li><a href="#_sub21" class="code">function vfs = newvfs(nam)</a></li>
+<li><a href="#_sub22" class="code">function vfs = addvfile(vfs,fle)</a></li>
+<li><a href="#_sub23" class="code">function [f,d] = listfiles(dr,filt)</a></li>
+<li><a href="#_sub24" class="code">function [f,ind] = do_filter(f,filt)</a></li>
+<li><a href="#_sub25" class="code">function [f,d,ii] = listvfiles(vfs,dr)</a></li>
+<li><a href="#_sub26" class="code">function heelp(ob,varargin)</a></li>
+<li><a href="#_sub27" class="code">function helpclear(ob,varargin)</a></li>
+<li><a href="#_sub28" class="code">function hitkey(fg,varargin)</a></li>
+<li><a href="#_sub29" class="code">function t = cpath(t,d)</a></li>
+<li><a href="#_sub30" class="code">function editwin(ob,varargin)</a></li>
+<li><a href="#_sub31" class="code">function editdone(ob,varargin)</a></li>
+<li><a href="#_sub32" class="code">function editclear(ob,varargin)</a></li>
+<li><a href="#_sub33" class="code">function [c1,c2,c3,fs] = colours</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [t,sts] = pr_spm_select(varargin)</a>
+0002 <span class="comment">% File selector</span>
+0003 <span class="comment">% FORMAT [t,sts] = pr_spm_select(n,typ,mesg,sel,wd,filt,frames)</span>
+0004 <span class="comment">%     n    - Number of files</span>
+0005 <span class="comment">%            A single value or a range.  e.g.</span>
+0006 <span class="comment">%            1       - Select one file</span>
+0007 <span class="comment">%            Inf     - Select any number of files</span>
+0008 <span class="comment">%            [1 Inf] - Select 1 to Inf files</span>
+0009 <span class="comment">%            [0 1]   - select 0 or 1 files</span>
+0010 <span class="comment">%            [10 12] - select from 10 to 12 files</span>
+0011 <span class="comment">%     typ  - file type</span>
+0012 <span class="comment">%           'any'   - all files</span>
+0013 <span class="comment">%           'image' - Image files (&quot;.img&quot; and &quot;.nii&quot;)</span>
+0014 <span class="comment">%                     Note that it gives the option to select</span>
+0015 <span class="comment">%                     individual volumes of the images.</span>
+0016 <span class="comment">%           'xml'   - XML files</span>
+0017 <span class="comment">%           'mat'   - Matlab .mat files</span>
+0018 <span class="comment">%           'batch' - SPM batch files (.mat and XML)</span>
+0019 <span class="comment">%           'dir'   - select a directory</span>
+0020 <span class="comment">%           Other strings act as a filter to regexp.  This means</span>
+0021 <span class="comment">%           that e.g. DCM*.mat files should have a typ of '^DCM.*\.mat$'</span>
+0022 <span class="comment">%      mesg - a prompt (default 'Select files...')</span>
+0023 <span class="comment">%      sel  - list of already selected files</span>
+0024 <span class="comment">%      wd   - Directory to start off in</span>
+0025 <span class="comment">%      filt - value for user-editable filter (default '.*')</span>
+0026 <span class="comment">%      frames - Image frame numbers to include (default '1')</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%      t    - selected files</span>
+0029 <span class="comment">%      sts  - status (1 means OK, 0 means window quit)</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% Files can be selected from disk, but &quot;virtual&quot; files can also be selected.</span>
+0032 <span class="comment">% Virtual filenames are passed by</span>
+0033 <span class="comment">%     pr_spm_select('addvfiles',list)</span>
+0034 <span class="comment">%         where list is a cell array of filenames</span>
+0035 <span class="comment">% The list can be cleared by</span>
+0036 <span class="comment">%     pr_spm_select('clearvfiles')</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">% FORMAT cpath = pr_spm_select('CPath',path,cwd)</span>
+0039 <span class="comment">% function to canonicalise paths: Prepends cwd to relative paths, processes</span>
+0040 <span class="comment">% '..' &amp; '.' directories embedded in path.</span>
+0041 <span class="comment">% path     - string matrix containing path name</span>
+0042 <span class="comment">% cwd      - current working directory [defaut '.']</span>
+0043 <span class="comment">% cpath    - conditioned paths, in same format as input path argument</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% FORMAT [files,dirs]=pr_spm_select('List',direc,filt)</span>
+0046 <span class="comment">% Returns files matching the filter (filt) and directories within dire</span>
+0047 <span class="comment">% direc    - directory to search</span>
+0048 <span class="comment">% filt     - filter to select files with (see regexp) e.g. '^w.*\.img$'</span>
+0049 <span class="comment">% files    - files matching 'filt' in directory 'direc'</span>
+0050 <span class="comment">% dirs     - subdirectories of 'direc'</span>
+0051 <span class="comment">%____________________________________________________________________________</span>
+0052 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0053 
+0054 <span class="comment">% John Ashburner</span>
+0055 <span class="comment">% $Id: spm_select.m 400 2006-01-11 18:41:15Z john $</span>
+0056 
+0057 <span class="keyword">if</span> nargin &gt; 0 &amp;&amp; ischar(varargin{1})
+0058     <span class="keyword">switch</span> lower(varargin{1})
+0059         <span class="keyword">case</span> <span class="string">'addvfiles'</span>
+0060             error(nargchk(2,Inf,nargin));
+0061             <a href="#_sub20" class="code" title="subfunction varargout = vfiles(option,varargin)">vfiles</a>(<span class="string">'add'</span>,varargin{2:end});
+0062         <span class="keyword">case</span> <span class="string">'clearvfiles'</span>
+0063             error(nargchk(1,1,nargin));
+0064             <a href="#_sub20" class="code" title="subfunction varargout = vfiles(option,varargin)">vfiles</a>(<span class="string">'clear'</span>);
+0065         <span class="keyword">case</span> <span class="string">'vfiles'</span>
+0066             error(nargchk(1,1,nargin));
+0067             t = <a href="#_sub20" class="code" title="subfunction varargout = vfiles(option,varargin)">vfiles</a>(<span class="string">'all'</span>);
+0068         <span class="keyword">case</span> <span class="string">'cpath'</span>
+0069             error(nargchk(2,Inf,nargin));
+0070             t = <a href="#_sub29" class="code" title="subfunction t = cpath(t,d)">cpath</a>(varargin{2:end});
+0071         <span class="keyword">case</span> <span class="string">'list'</span>
+0072             filt    = struct(<span class="string">'code'</span>,0,<span class="string">'frames'</span>,[],<span class="string">'ext'</span>,{{<span class="string">'.*'</span>}},<span class="keyword">...</span>
+0073                              <span class="string">'filt'</span>,{{varargin{3}}});
+0074             [t,sts] = <a href="#_sub23" class="code" title="subfunction [f,d] = listfiles(dr,filt)">listfiles</a>(varargin{2},filt);
+0075         <span class="keyword">otherwise</span> 
+0076             error(<span class="string">'Inappropriate usage.'</span>);
+0077     <span class="keyword">end</span>
+0078 <span class="keyword">else</span>
+0079     [t,sts] = <a href="#_sub1" class="code" title="subfunction [t,ok] = selector(n,typ,mesg,already,wd,filt,frames,varargin)">selector</a>(varargin{:});
+0080 <span class="keyword">end</span>
+0081 <span class="comment">%=======================================================================</span>
+0082 
+0083 <span class="comment">%=======================================================================</span>
+0084 <a name="_sub1" href="#_subfunctions" class="code">function [t,ok] = selector(n,typ,mesg,already,wd,filt,frames,varargin)</a>
+0085 <span class="keyword">if</span> nargin&lt;7, frames  = <span class="string">'1'</span>;     <span class="keyword">end</span>;
+0086 <span class="keyword">if</span> nargin&lt;6, filt    = <span class="string">'.*'</span>;    <span class="keyword">end</span>;
+0087 <span class="keyword">if</span> nargin&lt;5, wd      = pwd;     <span class="keyword">end</span>;
+0088 <span class="keyword">if</span> nargin&lt;4, already = {<span class="string">''</span>};    <span class="keyword">end</span>;
+0089 <span class="keyword">if</span> nargin&lt;3, mesg    = <span class="string">'Select files...'</span>; <span class="keyword">end</span>;
+0090 <span class="keyword">if</span> nargin&lt;2, typ     = <span class="string">'any'</span>;   <span class="keyword">end</span>;
+0091 <span class="keyword">if</span> nargin&lt;1, n       = [0 Inf]; <span class="keyword">end</span>;
+0092 ok  = 0;
+0093 <span class="keyword">if</span> numel(n)==1,   n    = [n n];    <span class="keyword">end</span>;
+0094 <span class="keyword">if</span> n(1)&gt;n(2),     n    = n([2 1]); <span class="keyword">end</span>;
+0095 <span class="keyword">if</span> ~isfinite(n(1)), n(1) = 0;        <span class="keyword">end</span>;
+0096 <span class="keyword">if</span> numel(already)&gt;n(2), already = already(1:n(2)); <span class="keyword">end</span>
+0097 already = strvcat(already);
+0098 
+0099 t = <span class="string">''</span>;
+0100 <span class="keyword">switch</span> lower(typ),
+0101 <span class="keyword">case</span> {<span class="string">'any'</span>,<span class="string">'*'</span>}, code = 0; ext = {<span class="string">'.*'</span>};
+0102 <span class="keyword">case</span> {<span class="string">'image'</span>},   code = 1; ext = {<span class="string">'.*\.nii$'</span>,<span class="string">'.*\.img$'</span>,<span class="string">'.*\.NII$'</span>,<span class="string">'.*\.IMG$'</span>};
+0103 <span class="keyword">case</span> {<span class="string">'xml'</span>},     code = 0; ext = {<span class="string">'.*\.xml$'</span>,<span class="string">'.*\.XML$'</span>};
+0104 <span class="keyword">case</span> {<span class="string">'mat'</span>},     code = 0; ext = {<span class="string">'.*\.mat$'</span>,<span class="string">'.*\.MAT$'</span>};
+0105 <span class="keyword">case</span> {<span class="string">'batch'</span>},   code = 0; ext = {<span class="string">'.*\.mat$'</span>,<span class="string">'.*\.MAT$'</span>,<span class="string">'.*\.xml$'</span>,<span class="string">'.*\.XML$'</span>};
+0106 <span class="keyword">case</span> {<span class="string">'dir'</span>},     code =-1; ext = {<span class="string">'.*'</span>};
+0107 <span class="keyword">otherwise</span>,        code = 0; ext = {typ};
+0108 <span class="keyword">end</span>;
+0109 
+0110 [col1,col2,col3,fs] = <a href="#_sub33" class="code" title="subfunction [c1,c2,c3,fs] = colours">colours</a>;
+0111 
+0112 fg = figure(<span class="string">'IntegerHandle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0113         <span class="string">'Tag'</span>,<span class="string">'Select'</span>,<span class="keyword">...</span>
+0114         <span class="string">'Name'</span>,strvcat(mesg),<span class="keyword">...</span>
+0115         <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0116         <span class="string">'Units'</span>,<span class="string">'Pixels'</span>,<span class="keyword">...</span>
+0117         <span class="string">'MenuBar'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0118         <span class="string">'DefaultTextInterpreter'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0119         <span class="string">'DefaultUicontrolInterruptible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0120         <span class="string">'ResizeFcn'</span>,@<a href="#_sub5" class="code" title="subfunction resize_fun(fg,varargin)">resize_fun</a>,<span class="keyword">...</span>
+0121         <span class="string">'KeyPressFcn'</span>,@<a href="#_sub28" class="code" title="subfunction hitkey(fg,varargin)">hitkey</a>);
+0122 
+0123 <span class="comment">% Code from Brian Lenoski for dealing with multiple monitors</span>
+0124 <span class="keyword">if</span> str2double(version(<span class="string">'-release'</span>))&gt;=14,
+0125     S    = get(0, <span class="string">'MonitorPosition'</span>);
+0126     Rect = get(fg,<span class="string">'Position'</span>);
+0127     pointer_loc = get(0,<span class="string">'PointerLocation'</span>);
+0128 
+0129     <span class="keyword">for</span> i = 1:size(S,1), <span class="comment">% Loop over monitors</span>
+0130         h_min   = S(i,1);
+0131         h_width = S(i,3);
+0132         h_max   = h_width + h_min - 1;
+0133         v_min   = S(i,2);
+0134         v_len   = S(i,4);
+0135         v_max   = v_min + v_len;
+0136 
+0137         <span class="comment">% Use the monitor containing the pointer</span>
+0138         <span class="keyword">if</span> pointer_loc(1) &gt;= h_min &amp;&amp; pointer_loc(1) &lt; h_max &amp;&amp; <span class="keyword">...</span>
+0139            pointer_loc(2) &gt;= v_min &amp;&amp; pointer_loc(2) &lt; v_max,
+0140             hor_min   = h_min;
+0141             hor_width = h_width;
+0142             hor_max   = h_max;
+0143             ver_min   = v_min;
+0144             ver_len   = v_len;
+0145             ver_max   = v_max;
+0146         <span class="keyword">end</span>
+0147     <span class="keyword">end</span>
+0148     Rect(1) = (hor_max - 0.5*hor_width) - 0.5*Rect(3); <span class="comment">% Horizontal</span>
+0149     Rect(2) = (ver_max - 0.5*ver_len)   - 0.5*Rect(4); <span class="comment">% Vertical</span>
+0150     set(fg,<span class="string">'Position'</span>,Rect);
+0151 <span class="keyword">end</span>
+0152 
+0153 
+0154 fh = 0.05;
+0155 <span class="comment">%fs = 10;</span>
+0156 
+0157 sbh = 0.03; <span class="comment">% Scroll-bar height.  This should be worked out properly</span>
+0158 h1 = (0.96-4*fh-5*0.01)/2;
+0159 <span class="keyword">if</span> n(2)*fh+sbh&lt;h1,
+0160     h1 = n(2)*fh+sbh;
+0161 <span class="keyword">end</span>;
+0162 h2 = 0.96-4*fh-5*0.01-h1;
+0163 
+0164 SPMdir = fileparts(which(mfilename));
+0165 <span class="keyword">if</span> str2double(version(<span class="string">'-release'</span>))==14 &amp;&amp; isdeployed,
+0166     ind = findstr(SPMdir,<span class="string">'_mcr'</span>)-1;
+0167     [SPMdir,junk] = fileparts(SPMdir(1:ind(1)));
+0168 <span class="keyword">end</span>;
+0169 <a href="#_sub6" class="code" title="subfunction [d,mch] = prevdirs(d)">prevdirs</a>([SPMdir filesep]);
+0170 [pd,vl] = <a href="#_sub6" class="code" title="subfunction [d,mch] = prevdirs(d)">prevdirs</a>([wd filesep]);
+0171 
+0172 <span class="comment">% Selected Files</span>
+0173 hp = 0.02;
+0174 sel = uicontrol(fg,<span class="keyword">...</span>
+0175     <span class="string">'style'</span>,<span class="string">'listbox'</span>,<span class="keyword">...</span>
+0176     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0177     <span class="string">'Position'</span>,[0.02 hp 0.96 h1],<span class="keyword">...</span>
+0178     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0179     <span class="string">'Callback'</span>,@<a href="#_sub18" class="code" title="subfunction unselect(lb,varargin)">unselect</a>,<span class="keyword">...</span>
+0180     <span class="string">'tag'</span>,<span class="string">'selected'</span>,<span class="keyword">...</span>
+0181     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0182     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0183     <span class="string">'Max'</span>,10000,<span class="keyword">...</span>
+0184     <span class="string">'Min'</span>,0,<span class="keyword">...</span>
+0185     <span class="string">'String'</span>,already,<span class="keyword">...</span>
+0186     <span class="string">'Value'</span>,1);
+0187 c0 = uicontextmenu(<span class="string">'Parent'</span>,fg);
+0188 set(sel,<span class="string">'uicontextmenu'</span>,c0);
+0189 uimenu(<span class="string">'Label'</span>,<span class="string">'Unselect All'</span>, <span class="string">'Parent'</span>,c0,<span class="string">'Callback'</span>,@<a href="#_sub19" class="code" title="subfunction unselect_all(ob,varargin)">unselect_all</a>);
+0190 
+0191 <span class="comment">% Messages</span>
+0192 hp = hp+h1+0.01;
+0193 uicontrol(fg,<span class="keyword">...</span>
+0194     <span class="string">'style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0195     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0196     <span class="string">'Position'</span>,[0.02 hp 0.96 fh],<span class="keyword">...</span>
+0197     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0198     <span class="string">'BackgroundColor'</span>,get(fg,<span class="string">'Color'</span>),<span class="keyword">...</span>
+0199     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0200     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0201     <span class="string">'Tag'</span>,<span class="string">'msg'</span>,<span class="keyword">...</span>
+0202     <span class="string">'String'</span>,mesg);
+0203 
+0204 <span class="keyword">if</span> strcmpi(typ,<span class="string">'image'</span>),
+0205     uicontrol(fg,<span class="keyword">...</span>
+0206         <span class="string">'style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0207         <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0208         <span class="string">'Position'</span>,[0.61 hp 0.37 fh],<span class="keyword">...</span>
+0209         <span class="string">'Callback'</span>,@<a href="#_sub14" class="code" title="subfunction update_frames(lb,varargin)">update_frames</a>,<span class="keyword">...</span>
+0210         <span class="string">'tag'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0211         <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0212         <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0213         <span class="string">'String'</span>,frames,<span class="string">'UserData'</span>,eval(frames));
+0214 <span class="comment">% 'ForegroundGolor',col3,...</span>
+0215 <span class="keyword">end</span>;
+0216 
+0217 <span class="comment">% Help</span>
+0218 hp = hp+fh+0.01;
+0219 uicontrol(fg,<span class="keyword">...</span>
+0220     <span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0221     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0222     <span class="string">'Position'</span>,[0.02 hp fh fh],<span class="keyword">...</span>
+0223     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0224     <span class="string">'Callback'</span>,@<a href="#_sub26" class="code" title="subfunction heelp(ob,varargin)">heelp</a>,<span class="keyword">...</span>
+0225     <span class="string">'tag'</span>,<span class="string">'?'</span>,<span class="keyword">...</span>
+0226     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0227     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0228     <span class="string">'String'</span>,<span class="string">'?'</span>,<span class="keyword">...</span>
+0229     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0230     <span class="string">'ToolTipString'</span>,<span class="string">'Show Help'</span>,<span class="keyword">...</span>
+0231     <span class="string">'FontSize'</span>,fs);
+0232 
+0233 uicontrol(fg,<span class="keyword">...</span>
+0234     <span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0235     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0236     <span class="string">'Position'</span>,[0.03+fh hp fh fh],<span class="keyword">...</span>
+0237     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0238     <span class="string">'Callback'</span>,@<a href="#_sub30" class="code" title="subfunction editwin(ob,varargin)">editwin</a>,<span class="keyword">...</span>
+0239     <span class="string">'tag'</span>,<span class="string">'Ed'</span>,<span class="keyword">...</span>
+0240     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0241     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0242     <span class="string">'String'</span>,<span class="string">'Ed'</span>,<span class="keyword">...</span>
+0243     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0244     <span class="string">'ToolTipString'</span>,<span class="string">'Edit Selected Files'</span>,<span class="keyword">...</span>
+0245     <span class="string">'FontSize'</span>,fs);
+0246 
+0247 <span class="comment">% Done</span>
+0248 dne = uicontrol(fg,<span class="keyword">...</span>
+0249     <span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0250     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0251     <span class="string">'Position'</span>,[0.04+2*fh hp 0.45-2*fh fh],<span class="keyword">...</span>
+0252     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0253     <span class="string">'Callback'</span>,@delete,<span class="keyword">...</span>
+0254     <span class="string">'tag'</span>,<span class="string">'D'</span>,<span class="keyword">...</span>
+0255     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0256     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0257     <span class="string">'String'</span>,<span class="string">'Done'</span>,<span class="keyword">...</span>
+0258     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0259     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0260     <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0261     <span class="string">'DeleteFcn'</span>,@<a href="#_sub2" class="code" title="subfunction null(varargin)">null</a>);
+0262 
+0263 <span class="keyword">if</span> size(already,1)&gt;=n(1) &amp;&amp; size(already,1)&lt;=n(2),
+0264     set(dne,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0265 <span class="keyword">end</span>;
+0266 
+0267 <span class="comment">% Filter Button</span>
+0268 uicontrol(fg,<span class="keyword">...</span>
+0269     <span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0270     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0271     <span class="string">'Position'</span>,[0.51 hp 0.1 fh],<span class="keyword">...</span>
+0272     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0273     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0274     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0275     <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction clearfilt(ob,varargin)">clearfilt</a>,<span class="keyword">...</span>
+0276     <span class="string">'String'</span>,<span class="string">'Filt'</span>,<span class="keyword">...</span>
+0277     <span class="string">'FontSize'</span>,fs);
+0278 
+0279 <span class="comment">% Filter</span>
+0280 ud     = struct(<span class="string">'ext'</span>,{ext},<span class="string">'code'</span>,code);
+0281 uicontrol(fg,<span class="keyword">...</span>
+0282     <span class="string">'style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0283     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0284     <span class="string">'Position'</span>,[0.61 hp 0.37 fh],<span class="keyword">...</span>
+0285     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0286     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0287     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0288     <span class="string">'Callback'</span>,@<a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>,<span class="keyword">...</span>
+0289     <span class="string">'tag'</span>,<span class="string">'regexp'</span>,<span class="keyword">...</span>
+0290     <span class="string">'String'</span>,filt,<span class="keyword">...</span>
+0291     <span class="string">'UserData'</span>,ud);
+0292 
+0293 <span class="comment">% Directories</span>
+0294 hp = hp + fh+0.01;
+0295 db = uicontrol(fg,<span class="keyword">...</span>
+0296     <span class="string">'style'</span>,<span class="string">'listbox'</span>,<span class="keyword">...</span>
+0297     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0298     <span class="string">'Position'</span>,[0.02 hp 0.47 h2],<span class="keyword">...</span>
+0299     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0300     <span class="string">'Callback'</span>,@<a href="#_sub10" class="code" title="subfunction click_dir_box(lb,varargin)">click_dir_box</a>,<span class="keyword">...</span>
+0301     <span class="string">'tag'</span>,<span class="string">'dirs'</span>,<span class="keyword">...</span>
+0302     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0303     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0304     <span class="string">'Max'</span>,1,<span class="keyword">...</span>
+0305     <span class="string">'Min'</span>,0,<span class="keyword">...</span>
+0306     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0307     <span class="string">'UserData'</span>,wd,<span class="keyword">...</span>
+0308     <span class="string">'Value'</span>,1);
+0309 
+0310 <span class="comment">% Files</span>
+0311 tmp = uicontrol(fg,<span class="keyword">...</span>
+0312     <span class="string">'style'</span>,<span class="string">'listbox'</span>,<span class="keyword">...</span>
+0313     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0314     <span class="string">'Position'</span>,[0.51 hp 0.47 h2],<span class="keyword">...</span>
+0315     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0316     <span class="string">'Callback'</span>,@<a href="#_sub16" class="code" title="subfunction click_file_box(lb,varargin)">click_file_box</a>,<span class="keyword">...</span>
+0317     <span class="string">'tag'</span>,<span class="string">'files'</span>,<span class="keyword">...</span>
+0318     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0319     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0320     <span class="string">'UserData'</span>,n,<span class="keyword">...</span>
+0321     <span class="string">'Max'</span>,10240,<span class="keyword">...</span>
+0322     <span class="string">'Min'</span>,0,<span class="keyword">...</span>
+0323     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0324     <span class="string">'Value'</span>,1);
+0325 c0 = uicontextmenu(<span class="string">'Parent'</span>,fg);
+0326 set(tmp,<span class="string">'uicontextmenu'</span>,c0);
+0327 uimenu(<span class="string">'Label'</span>,<span class="string">'Select All'</span>, <span class="string">'Parent'</span>,c0,<span class="string">'Callback'</span>,@<a href="#_sub15" class="code" title="subfunction select_all(ob,varargin)">select_all</a>);
+0328 
+0329 <span class="comment">% Drives</span>
+0330 <span class="keyword">if</span> strcmpi(computer,<span class="string">'PCWIN'</span>),
+0331     dr  = spm_platform(<span class="string">'drives'</span>);
+0332     drivestr = cell(1,numel(dr));
+0333     <span class="keyword">for</span> i=1:numel(dr),
+0334         drivestr{i} = [dr(i) <span class="string">':'</span>];
+0335     <span class="keyword">end</span>;
+0336     <span class="comment">%drivestr = {'A:','B:','C:','D:'};</span>
+0337     sz = get(db,<span class="string">'Position'</span>);
+0338     sz(4) = sz(4)-fh-2*0.01;
+0339     set(db,<span class="string">'Position'</span>,sz);
+0340     uicontrol(fg,<span class="keyword">...</span>
+0341         <span class="string">'style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0342         <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0343         <span class="string">'Position'</span>,[0.02 hp+h2-fh-0.01 0.10 fh],<span class="keyword">...</span>
+0344         <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0345         <span class="string">'BackgroundColor'</span>,get(fg,<span class="string">'Color'</span>),<span class="keyword">...</span>
+0346         <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0347         <span class="string">'String'</span>,<span class="string">'Drive'</span>);
+0348     uicontrol(fg,<span class="keyword">...</span>
+0349         <span class="string">'style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0350         <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0351         <span class="string">'Position'</span>,[0.12 hp+h2-fh-0.01 0.37 fh],<span class="keyword">...</span>
+0352         <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0353         <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction setdrive(ob,varargin)">setdrive</a>,<span class="keyword">...</span>
+0354         <span class="string">'tag'</span>,<span class="string">'drive'</span>,<span class="keyword">...</span>
+0355         <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0356         <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0357         <span class="string">'String'</span>,drivestr,<span class="keyword">...</span>
+0358         <span class="string">'Value'</span>,1);
+0359 <span class="keyword">end</span>;
+0360 
+0361 <span class="comment">% Previous dirs</span>
+0362 hp = hp+h2+0.01;
+0363 uicontrol(fg,<span class="keyword">...</span>
+0364     <span class="string">'style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0365     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0366     <span class="string">'Position'</span>,[0.12 hp 0.86 fh],<span class="keyword">...</span>
+0367     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0368     <span class="string">'Callback'</span>,@<a href="#_sub8" class="code" title="subfunction click_dir_list(ob,varargin)">click_dir_list</a>,<span class="keyword">...</span>
+0369     <span class="string">'tag'</span>,<span class="string">'previous'</span>,<span class="keyword">...</span>
+0370     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0371     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0372     <span class="string">'String'</span>,pd,<span class="keyword">...</span>
+0373     <span class="string">'Value'</span>,vl);
+0374 uicontrol(fg,<span class="keyword">...</span>
+0375     <span class="string">'style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0376     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0377     <span class="string">'Position'</span>,[0.02 hp 0.10 fh],<span class="keyword">...</span>
+0378     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0379     <span class="string">'BackgroundColor'</span>,get(fg,<span class="string">'Color'</span>),<span class="keyword">...</span>
+0380     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0381     <span class="string">'String'</span>,<span class="string">'Prev'</span>);
+0382 
+0383 <span class="comment">% Directory</span>
+0384 hp = hp + fh+0.01;
+0385 uicontrol(fg,<span class="keyword">...</span>
+0386     <span class="string">'style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0387     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0388     <span class="string">'Position'</span>,[0.12 hp 0.86 fh],<span class="keyword">...</span>
+0389     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0390     <span class="string">'Callback'</span>,@<a href="#_sub9" class="code" title="subfunction edit_dir(ob,varargin)">edit_dir</a>,<span class="keyword">...</span>
+0391     <span class="string">'tag'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0392     <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+0393     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0394     <span class="string">'String'</span>,<span class="string">''</span>);
+0395 uicontrol(fg,<span class="keyword">...</span>
+0396     <span class="string">'style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0397     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0398     <span class="string">'Position'</span>,[0.02 hp 0.10 fh],<span class="keyword">...</span>
+0399     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0400     <span class="string">'BackgroundColor'</span>,get(fg,<span class="string">'Color'</span>),<span class="keyword">...</span>
+0401     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0402     <span class="string">'String'</span>,<span class="string">'Dir'</span>);
+0403 
+0404 <a href="#_sub5" class="code" title="subfunction resize_fun(fg,varargin)">resize_fun</a>(fg);
+0405 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(sel,wd)
+0406 
+0407 waitfor(dne);
+0408 <span class="keyword">if</span> ishandle(sel),
+0409     t  = get(sel,<span class="string">'String'</span>);
+0410     ok = 1;
+0411 <span class="keyword">end</span>;
+0412 <span class="keyword">if</span> ishandle(fg),  delete(fg); <span class="keyword">end</span>;
+0413 <span class="keyword">return</span>;
+0414 <span class="comment">%=======================================================================</span>
+0415 
+0416 <span class="comment">%=======================================================================</span>
+0417 <a name="_sub2" href="#_subfunctions" class="code">function null(varargin)</a>
+0418 <span class="comment">%=======================================================================</span>
+0419 
+0420 <span class="comment">%=======================================================================</span>
+0421 <a name="_sub3" href="#_subfunctions" class="code">function msg(ob,str)</a>
+0422 ob = <a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'msg'</span>);
+0423 set(ob,<span class="string">'String'</span>,str);
+0424 <span class="keyword">if</span> nargin&gt;=3,
+0425     set(ob,<span class="string">'ForegroundColor'</span>,[1 0 0],<span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0426 <span class="keyword">else</span>
+0427     set(ob,<span class="string">'ForegroundColor'</span>,[0 0 0],<span class="string">'FontWeight'</span>,<span class="string">'normal'</span>);
+0428 <span class="keyword">end</span>;
+0429 drawnow;
+0430 <span class="keyword">return</span>;
+0431 <span class="comment">%=======================================================================</span>
+0432 
+0433 <span class="comment">%=======================================================================</span>
+0434 <a name="_sub4" href="#_subfunctions" class="code">function setdrive(ob,varargin)</a>
+0435 st = get(ob,<span class="string">'String'</span>);
+0436 vl = get(ob,<span class="string">'Value'</span>);
+0437 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(ob,st{vl});
+0438 <span class="keyword">return</span>;
+0439 <span class="comment">%=======================================================================</span>
+0440 
+0441 <span class="comment">%=======================================================================</span>
+0442 <a name="_sub5" href="#_subfunctions" class="code">function resize_fun(fg,varargin)</a>
+0443 ob = findobj(fg,<span class="string">'String'</span>,<span class="string">'Filt'</span>,<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>);
+0444 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ob),
+0445     ofs = get(ob,<span class="string">'FontSize'</span>);
+0446     ex = get(ob,<span class="string">'Extent'</span>);
+0447     ps = get(ob,<span class="string">'Position'</span>);
+0448     fs = floor(ofs*min(ps(4)./ex(4))+1);
+0449     fs = max(min(fs,30),4);
+0450     ob = findobj(fg,<span class="string">'Fontsize'</span>,ofs);
+0451     set(ob,<span class="string">'FontSize'</span>,fs);
+0452 <span class="keyword">end</span>;
+0453 <span class="keyword">return</span>;
+0454 <span class="comment">%=======================================================================</span>
+0455 
+0456 <span class="comment">%=======================================================================</span>
+0457 <a name="_sub6" href="#_subfunctions" class="code">function [d,mch] = prevdirs(d)</a>
+0458 <span class="keyword">persistent</span> pd
+0459 <span class="keyword">if</span> ~iscell(pd), pd = {}; <span class="keyword">end</span>;
+0460 d   = deblank(d);
+0461 mch = find(strcmp(d,pd));
+0462 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(mch),
+0463     pd  = {pd{:},d};
+0464     mch = length(pd);
+0465 <span class="keyword">end</span>;
+0466 d = pd;
+0467 <span class="keyword">return</span>;
+0468 <span class="comment">%=======================================================================</span>
+0469 
+0470 <span class="comment">%=======================================================================</span>
+0471 <a name="_sub7" href="#_subfunctions" class="code">function clearfilt(ob,varargin)</a>
+0472 set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'regexp'</span>),<span class="string">'String'</span>,<span class="string">'.*'</span>);
+0473 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(ob);
+0474 <span class="keyword">return</span>;
+0475 <span class="comment">%=======================================================================</span>
+0476 
+0477 <span class="comment">%=======================================================================</span>
+0478 <a name="_sub8" href="#_subfunctions" class="code">function click_dir_list(ob,varargin)</a>
+0479 vl = get(ob,<span class="string">'Value'</span>);
+0480 ls = get(ob,<span class="string">'String'</span>);
+0481 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(ob,deblank(ls{vl}));
+0482 <span class="keyword">return</span>;
+0483 <span class="comment">%=======================================================================</span>
+0484 
+0485 <span class="comment">%=======================================================================</span>
+0486 <a name="_sub9" href="#_subfunctions" class="code">function edit_dir(ob,varargin)</a>
+0487 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(ob,get(ob,<span class="string">'String'</span>));
+0488 <span class="keyword">return</span>;
+0489 <span class="comment">%=======================================================================</span>
+0490 
+0491 <span class="comment">%=======================================================================</span>
+0492 <a name="_sub10" href="#_subfunctions" class="code">function click_dir_box(lb,varargin)</a>
+0493 <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(lb,<a href="#_sub11" class="code" title="subfunction dr = current_dir(lb,varargin)">current_dir</a>(lb));
+0494 <span class="keyword">return</span>;
+0495 <span class="comment">%=======================================================================</span>
+0496 
+0497 <span class="comment">%=======================================================================</span>
+0498 <a name="_sub11" href="#_subfunctions" class="code">function dr = current_dir(lb,varargin)</a>
+0499 vl  = get(lb,<span class="string">'Value'</span>);
+0500 str = get(lb,<span class="string">'String'</span>);
+0501 pd  = get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'edit'</span>),<span class="string">'String'</span>);
+0502 <span class="keyword">while</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(pd) &amp; strcmp(pd(end),filesep) 
+0503     pd=pd(1:end-1);      <span class="comment">% Remove any trailing fileseps</span>
+0504 <span class="keyword">end</span> 
+0505 sel = deblank(str(vl,:));
+0506 <span class="keyword">if</span> strcmp(sel,<span class="string">'..'</span>),     <span class="comment">% Parent directory</span>
+0507     dr = fileparts(pd);
+0508 <span class="keyword">elseif</span> strcmp(sel,<span class="string">'.'</span>),  <span class="comment">% Current directory</span>
+0509     dr = pd;
+0510 <span class="keyword">else</span>
+0511     dr = fullfile(pd,sel);    
+0512 <span class="keyword">end</span>;
+0513 <span class="keyword">return</span>;
+0514 <span class="comment">%=======================================================================</span>
+0515 
+0516 <span class="comment">%=======================================================================</span>
+0517 <a name="_sub12" href="#_subfunctions" class="code">function re = getfilt(ob)</a>
+0518 ob  = <a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'regexp'</span>);
+0519 ud  = get(ob,<span class="string">'UserData'</span>);
+0520 re  = struct(<span class="string">'code'</span>,ud.code,<span class="keyword">...</span>
+0521              <span class="string">'frames'</span>,get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'frame'</span>),<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0522              <span class="string">'ext'</span>,{ud.ext},<span class="keyword">...</span>
+0523              <span class="string">'filt'</span>,get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'regexp'</span>),<span class="string">'String'</span>));
+0524 <span class="keyword">return</span>;
+0525 <span class="comment">%=======================================================================</span>
+0526 
+0527 <span class="comment">%=======================================================================</span>
+0528 <a name="_sub13" href="#_subfunctions" class="code">function update(lb,dr)</a>
+0529 lb = <a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'dirs'</span>);
+0530 <span class="keyword">if</span> nargin&lt;2 || <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dr),
+0531     dr = get(lb,<span class="string">'UserData'</span>);
+0532 <span class="keyword">end</span>;
+0533 <span class="keyword">if</span> ~strcmpi(computer,<span class="string">'PCWIN'</span>)
+0534     dr    = [filesep dr filesep];
+0535 <span class="keyword">else</span>
+0536     dr    = [dr filesep];
+0537 <span class="keyword">end</span>;
+0538 dr(findstr([filesep filesep],dr)) = [];
+0539 [f,d] = <a href="#_sub23" class="code" title="subfunction [f,d] = listfiles(dr,filt)">listfiles</a>(dr,<a href="#_sub12" class="code" title="subfunction re = getfilt(ob)">getfilt</a>(lb));
+0540 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(d),
+0541     dr    = get(lb,<span class="string">'UserData'</span>);
+0542     [f,d] = <a href="#_sub23" class="code" title="subfunction [f,d] = listfiles(dr,filt)">listfiles</a>(dr,<a href="#_sub12" class="code" title="subfunction re = getfilt(ob)">getfilt</a>(lb));
+0543 <span class="keyword">else</span>
+0544     set(lb,<span class="string">'UserData'</span>,dr);
+0545 <span class="keyword">end</span>;
+0546 set(lb,<span class="string">'Value'</span>,1,<span class="string">'String'</span>,d);
+0547 set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'files'</span>),<span class="string">'Value'</span>,1,<span class="string">'String'</span>,f);
+0548 [ls,mch] = <a href="#_sub6" class="code" title="subfunction [d,mch] = prevdirs(d)">prevdirs</a>(dr);
+0549 set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'previous'</span>),<span class="string">'String'</span>,ls,<span class="string">'Value'</span>,mch);
+0550 set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'edit'</span>),<span class="string">'String'</span>,dr);
+0551 
+0552 <span class="keyword">if</span> numel(dr)&gt;1 &amp;&amp; dr(2)==<span class="string">':'</span>,
+0553     str = get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'drive'</span>),<span class="string">'String'</span>);
+0554     str = cat(1,char(str));
+0555     mch = find(lower(str(:,1))==lower(dr(1)));
+0556     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(mch),
+0557         set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'drive'</span>),<span class="string">'Value'</span>,mch);
+0558     <span class="keyword">end</span>;
+0559 <span class="keyword">end</span>;
+0560 <span class="keyword">return</span>;
+0561 <span class="comment">%=======================================================================</span>
+0562 
+0563 <span class="comment">%=======================================================================</span>
+0564 <a name="_sub14" href="#_subfunctions" class="code">function update_frames(lb,varargin)</a>
+0565 str = get(lb,<span class="string">'String'</span>);
+0566 <span class="comment">%r   = get(lb,'UserData');</span>
+0567 <span class="keyword">try</span>
+0568     r = eval([<span class="string">'['</span>,str,<span class="string">']'</span>]);
+0569 <span class="keyword">catch</span>
+0570     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Failed to evaluate &quot;'</span> str <span class="string">'&quot;.'</span>],<span class="string">'r'</span>);
+0571     beep;
+0572     <span class="keyword">return</span>;
+0573 <span class="keyword">end</span>;
+0574 <span class="keyword">if</span> ~isnumeric(r),
+0575     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Expression non-numeric &quot;'</span> str <span class="string">'&quot;.'</span>],<span class="string">'r'</span>);
+0576     beep;
+0577 <span class="keyword">else</span>
+0578     set(lb,<span class="string">'UserData'</span>,r);
+0579     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,<span class="string">''</span>);
+0580     <a href="#_sub13" class="code" title="subfunction update(lb,dr)">update</a>(lb);
+0581 <span class="keyword">end</span>;
+0582 <span class="comment">%=======================================================================</span>
+0583 
+0584 <span class="comment">%=======================================================================</span>
+0585 <a name="_sub15" href="#_subfunctions" class="code">function select_all(ob,varargin)</a>
+0586 lb = findobj(get(get(ob,<span class="string">'Parent'</span>),<span class="string">'Parent'</span>),<span class="string">'Tag'</span>,<span class="string">'files'</span>);
+0587 str  = get(lb,<span class="string">'String'</span>);
+0588 set(lb,<span class="string">'Value'</span>,1:size(str,1));
+0589 drawnow;
+0590 <a href="#_sub16" class="code" title="subfunction click_file_box(lb,varargin)">click_file_box</a>(lb);
+0591 <span class="keyword">return</span>;
+0592 <span class="comment">%=======================================================================</span>
+0593 
+0594 <span class="comment">%=======================================================================</span>
+0595 <a name="_sub16" href="#_subfunctions" class="code">function click_file_box(lb,varargin)</a>
+0596 lim  = get(lb,<span class="string">'UserData'</span>);
+0597 ob   = <a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'selected'</span>);
+0598 str3 = get(ob,<span class="string">'String'</span>);
+0599 
+0600 str  = get(lb,<span class="string">'String'</span>);
+0601 vlo  = get(lb,<span class="string">'Value'</span>);
+0602 lim1  = min(max(lim(2)-size(str3,1),0),length(vlo));
+0603 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vlo),
+0604     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,<span class="string">'Nothing selected'</span>);
+0605     <span class="keyword">return</span>;
+0606 <span class="keyword">end</span>;
+0607 <span class="keyword">if</span> lim1==0,
+0608     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Selected '</span> num2str(size(str3,1)) <span class="string">'/'</span> num2str(lim(2)) <span class="string">' already.'</span>]);
+0609     beep;
+0610     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0611     <span class="keyword">return</span>;
+0612 <span class="keyword">end</span>;
+0613 
+0614 vl   = vlo(1:lim1);
+0615 msk  = false(size(str,1),1);
+0616 <span class="keyword">if</span> vl&gt;0, msk(vl) = true; <span class="keyword">else</span> msk = []; <span class="keyword">end</span>;
+0617 str1 = str( msk,:);
+0618 str2 = str(~msk,:);
+0619 dr   = [<a href="#_sub11" class="code" title="subfunction dr = current_dir(lb,varargin)">current_dir</a>(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'dirs'</span>)) filesep];
+0620 str1 = [repmat(dr,size(str1,1),1) str1];
+0621 
+0622 set(lb,<span class="string">'Value'</span>,min(vl(1),size(str2,1)),<span class="string">'String'</span>,str2);
+0623 r    = (1:size(str1,1))+size(str3,1);
+0624 str3 = deblank(strvcat(str3,str1));
+0625 set(ob,<span class="string">'String'</span>,str3,<span class="string">'Value'</span>,r);
+0626 <span class="keyword">if</span> length(vlo)&gt;lim1,
+0627     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Retained '</span> num2str(lim1) <span class="string">'/'</span> num2str(length(vlo))<span class="keyword">...</span>
+0628         <span class="string">' of selection.'</span>]);
+0629     beep;
+0630 <span class="keyword">elseif</span> isfinite(lim(2))
+0631     <span class="keyword">if</span> lim(1)==lim(2),
+0632         <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Selected '</span> num2str(size(str3,1)) <span class="string">'/'</span> num2str(lim(2)) <span class="string">' files.'</span>]);
+0633     <span class="keyword">else</span>
+0634         <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Selected '</span> num2str(size(str3,1)) <span class="string">'/'</span> num2str(lim(1)) <span class="string">'-'</span> num2str(lim(2)) <span class="string">' files.'</span>]);
+0635     <span class="keyword">end</span>;
+0636 <span class="keyword">else</span>
+0637     <span class="keyword">if</span> size(str3,1) == 1, ss = <span class="string">''</span>; <span class="keyword">else</span> ss = <span class="string">'s'</span>; <span class="keyword">end</span>;
+0638     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Selected '</span> num2str(size(str3,1)) <span class="string">' file'</span> ss <span class="string">'.'</span>]);
+0639 <span class="keyword">end</span>;
+0640 <span class="keyword">if</span> ~isfinite(lim(1)) || size(str3,1)&gt;=lim(1),
+0641     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0642 <span class="keyword">end</span>;
+0643 
+0644 <span class="keyword">return</span>;
+0645 <span class="comment">%=======================================================================</span>
+0646 
+0647 <span class="comment">%=======================================================================</span>
+0648 <a name="_sub17" href="#_subfunctions" class="code">function obj = sib(ob,tag)</a>
+0649 obj = findobj(get(ob,<span class="string">'Parent'</span>),<span class="string">'Tag'</span>,tag);
+0650 <span class="keyword">return</span>;
+0651 <span class="comment">%if isempty(obj),</span>
+0652 <span class="comment">%    error(['Can''t find object with tag &quot;' tag '&quot;.']);</span>
+0653 <span class="comment">%elseif length(obj)&gt;1,</span>
+0654 <span class="comment">%    error(['Found ' num2str(length(obj)) ' objects with tag &quot;' tag '&quot;.']);</span>
+0655 <span class="comment">%end;</span>
+0656 <span class="comment">%return;</span>
+0657 <span class="comment">%=======================================================================</span>
+0658 
+0659 <span class="comment">%=======================================================================</span>
+0660 <a name="_sub18" href="#_subfunctions" class="code">function unselect(lb,varargin)</a>
+0661 vl      = get(lb,<span class="string">'Value'</span>);
+0662 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vl), <span class="keyword">return</span>; <span class="keyword">end</span>;
+0663 str     = get(lb,<span class="string">'String'</span>);
+0664 msk     = ones(size(str,1),1);
+0665 <span class="keyword">if</span> vl~=0, msk(vl) = 0; <span class="keyword">end</span>;
+0666 str2    = str(logical(msk),:);
+0667 set(lb,<span class="string">'Value'</span>,min(vl(1),size(str2,1)),<span class="string">'String'</span>,str2);
+0668 lim = get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'files'</span>),<span class="string">'UserData'</span>);
+0669 <span class="keyword">if</span> size(str2,1)&gt;= lim(1) &amp;&amp; size(str2,1)&lt;= lim(2),
+0670     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0671 <span class="keyword">else</span> 
+0672     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0673 <span class="keyword">end</span>;
+0674 
+0675 <span class="comment">%if size(str2,1) == 1, ss = ''; else ss = 's'; end;</span>
+0676 <span class="comment">%msg(lb,[num2str(size(str2,1)) ' file' ss ' remaining.']);</span>
+0677 <span class="keyword">if</span> numel(vl) == 1, ss = <span class="string">''</span>; <span class="keyword">else</span> ss = <span class="string">'s'</span>; <span class="keyword">end</span>;
+0678 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,[<span class="string">'Unselected '</span> num2str(numel(vl)) <span class="string">' file'</span> ss <span class="string">'.'</span>]);
+0679 <span class="keyword">return</span>;
+0680 <span class="comment">%=======================================================================</span>
+0681 
+0682 <span class="comment">%=======================================================================</span>
+0683 <a name="_sub19" href="#_subfunctions" class="code">function unselect_all(ob,varargin)</a>
+0684 lb = findobj(get(get(ob,<span class="string">'Parent'</span>),<span class="string">'Parent'</span>),<span class="string">'Tag'</span>,<span class="string">'selected'</span>);
+0685 set(lb,<span class="string">'Value'</span>,[],<span class="string">'String'</span>,<span class="string">''</span>,<span class="string">'ListBoxTop'</span>,1);
+0686 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(lb,<span class="string">'Unselected all files.'</span>);
+0687 lim = get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'files'</span>),<span class="string">'UserData'</span>);
+0688 <span class="keyword">if</span> lim(1)&gt;0, set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(lb,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>); <span class="keyword">end</span>;
+0689 <span class="keyword">return</span>;
+0690 <span class="comment">%=======================================================================</span>
+0691 
+0692 <span class="comment">%=======================================================================</span>
+0693 <a name="_sub20" href="#_subfunctions" class="code">function varargout = vfiles(option,varargin)</a>
+0694 <span class="keyword">persistent</span> vfs
+0695 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vfs),
+0696     vfs = <a href="#_sub21" class="code" title="subfunction vfs = newvfs(nam)">newvfs</a>;
+0697 <span class="keyword">end</span>;
+0698 
+0699 <span class="keyword">switch</span> option,
+0700 <span class="keyword">case</span> {<span class="string">'clear'</span>}
+0701     vfs = <a href="#_sub21" class="code" title="subfunction vfs = newvfs(nam)">newvfs</a>;
+0702 <span class="keyword">case</span> {<span class="string">'add'</span>}
+0703     <span class="keyword">for</span> j=1:numel(varargin),
+0704         <span class="keyword">if</span> ischar(varargin{j}),
+0705             <span class="keyword">for</span> i=1:size(varargin{j},1),
+0706                 fle = deblank(varargin{j}(i,:));
+0707                 vfs = <a href="#_sub22" class="code" title="subfunction vfs = addvfile(vfs,fle)">addvfile</a>(vfs,fle);
+0708             <span class="keyword">end</span>;
+0709         <span class="keyword">elseif</span> iscell(varargin{j}),
+0710             <span class="keyword">for</span> i=1:numel(varargin{j}),
+0711                 fle = deblank(varargin{j}{i});
+0712                 vfs = <a href="#_sub22" class="code" title="subfunction vfs = addvfile(vfs,fle)">addvfile</a>(vfs,fle);
+0713             <span class="keyword">end</span>;
+0714         <span class="keyword">end</span>;
+0715     <span class="keyword">end</span>;
+0716 <span class="keyword">case</span> {<span class="string">'list'</span>}
+0717     [varargout{1:3}] = <a href="#_sub25" class="code" title="subfunction [f,d,ii] = listvfiles(vfs,dr)">listvfiles</a>(vfs,varargin{:});
+0718 <span class="keyword">case</span> {<span class="string">'all'</span>}
+0719     varargout{1} = vfs;
+0720 <span class="keyword">otherwise</span>
+0721     error(<span class="string">'Unknown option.'</span>);
+0722 <span class="keyword">end</span>;
+0723 <span class="keyword">return</span>;
+0724 <span class="comment">%=======================================================================</span>
+0725 
+0726 <span class="comment">%=======================================================================</span>
+0727 <a name="_sub21" href="#_subfunctions" class="code">function vfs = newvfs(nam)</a>
+0728 <span class="keyword">if</span> nargin==0, nam = <span class="string">''</span>; <span class="keyword">end</span>;
+0729 vfs = struct(<span class="string">'name'</span>,nam,<span class="string">'dirs'</span>,struct(<span class="string">'name'</span>,{},<span class="string">'dirs'</span>,{},<span class="string">'files'</span>,{}),<span class="string">'files'</span>,struct(<span class="string">'name'</span>,{},<span class="string">'ind'</span>,{}));
+0730 <span class="keyword">return</span>;
+0731 <span class="comment">%=======================================================================</span>
+0732 
+0733 <span class="comment">%=======================================================================</span>
+0734 <a name="_sub22" href="#_subfunctions" class="code">function vfs = addvfile(vfs,fle)</a>
+0735 ind = find(fle==filesep);
+0736 <span class="keyword">if</span> any(ind==1),
+0737     ind = ind(2:end)-1;
+0738     fle = fle(2:end);
+0739 <span class="keyword">end</span>;
+0740 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ind),
+0741     [unused,nam,ext,num] = <a href="pr_spm_fileparts.html" class="code" title="function [pth,nam,ext,num] = spm_fileparts(fname)">pr_spm_fileparts</a>(fle);
+0742     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(num),
+0743         ind = [str2num(num) 1 1];
+0744         ind = ind(1);
+0745     <span class="keyword">else</span>
+0746         ind = [];
+0747     <span class="keyword">end</span>;
+0748     fname = [nam ext];
+0749     mch   = strcmp(fname,{vfs.files.name});
+0750     <span class="keyword">if</span> any(mch),
+0751         mch                = find(mch);
+0752         vfs.files(mch).ind = [vfs.files(mch).ind ind];
+0753     <span class="keyword">else</span>
+0754         vfs.files(end+1).name = fname;
+0755         vfs.files(end).ind    = ind;
+0756     <span class="keyword">end</span>;
+0757 <span class="keyword">else</span>
+0758     dr   = fle(1:(ind(1)-1));
+0759     fle  = fle((ind(1)+1):end);
+0760     mch  = strcmp(dr,{vfs.dirs.name});
+0761     <span class="keyword">if</span> any(mch),
+0762         mch           = find(mch);
+0763     <span class="keyword">else</span>
+0764         mch           = numel(vfs.dirs)+1;
+0765         vfs.dirs(mch) = <a href="#_sub21" class="code" title="subfunction vfs = newvfs(nam)">newvfs</a>(dr);
+0766     <span class="keyword">end</span>;
+0767     vfs.dirs(mch)     = <a href="#_sub22" class="code" title="subfunction vfs = addvfile(vfs,fle)">addvfile</a>(vfs.dirs(mch),fle);
+0768 <span class="keyword">end</span>;
+0769 <span class="keyword">return</span>;
+0770 <span class="comment">%=======================================================================</span>
+0771 
+0772 <span class="comment">%=======================================================================</span>
+0773 <a name="_sub23" href="#_subfunctions" class="code">function [f,d] = listfiles(dr,filt)</a>
+0774 ob = gco;
+0775 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,<span class="string">'Listing directory...'</span>);
+0776 <span class="keyword">if</span> nargin&lt;2, filt = <span class="string">''</span>;  <span class="keyword">end</span>;
+0777 <span class="keyword">if</span> nargin&lt;1, dr   = <span class="string">'.'</span>; <span class="keyword">end</span>;
+0778 de      = dir(dr);
+0779 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(de),
+0780     d     = {de([de.isdir]).name};
+0781     <span class="keyword">if</span> filt.code~=-1,
+0782         f = {de(~[de.isdir]).name};
+0783     <span class="keyword">else</span>
+0784         <span class="comment">% f = d(3:end);</span>
+0785         f = d;
+0786     <span class="keyword">end</span>;
+0787 <span class="keyword">else</span>
+0788     d = {<span class="string">'.'</span>,<span class="string">'..'</span>};
+0789     f = {};
+0790 <span class="keyword">end</span>;
+0791 
+0792 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Filtering '</span> num2str(numel(f)) <span class="string">' files...'</span>]);
+0793 f  = <a href="#_sub24" class="code" title="subfunction [f,ind] = do_filter(f,filt)">do_filter</a>(f,filt.ext);
+0794 f  = <a href="#_sub24" class="code" title="subfunction [f,ind] = do_filter(f,filt)">do_filter</a>(f,{filt.filt});
+0795 ii = cell(1,numel(f));
+0796 <span class="keyword">if</span> filt.code==1 &amp;&amp; (numel(filt.frames)~=1 || filt.frames(1)~=1),
+0797     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Reading headers of '</span> num2str(numel(f)) <span class="string">' images...'</span>]);
+0798     <span class="keyword">for</span> i=1:numel(f),
+0799         <span class="keyword">try</span>
+0800             ni = nifti(fullfile(dr,f{i}));
+0801             dm = [ni.dat.dim 1 1 1 1 1];
+0802             d4 = (1:dm(4))';
+0803         <span class="keyword">catch</span>
+0804             d4 = 1;
+0805         <span class="keyword">end</span>;
+0806         msk = false(size(filt.frames));
+0807         <span class="keyword">for</span> j=1:numel(msk), msk(j) = any(d4==filt.frames(j)); <span class="keyword">end</span>;
+0808         ii{i} = filt.frames(msk);
+0809     <span class="keyword">end</span>;
+0810 <span class="keyword">elseif</span> filt.code==1 &amp;&amp; (numel(filt.frames)==1 &amp;&amp; filt.frames(1)==1),
+0811     <span class="keyword">for</span> i=1:numel(f),
+0812         ii{i} = 1;
+0813     <span class="keyword">end</span>;
+0814 <span class="keyword">end</span>;
+0815 
+0816 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,<span class="string">'Listing virtual files...'</span>);
+0817 [fv,dv,iv] = <a href="#_sub20" class="code" title="subfunction varargout = vfiles(option,varargin)">vfiles</a>(<span class="string">'list'</span>,dr);
+0818 <span class="keyword">if</span> filt.code==-1,
+0819     fv = dv;
+0820     iv = cell(size(fv));
+0821 <span class="keyword">end</span>;
+0822 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Filtering '</span> num2str(numel(fv)) <span class="string">' virtual files...'</span>]);
+0823 [fv,ind]   = <a href="#_sub24" class="code" title="subfunction [f,ind] = do_filter(f,filt)">do_filter</a>(fv,filt.ext);
+0824 iv         = iv(ind);
+0825 [fv,ind]   = <a href="#_sub24" class="code" title="subfunction [f,ind] = do_filter(f,filt)">do_filter</a>(fv,{filt.filt});
+0826 iv         = iv(ind);
+0827 <span class="keyword">if</span> filt.code==1,
+0828     <span class="keyword">for</span> i=1:numel(iv),
+0829         msk   = false(size(filt.frames));
+0830         <span class="keyword">for</span> j=1:numel(msk), msk(j) = any(iv{i}==filt.frames(j)); <span class="keyword">end</span>;
+0831         iv{i} = filt.frames(msk);
+0832     <span class="keyword">end</span>;
+0833 <span class="keyword">end</span>;
+0834 
+0835 d       = { d{:},dv{:}};
+0836 f       = { f{:},fv{:}};
+0837 ii      = {ii{:},iv{:}};
+0838 
+0839 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Listing '</span> num2str(numel(f)) <span class="string">' files...'</span>]);
+0840 
+0841 [f,ind] = sortrows(f(:));
+0842 ii      = ii(ind);
+0843 msk     = true(1,numel(f));
+0844 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(f), f{1} = deblank(f{1}); <span class="keyword">end</span>;
+0845 <span class="keyword">for</span> i=2:numel(f),
+0846     f{i} = deblank(f{i});
+0847     <span class="keyword">if</span> strcmp(f{i-1},f{i}),
+0848         <span class="keyword">if</span> filt.code==1,
+0849             tmp      = sort([ii{i}(:) ; ii{i-1}(:)]);
+0850             tmp(~diff(tmp,1)) = [];
+0851             ii{i}    = tmp;
+0852         <span class="keyword">end</span>;
+0853         msk(i-1) = false;
+0854     <span class="keyword">end</span>;
+0855 <span class="keyword">end</span>;
+0856 f        = f(msk);
+0857 <span class="keyword">if</span> filt.code==1,
+0858     ii       = ii(msk);
+0859     c        = cell(size(f));
+0860     <span class="keyword">for</span> i=1:numel(f),
+0861         c{i} = [repmat([f{i} <span class="string">','</span>],numel(ii{i}),1) num2str(ii{i}(:)) ];
+0862     <span class="keyword">end</span>;
+0863     f        = strvcat(c{:});
+0864 <span class="keyword">elseif</span> filt.code==-1,
+0865     fs = filesep;
+0866     <span class="keyword">for</span> i=1:numel(f),
+0867         f{i} = [f{i} fs];
+0868     <span class="keyword">end</span>;
+0869     f        = strvcat(f{:});
+0870 <span class="keyword">else</span>
+0871     f        = strvcat(f{:});
+0872 <span class="keyword">end</span>;
+0873 
+0874 d        = sortrows(d(:));
+0875 d        = strvcat(d);
+0876 sam      = find(~any(diff(d+0,1),2));
+0877 d(sam,:) = [];
+0878 <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,<span class="string">''</span>);
+0879 <span class="keyword">return</span>;
+0880 <span class="comment">%=======================================================================</span>
+0881 
+0882 <span class="comment">%=======================================================================</span>
+0883 <a name="_sub24" href="#_subfunctions" class="code">function [f,ind] = do_filter(f,filt)</a>
+0884 t2 = false(numel(f),1);
+0885 <span class="keyword">for</span> j=1:numel(filt),
+0886     t1 = regexp(f,filt{j});
+0887     <span class="keyword">if</span> numel(f)==1, t1 = {t1}; <span class="keyword">end</span>;
+0888     <span class="keyword">for</span> i=1:numel(t1),
+0889         t2(i) = t2(i) || ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(t1{i});
+0890     <span class="keyword">end</span>;
+0891 <span class="keyword">end</span>;
+0892 ind = find(t2);
+0893 f   = f(ind);
+0894 <span class="keyword">return</span>;
+0895 <span class="comment">%=======================================================================</span>
+0896 
+0897 <span class="comment">%=======================================================================</span>
+0898 <a name="_sub25" href="#_subfunctions" class="code">function [f,d,ii] = listvfiles(vfs,dr)</a>
+0899 f  = {};
+0900 d  = {};
+0901 ii = {};
+0902 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dr),
+0903     f  = {vfs.files.name};
+0904     ii = {vfs.files.ind};
+0905     d  = {vfs.dirs.name};
+0906 <span class="keyword">else</span>
+0907     <span class="keyword">if</span> dr(1)==filesep, dr = dr(2:end); <span class="keyword">end</span>;
+0908     ind = find(dr==filesep);
+0909     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ind),
+0910         d1 = dr;
+0911         d2 = <span class="string">''</span>;
+0912     <span class="keyword">else</span>
+0913         d1 = dr(1:(ind(1)-1));
+0914         d2 = dr((ind(1)+1):end);
+0915     <span class="keyword">end</span>;
+0916     <span class="keyword">for</span> i=1:length(vfs.dirs),
+0917         <span class="keyword">if</span> strcmp(d1,vfs.dirs(i).name),
+0918             [f,d,ii] = <a href="#_sub25" class="code" title="subfunction [f,d,ii] = listvfiles(vfs,dr)">listvfiles</a>(vfs.dirs(i),d2);
+0919             <span class="keyword">break</span>;
+0920         <span class="keyword">end</span>;
+0921     <span class="keyword">end</span>;
+0922 <span class="keyword">end</span>;
+0923 <span class="keyword">return</span>;
+0924 <span class="comment">%=======================================================================</span>
+0925 
+0926 <span class="comment">%=======================================================================</span>
+0927 <a name="_sub26" href="#_subfunctions" class="code">function heelp(ob,varargin)</a>
+0928 [col1,col2,col3,fs] = <a href="#_sub33" class="code" title="subfunction [c1,c2,c3,fs] = colours">colours</a>;
+0929 fg = get(ob,<span class="string">'Parent'</span>);
+0930 t  = uicontrol(fg,<span class="keyword">...</span>
+0931     <span class="string">'style'</span>,<span class="string">'listbox'</span>,<span class="keyword">...</span>
+0932     <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0933     <span class="string">'Position'</span>,[0.01 0.01 0.98 0.98],<span class="keyword">...</span>
+0934     <span class="string">'FontSize'</span>,fs,<span class="keyword">...</span>
+0935     <span class="string">'FontName'</span>,<span class="string">'FixedWidthFont'</span>,<span class="keyword">...</span>
+0936     <span class="string">'BackgroundColor'</span>,col2,<span class="keyword">...</span>
+0937     <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+0938     <span class="string">'Max'</span>,0,<span class="keyword">...</span>
+0939     <span class="string">'Min'</span>,0,<span class="keyword">...</span>
+0940     <span class="string">'tag'</span>,<span class="string">'HelpWin'</span>,<span class="keyword">...</span>
+0941     <span class="string">'String'</span>,<span class="string">'                   '</span>);
+0942 c0 = uicontextmenu(<span class="string">'Parent'</span>,fg);
+0943 set(t,<span class="string">'uicontextmenu'</span>,c0);
+0944 uimenu(<span class="string">'Label'</span>,<span class="string">'Done'</span>, <span class="string">'Parent'</span>,c0,<span class="string">'Callback'</span>,@<a href="#_sub27" class="code" title="subfunction helpclear(ob,varargin)">helpclear</a>);
+0945 
+0946 ext = get(t,<span class="string">'Extent'</span>);
+0947 pw  = floor(0.98/ext(3)*20-4);
+0948 str  = <a href="pr_spm_justify.html" class="code" title="function out = pr_spm_justify(n,varargin)">pr_spm_justify</a>(pw,{[<span class="keyword">...</span>
+0949 <span class="string">'File Selection help. You can return to selecting files via the right mouse button (the &quot;Done&quot; option). '</span>,<span class="keyword">...</span>
+0950 <span class="string">'Because of a bug in Matlab (on some machines), don''t resize this window when viewing the help.'</span>],<span class="keyword">...</span>
+0951 <span class="string">''</span>,[<span class="keyword">...</span>
+0952 <span class="string">'The panel at the bottom shows files that are already selected. '</span>,<span class="keyword">...</span>
+0953 <span class="string">'Clicking a selected file will un-select it. To un-select several, you can '</span>,<span class="keyword">...</span>
+0954 <span class="string">'drag the cursor over the files, and they will be gone on release. '</span>,<span class="keyword">...</span>
+0955 <span class="string">'You can use the right mouse button to un-select everything.'</span>],<span class="keyword">...</span>
+0956 <span class="string">''</span>,[<span class="keyword">...</span>
+0957 <span class="string">'Directories are navigated by editing the name of the current directory (where it says &quot;Dir&quot;), '</span>,<span class="keyword">...</span>
+0958 <span class="string">'by going to one of the previously entered directories (&quot;Prev&quot;), or by navigating around '</span>,<span class="keyword">...</span>
+0959 <span class="string">'the parent or subdirectories listed in the left side panel.'</span>],<span class="keyword">...</span>
+0960 <span class="string">''</span>,[<span class="keyword">...</span>
+0961 <span class="string">'Files matching the filter (&quot;Filt&quot;) are shown in the panel on the right. '</span>,<span class="keyword">...</span>
+0962 <span class="string">'These can be selected by clicking or dragging.  Use the right mouse button if '</span>,<span class="keyword">...</span>
+0963 <span class="string">'you would like to select all files.  Note that when selected, the files disappear '</span>,<span class="keyword">...</span>
+0964 <span class="string">'from this panel.  They can be made to reappear by re-specifying the directory '</span>,<span class="keyword">...</span>
+0965 <span class="string">'or the filter. '</span>,<span class="keyword">...</span>
+0966 <span class="string">'Note that the syntax of the filter differs from that used by previous versions of '</span>,<span class="keyword">...</span>
+0967 <span class="string">'SPM.  The following is a list of symbols with special meaning for filtering the filenames:'</span>],<span class="keyword">...</span>
+0968 <span class="string">'    ^     start of string'</span>,<span class="keyword">...</span>
+0969 <span class="string">'    $     end of string'</span>,<span class="keyword">...</span>
+0970 <span class="string">'    .     any character'</span>,<span class="keyword">...</span>
+0971 <span class="string">'    \     quote next character'</span>,<span class="keyword">...</span>
+0972 <span class="string">'    *     match zero or more'</span>,<span class="keyword">...</span>
+0973 <span class="string">'    +     match one or more'</span>,<span class="keyword">...</span>
+0974 <span class="string">'    ?     match zero or one, or match minimally'</span>,<span class="keyword">...</span>
+0975 <span class="string">'    {}    match a range of occurrances'</span>,<span class="keyword">...</span>
+0976 <span class="string">'    []    set of characters'</span>,<span class="keyword">...</span>
+0977 <span class="string">'    [^]   exclude a set of characters'</span>,<span class="keyword">...</span>
+0978 <span class="string">'    ()    group subexpression'</span>,<span class="keyword">...</span>
+0979 <span class="string">'    \w    match word [a-z_A-Z0-9]'</span>,<span class="keyword">...</span>
+0980 <span class="string">'    \W    not a word [^a-z_A-Z0-9]'</span>,<span class="keyword">...</span>
+0981 <span class="string">'    \d    match digit [0-9]'</span>,<span class="keyword">...</span>
+0982 <span class="string">'    \D    not a digit [^0-9]'</span>,<span class="keyword">...</span>
+0983 <span class="string">'    \s    match white space [ \t\r\n\f]'</span>,<span class="keyword">...</span>
+0984 <span class="string">'    \S    not a white space [^ \t\r\n\f]'</span>,<span class="keyword">...</span>
+0985 <span class="string">'    \&lt;WORD\&gt;    exact word match'</span>,<span class="keyword">...</span>
+0986 <span class="string">''</span>,[<span class="keyword">...</span>
+0987 <span class="string">'Individual time frames of image files can also be selected.  The frame filter '</span>,<span class="keyword">...</span>
+0988 <span class="string">'allows specified frames to be shown, which is useful for image files that '</span>,<span class="keyword">...</span>
+0989 <span class="string">'contain multiple time points.  If your images are only single time point, then '</span>,<span class="keyword">...</span>
+0990 <span class="string">'reading all the image headers can be avoided by specifying a frame filter of &quot;1&quot;. '</span>,<span class="keyword">...</span>
+0991 <span class="string">'The filter should contain a list of integers indicating the frames to be used. '</span>,<span class="keyword">...</span>
+0992 <span class="string">'This can be generated by e.g. &quot;1:100&quot;, or &quot;1:2:100&quot;.'</span>],<span class="keyword">...</span>
+0993 <span class="string">''</span>,[<span class="keyword">...</span>
+0994 <span class="string">'There is also an edit button (Ed), which allows you to edit your selection of files. '</span>,<span class="keyword">...</span>
+0995 <span class="string">'When you are done, then use the menu-button of your mouse to either cancel or accept your changes'</span>],<span class="string">''</span>});
+0996 pad = cellstr(char(zeros(max(0,floor(1.2/ext(4) - numel(str))),1)));
+0997 str = {str{:}, pad{:}};
+0998 set(t,<span class="string">'String'</span>,str);
+0999 <span class="keyword">return</span>;
+1000 <span class="comment">%=======================================================================</span>
+1001 
+1002 <span class="comment">%=======================================================================</span>
+1003 <a name="_sub27" href="#_subfunctions" class="code">function helpclear(ob,varargin)</a>
+1004 ob = get(ob,<span class="string">'Parent'</span>);
+1005 ob = get(ob,<span class="string">'Parent'</span>);
+1006 ob = findobj(ob,<span class="string">'Tag'</span>,<span class="string">'HelpWin'</span>);
+1007 delete(ob);
+1008 <span class="comment">%=======================================================================</span>
+1009 
+1010 <span class="comment">%=======================================================================</span>
+1011 <a name="_sub28" href="#_subfunctions" class="code">function hitkey(fg,varargin)</a>
+1012 ch = get(fg,<span class="string">'CurrentCharacter'</span>);
+1013 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ch), <span class="keyword">return</span>; <span class="keyword">end</span>;
+1014 
+1015 ob = findobj(fg,<span class="string">'Tag'</span>,<span class="string">'files'</span>);
+1016 <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ob),
+1017     f = get(ob,<span class="string">'String'</span>);
+1018     f = f(:,1);
+1019     fset = find(f&gt;=ch);
+1020     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fset),
+1021         fset = fset(1);
+1022         <span class="comment">%cb = get(ob,'Callback');</span>
+1023         <span class="comment">%set(ob,'Callback',[]);</span>
+1024         set(ob,<span class="string">'ListboxTop'</span>,fset);
+1025         <span class="comment">%set(ob,'Callback',cb);</span>
+1026     <span class="keyword">else</span>
+1027         set(ob,<span class="string">'ListboxTop'</span>,length(f));
+1028     <span class="keyword">end</span>;
+1029 <span class="keyword">end</span>;
+1030 <span class="keyword">return</span>;
+1031 <span class="comment">%=======================================================================</span>
+1032 
+1033 <span class="comment">%=======================================================================</span>
+1034 <a name="_sub29" href="#_subfunctions" class="code">function t = cpath(t,d)</a>
+1035 
+1036 <span class="keyword">switch</span> spm_platform(<span class="string">'filesys'</span>),
+1037 <span class="keyword">case</span> <span class="string">'unx'</span>,
+1038     mch = <span class="string">'^/'</span>;
+1039     fs  = <span class="string">'/'</span>;
+1040     fs1 = <span class="string">'/'</span>;
+1041 <span class="keyword">case</span> <span class="string">'win'</span>,
+1042     mch = <span class="string">'^.:\\'</span>;
+1043     fs  = <span class="string">'\'</span>;
+1044     fs1 = <span class="string">'\\'</span>;
+1045 <span class="keyword">otherwise</span>;
+1046     error(<span class="string">'What is this filesystem?'</span>);
+1047 <span class="keyword">end</span>
+1048 
+1049 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(regexp(t,mch,<span class="string">'once'</span>)),
+1050     <span class="keyword">if</span> nargin&lt;2, d = pwd; <span class="keyword">end</span>;
+1051     t = [d fs t];
+1052 <span class="keyword">end</span>;
+1053 
+1054 <span class="comment">% Replace occurences of '/./' by '/' (problems with e.g. /././././././')</span>
+1055 re = [fs1 <span class="string">'\.'</span> fs1];
+1056 <span class="keyword">while</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(regexp(t,re)),
+1057     t  = regexprep(t,re,fs);
+1058 <span class="keyword">end</span>;
+1059 t  = regexprep(t,[fs1 <span class="string">'\.'</span> <span class="string">'$'</span>], fs);
+1060 
+1061 <span class="comment">% Replace occurences of '/abc/../' by '/'</span>
+1062 re = [fs1 <span class="string">'[^'</span> fs1 <span class="string">']+'</span> fs1 <span class="string">'\.\.'</span> fs1];
+1063 <span class="keyword">while</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(regexp(t,re)),
+1064     t  = regexprep(t,re,fs,<span class="string">'once'</span>);
+1065 <span class="keyword">end</span>;
+1066 t  = regexprep(t,[fs1 <span class="string">'[^'</span> fs1 <span class="string">']+'</span> fs1 <span class="string">'\.\.'</span> <span class="string">'$'</span>],fs,<span class="string">'once'</span>);
+1067 
+1068 <span class="comment">% Replace '//'</span>
+1069 t  = regexprep(t,[fs1 <span class="string">'+'</span>], fs);
+1070 <span class="comment">%=======================================================================</span>
+1071 
+1072 <span class="comment">%=======================================================================</span>
+1073 <a name="_sub30" href="#_subfunctions" class="code">function editwin(ob,varargin)</a>
+1074 [col1,col2,col3,fs] = <a href="#_sub33" class="code" title="subfunction [c1,c2,c3,fs] = colours">colours</a>;
+1075 fg   = get(ob,<span class="string">'Parent'</span>);
+1076 lb   = findobj(fg,<span class="string">'Tag'</span>,<span class="string">'selected'</span>);
+1077 str  = get(lb,<span class="string">'String'</span>);
+1078 str  = cellstr(str);
+1079 h    = uicontrol(fg,<span class="string">'Style'</span>,<span class="string">'Edit'</span>,<span class="keyword">...</span>
+1080         <span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+1081         <span class="string">'String'</span>,str,<span class="keyword">...</span>
+1082         <span class="string">'FontSize'</span>,16,<span class="keyword">...</span>
+1083         <span class="string">'Max'</span>,2,<span class="keyword">...</span>
+1084         <span class="string">'Tag'</span>,<span class="string">'EditWindow'</span>,<span class="keyword">...</span>
+1085         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Left'</span>,<span class="keyword">...</span>
+1086         <span class="string">'ForegroundColor'</span>,col3,<span class="keyword">...</span>
+1087         <span class="string">'BackgroundColor'</span>,col1,<span class="keyword">...</span>
+1088         <span class="string">'Position'</span>,[0.01 0.01 0.98 0.98]);
+1089 c0 = uicontextmenu(<span class="string">'Parent'</span>,fg);
+1090 set(h,<span class="string">'uicontextmenu'</span>,c0);
+1091 uimenu(<span class="string">'Label'</span>,<span class="string">'Cancel'</span>, <span class="string">'Parent'</span>,c0,<span class="string">'Callback'</span>,@<a href="#_sub32" class="code" title="subfunction editclear(ob,varargin)">editclear</a>);
+1092 uimenu(<span class="string">'Label'</span>,<span class="string">'Accept'</span>, <span class="string">'Parent'</span>,c0,<span class="string">'Callback'</span>,@<a href="#_sub31" class="code" title="subfunction editdone(ob,varargin)">editdone</a>);
+1093 <span class="comment">%=======================================================================</span>
+1094 
+1095 <span class="comment">%=======================================================================</span>
+1096 <a name="_sub31" href="#_subfunctions" class="code">function editdone(ob,varargin)</a>
+1097 ob  = get(ob,<span class="string">'Parent'</span>);
+1098 ob  = <a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'EditWindow'</span>);
+1099 str = get(ob,<span class="string">'String'</span>);
+1100 str = deblank(cellstr(strvcat(str)));
+1101 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(str{1}), str = {}; <span class="keyword">end</span>;
+1102 
+1103 lim = get(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'files'</span>),<span class="string">'UserData'</span>);
+1104 <span class="keyword">if</span> numel(str)&gt;lim(2),
+1105     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Retained '</span> num2str(lim(2)) <span class="string">' of the '</span> num2str(numel(str)) <span class="string">' files.'</span>]);
+1106     beep;
+1107     str = str(1:lim(2));
+1108 <span class="keyword">elseif</span> isfinite(lim(2)),
+1109     <span class="keyword">if</span> lim(1)==lim(2),
+1110         <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Specified '</span> num2str(numel(str)) <span class="string">'/'</span> num2str(lim(2)) <span class="string">' files.'</span>]);
+1111     <span class="keyword">else</span>
+1112         <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Selected '</span> num2str(numel(str)) <span class="string">'/'</span> num2str(lim(1)) <span class="string">'-'</span> num2str(lim(2)) <span class="string">' files.'</span>]);
+1113     <span class="keyword">end</span>;
+1114 <span class="keyword">else</span>
+1115     <span class="keyword">if</span> numel(str) == 1, ss = <span class="string">''</span>; <span class="keyword">else</span> ss = <span class="string">'s'</span>; <span class="keyword">end</span>;
+1116     <a href="#_sub3" class="code" title="subfunction msg(ob,str)">msg</a>(ob,[<span class="string">'Specified '</span> num2str(numel(str)) <span class="string">' file'</span> ss <span class="string">'.'</span>]);
+1117 <span class="keyword">end</span>;
+1118 <span class="keyword">if</span> ~isfinite(lim(1)) || numel(str)&gt;=lim(1),
+1119     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+1120 <span class="keyword">else</span>
+1121     set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'D'</span>),<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+1122 <span class="keyword">end</span>;
+1123 set(<a href="#_sub17" class="code" title="subfunction obj = sib(ob,tag)">sib</a>(ob,<span class="string">'selected'</span>),<span class="string">'String'</span>,strvcat(str),<span class="string">'Value'</span>,[]);
+1124 delete(ob);
+1125 <span class="comment">%=======================================================================</span>
+1126 
+1127 <span class="comment">%=======================================================================</span>
+1128 <a name="_sub32" href="#_subfunctions" class="code">function editclear(ob,varargin)</a>
+1129 ob = get(ob,<span class="string">'Parent'</span>);
+1130 ob = get(ob,<span class="string">'Parent'</span>);
+1131 ob = findobj(ob,<span class="string">'Tag'</span>,<span class="string">'EditWindow'</span>);
+1132 delete(ob);
+1133 <span class="comment">%=======================================================================</span>
+1134 
+1135 <span class="comment">%=======================================================================</span>
+1136 <a name="_sub33" href="#_subfunctions" class="code">function [c1,c2,c3,fs] = colours</a>
+1137 <span class="keyword">global</span> defaults
+1138 c1 = [1 1 1];
+1139 c2 = [1 1 1];
+1140 c3 = [0 0 0];
+1141 fs = 14;
+1142 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(defaults,<span class="string">'ui'</span>),
+1143     ui = defaults.ui;
+1144     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(ui,<span class="string">'colour1'</span>), c1 = ui.colour1; <span class="keyword">end</span>;
+1145     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(ui,<span class="string">'colour2'</span>), c2 = ui.colour2; <span class="keyword">end</span>;
+1146     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(ui,<span class="string">'colour3'</span>), c3 = ui.colour3; <span class="keyword">end</span>;
+1147     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(ui,<span class="string">'fs'</span>),      fs = ui.fs;      <span class="keyword">end</span>;
+1148 <span class="keyword">end</span>;
+1149 <span class="comment">%=======================================================================</span>
+1150 
+1151 <span class="comment">%=======================================================================</span>
+1152 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

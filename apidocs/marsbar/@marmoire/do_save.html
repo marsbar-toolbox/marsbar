@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of do_save</title>
+  <meta name="keywords" content="do_save">
+  <meta name="description" content="method  to save data for item">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; do_save.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>do_save
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method  to save data for item</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [res, o] = do_save(o, item, flags, filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method  to save data for item
+ FORMAT [res, o] = do_save(o, item, flags, filename)
+ 
+ o        - object
+ item     - item name
+ flags    - flags for save (see save_item_data.m for details)
+ filename - (maybe) filename for save
+ 
+ Returns
+ saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel
+ o        - possibly modified object 
+
+ The function is written like this so that, in the future, we can use
+ callbacks in this code to manipulate all the objects in the armoire
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct as variables in .mat file</li>
+<li><a href="../../marsbar/@mardo_2/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct into .mat file with variable name SPM</li>
+<li><a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>	get whole item structure, including parameters</li>
+<li><a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>	</li>
+<li><a href="../../marsbar/@marmoire/private/pr_isempty.html" class="code" title="function res = pr_isempty(I)">pr_isempty</a>	private function returns 1 if there is no data, or filename</li>
+<li><a href="../../marsbar/@marmoire/private/pr_needs_save.html" class="code" title="function res = pr_needs_save(I)">pr_needs_save</a>	private function returning 1 if item data needs save</li>
+<li><a href="set_item_param.html" class="code" title="function o = set_item_param(o, item, param, value)">set_item_param</a>	method to set item parameters</li>
+<li><a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>	set whole item structure, including parameters</li>
+<li><a href="../../marsbar/@marsy/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in y_struct as variables in .mat file</li>
+<li><a href="../../marsbar/mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>	wrapper for matlab uiputfile/getfile; to resolve version differences</li>
+<li><a href="../../marsbar/savestruct.html" class="code" title="function savestruct(varargin)">savestruct</a>	saves data in structure as variables in .mat file</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="save_item_data.html" class="code" title="function [saved_f, o] = save_item_data(o, item, flags, filename)">save_item_data</a>	save data for item to file</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [res, o] = do_save(o, item, flags, filename)</a>
+0002 <span class="comment">% method  to save data for item</span>
+0003 <span class="comment">% FORMAT [res, o] = do_save(o, item, flags, filename)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o        - object</span>
+0006 <span class="comment">% item     - item name</span>
+0007 <span class="comment">% flags    - flags for save (see save_item_data.m for details)</span>
+0008 <span class="comment">% filename - (maybe) filename for save</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Returns</span>
+0011 <span class="comment">% saved_f  - flag set to 1 if save done, 0 not done, -1 if cancel</span>
+0012 <span class="comment">% o        - possibly modified object</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% The function is written like this so that, in the future, we can use</span>
+0015 <span class="comment">% callbacks in this code to manipulate all the objects in the armoire</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $Id$</span>
+0018   
+0019 <span class="keyword">if</span> nargin &lt; 2
+0020   error(<span class="string">'Need item'</span>);
+0021 <span class="keyword">end</span>
+0022 <span class="keyword">if</span> nargin &lt; 3
+0023   flags = NaN;
+0024 <span class="keyword">end</span>
+0025 <span class="keyword">if</span> nargin &lt; 4
+0026   filename = NaN;
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="comment">% Get item</span>
+0030 item_struct = <a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>(o, item);
+0031 
+0032 <span class="comment">% process flags</span>
+0033 <span class="keyword">if</span> ~isstruct(flags), flags = []; <span class="keyword">end</span>
+0034 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>(filename), filename = item_struct.file_name; <span class="keyword">end</span>
+0035 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_is_nix.html" class="code" title="function res = pr_is_nix(v)">pr_is_nix</a>(filename), filename = item_struct.default_file_name; <span class="keyword">end</span>
+0036 
+0037 <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_needs_save.html" class="code" title="function res = pr_needs_save(I)">pr_needs_save</a>(item_struct) || <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'force'</span>) <span class="comment">% force flag</span>
+0038   <span class="comment">% prompt for filename if UI</span>
+0039   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'ui'</span>)
+0040     <span class="comment">% warn if empty, and warn_empty flag (we must be forcing to get here)</span>
+0041     <span class="keyword">if</span> <a href="../../marsbar/@marmoire/private/pr_isempty.html" class="code" title="function res = pr_isempty(I)">pr_isempty</a>(item_struct)
+0042       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'warn_empty'</span>)
+0043     msgbox(<span class="string">'Nothing to save'</span>, <span class="keyword">...</span>
+0044            [item_struct.title <span class="string">' is not set'</span>], <span class="string">'warn'</span>);
+0045       <span class="keyword">end</span>
+0046       res = 0;
+0047       <span class="keyword">return</span>
+0048     <span class="keyword">end</span>
+0049     <span class="comment">% Work out prompt</span>
+0050     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt'</span>)
+0051       prompt = flags.prompt;
+0052     <span class="keyword">else</span> 
+0053       prompt = item_struct.title;
+0054     <span class="keyword">end</span>
+0055     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt_prefix'</span>)
+0056       prompt = [flags.prompt_prefix prompt];
+0057     <span class="keyword">end</span>
+0058     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'prompt_suffix'</span>)
+0059       prompt = [prompt flags.prompt_suffix];
+0060     <span class="keyword">end</span>
+0061     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'ync'</span>)
+0062       save_yn = questdlg([<span class="string">'Save '</span> prompt <span class="string">'?'</span>],<span class="keyword">...</span>
+0063              <span class="string">'Save'</span>, <span class="string">'Yes'</span>, <span class="string">'No'</span>, <span class="string">'Cancel'</span>, <span class="string">'Yes'</span>);
+0064       <span class="keyword">if</span> strcmp(save_yn, <span class="string">'Cancel'</span>), res = -1; <span class="keyword">return</span>, <span class="keyword">end</span>      
+0065       <span class="keyword">if</span> strcmp(save_yn, <span class="string">'No'</span>)
+0066     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(flags, <span class="string">'no_no_save'</span>)
+0067       o  = <a href="set_item_param.html" class="code" title="function o = set_item_param(o, item, param, value)">set_item_param</a>(o, item, <span class="string">'has_changed'</span>, 0);
+0068     <span class="keyword">end</span>
+0069     res = 0; 
+0070     <span class="keyword">return</span>
+0071       <span class="keyword">end</span>
+0072     <span class="keyword">end</span>
+0073     pr = [<span class="string">'Filename to save '</span> prompt]; 
+0074     [f p] = <a href="../../marsbar/mars_uifile.html" class="code" title="function [fn,pn,fi] = mars_uifile(action, filter_spec, prompt, filename, varargin)">mars_uifile</a>(<span class="string">'put'</span>, item_struct.filter_spec, pr, filename);
+0075     <span class="keyword">if</span> all(f==0), res = -1; <span class="keyword">return</span>, <span class="keyword">end</span>
+0076     filename = fullfile(p, f);
+0077   <span class="keyword">end</span>
+0078   <a href="../../marsbar/@mardo/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>(item_struct.data, filename);
+0079   <span class="keyword">if</span> item_struct.verbose
+0080     fprintf(<span class="string">'%s saved to %s\n'</span>, item_struct.title, filename);
+0081   <span class="keyword">end</span>
+0082   item_struct.file_name = filename;
+0083   item_struct.has_changed = 0;
+0084   <span class="keyword">if</span> item_struct.leave_as_file
+0085     <span class="comment">% maintain only on file, as it has beed saved</span>
+0086     item_struct.data = [];
+0087   <span class="keyword">end</span>
+0088   o  = <a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>(o, item, item_struct);
+0089   res = 1;
+0090 <span class="keyword">else</span>
+0091   res = 0;
+0092 <span class="keyword">end</span>
+0093 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

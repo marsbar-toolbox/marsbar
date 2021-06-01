@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of region_size</title>
+  <meta name="keywords" content="region_size">
+  <meta name="description" content="method to get size of specified region data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; region_size.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>region_size
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get size of specified region data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [m,n] = region_size(o, r_no, dim) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get size of specified region data
+ FORMAT [m,n] = region_size(o, r_no, dim)
+
+ Input
+ o        - marsy object
+ r_no     - region number OR vector of region numbers 
+            OR 'all' ['all' is default] 
+ dim      - [optional] dimension size to return
+
+ Output
+ m        - as for matlab SIZE call
+ n        -
+
+ e.g 
+ % returns total number of timepoints (sz(1) and samples (sz(2) 
+ % in all regions
+ sz = region_size(o); 
+ % same thing
+ sz = region_size(o, 'all');
+ % number of samples in region 2
+ n = region_size(o, 2, 2);
+
+ $Id$ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>	get number of regions</li>
+<li><a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>	get/set method for y_struct field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="can_summarize.html" class="code" title="function tf = can_summarize(o)">can_summarize</a>	returns 1 if object contains enough information to be summarized</li>
+<li><a href="summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [m,n] = region_size(o, r_no, dim)</a>
+0002 <span class="comment">% method to get size of specified region data</span>
+0003 <span class="comment">% FORMAT [m,n] = region_size(o, r_no, dim)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% o        - marsy object</span>
+0007 <span class="comment">% r_no     - region number OR vector of region numbers</span>
+0008 <span class="comment">%            OR 'all' ['all' is default]</span>
+0009 <span class="comment">% dim      - [optional] dimension size to return</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Output</span>
+0012 <span class="comment">% m        - as for matlab SIZE call</span>
+0013 <span class="comment">% n        -</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% e.g</span>
+0016 <span class="comment">% % returns total number of timepoints (sz(1) and samples (sz(2)</span>
+0017 <span class="comment">% % in all regions</span>
+0018 <span class="comment">% sz = region_size(o);</span>
+0019 <span class="comment">% % same thing</span>
+0020 <span class="comment">% sz = region_size(o, 'all');</span>
+0021 <span class="comment">% % number of samples in region 2</span>
+0022 <span class="comment">% n = region_size(o, 2, 2);</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% $Id$</span>
+0025 
+0026 r = <a href="n_regions.html" class="code" title="function n = n_regions(o)">n_regions</a>(o);
+0027 <span class="keyword">if</span> nargin &lt; 2
+0028   r_no = <span class="string">'all'</span>;
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> ischar(r_no)
+0031   <span class="keyword">if</span> strcmp(lower(r_no), <span class="string">'all'</span>)
+0032     r_no = 1:r;
+0033   <span class="keyword">else</span>
+0034     error([<span class="string">'Surprise request of '</span> r_no]);
+0035   <span class="keyword">end</span>
+0036 <span class="keyword">else</span>
+0037   <span class="keyword">if</span> any(r_no &gt; r | r_no &lt; 1)
+0038     error(<span class="string">'Region number(s) out of range'</span>);
+0039   <span class="keyword">end</span>
+0040 <span class="keyword">end</span>
+0041 
+0042 st = <a href="y_struct.html" class="code" title="function res = y_struct(obj, Struct)">y_struct</a>(o);
+0043 r_f = <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'regions'</span>);
+0044 y_f = <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st, <span class="string">'Y'</span>);
+0045 
+0046 <span class="keyword">if</span> ~r_f &amp; ~y_f
+0047   error(<span class="string">'No information for region data size'</span>);
+0048 <span class="keyword">end</span>
+0049 
+0050 n = 0;
+0051 <span class="keyword">for</span> r = r_no
+0052   r_st = [];
+0053   <span class="keyword">if</span> r_f, r_st = st.regions{r}; <span class="keyword">end</span>
+0054   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(r_st, <span class="string">'Y'</span>)
+0055     [m n_r] = size(r_st.Y);
+0056     n = n + n_r;
+0057   <span class="keyword">elseif</span> y_f    
+0058     m = size(st.Y, 1);
+0059     n = n + 1;
+0060   <span class="keyword">else</span>
+0061     error(<span class="string">'No data to get size for region'</span>);
+0062   <span class="keyword">end</span>
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="keyword">if</span> nargin &lt; 3
+0066   <span class="keyword">if</span> nargout &lt; 2
+0067     m = [m n];
+0068   <span class="keyword">end</span>
+0069 <span class="keyword">else</span>  
+0070   <span class="keyword">if</span> dim == 2
+0071     m = n;
+0072   <span class="keyword">elseif</span> dim &gt; 2
+0073     m = ((m+n) &gt; 0);
+0074   <span class="keyword">end</span>
+0075 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

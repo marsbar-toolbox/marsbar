@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_specs</title>
+  <meta name="keywords" content="event_specs">
+  <meta name="description" content="method to return event specifications for all event in model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; event_specs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_specs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to return event specifications for all event in model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [e_specs, e_names] = event_specs(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to return event specifications for all event in model
+ FORMAT [e_specs e_names] = event_specs(D)
+
+ D          - design object
+ 
+ Returns
+ e_specs    - event specification 2 by N matrix where row 1 is the
+              session number of the event, row 2 is the event number in
+              the session 
+ 
+ e_names    - names of each event 
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/event_types_named.html" class="code" title="function et = event_types_named(D)">event_types_named</a>	method returns event types structures for events with same names</li>
+<li><a href="../../marsbar/@mardo/ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>	method to edit invidual event types in design</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [e_specs, e_names] = event_specs(D)</a>
+0002 <span class="comment">% method to return event specifications for all event in model</span>
+0003 <span class="comment">% FORMAT [e_specs e_names] = event_specs(D)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - design object</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Returns</span>
+0008 <span class="comment">% e_specs    - event specification 2 by N matrix where row 1 is the</span>
+0009 <span class="comment">%              session number of the event, row 2 is the event number in</span>
+0010 <span class="comment">%              the session</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% e_names    - names of each event</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015   
+0016 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0017   error(<span class="string">'Needs FMRI design'</span>);
+0018 <span class="keyword">end</span>
+0019 
+0020 SPM   = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0021 Sess  = SPM.Sess;
+0022 nsess = length(Sess);
+0023 
+0024 e_specs = [];
+0025 e_names = {};
+0026 e_ctr = 1;
+0027 <span class="keyword">for</span> ss = 1:nsess
+0028   nevs = length(Sess{ss}.name);
+0029   e_specs = [e_specs [ones(1, nevs) * ss; 1:nevs]];
+0030   e_names = [e_names Sess{ss}.name];
+0031 <span class="keyword">end</span>
+0032   
+0033   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

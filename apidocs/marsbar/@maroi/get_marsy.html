@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get_marsy</title>
+  <meta name="keywords" content="get_marsy">
+  <meta name="description" content="gets data in ROIs from images">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; get_marsy.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>get_marsy
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>gets data in ROIs from images</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function marsY = get_marsy(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> gets data in ROIs from images
+ FORMAT marsY = get_marsy(roi1 [, roi2 [, roi3...]], VY, sumfunc, flags)
+
+ roi1, roi2... - ROI objects
+                   This rather arcane call is needed because matlab
+                   does not allow different object types in an array
+ VY            - array of SPM vol structs, or image names, or SPM design
+ sumfunc       - one of 'mean', 'median', 'eigen1', 'wtmean'  to summarize
+                   data in the ROIs
+ flags         - none or more of
+                   'v' - selects verbose output to matlab console
+
+ Returns
+ marsY      - MarsBaR data object
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="../../marsbar/@mardo/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/summary.html" class="code" title="function strs = summary(D)">summary</a>	method returns cell array of strings describing design</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>	name - returns / sets name value for object</li>
+<li><a href="getdata.html" class="code" title="function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)">getdata</a>	getdata method - fetches time series data for ROI from images</li>
+<li><a href="label.html" class="code" title="function h = label(obj, val)">label</a>	label - returns / sets label value for object</li>
+<li><a href="source.html" class="code" title="function h = source(obj, val)">source</a>	source - returns / sets source value for object</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>	method to get or set sumfunc</li>
+<li><a href="../../marsbar/@marsy/summary.html" class="code" title="function strs = summary(M)">summary</a>	method returns cell array of strings describing marsy object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/examples/batch/run_tutorial.html" class="code" title="">run_tutorial</a>	MarsBaR batch script to show off MarsBaR batching</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function marsY = get_marsy(varargin)</a>
+0002 <span class="comment">% gets data in ROIs from images</span>
+0003 <span class="comment">% FORMAT marsY = get_marsy(roi1 [, roi2 [, roi3...]], VY, sumfunc, flags)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% roi1, roi2... - ROI objects</span>
+0006 <span class="comment">%                   This rather arcane call is needed because matlab</span>
+0007 <span class="comment">%                   does not allow different object types in an array</span>
+0008 <span class="comment">% VY            - array of SPM vol structs, or image names, or SPM design</span>
+0009 <span class="comment">% sumfunc       - one of 'mean', 'median', 'eigen1', 'wtmean'  to summarize</span>
+0010 <span class="comment">%                   data in the ROIs</span>
+0011 <span class="comment">% flags         - none or more of</span>
+0012 <span class="comment">%                   'v' - selects verbose output to matlab console</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% Returns</span>
+0015 <span class="comment">% marsY      - MarsBaR data object</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $Id$</span>
+0018 
+0019 <span class="keyword">for</span> r = 1:nargin
+0020   <span class="keyword">if</span> ~isa(varargin{r}, <span class="string">'maroi'</span>)
+0021     <span class="keyword">break</span>
+0022   <span class="keyword">end</span>
+0023 <span class="keyword">end</span>
+0024 rlen = r - 1;
+0025 roi_array = varargin(1:rlen);
+0026 
+0027 narg_left = nargin - rlen;
+0028 <span class="keyword">if</span> narg_left &lt; 1
+0029   VY = [];
+0030 <span class="keyword">else</span>
+0031   VY = varargin{r};
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(VY), error(<span class="string">'Need images to extract from'</span>); <span class="keyword">end</span>
+0034 <span class="keyword">if</span> narg_left &lt; 2
+0035   <a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a> = <span class="string">''</span>;
+0036 <span class="keyword">else</span>
+0037   <a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a> = varargin{r+1};
+0038 <span class="keyword">end</span>
+0039 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>), error(<span class="string">'Need summary function'</span>); <span class="keyword">end</span>
+0040 <span class="keyword">if</span> narg_left &lt; 3
+0041   flags = <span class="string">''</span>;
+0042 <span class="keyword">else</span>
+0043   flags = varargin{r+2};
+0044 <span class="keyword">end</span>
+0045 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags), flags = <span class="string">' '</span>; <span class="keyword">end</span>
+0046 vf = any(flags == <span class="string">'v'</span>);
+0047 
+0048 <span class="comment">% images can come from a design</span>
+0049 des_summary = <span class="string">'None'</span>;
+0050 <span class="keyword">if</span> isa(VY, <span class="string">'mardo'</span>)
+0051   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(VY)
+0052     error(<span class="string">'This design does not contain images'</span>);
+0053   <span class="keyword">end</span>
+0054   D  = VY;
+0055   VY = <a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(VY);
+0056 <span class="keyword">else</span>
+0057   D  = [];
+0058 <span class="keyword">end</span>
+0059 <span class="comment">% or be filenames</span>
+0060 <span class="keyword">if</span> ischar(VY)
+0061   <span class="keyword">if</span> vf, fprintf(<span class="string">'%-40s: '</span>,<span class="string">'Mapping files'</span>);  <span class="keyword">end</span>
+0062   VY = spm_vol(VY);
+0063   <span class="keyword">if</span> vf, fprintf(<span class="string">'%30s\n'</span>,<span class="string">'...done'</span>); <span class="keyword">end</span>
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="keyword">if</span> vf, fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Fetching data'</span>,<span class="string">' '</span>); <span class="keyword">end</span>
+0067 rlen = length(roi_array);
+0068 rno = 0;
+0069 <span class="keyword">for</span> r = 1:rlen
+0070   <span class="keyword">if</span> vf
+0071     fprintf(<span class="string">'%s%30s'</span>,<span class="keyword">...</span>
+0072         repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="keyword">...</span>
+0073         sprintf(<span class="string">'%4d/%-4d'</span>,r, rlen));
+0074   <span class="keyword">end</span>
+0075   o = roi_array{r};
+0076   [y vals vXYZ mat]  = <a href="getdata.html" class="code" title="function [Y, multv, vXYZ, mat] = getdata(roiobj, data_imgs, flags)">getdata</a>(o, VY);
+0077   [ny nvals] = size(y);
+0078   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(y)
+0079     <span class="keyword">if</span> vf, fprintf(<span class="string">'\n'</span>); <span class="keyword">end</span>
+0080     warning(sprintf(<span class="string">'No valid data for roi %d (%s)'</span>, r, <a href="label.html" class="code" title="function h = label(obj, val)">label</a>(o)));
+0081     <span class="keyword">if</span> vf &amp; (r &lt; rlen), fprintf(<span class="string">'%-40s: %30s'</span>,<span class="string">'Fetching data'</span>,<span class="string">' '</span>); <span class="keyword">end</span>
+0082   <span class="keyword">else</span>
+0083     rno = rno + 1;
+0084     <span class="comment">% get data for regions</span>
+0085     <span class="keyword">if</span> all(vals == 1)
+0086       vals = [];
+0087     <span class="keyword">end</span>
+0088     r_data{rno} = y;
+0089     r_info{rno} = struct(<span class="keyword">...</span>
+0090         <span class="string">'name'</span>, <a href="label.html" class="code" title="function h = label(obj, val)">label</a>(o),<span class="keyword">...</span>
+0091         <span class="string">'descrip'</span>, <a href="descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>(o),<span class="keyword">...</span>
+0092         <span class="string">'weights'</span>, vals,<span class="keyword">...</span>
+0093         <span class="string">'info'</span>, struct(<span class="string">'file'</span>, <a href="source.html" class="code" title="function h = source(obj, val)">source</a>(o)),<span class="keyword">...</span>
+0094         <span class="string">'vXYZ'</span>, vXYZ,<span class="keyword">...</span>
+0095         <span class="string">'mat'</span>, mat);
+0096     <span class="keyword">if</span> rno &lt; 2,  lbl = <a href="label.html" class="code" title="function h = label(obj, val)">label</a>(o); <span class="keyword">else</span> lbl = [lbl <span class="string">' &amp; '</span> <a href="label.html" class="code" title="function h = label(obj, val)">label</a>(o)]; <span class="keyword">end</span>
+0097   <span class="keyword">end</span>
+0098 <span class="keyword">end</span>
+0099 <span class="keyword">if</span> vf, fprintf(<span class="string">'%s%30s\n'</span>,repmat(sprintf(<span class="string">'\b'</span>),1,30),<span class="string">'...done'</span>); <span class="keyword">end</span>
+0100 
+0101 <span class="keyword">if</span> rno == 0
+0102   marsY = [];
+0103   <span class="keyword">return</span>;
+0104 <span class="keyword">end</span>
+0105 
+0106 s_info = struct(<span class="keyword">...</span>
+0107     <span class="string">'sumfunc'</span>, <a href="../../marsbar/@marsy/sumfunc.html" class="code" title="function o = sumfunc(o, sumfunc)">sumfunc</a>, <span class="keyword">...</span>
+0108     <span class="string">'descrip'</span>, [<span class="string">'Data from '</span> lbl],<span class="keyword">...</span>
+0109     <span class="string">'info'</span>, struct(<span class="string">'VY'</span>, VY));
+0110 
+0111 <span class="comment">% Fill any available information from design if passed</span>
+0112 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(D)
+0113   s_info.info.des_summary = <a href="../../marsbar/@mardo/summary.html" class="code" title="function strs = summary(D)">summary</a>(D);
+0114   s_info.info.TR          = <a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>(D);
+0115   s_info.block_rows       = <a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>(D);
+0116 <span class="keyword">end</span>
+0117 
+0118 marsY = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(r_data, r_info, s_info);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

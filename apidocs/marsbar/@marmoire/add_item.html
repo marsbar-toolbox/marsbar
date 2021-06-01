@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of add_item</title>
+  <meta name="keywords" content="add_item">
+  <meta name="description" content="add item to armoire">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; add_item.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>add_item
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>add item to armoire</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = add_item(o, item_name, item_contents) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> add item to armoire
+ FORMAT o = add_item(o, item, I)
+ 
+ o              - object
+ item_name     - item name
+ item_contents = item ... contents
+
+ $Id $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="default_item.html" class="code" title="function I = default_item(o)">default_item</a>	returns default item</li>
+<li><a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>	set whole item structure, including parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="add_if_absent.html" class="code" title="function o = add_if_absent(o, item, data)">add_if_absent</a>	Adds item only if not already present</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = add_item(o, item_name, item_contents)</a>
+0002 <span class="comment">% add item to armoire</span>
+0003 <span class="comment">% FORMAT o = add_item(o, item, I)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o              - object</span>
+0006 <span class="comment">% item_name     - item name</span>
+0007 <span class="comment">% item_contents = item ... contents</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $Id $</span>
+0010   
+0011 <span class="keyword">if</span> nargin &lt; 2
+0012   error(<span class="string">'Need item name to add'</span>);
+0013 <span class="keyword">end</span>
+0014 <span class="keyword">if</span> nargin &lt; 3
+0015   item_contents = [];
+0016 <span class="keyword">end</span>
+0017 I = <a href="default_item.html" class="code" title="function I = default_item(o)">default_item</a>(o);
+0018 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(item_contents)
+0019   item_contents = I;
+0020 <span class="keyword">else</span>
+0021   def_fns = fieldnames(I);
+0022   new_fns = def_fns(~ismember(def_fns, fieldnames(item_contents)));
+0023   <span class="keyword">for</span> fn = new_fns'
+0024     item_contents = setfield(item_contents, fn{1}, getfield(I, fn{1}));
+0025   <span class="keyword">end</span>
+0026 <span class="keyword">end</span>
+0027 o = <a href="set_item_struct.html" class="code" title="function o = set_item_struct(o, item, item_struct)">set_item_struct</a>(o, item_name, item_contents);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

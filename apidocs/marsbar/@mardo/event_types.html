@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_types</title>
+  <meta name="keywords" content="event_types">
+  <meta name="description" content="method to get / set event types for design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; event_types.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_types
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get / set event types for design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function res = event_types(D, et) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get / set event types for design
+ FORMAT et = event_types(D)
+ to return event types for design
+
+ FORMAT D  = event_types(D, et)
+ to set event types for design
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/private/pr_refresh_et.html" class="code" title="function F = pr_refresh_et(D, ic, F, hList, hEdit)">pr_refresh_et</a>	Refreshes data and display of event type window after edit</li>
+<li><a href="ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>	method to edit invidual event types in design</li>
+<li><a href="ui_et_edit_cb.html" class="code" title="function varargout = ui_et_edit_cb(D, action, varargin)">ui_et_edit_cb</a>	method to handle callbacks from ui_et_edit</li>
+<li><a href="ui_event_types.html" class="code" title="function [D, ic, status] = ui_event_types(D)">ui_event_types</a>	ui method for selection / editing of event types</li>
+<li><a href="ui_event_types_cb.html" class="code" title="function varargout = ui_event_types_cb(D, action, varargin)">ui_event_types_cb</a>	method to handle callbacks from ui_event_types</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function res = event_types(D, et)</a>
+0002 <span class="comment">% method to get / set event types for design</span>
+0003 <span class="comment">% FORMAT et = event_types(D)</span>
+0004 <span class="comment">% to return event types for design</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% FORMAT D  = event_types(D, et)</span>
+0007 <span class="comment">% to set event types for design</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $Id$</span>
+0010 
+0011 SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0012 <span class="keyword">if</span> nargin &lt; 2
+0013   <span class="comment">% get</span>
+0014   res = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, SPM, <span class="string">'event_types'</span>);
+0015 <span class="keyword">else</span>
+0016   <span class="comment">% set</span>
+0017   SPM.event_types = et;
+0018   res = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, SPM);
+0019 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of spm_write_vol</title>
+  <meta name="keywords" content="spm_write_vol">
+  <meta name="description" content="Write an image volume to disk, setting scales and offsets as appropriate">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm99</a> &gt; spm_write_vol.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>spm_write_vol
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Write an image volume to disk, setting scales and offsets as appropriate</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function V = spm_write_vol(V,Y) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Write an image volume to disk, setting scales and offsets as appropriate
+ FORMAT V = spm_write_vol(V,Y)
+ V (input)  - a structure containing image volume information (see spm_vol)
+ Y          - a one, two or three dimensional matrix containing the image voxels
+ V (output) - data structure after modification for writing.
+_______________________________________________________________________
+ @(#)spm_write_vol.m    2.9 John Ashburner 03/02/26
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="spm_close_vol.html" class="code" title="function Vo = spm_close_vol(Vi)">spm_close_vol</a>	Close image volume - for SPM2 / SPM99 compatibility</li>
+<li><a href="spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>	Wrapper for spm_create_image, for compatibility with SPM2</li>
+<li><a href="spm_write_plane.html" class="code" title="function V = spm_write_plane(V,A,p)">spm_write_plane</a>	Write a transverse plane of image data.</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi_matrix/do_write_image.html" class="code" title="function v = do_write_image(o, fname)">do_write_image</a>	method saves matrix as image and returns spm_vol</li>
+<li><a href="../../marsbar/mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function V = spm_write_vol(V,Y)</a>
+0002 <span class="comment">% Write an image volume to disk, setting scales and offsets as appropriate</span>
+0003 <span class="comment">% FORMAT V = spm_write_vol(V,Y)</span>
+0004 <span class="comment">% V (input)  - a structure containing image volume information (see spm_vol)</span>
+0005 <span class="comment">% Y          - a one, two or three dimensional matrix containing the image voxels</span>
+0006 <span class="comment">% V (output) - data structure after modification for writing.</span>
+0007 <span class="comment">%_______________________________________________________________________</span>
+0008 <span class="comment">% @(#)spm_write_vol.m    2.9 John Ashburner 03/02/26</span>
+0009 
+0010 <span class="keyword">if</span> ndims(Y)&gt;3, error(<span class="string">'Can only handle a maximum of 3 dimensions.'</span>), <span class="keyword">end</span>
+0011 
+0012 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(V,<span class="string">'pinfo'</span>), V.pinfo = [1,0,0]'; <span class="keyword">end</span>
+0013 
+0014 dim = [size(Y) 1 1 1];
+0015 <span class="keyword">if</span> ~all(dim(1:3) == V.dim(1:3)) | (size(V.pinfo,2)~=1 &amp; size(V.pinfo,2)~=dim(3)),
+0016     error(<span class="string">'Incompatible dimensions.'</span>);
+0017 <span class="keyword">end</span>
+0018 
+0019 
+0020 <span class="comment">% Set scalefactors and offsets</span>
+0021 <span class="comment">%-----------------------------------------------------------------------</span>
+0022 dt = V.dim(4); <span class="keyword">if</span> dt&gt;256, dt = dt/256; <span class="keyword">end</span>;
+0023 <span class="keyword">if</span> any(dt == [128+2 128+4 128+8]),
+0024     <span class="comment">% Convert to a form that Analyze will support</span>
+0025     dt = dt - 128;
+0026 <span class="keyword">end</span>;
+0027 s            = find(dt == [2 4 8 128+2 128+4 128+8]);
+0028 dmnmx        = [0 -2^15 -2^31 -2^7 0 0 ; 2^8-1 2^15-1 2^31-1 2^7-1 2^16 2^32];
+0029 dmnmx        = dmnmx(:,s);
+0030 V.pinfo(1,:) = 1;
+0031 V.pinfo(2,:) = 0;
+0032 mxs          = zeros(dim(3),1)+NaN;
+0033 mns          = zeros(dim(3),1)+NaN;
+0034 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(s),
+0035     <span class="keyword">for</span> p=1:dim(3),
+0036         tmp    = double(Y(:,:,p));
+0037         tmp    = tmp(isfinite(tmp));
+0038         <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(tmp),
+0039             mxs(p) = max(tmp);
+0040             mns(p) = min(tmp);
+0041         <span class="keyword">end</span>;
+0042     <span class="keyword">end</span>;
+0043 
+0044     <span class="keyword">if</span> size(V.pinfo,2) ~= 1,
+0045         <span class="keyword">for</span> p=1:dim(3),
+0046             mx = mxs(p);
+0047             mn = mns(p);
+0048             <span class="keyword">if</span> ~isfinite(mx), mx = 0; <span class="keyword">end</span>;
+0049             <span class="keyword">if</span> ~isfinite(mn), mn = 0; <span class="keyword">end</span>;
+0050             <span class="keyword">if</span> mx~=mn,
+0051                 V.pinfo(1,p) = (mx-mn)/(dmnmx(2)-dmnmx(1));
+0052                 V.pinfo(2,p) = <span class="keyword">...</span>
+0053                     (dmnmx(2)*mn-dmnmx(1)*mx)/(dmnmx(2)-dmnmx(1));
+0054             <span class="keyword">else</span>,
+0055                 V.pinfo(1,p) = 0;
+0056                 V.pinfo(2,p) = mx;
+0057             <span class="keyword">end</span>;
+0058         <span class="keyword">end</span>;
+0059     <span class="keyword">else</span>,
+0060         mx = max(mxs(isfinite(mxs)));
+0061         mn = min(mns(isfinite(mns)));
+0062         <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(mx), mx = 0; <span class="keyword">end</span>;
+0063         <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(mn), mn = 0; <span class="keyword">end</span>;
+0064         <span class="keyword">if</span> mx~=mn,
+0065             V.pinfo(1,1) = (mx-mn)/(dmnmx(2)-dmnmx(1));
+0066             V.pinfo(2,1) = (dmnmx(2)*mn-dmnmx(1)*mx)/(dmnmx(2)-dmnmx(1));
+0067         <span class="keyword">else</span>,
+0068             V.pinfo(1,1) = 0;
+0069             V.pinfo(2,1) = mx;
+0070         <span class="keyword">end</span>;
+0071     <span class="keyword">end</span>;
+0072 <span class="keyword">end</span>;
+0073 
+0074 <span class="comment">%-Create and write image</span>
+0075 <span class="comment">%-----------------------------------------------------------------------</span>
+0076 V = <a href="spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>(V);
+0077 <span class="keyword">for</span> p=1:V.dim(3),
+0078     V = <a href="spm_write_plane.html" class="code" title="function V = spm_write_plane(V,A,p)">spm_write_plane</a>(V,Y(:,:,p),p);
+0079 <span class="keyword">end</span>;
+0080 V = <a href="spm_close_vol.html" class="code" title="function Vo = spm_close_vol(Vi)">spm_close_vol</a>(V);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

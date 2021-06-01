@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of display</title>
+  <meta name="keywords" content="display">
+  <meta name="description" content="display method for marsy objects">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marsy</a> &gt; display.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marsy&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>display
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>display method for marsy objects</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function display(obj) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> display method for marsy objects
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/summary.html" class="code" title="function strs = summary(D)">summary</a>	method returns cell array of strings describing design</li>
+<li><a href="summary.html" class="code" title="function strs = summary(M)">summary</a>	method returns cell array of strings describing marsy object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function display(obj)</a>
+0002 <span class="comment">% display method for marsy objects</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 src = <span class="string">'[MarsBaR data object]'</span>;
+0007 <span class="keyword">if</span> length(obj) &gt; 1 <span class="comment">% array of objects</span>
+0008   sz = size(obj);
+0009   src = sprintf(<span class="string">'%d by %d array of %s'</span>, sz(1), sz(2), src);
+0010   <span class="keyword">if</span> isequal(get(0,<span class="string">'FormatSpacing'</span>),<span class="string">'compact'</span>)
+0011     disp([inputname(1) <span class="string">' ='</span>]);
+0012     disp(src);
+0013   <span class="keyword">else</span>
+0014     disp(<span class="string">' '</span>)
+0015     disp([inputname(1) <span class="string">' ='</span>]);
+0016     disp(<span class="string">' '</span>);
+0017     disp(src);
+0018     disp(<span class="string">' '</span>);
+0019   <span class="keyword">end</span>    
+0020 <span class="keyword">else</span> <span class="comment">% single object</span>
+0021   X = char(<a href="summary.html" class="code" title="function strs = summary(M)">summary</a>(obj));
+0022   <span class="keyword">if</span> isequal(get(0,<span class="string">'FormatSpacing'</span>),<span class="string">'compact'</span>)
+0023     disp([inputname(1) <span class="string">' ='</span>]);
+0024     disp(src);
+0025     disp(X)
+0026   <span class="keyword">else</span>
+0027     disp(<span class="string">' '</span>)
+0028     disp([inputname(1) <span class="string">' ='</span>]);
+0029     disp(<span class="string">' '</span>);
+0030     disp(src);
+0031     disp(<span class="string">' '</span>);
+0032     disp(X)
+0033     disp(<span class="string">' '</span>);
+0034   <span class="keyword">end</span>    
+0035 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

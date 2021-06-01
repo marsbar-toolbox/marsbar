@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_struct</title>
+  <meta name="keywords" content="mars_struct">
+  <meta name="description" content="multifunction function for manipulating structures">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_struct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_struct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>multifunction function for manipulating structures</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = mars_struct(action, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> multifunction function for manipulating structures
+
+ To help the exposition a bit: 
+ 'fill' in a name, means that values empty or missing 
+ in one structure are fetched from another
+ 
+ 'merge' means simply that missing fields are added, with
+ values, from a second structure (but not filled if empty)
+   
+ Each function needs to deal with the case of empty arguments
+
+ FORMAT c = mars_struct('fillafromb', a, b, fieldns, flags)
+ fills structure fields empty or missing in a from those present in b
+ a, b are structures
+ fieldns (optional) is cell array of field names to fill from in b
+ c is returned structure
+ Is recursive, will fill struct fields from struct fields
+ flags may contain 'f', which Force fills a from b (all non empty
+ fields in b overwrite those in a)
+ flags may also contain 'r', which Restricts fields to write from b, to
+ those that are already present in a
+ 
+ FORMAT [c, d] = mars_struct('split', a, b)
+ split structure a into two, according to fields in b
+ so that c becomes a structure which contains the fields
+ in a, that are also present in b, and d contains the fields
+ in a that are not present in b.  b can be a structure
+ or a cell array of fieldnames
+
+ FORMAT [d] = mars_struct('strip', a, b)
+ strips all fields present in b from those in a, 
+ returning denuded structure as d. b can be a structure
+ or a cell array of fieldnames.  'strip' is just 'split'
+ but returning only the second argument
+
+ FORMAT c = mars_struct('merge', a, b)
+ merges structure a and b (fields present in b added to a)
+
+ FORMAT [c,d] = mars_struct('ffillsplit', a, b)
+ force fill, followed by split
+ All fields from a, that are also present in b, and not empty in b, 
+ are replaced with the values in b; the result is returned as c  
+ Any fields present in b, but not present in a, are returned in d
+ So, let's say you have a default structure D, and you want to fill this
+ in with any interesting data in a passed structure P, you could use:
+ [good_struct not_recognized]= mars_struct('ffillsplit', D, P);
+  
+ FORMAT c = mars_struct('ffillmerge', a, b)
+ force fill followed by merge
+ performs 'ffillsplit' on a and b, then merges a and b
+ All fields present in a or b are returned in c, but 
+ any fields present in both, now have the value from b
+
+ FORMAT [c d] = mars_struct('splitmerge', a, b)
+ performs 'split' on a and b, creating c and d
+ then merges c with b.
+ d contains fields in a that were not present in b
+ c contains fields present in both, or just in b
+
+ FORMAT z = mars_struct('isthere', a, b [, c [, d ...])
+ returns 1 if field named in b is present in a
+ and field value is not empty.
+ The call is recursive if more than two arguments are passed
+ Thus with structure s = struct('one', struct('two', 3))
+ mars_struct('isthere', s, 'one', 'two') returns 1
+   
+ FORMAT z = mars_struct('getifthere', a, b [, c [, d ...])
+ returns value of field named in b from a or [] if absent
+ Call is recursive, like 'isthere' above.
+
+ FORMAT strs = mars_struct('celldisp', a)
+ returns output like disp(a) as a cell array
+ Useful for printing text description of structure
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="../marsbar/@mardo/design_matrix.html" class="code" title="function X = design_matrix(D)">design_matrix</a>	method returns design matrix from design</li>
+<li><a href="../marsbar/@mardo/design_structure.html" class="code" title="function r = design_structure(o, xX)">design_structure</a>	method to get or set SPM design structure</li>
+<li><a href="../marsbar/@mardo/error_df.html" class="code" title="function e = error_df(D)">error_df</a>	method returns error df from design</li>
+<li><a href="../marsbar/@mardo/event_types.html" class="code" title="function res = event_types(D, et)">event_types</a>	method to get / set event types for design</li>
+<li><a href="../marsbar/@mardo/get_contrasts.html" class="code" title="function xCon = get_contrasts(D)">get_contrasts</a>	method to get contrasts from design object</li>
+<li><a href="../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../marsbar/@mardo/masking_struct.html" class="code" title="function r = masking_struct(o, xM)">masking_struct</a>	method to get or set SPM masking structure</li>
+<li><a href="../marsbar/@mardo/prefix_images.html" class="code" title="function D = prefix_images(D, action, prefix, flags)">prefix_images</a>	method for adding or removing prefix from file names in design</li>
+<li><a href="../marsbar/@mardo/swd.html" class="code" title="function res = swd(D, dir)">swd</a>	method to get/set design directory</li>
+<li><a href="../marsbar/@mardo/ui_et_edit.html" class="code" title="function [D, ic] = ui_et_edit(D, ic)">ui_et_edit</a>	method to edit invidual event types in design</li>
+<li><a href="../marsbar/@mardo/ui_ft_design_data.html" class="code" title="function ui_ft_design_data(D, mY, e_s, opts)">ui_ft_design_data</a>	method plots FT of design and data to graphics window</li>
+<li><a href="../marsbar/@mardo_2/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../marsbar/@mardo_2/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="../marsbar/@mardo_2/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_2/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_2/fwhm.html" class="code" title="function f = fwhm(o)">fwhm</a>	method returns FWHM, or empty if not available</li>
+<li><a href="../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="../marsbar/@mardo_2/mardo_99.html" class="code" title="function o = mardo_99(o)">mardo_99</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../marsbar/@mardo_2/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../marsbar/@mardo_2/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../marsbar/@mardo_5/autocorr.html" class="code" title="function D = autocorr(D, autocorr_type, varargin)">autocorr</a>	method to set autocorrelation types for design</li>
+<li><a href="../marsbar/@mardo_5/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_5/estimate.html" class="code" title="function [marsD] = estimate(marsD, marsY, params)">estimate</a>	estimate method - estimates GLM for SPM2 model</li>
+<li><a href="../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../marsbar/@mardo_99/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="../marsbar/@mardo_99/convert_vols.html" class="code" title="function o = convert_vols(o, ver)">convert_vols</a>	method that converts vol structs in design and converts to format 'ver'</li>
+<li><a href="../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../marsbar/@mardo_99/fwhm.html" class="code" title="function f = fwhm(o)">fwhm</a>	method returns FWHM, or empty if not available</li>
+<li><a href="../marsbar/@mardo_99/mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../marsbar/@mardo_99/mardo_99.html" class="code" title="function [o, others] = mardo_99(params, others, varargin)">mardo_99</a>	class constructor for SPM99 MarsBaR design object</li>
+<li><a href="../marsbar/@mardo_99/mars_spm_graph.html" class="code" title="function [r_st,marsD,changef] = mars_spm_graph(marsD,rno,Ic)">mars_spm_graph</a>	Graphical display of adjusted data</li>
+<li><a href="../marsbar/@mardo_99/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="../marsbar/@mardo_99/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../marsbar/@mardo_99/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../marsbar/@marmoire/marmoire.html" class="code" title="function [o, others] = marmoire(params, varargin)">marmoire</a>	marmoire - class constructor for marmoire container type</li>
+<li><a href="../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../marsbar/@maroi_box/maroi_box.html" class="code" title="function o = maroi_box(params)">maroi_box</a>	maroi_box - class constructor</li>
+<li><a href="../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="../marsbar/@maroi_shape/maroi_shape.html" class="code" title="function [o, others] = maroi_shape(params)">maroi_shape</a>	maroi_shape - (virtual) shape roi class constructor</li>
+<li><a href="../marsbar/@maroi_sphere/maroi_sphere.html" class="code" title="function [o, others] = maroi_sphere(params)">maroi_sphere</a>	maroi_sphere - class constructor</li>
+<li><a href="../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="../marsbar/@marsy/as_summary_only.html" class="code" title="function out_o = as_summary_only(o)">as_summary_only</a>	returns object with region data removed</li>
+<li><a href="../marsbar/@marsy/join.html" class="code" title="function o = join(varargin)">join</a>	joins marsy objects into one object</li>
+<li><a href="../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../marsbar/@marsy/region.html" class="code" title="function [rs,r_nos] = region(o, r_nos, new_data, fieldname)">region</a>	gets / sets data for region or regions</li>
+<li><a href="../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="../marsbar/@marsy/split.html" class="code" title="function o_arr = split(o)">split</a>	method splits regions in object into separate objects</li>
+<li><a href="../marsbar/@marsy/ui_plot.html" class="code" title="function r = ui_plot(o, plot_spec, plot_params)">ui_plot</a>	method plots data in various formats</li>
+<li><a href="mars_arm_call.html" class="code" title="function [o,errf,msg] = mars_arm_call(action, o, item, old_o)">mars_arm_call</a>	services callbacks from marmoire object set functions</li>
+<li><a href="mars_get_option.html" class="code" title="function optval = mars_get_option(varargin)">mars_get_option</a>	Get option subfield as named by ``varargin``.</li>
+<li><a href="mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = mars_struct(action, varargin)</a>
+0002 <span class="comment">% multifunction function for manipulating structures</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% To help the exposition a bit:</span>
+0005 <span class="comment">% 'fill' in a name, means that values empty or missing</span>
+0006 <span class="comment">% in one structure are fetched from another</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% 'merge' means simply that missing fields are added, with</span>
+0009 <span class="comment">% values, from a second structure (but not filled if empty)</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Each function needs to deal with the case of empty arguments</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% FORMAT c = mars_struct('fillafromb', a, b, fieldns, flags)</span>
+0014 <span class="comment">% fills structure fields empty or missing in a from those present in b</span>
+0015 <span class="comment">% a, b are structures</span>
+0016 <span class="comment">% fieldns (optional) is cell array of field names to fill from in b</span>
+0017 <span class="comment">% c is returned structure</span>
+0018 <span class="comment">% Is recursive, will fill struct fields from struct fields</span>
+0019 <span class="comment">% flags may contain 'f', which Force fills a from b (all non empty</span>
+0020 <span class="comment">% fields in b overwrite those in a)</span>
+0021 <span class="comment">% flags may also contain 'r', which Restricts fields to write from b, to</span>
+0022 <span class="comment">% those that are already present in a</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% FORMAT [c, d] = mars_struct('split', a, b)</span>
+0025 <span class="comment">% split structure a into two, according to fields in b</span>
+0026 <span class="comment">% so that c becomes a structure which contains the fields</span>
+0027 <span class="comment">% in a, that are also present in b, and d contains the fields</span>
+0028 <span class="comment">% in a that are not present in b.  b can be a structure</span>
+0029 <span class="comment">% or a cell array of fieldnames</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% FORMAT [d] = mars_struct('strip', a, b)</span>
+0032 <span class="comment">% strips all fields present in b from those in a,</span>
+0033 <span class="comment">% returning denuded structure as d. b can be a structure</span>
+0034 <span class="comment">% or a cell array of fieldnames.  'strip' is just 'split'</span>
+0035 <span class="comment">% but returning only the second argument</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% FORMAT c = mars_struct('merge', a, b)</span>
+0038 <span class="comment">% merges structure a and b (fields present in b added to a)</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">% FORMAT [c,d] = mars_struct('ffillsplit', a, b)</span>
+0041 <span class="comment">% force fill, followed by split</span>
+0042 <span class="comment">% All fields from a, that are also present in b, and not empty in b,</span>
+0043 <span class="comment">% are replaced with the values in b; the result is returned as c</span>
+0044 <span class="comment">% Any fields present in b, but not present in a, are returned in d</span>
+0045 <span class="comment">% So, let's say you have a default structure D, and you want to fill this</span>
+0046 <span class="comment">% in with any interesting data in a passed structure P, you could use:</span>
+0047 <span class="comment">% [good_struct not_recognized]= mars_struct('ffillsplit', D, P);</span>
+0048 <span class="comment">%</span>
+0049 <span class="comment">% FORMAT c = mars_struct('ffillmerge', a, b)</span>
+0050 <span class="comment">% force fill followed by merge</span>
+0051 <span class="comment">% performs 'ffillsplit' on a and b, then merges a and b</span>
+0052 <span class="comment">% All fields present in a or b are returned in c, but</span>
+0053 <span class="comment">% any fields present in both, now have the value from b</span>
+0054 <span class="comment">%</span>
+0055 <span class="comment">% FORMAT [c d] = mars_struct('splitmerge', a, b)</span>
+0056 <span class="comment">% performs 'split' on a and b, creating c and d</span>
+0057 <span class="comment">% then merges c with b.</span>
+0058 <span class="comment">% d contains fields in a that were not present in b</span>
+0059 <span class="comment">% c contains fields present in both, or just in b</span>
+0060 <span class="comment">%</span>
+0061 <span class="comment">% FORMAT z = mars_struct('isthere', a, b [, c [, d ...])</span>
+0062 <span class="comment">% returns 1 if field named in b is present in a</span>
+0063 <span class="comment">% and field value is not empty.</span>
+0064 <span class="comment">% The call is recursive if more than two arguments are passed</span>
+0065 <span class="comment">% Thus with structure s = struct('one', struct('two', 3))</span>
+0066 <span class="comment">% mars_struct('isthere', s, 'one', 'two') returns 1</span>
+0067 <span class="comment">%</span>
+0068 <span class="comment">% FORMAT z = mars_struct('getifthere', a, b [, c [, d ...])</span>
+0069 <span class="comment">% returns value of field named in b from a or [] if absent</span>
+0070 <span class="comment">% Call is recursive, like 'isthere' above.</span>
+0071 <span class="comment">%</span>
+0072 <span class="comment">% FORMAT strs = mars_struct('celldisp', a)</span>
+0073 <span class="comment">% returns output like disp(a) as a cell array</span>
+0074 <span class="comment">% Useful for printing text description of structure</span>
+0075 <span class="comment">%</span>
+0076 <span class="comment">% $Id$</span>
+0077 
+0078 <span class="keyword">if</span> nargin &lt; 1
+0079   error(<span class="string">'Action needed'</span>);
+0080 <span class="keyword">end</span>
+0081 <span class="keyword">if</span> nargin &lt; 2
+0082   error(<span class="string">'Must specify structure'</span>)
+0083 <span class="keyword">end</span>
+0084 <span class="keyword">if</span> nargin &lt; 3
+0085   varargin = {varargin{:} []};
+0086 <span class="keyword">end</span>
+0087 [a b] = deal(varargin{1:2});
+0088 
+0089 <span class="keyword">switch</span> lower(action)  
+0090  <span class="keyword">case</span> <span class="string">'fillafromb'</span>
+0091   <span class="comment">% Return for empty passed args</span>
+0092   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {b}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0093   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(b), varargout = {a}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0094   <span class="keyword">if</span> nargin &lt; 4, fieldns = []; <span class="keyword">else</span> fieldns = varargin{3}; <span class="keyword">end</span>
+0095   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fieldns)
+0096     <span class="keyword">if</span> ~isstruct(b), error(<span class="string">'Need struct as 2nd argument'</span>); <span class="keyword">end</span> 
+0097     fieldns = fieldnames(b); 
+0098   <span class="keyword">end</span>
+0099   <span class="keyword">if</span> nargin &lt; 5, flags = <span class="string">''</span>; <span class="keyword">else</span> flags = varargin{4}; <span class="keyword">end</span>
+0100   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags), flags = <span class="string">' '</span>;<span class="keyword">end</span>
+0101   
+0102   <span class="keyword">if</span> ischar(fieldns), fieldns=cellstr(fieldns);<span class="keyword">end</span>
+0103   
+0104   af = fieldnames(a)';
+0105   bf = fieldns';
+0106   
+0107   <span class="comment">% classify fields 0 = a~b, 1 = a&amp;b, 2=b~a</span>
+0108   cf = af;
+0109   ftype = ismember(af, bf);
+0110   <span class="keyword">if</span> ~any(flags == <span class="string">'r'</span>)
+0111     b_not_a = find(~ismember(bf, af));
+0112     cf =  {cf{:} bf{b_not_a}}; 
+0113     ftype = [ftype ones(1, length(b_not_a))*2];
+0114   <span class="keyword">end</span>
+0115   
+0116   <span class="comment">% cope with arrays of structures</span>
+0117   alen = prod(size(a));
+0118   blen = prod(size(b));
+0119   maxlen = max(alen, blen);
+0120   
+0121   <span class="keyword">for</span> si=1:maxlen
+0122     ctmp = [];
+0123     <span class="keyword">for</span> i=1:length(cf)
+0124       fn = cf{i};
+0125       <span class="keyword">switch</span> ftype(i)
+0126        <span class="keyword">case</span> 0 <span class="comment">% a~b</span>
+0127     fval = getfield(a(si), fn);
+0128        <span class="keyword">case</span> 1 <span class="comment">% shared field</span>
+0129     bfc = getfield(b(si), fn);
+0130     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(getfield(a(si), fn)) || <span class="keyword">...</span><span class="comment"> % a field is empty</span>
+0131           (any(flags == <span class="string">'f'</span> &amp;&amp; ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(bfc)))<span class="comment">% or force fill</span>
+0132       fval = bfc;
+0133     <span class="keyword">else</span> <span class="comment">% field not empty, could be struct -&gt; recurse</span>
+0134       fval = getfield(a(si),fn);
+0135       <span class="keyword">if</span> isstruct(fval) &amp;&amp; isstruct(bfc)
+0136         fval = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'fillafromb'</span>,fval,bfc);
+0137       <span class="keyword">end</span>
+0138     <span class="keyword">end</span>
+0139        <span class="keyword">case</span> 2 <span class="comment">% b~a</span>
+0140     fval = getfield(b(si), fn);
+0141        <span class="keyword">case</span> 3 <span class="comment">% no field information, see below</span>
+0142     fval = [];
+0143       <span class="keyword">end</span>
+0144       <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(ctmp)
+0145     ctmp = struct(fn, fval);
+0146       <span class="keyword">else</span>
+0147     ctmp = setfield(ctmp, fn, fval);
+0148       <span class="keyword">end</span>
+0149     <span class="keyword">end</span>
+0150     c(si) = ctmp;
+0151     
+0152     <span class="keyword">if</span> si == blen <span class="comment">% reached end of bs, rest of b~a fields are empty</span>
+0153       ftype = (ftype == 2) * 3;
+0154     <span class="keyword">elseif</span> si == alen <span class="comment">% end of a's rest of a~b fields are empty</span>
+0155       ftype = (ftype == 0) * 2 + 1;
+0156     <span class="keyword">end</span>
+0157     
+0158   <span class="keyword">end</span>
+0159   varargout = {c};
+0160   
+0161  <span class="keyword">case</span> <span class="string">'split'</span>
+0162   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {a,a}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0163   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(b), varargout = {b,a}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0164   d = a;
+0165   c = [];
+0166   
+0167   <span class="keyword">if</span> ischar(b), b = {b};<span class="keyword">end</span>
+0168   <span class="keyword">if</span> isstruct(b), b = fieldnames(b);<span class="keyword">end</span>
+0169   
+0170   <span class="keyword">for</span> bf = b(:)'
+0171     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(a, bf{1})
+0172       c = setfield(c, bf{1}, getfield(a, bf{1}));
+0173       d = rmfield(d, bf{1});
+0174     <span class="keyword">end</span>
+0175   <span class="keyword">end</span>  
+0176   varargout = {c, d};
+0177   
+0178  <span class="keyword">case</span> <span class="string">'strip'</span>
+0179   [c d] = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, a, b);
+0180   varargout = {d};
+0181  
+0182  <span class="keyword">case</span> <span class="string">'merge'</span>
+0183   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {b}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0184   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(b), varargout = {a}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0185   c = a;
+0186   
+0187   <span class="keyword">for</span> bf = fieldnames(b)';
+0188     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(a, bf{1})
+0189       c = setfield(c, bf{1}, getfield(b, bf{1}));
+0190     <span class="keyword">end</span>
+0191   <span class="keyword">end</span>
+0192   varargout = {c};
+0193   
+0194  <span class="keyword">case</span> <span class="string">'ffillsplit'</span>
+0195   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a) || <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(b)
+0196     <span class="comment">% Nothing in common, return unchanged</span>
+0197     varargout = {a, b}; <span class="keyword">return</span>
+0198   <span class="keyword">end</span>
+0199   c = a; d = b;
+0200   
+0201   cf = fieldnames(c);
+0202   <span class="keyword">for</span> i=1:length(cf)
+0203     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(d, cf{i})
+0204       dfc = getfield(d,cf{i});
+0205       <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(dfc) 
+0206     c = setfield(c, cf{i}, dfc);
+0207       <span class="keyword">end</span>
+0208       d = rmfield(d, cf{i});
+0209     <span class="keyword">end</span>
+0210   <span class="keyword">end</span>
+0211   varargout = {c,d};
+0212   
+0213  <span class="keyword">case</span> <span class="string">'ffillmerge'</span>
+0214   [a b] = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, a, b);
+0215   varargout = {<a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'merge'</span>, a, b)};
+0216   
+0217  <span class="keyword">case</span> <span class="string">'splitmerge'</span>
+0218   [a c] = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, a, b);
+0219   varargout = {<a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'merge'</span>, a, b) c};
+0220   
+0221  <span class="keyword">case</span> <span class="string">'isthere'</span>
+0222   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {0}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0223   c = <a href="mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, varargin{:});
+0224   varargout = {~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(c)};
+0225   
+0226  <span class="keyword">case</span> <span class="string">'getifthere'</span>
+0227   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {[]}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0228   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(b), varargout = {[]}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0229   <span class="keyword">for</span> v = 2:nargin-1
+0230     b = varargin{v};
+0231     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(a, b)
+0232       varargout = {[]};
+0233       <span class="keyword">return</span>
+0234     <span class="keyword">end</span>
+0235     a = getfield(a, b);
+0236   <span class="keyword">end</span>
+0237   varargout = {a};
+0238   
+0239  <span class="keyword">case</span> <span class="string">'celldisp'</span>
+0240   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(a), varargout = {{}}; <span class="keyword">return</span>, <span class="keyword">end</span>
+0241   af = fieldnames(a);
+0242   c  = {};
+0243   pad_len = size(char(af), 2) + 4;
+0244   pad_str = [<span class="string">'%'</span> num2str(pad_len) <span class="string">'s: %s'</span>];
+0245   <span class="keyword">for</span> f = 1:length(af)
+0246     d     = getfield(a, af{f});
+0247     cls   = class(d);
+0248     sz    = size(d);
+0249     szstr = sprintf(<span class="string">'%dx'</span>, size(d));
+0250     szstr(end) = [];
+0251     <span class="keyword">switch</span> cls
+0252      <span class="keyword">case</span> <span class="string">'char'</span>
+0253      <span class="keyword">case</span> {<span class="string">'double'</span>, <span class="string">'float'</span>}
+0254       d = [<span class="string">'['</span>  num2str(d) <span class="string">']'</span>];
+0255      <span class="keyword">otherwise</span>
+0256       d = sprintf(<span class="string">'[%s %s]'</span>, szstr, cls);
+0257     <span class="keyword">end</span>
+0258     c{f} = sprintf(pad_str, af{f}, d);
+0259   <span class="keyword">end</span>
+0260   varargout = {c};
+0261   
+0262  <span class="keyword">otherwise</span>
+0263   error([<span class="string">'Suspicious action was '</span> action]);
+0264 <span class="keyword">end</span> <span class="comment">% switch</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

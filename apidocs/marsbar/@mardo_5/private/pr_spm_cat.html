@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_cat</title>
+  <meta name="keywords" content="pr_spm_cat">
+  <meta name="description" content="converts a cell array into a matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_cat.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_cat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>converts a cell array into a matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [x] = pr_spm_cat(x,d) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> converts a cell array into a matrix
+ FORMAT [x] = pr_spm_cat(x,d);
+ x - cell array
+ d - dimension over which to concatenate [default - both]
+__________________________________________________________________________
+ Empty array elements are replaced by sparse zero partitions
+ and single 0 entries are expanded to conform to the non-empty
+ non zero elements.
+
+ e.g.:
+ &gt; x       = pr_spm_cat({eye(2) []; 0 [1 1; 1 1]})
+ &gt; full(x) =
+
+     1     0     0     0
+     0     1     0     0
+     0     0     1     1
+     0     0     1     1
+__________________________________________________________________________
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>	converts a cell array into a matrix</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>	converts a cell array into a matrix</li>
+<li><a href="pr_spm_diff.html" class="code" title="function [J] = pr_spm_diff(varargin)">pr_spm_diff</a>	matrix high-order differentials</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [x] = pr_spm_cat(x,d)</a>
+0002 <span class="comment">% converts a cell array into a matrix</span>
+0003 <span class="comment">% FORMAT [x] = pr_spm_cat(x,d);</span>
+0004 <span class="comment">% x - cell array</span>
+0005 <span class="comment">% d - dimension over which to concatenate [default - both]</span>
+0006 <span class="comment">%__________________________________________________________________________</span>
+0007 <span class="comment">% Empty array elements are replaced by sparse zero partitions</span>
+0008 <span class="comment">% and single 0 entries are expanded to conform to the non-empty</span>
+0009 <span class="comment">% non zero elements.</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% e.g.:</span>
+0012 <span class="comment">% &gt; x       = pr_spm_cat({eye(2) []; 0 [1 1; 1 1]})</span>
+0013 <span class="comment">% &gt; full(x) =</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%     1     0     0     0</span>
+0016 <span class="comment">%     0     1     0     0</span>
+0017 <span class="comment">%     0     0     1     1</span>
+0018 <span class="comment">%     0     0     1     1</span>
+0019 <span class="comment">%__________________________________________________________________________</span>
+0020 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0021 
+0022 <span class="comment">% Karl Friston</span>
+0023 <span class="comment">% $Id: spm_cat.m 258 2005-10-18 18:21:07Z karl $</span>
+0024  
+0025 <span class="comment">% check x is not already a matrix</span>
+0026 <span class="comment">%--------------------------------------------------------------------------</span>
+0027 <span class="keyword">if</span> ~iscell(x), <span class="keyword">return</span>, <span class="keyword">end</span>
+0028  
+0029 <span class="comment">% if concatenation over a specific dimension</span>
+0030 <span class="comment">%--------------------------------------------------------------------------</span>
+0031 [n m] = size(x);
+0032 <span class="keyword">if</span> nargin &gt; 1
+0033  
+0034     <span class="comment">% concatenate over first dimension</span>
+0035     <span class="comment">%----------------------------------------------------------------------</span>
+0036     <span class="keyword">if</span> d == 1
+0037         y = cell(1,m);
+0038         <span class="keyword">for</span> i = 1:m
+0039             y{i} = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(x(:,i));
+0040         <span class="keyword">end</span>
+0041  
+0042     <span class="comment">% concatenate over second</span>
+0043     <span class="comment">%----------------------------------------------------------------------</span>
+0044     <span class="keyword">elseif</span> d == 2
+0045  
+0046         y = cell(n,1);
+0047         <span class="keyword">for</span> i = 1:n
+0048             y{i} = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(x(i,:));
+0049         <span class="keyword">end</span>
+0050  
+0051     <span class="comment">% only viable for 2-D arrays</span>
+0052     <span class="comment">%----------------------------------------------------------------------</span>
+0053     <span class="keyword">else</span>
+0054         error(<span class="string">'uknown option'</span>)
+0055     <span class="keyword">end</span>
+0056     x      = y;
+0057     <span class="keyword">return</span>
+0058  
+0059 <span class="keyword">end</span>
+0060  
+0061 <span class="comment">% find dimensions to fill in empty partitions</span>
+0062 <span class="comment">%--------------------------------------------------------------------------</span>
+0063 <span class="keyword">for</span> i = 1:n
+0064 <span class="keyword">for</span> j = 1:m
+0065     <span class="keyword">if</span> iscell(x{i,j})
+0066         x{i,j} = <a href="pr_spm_cat.html" class="code" title="function [x] = pr_spm_cat(x,d)">pr_spm_cat</a>(x{i,j});
+0067     <span class="keyword">end</span>
+0068     [u v]  = size(x{i,j});
+0069     I(i,j) = u;
+0070     J(i,j) = v;
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">end</span>
+0073 I     = max(I,[],2);
+0074 J     = max(J,[],1);
+0075  
+0076 <span class="comment">% sparse and empty partitions</span>
+0077 <span class="comment">%--------------------------------------------------------------------------</span>
+0078 [n m] = size(x);
+0079 <span class="keyword">for</span> i = 1:n
+0080 <span class="keyword">for</span> j = 1:m
+0081     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(x{i,j})
+0082         x{i,j} = zeros(I(i),J(j));
+0083     <span class="keyword">elseif</span> ~x{i,j}
+0084         x{i,j} = zeros(I(i),J(j));
+0085     <span class="keyword">else</span>
+0086         x{i,j} = full(x{i,j});
+0087     <span class="keyword">end</span>
+0088 <span class="keyword">end</span>
+0089 <span class="keyword">end</span>
+0090  
+0091 <span class="comment">% concatenate</span>
+0092 <span class="comment">%--------------------------------------------------------------------------</span>
+0093 <span class="keyword">for</span> i = 1:n
+0094     y{i,1} = cat(2,x{i,:});
+0095 <span class="keyword">end</span>
+0096 x     = sparse(cat(1,y{:}));
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

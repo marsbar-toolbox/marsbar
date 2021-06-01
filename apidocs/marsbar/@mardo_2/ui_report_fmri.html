@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_report_fmri</title>
+  <meta name="keywords" content="ui_report_fmri">
+  <meta name="description" content="Interactive review of fMRI design matrix">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_2</a> &gt; ui_report_fmri.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_2&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_report_fmri
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Interactive review of fMRI design matrix</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ui_report_fmri(D,s,i) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Interactive review of fMRI design matrix
+ FORMAT ui_report_fmri(D,s,i)
+
+ Copied with minor edits from:
+ @(#)spm_fMRI_design_show.m    2.22 Karl Friston 03/02/21
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ui_report_fmri(D,s,i)</a>
+0002 <span class="comment">% Interactive review of fMRI design matrix</span>
+0003 <span class="comment">% FORMAT ui_report_fmri(D,s,i)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Copied with minor edits from:</span>
+0006 <span class="comment">% @(#)spm_fMRI_design_show.m    2.22 Karl Friston 03/02/21</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% $Id$</span>
+0009 
+0010 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0011 Sess  = SPM.Sess;
+0012 
+0013 <span class="comment">% Do not proceed unless there are trials specified</span>
+0014 <span class="comment">%-----------------------------------------------------------------------</span>
+0015 <span class="keyword">for</span> j = 1:length(Sess)
+0016     <span class="keyword">if</span> ~length(Sess(j).U)
+0017         spm(<span class="string">'alert*'</span>,<span class="string">'User-specifed regressors only!'</span>,mfilename,sqrt(-1));
+0018         <span class="keyword">return</span>
+0019     <span class="keyword">end</span>
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="comment">%-Defaults: Setup GUI if not called by spm_DesRep (with s and i)</span>
+0023 <span class="comment">%-----------------------------------------------------------------------</span>
+0024 <span class="keyword">if</span> nargin &lt; 3
+0025     s = 1;
+0026     i = 1;
+0027 
+0028     <span class="comment">%-Get Interactive window and delete any previous DesRepUI menu</span>
+0029     <span class="comment">%---------------------------------------------------------------</span>
+0030     Finter = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Interactive'</span>);
+0031     delete(findobj(get(Finter,<span class="string">'Children'</span>),<span class="string">'flat'</span>,<span class="string">'Tag'</span>,<span class="string">'DesRepUI'</span>))
+0032 
+0033     <span class="comment">%-Create menu</span>
+0034     <span class="comment">%---------------------------------------------------------------</span>
+0035     hC     = uimenu(Finter,<span class="string">'Label'</span>,<span class="string">'Explore fMRI design'</span>,<span class="keyword">...</span>
+0036         <span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0037         <span class="string">'Tag'</span>,<span class="string">'DesRepUI'</span>,<span class="keyword">...</span>
+0038         <span class="string">'UserData'</span>,D,<span class="keyword">...</span>
+0039         <span class="string">'HandleVisibility'</span>,<span class="string">'on'</span>);
+0040     <span class="keyword">for</span> j = 1:length(Sess)
+0041         h     = uimenu(hC,<span class="string">'Label'</span>,sprintf(<span class="string">'Session %.0f '</span>,j),<span class="keyword">...</span>
+0042             <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0043         <span class="keyword">for</span> k = 1:length(Sess(j).Fc)
+0044             cb = [<span class="string">'tmp = get(get(gcbo,''UserData''),'</span>,<span class="keyword">...</span>
+0045                              <span class="string">'''UserData''); '</span>,<span class="keyword">...</span>
+0046                 sprintf([<span class="string">'ui_report_fmri('</span>,<span class="keyword">...</span>
+0047                     <span class="string">'tmp,%d,%d);'</span>],j,k)];
+0048             uimenu(h,<span class="string">'Label'</span>,Sess(j).Fc(k).name,<span class="keyword">...</span>
+0049                              <span class="string">'CallBack'</span>,cb,<span class="keyword">...</span>
+0050                              <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0051                              <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>)
+0052         <span class="keyword">end</span>
+0053     <span class="keyword">end</span>
+0054 <span class="keyword">end</span>
+0055 
+0056 
+0057 <span class="comment">%-Graphics...</span>
+0058 <span class="comment">%=======================================================================</span>
+0059 
+0060 <span class="comment">%-Get Graphics window</span>
+0061 <span class="comment">%-----------------------------------------------------------------------</span>
+0062 Fgraph = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0063 spm_results_ui(<span class="string">'Clear'</span>,Fgraph,0)
+0064 
+0065 
+0066 <span class="comment">% Trial-specific regressors - time domain</span>
+0067 <span class="comment">%-----------------------------------------------------------------------</span>
+0068 sX    = SPM.xX.X(Sess(s).row,Sess(s).col);
+0069 rX    = sX(:,Sess(s).Fc(i).i);
+0070 subplot(2,2,1)
+0071 plot(Sess(s).row,rX)
+0072 xlabel(<span class="string">'scan'</span>)
+0073 ylabel(<span class="string">'regressor[s]'</span>)
+0074 title({<span class="string">'Time domain'</span>,[<span class="string">'regressors for '</span> Sess(s).Fc(i).name]})
+0075 grid on
+0076 axis tight
+0077 
+0078 <span class="comment">% Trial-specific regressors - frequency domain</span>
+0079 <span class="comment">%-----------------------------------------------------------------------</span>
+0080 subplot(2,2,2)
+0081 gX    = abs(fft(rX)).^2;
+0082 gX    = gX*diag(1./sum(gX));
+0083 q     = size(gX,1);
+0084 Hz    = [0:(q - 1)]/(q*SPM.xY.RT);
+0085 q     = 2:fix(q/2);
+0086 plot(Hz(q),gX(q,:))
+0087 patch([0 1 1 0]/128,[0 0 1 1]*max(max(gX)),[1 1 1]*.9)
+0088 xlabel(<span class="string">'Frequency (Hz)'</span>)
+0089 ylabel(<span class="string">'relative spectral density'</span>)
+0090 title({<span class="string">'Frequency domain'</span>,<span class="string">'128 second High-pass filter'</span>})
+0091 grid on
+0092 axis tight
+0093 
+0094 
+0095 <span class="comment">% if trial (as opposed to trial x trial interaction)</span>
+0096 <span class="comment">%-----------------------------------------------------------------------</span>
+0097 <span class="keyword">if</span> length(Sess(s).U) &gt;= i
+0098 
+0099     <span class="comment">% Basis set and peristimulus sampling</span>
+0100     <span class="comment">%---------------------------------------------------------------</span>
+0101     subplot(2,2,3)
+0102     dt   = Sess(s).U(i).dt;
+0103     RT   = SPM.xY.RT;
+0104     t    = [1:size(SPM.xBF.bf,1)]*dt;
+0105     pst  = Sess(s).U(i).pst;
+0106     plot(t,SPM.xBF.bf,pst,0*pst,<span class="string">'.'</span>,<span class="string">'MarkerSize'</span>,16)
+0107     str  = sprintf(<span class="string">'TR = %0.2fsecs'</span>,RT);
+0108     xlabel({<span class="string">'time (secs)'</span> str sprintf(<span class="string">'%0.0fms time bins'</span>,1000*dt)})
+0109     title({<span class="string">'Basis set and peristimulus sampling'</span> SPM.xBF.name})
+0110     axis tight
+0111     grid on
+0112 
+0113     <span class="comment">% if a paramteric variate is specified</span>
+0114     <span class="comment">%---------------------------------------------------------------</span>
+0115     <span class="keyword">for</span> p = 1:length(Sess(s).U(i).P)
+0116 
+0117         <span class="keyword">if</span> Sess(s).U(i).P(p).h
+0118 
+0119         <span class="comment">% onsets and parametric modulation</span>
+0120         <span class="comment">%-------------------------------------------------------</span>
+0121         subplot(2,2,4)
+0122         ons = Sess(s).U(i).ons;
+0123         plot(ons,Sess(s).U(i).P(p).P,<span class="string">'.'</span>,<span class="string">'MarkerSize'</span>,8)
+0124         xlabel(<span class="string">'time {secs}'</span>)
+0125         title(<span class="string">'parameters'</span>)
+0126         grid on
+0127         hold on
+0128 
+0129         <span class="keyword">end</span>
+0130     <span class="keyword">end</span>
+0131 <span class="keyword">end</span>
+0132 
+0133 <span class="comment">%-Pop up Graphics figure window</span>
+0134 <span class="comment">%-----------------------------------------------------------------------</span>
+0135 figure(Fgraph);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

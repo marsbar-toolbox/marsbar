@@ -1,0 +1,9 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  maroi_matrix -> maroi_matrix;
+
+  c_o_m [URL="c_o_m.html"];
+  has_space [URL="has_space.html"];
+  maroi_matrix [URL="maroi_matrix.html"];
+  maroi_shape [URL="maroi_shape.html"];
+}

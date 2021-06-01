@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_blob_ui</title>
+  <meta name="keywords" content="mars_blob_ui">
+  <meta name="description" content="Displays SPM results, and ROI menu in SPM input window">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm99</a> &gt; mars_blob_ui.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mars_blob_ui
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Displays SPM results, and ROI menu in SPM input window</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function mars_blob_ui(action) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Displays SPM results, and ROI menu in SPM input window
+ FORMAT mars_blob_ui(action)
+ 
+ This is the SPM99 version
+
+ action     - action string; can be
+                'init'      - initialise results interface
+                'save_one'  - UI to save current cluster
+                'save_many' - UI to save all clusters
+
+ This routine does SPM version specific stuff, the main
+ work is in mars_blob2roi.m and mars_blobs2rois.m
+
+ $Id$  
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_blob2roi.html" class="code" title="function mars_blob2roi(xSPM, pt)">mars_blob2roi</a>	saves ROI for cluster in xSPM structure, containing point pt</li>
+<li><a href="../../marsbar/mars_blob_menu.html" class="code" title="function hC = mars_blob_menu">mars_blob_menu</a>	puts up ROI menu to add to SPM results interface</li>
+<li><a href="../../marsbar/mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>	creates ROIs from spm_results_ui SPM</li>
+<li><a href="../../marsbar/spm2/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../../marsbar/spm5/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/spm2/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../../marsbar/spm5/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function mars_blob_ui(action)</a>
+0002 <span class="comment">% Displays SPM results, and ROI menu in SPM input window</span>
+0003 <span class="comment">% FORMAT mars_blob_ui(action)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% This is the SPM99 version</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% action     - action string; can be</span>
+0008 <span class="comment">%                'init'      - initialise results interface</span>
+0009 <span class="comment">%                'save_one'  - UI to save current cluster</span>
+0010 <span class="comment">%                'save_many' - UI to save all clusters</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% This routine does SPM version specific stuff, the main</span>
+0013 <span class="comment">% work is in mars_blob2roi.m and mars_blobs2rois.m</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% $Id$</span>
+0016   
+0017 <span class="keyword">if</span> nargin &lt; 1
+0018   action = <span class="string">'init'</span>;
+0019 <span class="keyword">end</span>
+0020 
+0021 errstr = sprintf([<span class="string">'''Cannot find SPM struct in the workspace; '</span><span class="keyword">...</span>
+0022           <span class="string">'Please (re)run SPM results GUI'''</span>]);
+0023 
+0024 <span class="keyword">switch</span> lower(action)
+0025  <span class="keyword">case</span> <span class="string">'init'</span>
+0026   <span class="keyword">try</span> <span class="comment">% and find valid SPM results stuff</span>
+0027     evalin(<span class="string">'base'</span>, <span class="string">'SPM;'</span>);
+0028     evalin(<span class="string">'base'</span>, <span class="string">'VOL.M;'</span>);
+0029     hReg = evalin(<span class="string">'base'</span>, <span class="string">'hReg;'</span>);
+0030     RD = get(hReg,<span class="string">'UserData'</span>);
+0031     spm_XYZreg(<span class="string">'VReg'</span>,RD.Reg,0);
+0032     <a href="../../marsbar/mars_blob_menu.html" class="code" title="function hC = mars_blob_menu">mars_blob_menu</a>;
+0033   <span class="keyword">catch</span> <span class="comment">% no good, need a new one</span>
+0034     <a href="mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>(<span class="string">'reinit'</span>);
+0035   <span class="keyword">end</span>
+0036  <span class="keyword">case</span> <span class="string">'reinit'</span>
+0037   <span class="comment">% Display SPM results</span>
+0038   evalin(<span class="string">'base'</span>,<span class="string">'[hReg,SPM,VOL,xX,xCon,xSDM] = spm_results_ui;'</span>);
+0039   <span class="comment">% and menu</span>
+0040   <a href="../../marsbar/mars_blob_menu.html" class="code" title="function hC = mars_blob_menu">mars_blob_menu</a>;
+0041  <span class="keyword">case</span> <span class="string">'save_one'</span>
+0042   xSPM = evalin(<span class="string">'base'</span>, <span class="string">'SPM'</span>, [<span class="string">'error('</span> errstr <span class="string">')'</span>]);
+0043   xSPM.M =  evalin(<span class="string">'base'</span>, <span class="string">'VOL.M'</span>, [<span class="string">'error('</span> errstr <span class="string">')'</span>]);
+0044   <span class="comment">%-Get current location</span>
+0045   pt   = spm_results_ui(<span class="string">'GetCoords'</span>);
+0046   <a href="../../marsbar/mars_blob2roi.html" class="code" title="function mars_blob2roi(xSPM, pt)">mars_blob2roi</a>(xSPM, pt);
+0047  <span class="keyword">case</span> <span class="string">'save_many'</span>
+0048   xSPM = evalin(<span class="string">'base'</span>, <span class="string">'SPM'</span>, [<span class="string">'error('</span> errstr <span class="string">')'</span>]);
+0049   xSPM.M =  evalin(<span class="string">'base'</span>, <span class="string">'VOL.M'</span>, [<span class="string">'error('</span> errstr <span class="string">')'</span>]);
+0050   <a href="../../marsbar/mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>(xSPM);
+0051  <span class="keyword">otherwise</span>
+0052   error([<span class="string">'Worried by request for '</span> action]);
+0053 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

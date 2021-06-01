@@ -1,0 +1,1042 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_report</title>
+  <meta name="keywords" content="ui_report">
+  <meta name="description" content="mathod for SPM99 design reporting">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; ui_report.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_report
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>mathod for SPM99 design reporting</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = ui_report(D, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mathod for SPM99 design reporting
+
+ Copied with minor edits from:  
+ @(#)spm_DesRep.m    2.22 Andrew Holmes 01/03/14
+ 
+ See that file for detailed commentary
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/image_names.html" class="code" title="function P = image_names(D)">image_names</a>	method returning image file names for design</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+<li><a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>	method to overload the . notation.</li>
+<li><a href="../../marsbar/@mardo_2/modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+<li><a href="../../marsbar/@mardo_2/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	method for SPM2 design reporting</li>
+<li><a href="modality.html" class="code" title="function mod_str = modality(D)">modality</a>	method returns modality of design</li>
+<li><a href="ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	mathod for SPM99 design reporting</li>
+<li><a href="../../marsbar/@mars_space/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>	method to overload the . notation.</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo_2/ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	method for SPM2 design reporting</li>
+<li><a href="ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>	mathod for SPM99 design reporting</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = ui_report(D, varargin)</a>
+0002 <span class="comment">% mathod for SPM99 design reporting</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Copied with minor edits from:</span>
+0005 <span class="comment">% @(#)spm_DesRep.m    2.22 Andrew Holmes 01/03/14</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% See that file for detailed commentary</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $Id$</span>
+0010 
+0011 <span class="comment">%-Format arguments</span>
+0012 <span class="comment">%-----------------------------------------------------------------------</span>
+0013 <span class="keyword">if</span> nargin &lt; 2
+0014   action = <span class="string">'desrepui'</span>; 
+0015 <span class="keyword">else</span>
+0016   action = varargin{1};
+0017 <span class="keyword">end</span>
+0018 
+0019 <span class="comment">%-Generic CallBack code</span>
+0020 <span class="comment">%-----------------------------------------------------------------------</span>
+0021 cb = <span class="string">'tmp = get(findobj(''Tag'', ''DesRepUI''),''UserData''); '</span>;
+0022 
+0023 <span class="comment">% simplify access to design</span>
+0024 SPM = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0025 
+0026 <span class="comment">% Add empty fields where necessary</span>
+0027 <span class="keyword">try</span>
+0028   SPM.xC;
+0029 <span class="keyword">catch</span>
+0030   SPM.xC = {};
+0031 <span class="keyword">end</span>
+0032 <span class="keyword">try</span>
+0033   SPM.xsDes;
+0034 <span class="keyword">catch</span>
+0035   SPM.xsDes = [];
+0036 <span class="keyword">end</span>
+0037 
+0038 <span class="keyword">switch</span> lower(action)
+0039 
+0040 <span class="comment">%=======================================================================</span>
+0041 <span class="keyword">case</span> <span class="string">'desrepui'</span>                                    <span class="comment">%-Design reporting UI</span>
+0042 <span class="comment">%=======================================================================</span>
+0043 <span class="comment">% h = spm_DesRep('DesRepUI')</span>
+0044 <span class="comment">% h = spm_DesRep('DesRepUI',D)</span>
+0045 
+0046 <span class="comment">%-Table of variable availability</span>
+0047 <span class="comment">%-----------------------------------------------------------------------</span>
+0048 <span class="comment">%        SPM_fMRIDesMtx.mat    SPMcfg.mat    SPM.mat</span>
+0049 <span class="comment">%  .xX        v/            v/        v/</span>
+0050 <span class="comment">%  .VY        x            v/        v/</span>
+0051 <span class="comment">%  .xM        x            v/        v/</span>
+0052 <span class="comment">%  .F_iX0    x            v/        v/</span>
+0053 <span class="comment">%  .xC        x / []            v/(p)        v/(p)</span>
+0054 <span class="comment">%  .Sess    v/            v/(f)        v/(f)</span>
+0055 <span class="comment">%  .xsDes    x            v/        v/</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">%  .SPMid</span>
+0058 <span class="comment">%</span>
+0059 <span class="comment">%  .cfg</span>
+0060 
+0061 <span class="comment">%-Add a scaled design matrix to the design data structure</span>
+0062 <span class="comment">%-----------------------------------------------------------------------</span>
+0063 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xX,<span class="string">'nKX'</span>), SPM.xX.nKX = spm_DesMtx(<span class="string">'Sca'</span>,SPM.xX.X,SPM.xX.Xnames); <span class="keyword">end</span>
+0064 
+0065 <span class="comment">% put back into design object</span>
+0066 D = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D, SPM);
+0067 
+0068 <span class="comment">%-Draw menu</span>
+0069 <span class="comment">%=======================================================================</span>
+0070 
+0071 <span class="comment">%-Get Interactive window and delete any previous DesRepUI menu</span>
+0072 <span class="comment">%-----------------------------------------------------------------------</span>
+0073 Finter = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Interactive'</span>);
+0074 delete(findobj(get(Finter,<span class="string">'Children'</span>),<span class="string">'flat'</span>,<span class="string">'Tag'</span>,<span class="string">'DesRepUI'</span>))
+0075 
+0076 <span class="comment">%-Draw top level menu</span>
+0077 <span class="comment">%-----------------------------------------------------------------------</span>
+0078 hC      = uimenu(Finter,<span class="string">'Label'</span>,<span class="string">'Design'</span>,<span class="keyword">...</span>
+0079         <span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0080         <span class="string">'Tag'</span>,<span class="string">'DesRepUI'</span>,<span class="keyword">...</span>
+0081         <span class="string">'UserData'</span>,D,<span class="keyword">...</span>
+0082         <span class="string">'HandleVisibility'</span>,<span class="string">'on'</span>);
+0083 
+0084 <span class="comment">%-DesMtx (SPM &amp; SPMcfg)</span>
+0085 <span class="comment">%-----------------------------------------------------------------------</span>
+0086 hDesMtx = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Design Matrix'</span>,<span class="string">'Accelerator'</span>,<span class="string">'D'</span>,<span class="keyword">...</span>
+0087         <span class="string">'CallBack'</span>,[cb,<span class="keyword">...</span>
+0088         <span class="string">'ui_report(tmp, ''DesMtx'')'</span>],<span class="keyword">...</span>
+0089         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0090         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0091 
+0092 <span class="comment">%-Design matrix orthogonality</span>
+0093 <span class="comment">%-----------------------------------------------------------------------</span>
+0094 h = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Design orthogonality'</span>,<span class="string">'Accelerator'</span>,<span class="string">'O'</span>,<span class="keyword">...</span>
+0095         <span class="string">'CallBack'</span>,[cb,<span class="keyword">...</span>
+0096         <span class="string">'ui_report(tmp, ''DesOrth'')'</span>],<span class="keyword">...</span>
+0097         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0098         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0099 
+0100 <span class="comment">%-Explore design</span>
+0101 <span class="comment">%-----------------------------------------------------------------------</span>
+0102 hExplore = uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Explore'</span>,<span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0103 
+0104 <span class="keyword">switch</span> <a href="modality.html" class="code" title="function mod_str = modality(D)">modality</a>(D)
+0105 <span class="keyword">case</span> <span class="string">'pet'</span>
+0106     hFnF = uimenu(hExplore,<span class="string">'Label'</span>,<span class="string">'Files and factors'</span>,<span class="string">'Accelerator'</span>,<span class="string">'F'</span>,<span class="keyword">...</span>
+0107         <span class="string">'CallBack'</span>,[cb,<span class="keyword">...</span>
+0108         <span class="string">'ui_report(tmp, ''Files&amp;Factors'')'</span>],<span class="keyword">...</span>
+0109         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0110         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0111     hCovs = uimenu(hExplore,<span class="string">'Label'</span>,<span class="string">'Covariates'</span>,<span class="string">'Accelerator'</span>,<span class="string">'C'</span>,<span class="keyword">...</span>
+0112         <span class="string">'CallBack'</span>,[cb,<span class="keyword">...</span>
+0113         <span class="string">'ui_report(tmp, ''Covs'')'</span>],<span class="keyword">...</span>
+0114         <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0115         <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0116     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(SPM.xC), set(hCovs,<span class="string">'Enable'</span>,<span class="string">'off'</span>), <span class="keyword">end</span>
+0117 <span class="keyword">case</span> <span class="string">'fmri'</span>
+0118     <span class="keyword">for</span> j = 1:length(SPM.Sess)
+0119         h = uimenu(hExplore,<span class="string">'Label'</span>,sprintf(<span class="string">'Session %.0f '</span>,j),<span class="keyword">...</span>
+0120             <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0121         <span class="keyword">for</span> k = 1:length(SPM.Sess{j}.name)
+0122             uimenu(h,<span class="string">'Label'</span>,SPM.Sess{j}.name{k},<span class="keyword">...</span>
+0123                  <span class="string">'CallBack'</span>,[cb,<span class="keyword">...</span>
+0124                  sprintf(<span class="string">'ui_report_fmri(tmp,%d,%d);'</span>,j,k)],<span class="keyword">...</span>
+0125                  <span class="string">'UserData'</span>,hC,<span class="keyword">...</span>
+0126                  <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>)
+0127         <span class="keyword">end</span>
+0128     <span class="keyword">end</span>
+0129 <span class="keyword">end</span>
+0130 
+0131 
+0132 <span class="comment">%-Clear, Quit, Help</span>
+0133 <span class="comment">%-----------------------------------------------------------------------</span>
+0134 uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Clear'</span>,<span class="string">'Accelerator'</span>,<span class="string">'L'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0135     <span class="string">'CallBack'</span>,<span class="string">'spm_results_ui(''Clear'')'</span>,<span class="keyword">...</span>
+0136     <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0137 uimenu(hC,<span class="string">'Label'</span>,<span class="string">'Help'</span>,<span class="string">'Separator'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0138     <span class="string">'CallBack'</span>,<span class="string">'spm_help(''spm_DesRep'')'</span>,<span class="keyword">...</span>
+0139     <span class="string">'HandleVisibility'</span>,<span class="string">'off'</span>);
+0140 
+0141 <span class="comment">%-Pop open 'Interactive' window</span>
+0142 <span class="comment">%-----------------------------------------------------------------------</span>
+0143 figure(Finter)
+0144 
+0145 <span class="comment">%-Return handle of menu</span>
+0146 <span class="comment">%-----------------------------------------------------------------------</span>
+0147 varargout = {hC};
+0148 
+0149 
+0150 <span class="comment">%=======================================================================</span>
+0151 <span class="keyword">case</span> <span class="string">'files&amp;factors'</span>                         <span class="comment">%-Summarise files &amp; factors</span>
+0152 <span class="comment">%=======================================================================</span>
+0153 <span class="comment">% ui_report(D, 'Files&amp;Factors',fnames,I,xC,sF,xs)</span>
+0154 
+0155 fnames  = <a href="../../marsbar/@mardo/image_names.html" class="code" title="function P = image_names(D)">image_names</a>(D);
+0156 I       = SPM.xX.I;
+0157 xC      = SPM.xC;
+0158 sF      = SPM.xX.sF;
+0159 xs      = SPM.xsDes;  <span class="comment">%-Structure of description strings</span>
+0160 
+0161 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fnames)
+0162   fnames = cell(size(SPM.xX.X, 1), 1);
+0163 <span class="keyword">else</span>
+0164   [fnames,CPath] = spm_str_manip(fnames,<span class="string">'c'</span>);    <span class="comment">%-extract common path</span>
+0165 <span class="keyword">end</span>
+0166 nScan          = size(I,1);            <span class="comment">%-#images</span>
+0167 nVar           = size(fnames,2);        <span class="comment">%-Variates</span>
+0168 bL             = any(diff(I,1),1);         <span class="comment">%-Multiple factor levels?</span>
+0169 
+0170 <span class="comment">%-Get graphics window &amp; window scaling</span>
+0171 Fgraph = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0172 spm_results_ui(<span class="string">'Clear'</span>,Fgraph,0)
+0173 FS     = spm(<span class="string">'FontSizes'</span>);
+0174 
+0175 <span class="comment">%-Display header information</span>
+0176 <span class="comment">%-----------------------------------------------------------------------</span>
+0177 hTax = axes(<span class="string">'Position'</span>,[0.03,0.85,0.94,0.1],<span class="keyword">...</span>
+0178     <span class="string">'DefaultTextFontSize'</span>,FS(9),<span class="keyword">...</span>
+0179     <span class="string">'XLim'</span>,[0,1],<span class="string">'YLim'</span>,[0,1],<span class="keyword">...</span>
+0180     <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0181 
+0182 text(0.5,1,<span class="string">'Statistical analysis: Image files &amp; covariates...'</span>,<span class="keyword">...</span>
+0183     <span class="string">'Fontsize'</span>,FS(14),<span class="string">'Fontweight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0184     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>)
+0185 
+0186 dx1 = 0.05;
+0187 dx2 = 0.08;
+0188 
+0189 x = 0; text(x+.02,.1,<span class="string">'image #'</span>,<span class="string">'Rotation'</span>,90)
+0190 <span class="keyword">if</span> bL(4), x=x+dx1; text(x+.01,.1,sF{4},<span class="string">'Rotation'</span>,90), <span class="keyword">end</span>
+0191 <span class="keyword">if</span> bL(3), x=x+dx1; text(x+.01,.1,sF{3},<span class="string">'Rotation'</span>,90), <span class="keyword">end</span>
+0192 <span class="keyword">if</span> bL(2), x=x+dx1; text(x+.01,.1,sF{2},<span class="string">'Rotation'</span>,90), <span class="keyword">end</span>
+0193 <span class="keyword">if</span> bL(1), x=x+dx1; text(x+.01,.1,sF{1},<span class="string">'Rotation'</span>,90), <span class="keyword">end</span>
+0194 
+0195 <span class="keyword">for</span> j = 1:length(xC)
+0196     n = size(xC(j).rc,2);
+0197     <span class="keyword">if</span> n&gt;1, tmp=xC(j).cname; <span class="keyword">else</span>, tmp={xC(j).rcname}; <span class="keyword">end</span>
+0198     <span class="keyword">for</span> k=1:n
+0199         x=x+dx2;
+0200         text(x,.1,tmp{k},<span class="string">'Rotation'</span>,90,<span class="string">'Interpreter'</span>,<span class="string">'TeX'</span>)
+0201     <span class="keyword">end</span>
+0202 <span class="keyword">end</span>
+0203 
+0204 x=x+dx2;
+0205 text(x,0.65,<span class="string">'Base directory:'</span>,<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>)
+0206 text(x,0.5,CPath,<span class="string">'FontSize'</span>,FS(8))
+0207 text(x,0.2,<span class="string">'filename tails...'</span>)
+0208 
+0209 line(<span class="string">'XData'</span>,[0 1],<span class="string">'YData'</span>,[0 0],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0210 
+0211 <span class="comment">%-Tabulate file &amp; covariate information</span>
+0212 <span class="comment">%-----------------------------------------------------------------------</span>
+0213 hAx = axes(<span class="string">'Position'</span>,[0.03,0.05,0.94,0.8],<span class="keyword">...</span>
+0214     <span class="string">'DefaultTextFontSize'</span>,FS(8),<span class="keyword">...</span>
+0215     <span class="string">'Units'</span>,<span class="string">'points'</span>,<span class="keyword">...</span>
+0216     <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0217 AxPos = get(hAx,<span class="string">'Position'</span>); set(hAx,<span class="string">'YLim'</span>,[0,AxPos(4)])
+0218 
+0219 dy = FS(9); y0 = floor(AxPos(4)) -dy; y  = y0;
+0220 
+0221 <span class="keyword">for</span> i = 1:nScan
+0222 
+0223     <span class="comment">%-Scan indices</span>
+0224     x = 0; text(x,y,sprintf(<span class="string">'%03d'</span>,i))
+0225     <span class="keyword">if</span> bL(4), x=x+dx1; text(x,y,sprintf(<span class="string">'%02d'</span>,I(i,4))), <span class="keyword">end</span>
+0226     <span class="keyword">if</span> bL(3), x=x+dx1; text(x,y,sprintf(<span class="string">'%02d'</span>,I(i,3))), <span class="keyword">end</span>
+0227     <span class="keyword">if</span> bL(2), x=x+dx1; text(x,y,sprintf(<span class="string">'%02d'</span>,I(i,2))), <span class="keyword">end</span>
+0228     <span class="keyword">if</span> bL(1), x=x+dx1; text(x,y,sprintf(<span class="string">'%02d'</span>,I(i,1))), <span class="keyword">end</span>
+0229 
+0230     <span class="comment">%-Covariates</span>
+0231     <span class="keyword">for</span> j = 1:length(xC)
+0232         <span class="keyword">for</span> k=1:size(xC(j).rc,2)
+0233             x=x+dx2;
+0234             text(x,y,sprintf(<span class="string">'%6g'</span>,xC(j).rc(i,k)),<span class="keyword">...</span>
+0235                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>)
+0236         <span class="keyword">end</span>
+0237     <span class="keyword">end</span>
+0238 
+0239     <span class="comment">%-Filename tail(s) - could be multivariate</span>
+0240     x=x+dx2;
+0241     <span class="keyword">for</span> j = 1:nVar
+0242         text(x,y,fnames{i,j})
+0243         y=y-dy;
+0244     <span class="keyword">end</span>
+0245 
+0246     <span class="comment">%-Paginate if necessary</span>
+0247     <span class="keyword">if</span> y&lt;dy
+0248         text(0.5,0,sprintf(<span class="string">'Page %d'</span>,spm_figure(<span class="string">'#page'</span>)),<span class="keyword">...</span>
+0249             <span class="string">'FontSize'</span>,FS(8),<span class="string">'FontAngle'</span>,<span class="string">'italic'</span>)
+0250         spm_figure(<span class="string">'NewPage'</span>,[hAx;get(hAx,<span class="string">'Children'</span>)])
+0251         hAx = axes(<span class="string">'Units'</span>,<span class="string">'points'</span>,<span class="string">'Position'</span>,AxPos,<span class="keyword">...</span>
+0252             <span class="string">'DefaultTextFontSize'</span>,FS(8),<span class="string">'YLim'</span>,[0,AxPos(4)],<span class="keyword">...</span>
+0253             <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0254         y = y0;
+0255         text(y,0,<span class="string">'continued...'</span>,<span class="string">'FontAngle'</span>,<span class="string">'Italic'</span>)
+0256     <span class="keyword">end</span>
+0257 <span class="keyword">end</span>
+0258 
+0259 line(<span class="string">'XData'</span>,[0 1],<span class="string">'YData'</span>,[y y],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0260 
+0261 
+0262 <span class="comment">%-Display description strings</span>
+0263 <span class="comment">% (At bottom of current page - hope there's enough room!)</span>
+0264 <span class="comment">%-----------------------------------------------------------------------</span>
+0265 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xs)
+0266     y = y - 2*dy;
+0267     <span class="keyword">for</span> sf = fieldnames(xs)'
+0268         text(0.3,y,[strrep(sf{1},<span class="string">'_'</span>,<span class="string">' '</span>),<span class="string">' :'</span>],<span class="keyword">...</span>
+0269             <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0270             <span class="string">'FontSize'</span>,FS(9))
+0271         s = getfield(xs,sf{1});
+0272         <span class="keyword">if</span> ~iscellstr(s), s={s}; <span class="keyword">end</span>
+0273         <span class="keyword">for</span> i=1:prod(size(s))
+0274             text(0.31,y,s{i},<span class="string">'FontSize'</span>,FS(9))
+0275             y=y-dy;
+0276         <span class="keyword">end</span>
+0277     <span class="keyword">end</span>
+0278 <span class="keyword">end</span>
+0279 
+0280 <span class="comment">%-Register last page if paginated</span>
+0281 <span class="keyword">if</span> spm_figure(<span class="string">'#page'</span>)&gt;1
+0282     text(0.5,0,sprintf(<span class="string">'Page %d/%d'</span>,spm_figure(<span class="string">'#page'</span>)*[1,1]),<span class="keyword">...</span>
+0283         <span class="string">'FontSize'</span>,FS(8),<span class="string">'FontAngle'</span>,<span class="string">'italic'</span>)
+0284     spm_figure(<span class="string">'NewPage'</span>,[hAx;get(hAx,<span class="string">'Children'</span>)])
+0285 <span class="keyword">end</span>
+0286 
+0287 <span class="comment">%-Pop up the Graphics window</span>
+0288 <span class="comment">%-----------------------------------------------------------------------</span>
+0289 figure(Fgraph)
+0290 
+0291 
+0292 
+0293 <span class="comment">%=======================================================================</span>
+0294 <span class="keyword">case</span> {<span class="string">'desmtx'</span>,<span class="string">'desorth'</span>} <span class="comment">%-Display design matrix / design orthogonality</span>
+0295 <span class="comment">%=======================================================================</span>
+0296 <span class="comment">% ui_report(D, 'DesMtx',xX,fnames,xs)</span>
+0297 <span class="comment">% ui_report(D, 'DesOrth',xX,fnames)</span>
+0298 
+0299 xX      = SPM.xX;
+0300 fnames  = <a href="../../marsbar/@mardo/image_names.html" class="code" title="function P = image_names(D)">image_names</a>(D);
+0301 
+0302 xs      = SPM.xsDes;  <span class="comment">%-Structure of description strings</span>
+0303 
+0304 desmtx = strcmp(lower(varargin{1}),<span class="string">'desmtx'</span>);
+0305 
+0306 
+0307 <span class="comment">%-Locate DesMtx (X), scaled DesMtx (nX) &amp; get parameter names (Xnames)</span>
+0308 <span class="comment">%-----------------------------------------------------------------------</span>
+0309 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'xKXs'</span>) &amp; <span class="keyword">...</span>
+0310         ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.xKXs) &amp; isstruct(xX.xKXs)
+0311     iX = 1;
+0312     [nScan,nPar] = size(xX.xKXs.X);
+0313 <span class="keyword">elseif</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'X'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.X)
+0314     iX = 0;
+0315     [nScan,nPar] = size(xX.X);
+0316 <span class="keyword">else</span>
+0317     error(<span class="string">'Can''t find DesMtx in this structure!'</span>)
+0318 <span class="keyword">end</span>
+0319 
+0320 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'nKX'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.nKX)
+0321     inX = 1; <span class="keyword">else</span>, inX = 0; <span class="keyword">end</span>
+0322 
+0323 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'Xnames'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.Xnames)
+0324     Xnames = xX.Xnames; <span class="keyword">else</span>, Xnames = {}; <span class="keyword">end</span>
+0325 
+0326 
+0327 <span class="comment">%-Compute design orthogonality matrix if DesOrth</span>
+0328 <span class="comment">%-----------------------------------------------------------------------</span>
+0329 <span class="keyword">if</span> ~desmtx
+0330     <span class="keyword">if</span> iX
+0331     tmp  = sqrt(sum(xX.xKXs.X.^2));
+0332     O    = xX.xKXs.X'*xX.xKXs.X./kron(tmp',tmp);
+0333         tmp  = sum(xX.xKXs.X);
+0334     <span class="keyword">else</span>
+0335     tmp  = sqrt(sum(xX.X.^2));
+0336     O    = xX.X'*xX.X./kron(tmp',tmp);
+0337         tmp  = sum(xX.X);
+0338     <span class="keyword">end</span>
+0339     tmp = abs(tmp)&lt;eps*1e5;
+0340     bC  = kron(tmp',tmp);
+0341 <span class="keyword">end</span>
+0342 
+0343 
+0344 <span class="comment">%-Display</span>
+0345 <span class="comment">%=======================================================================</span>
+0346 
+0347 <span class="comment">%-Get graphics window &amp; FontSizes</span>
+0348 <span class="comment">%-----------------------------------------------------------------------</span>
+0349 Fgraph = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0350 spm_results_ui(<span class="string">'Clear'</span>,Fgraph,0)
+0351 FS = spm(<span class="string">'FontSizes'</span>);
+0352 
+0353 
+0354 <span class="comment">%-Title</span>
+0355 <span class="comment">%-----------------------------------------------------------------------</span>
+0356 hTax = axes(<span class="string">'Position'</span>,[0.03,0,0.94,1],<span class="keyword">...</span>
+0357     <span class="string">'DefaultTextFontSize'</span>,FS(9),<span class="keyword">...</span>
+0358     <span class="string">'XLim'</span>,[0,1],<span class="string">'YLim'</span>,[0,1],<span class="keyword">...</span>
+0359     <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0360 
+0361 str=<span class="string">'Statistical analysis: Design'</span>; <span class="keyword">if</span> ~desmtx, str=[str,<span class="string">' orthogonality'</span>]; <span class="keyword">end</span>
+0362 text(0.5,0.95,str,<span class="string">'Fontsize'</span>,FS(14),<span class="string">'Fontweight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0363     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>)
+0364 
+0365 line(<span class="string">'Parent'</span>,hTax,<span class="keyword">...</span>
+0366     <span class="string">'XData'</span>,[0.3 0.7],<span class="string">'YData'</span>,[0.92 0.92],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0367 
+0368 
+0369 <span class="comment">%-Display design matrix</span>
+0370 <span class="comment">%-----------------------------------------------------------------------</span>
+0371 hDesMtx = axes(<span class="string">'Position'</span>,[.07 .4 .6 .4]);
+0372 <span class="keyword">if</span> inX        <span class="comment">%-Got a scaled DesMtx</span>
+0373     hDesMtxIm = image((xX.nKX + 1)*32);
+0374 <span class="keyword">elseif</span> iX    <span class="comment">%-No scaled DesMtx, DesMtx in .xKXs structure</span>
+0375     hDesMtxIm = image((spm_DesMtx(<span class="string">'sca'</span>,xX.xKXs.X,Xnames) + 1)*32);
+0376 <span class="keyword">else</span>        <span class="comment">%-No scaled DesMtx, no .xKXs, DesMtx in .X</span>
+0377     hDesMtxIm = image((spm_DesMtx(<span class="string">'sca'</span>,xX.X,     Xnames) + 1)*32);
+0378 <span class="keyword">end</span>
+0379 
+0380 STick = <a href="ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>(D, <span class="string">'ScanTick'</span>,nScan,32);
+0381 PTick = <a href="ui_report.html" class="code" title="function varargout = ui_report(D, varargin)">ui_report</a>(D, <span class="string">'ScanTick'</span>,nPar,32);
+0382 
+0383 set(hDesMtx,<span class="string">'TickDir'</span>,<span class="string">'out'</span>,<span class="keyword">...</span>
+0384     <span class="string">'XTick'</span>,PTick,<span class="string">'XTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0385     <span class="string">'YTick'</span>,STick,<span class="string">'YTickLabel'</span>,<span class="string">''</span>)
+0386 <span class="keyword">if</span> desmtx
+0387     xlabel(<span class="string">'parameters'</span>), ylabel(<span class="string">'images'</span>)
+0388 <span class="keyword">else</span>
+0389     set(get(hDesMtx,<span class="string">'Xlabel'</span>),<span class="keyword">...</span>
+0390         <span class="string">'Position'</span>,get(get(hDesMtx,<span class="string">'Ylabel'</span>),<span class="string">'Position'</span>),<span class="keyword">...</span>
+0391         <span class="string">'Rotation'</span>,90')
+0392     xlabel(<span class="string">'design matrix'</span>)
+0393 <span class="keyword">end</span>
+0394 
+0395 <span class="comment">%-Parameter names</span>
+0396 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Xnames)
+0397     axes(<span class="string">'Position'</span>,[.07 .8 .6 .1],<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0398         <span class="string">'DefaultTextFontSize'</span>,FS(8),<span class="string">'DefaultTextInterpreter'</span>,<span class="string">'TeX'</span>,<span class="keyword">...</span>
+0399         <span class="string">'XLim'</span>,[0,nPar]+0.5)
+0400     <span class="keyword">for</span> i=PTick, text(i,.05,Xnames{i},<span class="string">'Rotation'</span>,90), <span class="keyword">end</span>
+0401 <span class="keyword">end</span>
+0402 
+0403 <span class="comment">%-Filenames</span>
+0404 <span class="comment">% ( Show at most 32, showing every 2nd/3rd/4th/... as necessary to pair )</span>
+0405 <span class="comment">% ( down to &lt;32 items. Always show last item so #images is indicated.   )</span>
+0406 <span class="keyword">if</span> desmtx &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fnames)
+0407     axes(<span class="string">'Position'</span>,[.68 .4 .3 .4],<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0408         <span class="string">'DefaultTextFontSize'</span>,FS(8),<span class="keyword">...</span>
+0409         <span class="string">'YLim'</span>,[0,nScan]+0.5,<span class="string">'YDir'</span>,<span class="string">'Reverse'</span>)
+0410     <span class="keyword">for</span> i=STick, text(0,i,spm_str_manip(fnames(i,:),<span class="string">'Ca35'</span>)), <span class="keyword">end</span>
+0411 <span class="keyword">end</span>
+0412 
+0413 <span class="comment">%-Setup callbacks to allow interrogation of design matrix</span>
+0414 <span class="comment">%-----------------------------------------------------------------------</span>
+0415 <span class="keyword">if</span> iX,     set(hDesMtxIm,<span class="string">'UserData'</span>,<span class="keyword">...</span>
+0416     struct(<span class="string">'X'</span>,xX.xKXs.X,<span class="string">'Xnames'</span>,{Xnames},<span class="string">'fnames'</span>,{fnames}))
+0417 <span class="keyword">else</span>,     set(hDesMtxIm,<span class="string">'UserData'</span>,<span class="keyword">...</span>
+0418     struct(<span class="string">'X'</span>,xX.X,     <span class="string">'Xnames'</span>,{Xnames},<span class="string">'fnames'</span>,{fnames}))
+0419 <span class="keyword">end</span>
+0420 set(hDesMtxIm,<span class="string">'ButtonDownFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfDesMtx_CB'')'</span>])
+0421 
+0422 
+0423 <span class="keyword">if</span> desmtx
+0424     <span class="comment">%-Parameter estimability/uniqueness</span>
+0425     <span class="comment">%---------------------------------------------------------------</span>
+0426     hPEstAx   = axes(<span class="string">'Position'</span>,[.07 .315 .6 .025],<span class="keyword">...</span>
+0427             <span class="string">'DefaultTextInterpreter'</span>,<span class="string">'TeX'</span>);
+0428     <span class="keyword">if</span> iX,    est = spm_SpUtil(<span class="string">'IsCon'</span>,xX.xKXs);
+0429     <span class="keyword">else</span>,    est = spm_SpUtil(<span class="string">'IsCon'</span>,xX.X); <span class="keyword">end</span>
+0430     hParEstIm = image((est+1)*32);
+0431     set(hPEstAx,<span class="keyword">...</span>
+0432         <span class="string">'XLim'</span>,[0,nPar]+.5,<span class="string">'XTick'</span>,[1:nPar-1]+.5,<span class="string">'XTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0433         <span class="string">'YLim'</span>,[0,1]+.5,<span class="string">'YDir'</span>,<span class="string">'reverse'</span>,<span class="string">'YTick'</span>,[],<span class="keyword">...</span>
+0434         <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="string">'TickDir'</span>,<span class="string">'in'</span>,<span class="string">'XGrid'</span>,<span class="string">'on'</span>,<span class="string">'GridLineStyle'</span>,<span class="string">'-'</span>);
+0435     xlabel(<span class="string">'parameter estimability'</span>)
+0436     text((nPar+0.5 + nPar/30),1,<span class="keyword">...</span>
+0437         <span class="string">'(gray \rightarrow \beta not uniquely specified)'</span>,<span class="keyword">...</span>
+0438         <span class="string">'Interpreter'</span>,<span class="string">'TeX'</span>,<span class="string">'FontSize'</span>,FS(8))
+0439     set(hParEstIm,<span class="string">'UserData'</span>,struct(<span class="string">'est'</span>,est,<span class="string">'Xnames'</span>,{Xnames}))
+0440     set(hParEstIm,<span class="string">'ButtonDownFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfEstIm_CB'')'</span>])
+0441 <span class="keyword">else</span>
+0442     <span class="comment">%-Design orthogonality</span>
+0443     <span class="comment">%---------------------------------------------------------------</span>
+0444     hDesO   = axes(<span class="string">'Position'</span>,[.07 .18 .6 .2]);
+0445     tmp = 1-abs(O); tmp(logical(tril(ones(nPar),-1))) = 1;
+0446     hDesOIm = image(tmp*64);
+0447     
+0448     set(hDesO,<span class="string">'Box'</span>,<span class="string">'off'</span>,<span class="string">'TickDir'</span>,<span class="string">'out'</span>,<span class="keyword">...</span>
+0449         <span class="string">'XaxisLocation'</span>,<span class="string">'top'</span>,<span class="string">'XTick'</span>,PTick,<span class="string">'XTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0450         <span class="string">'YaxisLocation'</span>,<span class="string">'right'</span>,<span class="string">'YTick'</span>,PTick,<span class="string">'YTickLabel'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0451         <span class="string">'YDir'</span>,<span class="string">'reverse'</span>)
+0452     tmp = [1,1]'*[[0:nPar]+0.5];
+0453     line(<span class="string">'Xdata'</span>,tmp(1:end-1)',<span class="string">'Ydata'</span>,tmp(2:end)')
+0454 
+0455     xlabel(<span class="string">'design orthogonality'</span>)
+0456     set(get(hDesO,<span class="string">'Xlabel'</span>),<span class="string">'Position'</span>,[0.5,nPar,0],<span class="keyword">...</span>
+0457         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0458         <span class="string">'VerticalAlignment'</span>,<span class="string">'top'</span>)
+0459     set(hDesOIm,<span class="keyword">...</span>
+0460         <span class="string">'UserData'</span>,struct(<span class="string">'O'</span>,O,<span class="string">'bC'</span>,bC,<span class="string">'Xnames'</span>,{Xnames}),<span class="keyword">...</span>
+0461         <span class="string">'ButtonDownFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfDesO_CB'')'</span>])
+0462 
+0463     <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Xnames)
+0464         axes(<span class="string">'Position'</span>,[.69 .18 0.01 .2],<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0465             <span class="string">'DefaultTextFontSize'</span>,FS(10),<span class="keyword">...</span>
+0466             <span class="string">'DefaultTextInterpreter'</span>,<span class="string">'TeX'</span>,<span class="keyword">...</span>
+0467             <span class="string">'YDir'</span>,<span class="string">'reverse'</span>,<span class="string">'YLim'</span>,[0,nPar]+0.5)
+0468         <span class="keyword">for</span> i=PTick
+0469             text(0,i,Xnames{i},<span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>)
+0470         <span class="keyword">end</span>
+0471     <span class="keyword">end</span>
+0472 
+0473 <span class="keyword">end</span>
+0474 
+0475 <span class="comment">%-Design descriptions</span>
+0476 <span class="comment">%-----------------------------------------------------------------------</span>
+0477 <span class="keyword">if</span> desmtx
+0478     str = <span class="string">'Design description...'</span>;
+0479     line(<span class="string">'Parent'</span>,hTax,<span class="keyword">...</span>
+0480         <span class="string">'XData'</span>,[0.3 0.7],<span class="string">'YData'</span>,[0.28 0.28],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0481     hAx = axes(<span class="string">'Position'</span>,[0.03,0.05,0.94,0.22],<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0482 <span class="keyword">else</span>
+0483     str = <span class="string">''</span>;
+0484     line(<span class="string">'Parent'</span>,hTax,<span class="keyword">...</span>
+0485         <span class="string">'XData'</span>,[0.3 0.7],<span class="string">'YData'</span>,[0.14 0.14],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0486     hAx = axes(<span class="string">'Position'</span>,[0.03,0.05,0.94,0.08],<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0487     xs = struct(<span class="string">'Measure'</span>,    [<span class="string">'abs. value of cosine of angle between '</span>,<span class="keyword">...</span>
+0488                  <span class="string">'columns of design matrix'</span>],<span class="keyword">...</span>
+0489             <span class="string">'Scale'</span>,    {{    <span class="string">'black - colinear (cos=+1/-1)'</span>;<span class="keyword">...</span>
+0490                     <span class="string">'white - orthogonal (cos=0)'</span>;<span class="keyword">...</span>
+0491                     <span class="string">'gray  - not orthogonal or colinear'</span>}});
+0492 <span class="keyword">end</span>
+0493 
+0494 
+0495 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xs)
+0496     set(hAx,<span class="string">'Units'</span>,<span class="string">'points'</span>);
+0497     AxPos = get(hAx,<span class="string">'Position'</span>);
+0498     set(hAx,<span class="string">'YLim'</span>,[0,AxPos(4)])
+0499     
+0500     dy = FS(9); y0 = floor(AxPos(4)) -dy; y = y0;
+0501 
+0502     text(0.3,y,str,<span class="keyword">...</span>
+0503         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Center'</span>,<span class="keyword">...</span>
+0504         <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="string">'FontSize'</span>,FS(11))
+0505     y=y-2*dy;
+0506     
+0507     <span class="keyword">for</span> sf = fieldnames(xs)'
+0508         text(0.3,y,[strrep(sf{1},<span class="string">'_'</span>,<span class="string">' '</span>),<span class="string">' :'</span>],<span class="keyword">...</span>
+0509             <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0510             <span class="string">'FontSize'</span>,FS(9))
+0511         s = getfield(xs,sf{1});
+0512         <span class="keyword">if</span> ~iscellstr(s), s={s}; <span class="keyword">end</span>
+0513         <span class="keyword">for</span> i=1:prod(size(s))
+0514             text(0.31,y,s{i},<span class="string">'FontSize'</span>,FS(9))
+0515             y=y-dy;
+0516         <span class="keyword">end</span>
+0517     <span class="keyword">end</span>
+0518 <span class="keyword">end</span>
+0519 
+0520 <span class="comment">%-Pop up the Graphics window</span>
+0521 <span class="comment">%-----------------------------------------------------------------------</span>
+0522 figure(Fgraph)
+0523 
+0524 
+0525 <span class="comment">%=======================================================================</span>
+0526 <span class="keyword">case</span> <span class="string">'covs'</span>                <span class="comment">%-Plot and describe covariates (one per page)</span>
+0527 <span class="comment">%=======================================================================</span>
+0528 <span class="comment">% ui_report(D, 'Covs',xX,xC)</span>
+0529 
+0530 xX = SPM.xX;
+0531 xC = SPM.xC;
+0532 
+0533 <span class="keyword">if</span> ~length(xC), spm(<span class="string">'alert!'</span>,<span class="string">'No covariates!'</span>,mfilename), <span class="keyword">return</span>, <span class="keyword">end</span>
+0534 
+0535 <span class="comment">%-Get graphics window &amp; window scaling</span>
+0536 Fgraph = spm_figure(<span class="string">'GetWin'</span>,<span class="string">'Graphics'</span>);
+0537 spm_results_ui(<span class="string">'Clear'</span>,Fgraph,0)
+0538 FS = spm(<span class="string">'FontSizes'</span>);
+0539 
+0540 <span class="comment">%-Title</span>
+0541 <span class="comment">%-----------------------------------------------------------------------</span>
+0542 hTax = axes(<span class="string">'Position'</span>,[0.03,0,0.94,1],<span class="keyword">...</span>
+0543     <span class="string">'DefaultTextFontSize'</span>,FS(9),<span class="keyword">...</span>
+0544     <span class="string">'XLim'</span>,[0,1],<span class="string">'YLim'</span>,[0,1],<span class="keyword">...</span>
+0545     <span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0546 
+0547 text(0.5,0.95,<span class="string">'Statistical analysis: Covariates'</span>,<span class="keyword">...</span>
+0548     <span class="string">'Fontsize'</span>,FS(14),<span class="string">'Fontweight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0549     <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>)
+0550 
+0551 text(0.5,0.82,<span class="string">'(covariates plotted over transposed design matrix)'</span>,<span class="keyword">...</span>
+0552     <span class="string">'FontSize'</span>,FS(8),<span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>)
+0553 
+0554 line(<span class="string">'XData'</span>,[0.3 0.7],<span class="string">'YData'</span>,[0.92 0.92],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0555 line(<span class="string">'XData'</span>,[0.3 0.7],<span class="string">'YData'</span>,[0.44 0.44],<span class="string">'LineWidth'</span>,3,<span class="string">'Color'</span>,<span class="string">'r'</span>)
+0556 
+0557 
+0558 <span class="comment">%-Design matrix (as underlay for plots) and parameter names</span>
+0559 <span class="comment">%-----------------------------------------------------------------------</span>
+0560 [nScan,nPar]   = size(xX.X);
+0561 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'Xnames'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.Xnames)
+0562     Xnames = xX.Xnames; <span class="keyword">else</span>, Xnames = {}; <span class="keyword">end</span>
+0563 
+0564 <span class="comment">%-Design matrix</span>
+0565 hDesMtx = axes(<span class="string">'Position'</span>,[.1 .5 .7 .3]);
+0566 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'nKX'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.nKX)
+0567     image(xX.nKX'*32+32)
+0568 <span class="keyword">elseif</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX,<span class="string">'xKXs'</span>) &amp; ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xX.xKXs)
+0569     image(spm_DesMtx(<span class="string">'sca'</span>,xX.xKXs.X,Xnames)*32+32)
+0570 <span class="keyword">else</span>
+0571     image(spm_DesMtx(<span class="string">'sca'</span>,xX.X,Xnames)*32+32)
+0572 <span class="keyword">end</span>
+0573 set(hDesMtx,<span class="string">'Visible'</span>,<span class="string">'off'</span>)
+0574 
+0575 <span class="comment">%-Parameter names</span>
+0576 hParAx = axes(<span class="string">'Position'</span>,[.8 .5 .2 .3],<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0577     <span class="string">'DefaultTextFontSize'</span>,FS(8),<span class="string">'DefaultTextInterpreter'</span>,<span class="string">'TeX'</span>,<span class="keyword">...</span>
+0578     <span class="string">'YLim'</span>,[0.5,nPar+0.5],<span class="string">'YDir'</span>,<span class="string">'Reverse'</span>);
+0579 hPNames = zeros(nPar,1);
+0580 <span class="keyword">for</span> i = 1:nPar, hPNames(i) = text(.05,i,Xnames{i}); <span class="keyword">end</span>
+0581 
+0582 
+0583 <span class="comment">%-Covariates - one page each</span>
+0584 <span class="comment">%-----------------------------------------------------------------------</span>
+0585 <span class="keyword">for</span> i = 1:length(xC)
+0586 
+0587     <span class="comment">%-Title</span>
+0588     <span class="comment">%---------------------------------------------------------------</span>
+0589     hSTitle = text(0.5,0.87,sprintf(<span class="string">'%d : %s'</span>,i,xC(i).rcname),<span class="keyword">...</span>
+0590             <span class="string">'Parent'</span>,hTax,<span class="keyword">...</span>
+0591             <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0592             <span class="string">'FontSize'</span>,FS(13),<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>);
+0593 
+0594     <span class="comment">%-Plot</span>
+0595     <span class="comment">%---------------------------------------------------------------</span>
+0596     hAx = axes(<span class="string">'Position'</span>,[.1 .5 .7 .3],<span class="keyword">...</span>
+0597             <span class="string">'TickDir'</span>,<span class="string">'out'</span>,<span class="string">'Box'</span>,<span class="string">'off'</span>,<span class="string">'Color'</span>,<span class="string">'none'</span>,<span class="keyword">...</span>
+0598             <span class="string">'NextPlot'</span>,<span class="string">'add'</span>,<span class="keyword">...</span>
+0599             <span class="string">'XLim'</span>,[0,nScan]+0.5);
+0600     plot(xC(i).rc,<span class="string">'LineWidth'</span>,2)
+0601     <span class="keyword">if</span> nScan&lt;48, plot(xC(i).rc,<span class="string">'.k'</span>,<span class="string">'MarkerSize'</span>,20); <span class="keyword">end</span>
+0602     xlabel(<span class="string">'image #'</span>)
+0603     ylabel(<span class="string">'covariate value'</span>)
+0604 
+0605 
+0606     <span class="comment">%-Descriptions</span>
+0607     <span class="comment">%---------------------------------------------------------------</span>
+0608     hDAx = axes(<span class="string">'Position'</span>,[0.03,0.1,0.94,0.30],<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0609     
+0610     set(hDAx,<span class="string">'Units'</span>,<span class="string">'points'</span>);
+0611     tmp = get(hDAx,<span class="string">'Position'</span>);
+0612     set(hDAx,<span class="string">'YLim'</span>,[0,tmp(4)])
+0613     
+0614     dy = FS(9); y0 = floor(tmp(4)) -dy; y = y0;
+0615 
+0616     <span class="comment">%-Description strings from xC(i).descrip</span>
+0617     text(0.3,y,<span class="string">'Details :'</span>,<span class="keyword">...</span>
+0618         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+0619         <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="string">'FontSize'</span>,FS(9))
+0620     s = xC(i).descrip;
+0621     <span class="keyword">if</span> ~iscellstr(s), s={s}; <span class="keyword">end</span>
+0622     <span class="keyword">for</span> j=1:prod(size(s))
+0623         text(0.31,y,s{j},<span class="string">'FontSize'</span>,FS(9))
+0624         y=y-dy;
+0625     <span class="keyword">end</span>
+0626     y=y-dy;
+0627 
+0628     <span class="comment">%-Key (if block of covariates entered)</span>
+0629     <span class="comment">%---------------------------------------------------------------</span>
+0630     <span class="keyword">if</span> size(xC(i).rc,2)&gt;1
+0631         ColorOrder = get(hAx,<span class="string">'ColorOrder'</span>);
+0632         text(0.3,y,<span class="string">'Key :'</span>,<span class="keyword">...</span>
+0633             <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+0634             <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="string">'FontSize'</span>,FS(9))
+0635         <span class="keyword">for</span> j = 1:size(xC(i).rc,2)
+0636             color = ColorOrder(mod(j-1,size(ColorOrder,1))+1,:);
+0637             <span class="keyword">if</span> size(xC(i).rc,2)==length(xC(i).cname)
+0638                 str = xC(i).cname{j};
+0639             <span class="keyword">else</span>
+0640                 str = sprintf(<span class="string">'column %d'</span>,j);
+0641             <span class="keyword">end</span>
+0642             text(0.31,y,str,<span class="string">'FontSize'</span>,FS(9),<span class="keyword">...</span>
+0643                 <span class="string">'Color'</span>,color)
+0644             text(0.5,xC(i).rc(1,j),[str,<span class="string">' \rightarrow'</span>],<span class="keyword">...</span>
+0645                 <span class="string">'Parent'</span>,hAx,<span class="keyword">...</span>
+0646                 <span class="string">'FontSize'</span>,FS(8),<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="keyword">...</span>
+0647                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+0648                 <span class="string">'Interpreter'</span>,<span class="string">'TeX'</span>,<span class="keyword">...</span>
+0649                 <span class="string">'Color'</span>,color)
+0650             y=y-dy;
+0651         <span class="keyword">end</span>
+0652         y=y-dy;
+0653     <span class="keyword">end</span>
+0654 
+0655 
+0656     <span class="comment">%-Associated parameters</span>
+0657     <span class="comment">%---------------------------------------------------------------</span>
+0658     text(0.3,y,<span class="string">'Design matrix columns :'</span>,<span class="keyword">...</span>
+0659         <span class="string">'HorizontalAlignment'</span>,<span class="string">'Right'</span>,<span class="keyword">...</span>
+0660         <span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="string">'FontSize'</span>,FS(9))
+0661     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(xC(i).cols)
+0662         text(0.31,y,<span class="string">'(none)'</span>,<span class="string">'FontSize'</span>,FS(9))
+0663     <span class="keyword">else</span>
+0664         <span class="keyword">for</span> j = xC(i).cols
+0665             text(0.31,y,sprintf(<span class="string">'%d : %s'</span>,j,Xnames{j}),<span class="keyword">...</span>
+0666                 <span class="string">'FontSize'</span>,FS(9),<span class="string">'Interpreter'</span>,<span class="string">'TeX'</span>)
+0667             y=y-dy;
+0668         <span class="keyword">end</span>
+0669     <span class="keyword">end</span>
+0670     y=y-dy;
+0671 
+0672 
+0673     <span class="comment">%-Highlight parameter names</span>
+0674     <span class="comment">%---------------------------------------------------------------</span>
+0675     hCurPNames = hPNames(xC(i).cols);
+0676     set(hCurPNames,<span class="string">'Color'</span>,<span class="string">'r'</span>,<span class="string">'FontWeight'</span>,<span class="string">'Bold'</span>,<span class="string">'FontSize'</span>,FS(8))
+0677 
+0678 
+0679     <span class="comment">%-Paginate (if more than one covariate)</span>
+0680     <span class="comment">%---------------------------------------------------------------</span>
+0681     <span class="keyword">if</span> length(xC)&gt;1
+0682         spm_figure(<span class="string">'NewPage'</span>,[hSTitle; hAx; get(hAx,<span class="string">'Children'</span>);<span class="keyword">...</span>
+0683             hCurPNames; hDAx; get(hDAx,<span class="string">'Children'</span>)]);
+0684     <span class="keyword">end</span>
+0685 
+0686 <span class="keyword">end</span>
+0687 
+0688 <span class="comment">%-Pop up the Graphics window</span>
+0689 <span class="comment">%-----------------------------------------------------------------------</span>
+0690 figure(Fgraph)
+0691 
+0692 
+0693 <span class="comment">%=======================================================================</span>
+0694 <span class="keyword">case</span> <span class="string">'scantick'</span>
+0695 <span class="comment">%=======================================================================</span>
+0696 <span class="comment">% ui_report(D, 'ScanTick',nScan,lim)</span>
+0697 <span class="comment">% ( Show at most 32, showing every 2nd/3rd/4th/... as necessary to pair )</span>
+0698 <span class="comment">% ( down to &lt;32 items. Always show last item so #images is indicated.    )</span>
+0699 <span class="keyword">if</span> nargin&lt;4, lim=32; <span class="keyword">else</span>, lim=varargin{3}; <span class="keyword">end</span>
+0700 <span class="keyword">if</span> nargin&lt;3, error(<span class="string">'insufficient arguments'</span>), <span class="keyword">end</span>
+0701 nScan = varargin{2};
+0702 
+0703 p = max(1,ceil(nScan/lim));
+0704 s = 1:p:nScan; s(end)=nScan;
+0705 
+0706 varargout = {s,lim};
+0707 
+0708 
+0709 <span class="comment">%=======================================================================</span>
+0710 <span class="keyword">case</span> {<span class="string">'surfdesmtx_cb'</span>,<span class="string">'surfdesmtxmo_cb'</span>,<span class="string">'surfdesmtxup_cb'</span>} <span class="comment">%-Surf DesMtx</span>
+0711 <span class="comment">%=======================================================================</span>
+0712 <span class="comment">% ui_report(D, 'SurfDesMtx_CB')</span>
+0713 <span class="comment">% ui_report(D, 'SurfDesMtxMo_CB')</span>
+0714 <span class="comment">% ui_report(D, 'SurfDesMtxUp_CB')</span>
+0715 
+0716 h    = get(gca,<span class="string">'Xlabel'</span>);
+0717 
+0718 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfdesmtxup_cb'</span>)
+0719     UD = get(h,<span class="string">'UserData'</span>);
+0720     set(h,<span class="string">'String'</span>,UD.String,<span class="string">'Interpreter'</span>,UD.Interpreter,<span class="keyword">...</span>
+0721         <span class="string">'UserData'</span>,UD.UserData)
+0722     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,<span class="string">''</span>,<span class="string">'WindowButtonUpFcn'</span>,<span class="string">''</span>)
+0723     <span class="keyword">return</span>
+0724 <span class="keyword">end</span>
+0725 
+0726 
+0727 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfdesmtx_cb'</span>)
+0728     UD = struct(    <span class="string">'String'</span>,    get(h,<span class="string">'String'</span>),<span class="keyword">...</span>
+0729             <span class="string">'Interpreter'</span>,    get(h,<span class="string">'Interpreter'</span>),<span class="keyword">...</span>
+0730             <span class="string">'UserData'</span>,    get(h,<span class="string">'UserData'</span>));
+0731     set(h,<span class="string">'UserData'</span>,UD)
+0732     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfDesMtxMo_CB'')'</span>],<span class="keyword">...</span>
+0733          <span class="string">'WindowButtonUpFcn'</span>,    [cb <span class="string">'ui_report(tmp, ''SurfDesMtxUp_CB'')'</span>])
+0734 <span class="keyword">end</span>
+0735 
+0736 mm  = [get(gca,<span class="string">'YLim'</span>)',get(gca,<span class="string">'XLim'</span>)']+[.5,.5;-.5,-.5];
+0737 ij  = get(gca,<span class="string">'CurrentPoint'</span>);
+0738 ij  = round(min(max(ij(1,[2,1]),mm(1,:)),mm(2,:)));
+0739 
+0740 istr = <span class="string">'none'</span>;
+0741 <span class="keyword">switch</span> get(gcbf,<span class="string">'SelectionType'</span>)
+0742 <span class="keyword">case</span> <span class="string">'normal'</span>
+0743     <span class="keyword">try</span>, str = sprintf(<span class="string">'X(%d,%d) = %g'</span>,ij(1),ij(2),<span class="keyword">...</span>
+0744         <a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0745         struct(<span class="string">'type'</span>,{<span class="string">'.'</span>,<span class="string">'()'</span>},<span class="string">'subs'</span>,{<span class="string">'X'</span>,{ij(1),ij(2)}})));
+0746     <span class="keyword">catch</span>, str=<span class="string">'(no cached design matrix to surf)'</span>; <span class="keyword">end</span>
+0747 <span class="keyword">case</span> <span class="string">'extend'</span>
+0748     <span class="keyword">try</span>, str = sprintf(<span class="string">'Image %d: %s'</span>,ij(1),<span class="keyword">...</span>
+0749         spm_str_manip(<span class="keyword">...</span>
+0750         <a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0751         struct(<span class="string">'type'</span>,{<span class="string">'.'</span>,<span class="string">'()'</span>},<span class="keyword">...</span>
+0752             <span class="string">'subs'</span>,{<span class="string">'fnames'</span>,{ij(1),<span class="string">':'</span>}})),<span class="string">'Ca40'</span>));
+0753     <span class="keyword">catch</span>, str=<span class="string">'(no cached image filenames to surf)'</span>; <span class="keyword">end</span>
+0754 <span class="keyword">case</span> <span class="string">'alt'</span>
+0755     <span class="keyword">try</span>, str = sprintf(<span class="string">'Parameter %d: %s'</span>,ij(2),<span class="keyword">...</span>
+0756         <a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0757         struct(<span class="string">'type'</span>,{<span class="string">'.'</span>,<span class="string">'{}'</span>},<span class="string">'subs'</span>,{<span class="string">'Xnames'</span>,{ij(2)}})));
+0758         istr = <span class="string">'tex'</span>;
+0759     <span class="keyword">catch</span>, str=<span class="string">'(no cached parameter names to surf)'</span>; <span class="keyword">end</span>
+0760 <span class="keyword">case</span> <span class="string">'open'</span>
+0761     <span class="keyword">try</span>,    assignin(<span class="string">'base'</span>,<span class="string">'ans'</span>,<a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0762             struct(<span class="string">'type'</span>,{<span class="string">'.'</span>},<span class="string">'subs'</span>,{<span class="string">'X'</span>})))
+0763         evalin(<span class="string">'base'</span>,<span class="string">'ans'</span>)
+0764     <span class="keyword">catch</span>,    fprintf(<span class="string">'%s GUI: can''t find design matrix\n'</span>,mfilename)
+0765     <span class="keyword">end</span>
+0766     <span class="keyword">return</span>
+0767 <span class="keyword">end</span>
+0768 
+0769 set(h,<span class="string">'String'</span>,str,<span class="string">'Interpreter'</span>,istr)
+0770 
+0771 
+0772 <span class="comment">%=======================================================================</span>
+0773 <span class="keyword">case</span> {<span class="string">'surfestim_cb'</span>,<span class="string">'surfestimmo_cb'</span>,<span class="string">'surfestimup_cb'</span>}  <span class="comment">%-Surf ParEstIm</span>
+0774 <span class="comment">%=======================================================================</span>
+0775 <span class="comment">% ui_report(D, 'SurfEstIm_CB')</span>
+0776 <span class="comment">% ui_report(D, 'SurfEstImMo_CB')</span>
+0777 <span class="comment">% ui_report(D, 'SurfEstImUp_CB')</span>
+0778 
+0779 h    = get(gca,<span class="string">'Xlabel'</span>);
+0780 
+0781 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfestimup_cb'</span>)
+0782     UD = get(h,<span class="string">'UserData'</span>);
+0783     set(h,<span class="string">'String'</span>,UD.String,<span class="string">'Interpreter'</span>,UD.Interpreter,<span class="keyword">...</span>
+0784         <span class="string">'UserData'</span>,UD.UserData)
+0785     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,<span class="string">''</span>,<span class="string">'WindowButtonUpFcn'</span>,<span class="string">''</span>)
+0786     <span class="keyword">return</span>
+0787 <span class="keyword">end</span>
+0788 
+0789 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfestim_cb'</span>)
+0790     UD = struct(    <span class="string">'String'</span>,    get(h,<span class="string">'String'</span>),<span class="keyword">...</span>
+0791             <span class="string">'Interpreter'</span>,    get(h,<span class="string">'Interpreter'</span>),<span class="keyword">...</span>
+0792             <span class="string">'UserData'</span>,    get(h,<span class="string">'UserData'</span>));
+0793     set(h,<span class="string">'UserData'</span>,UD)
+0794     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfEstImMo_CB'')'</span>],<span class="keyword">...</span>
+0795          <span class="string">'WindowButtonUpFcn'</span>,    [cb <span class="string">'ui_report(tmp, ''SurfEstImUp_CB'')'</span>])
+0796 <span class="keyword">end</span>
+0797 
+0798 mm  = [get(gca,<span class="string">'XLim'</span>)]+[.5,-.5];
+0799 i   = get(gca,<span class="string">'CurrentPoint'</span>);
+0800 i   = round(min(max(i(1,1),mm(1)),mm(2)));
+0801 
+0802 istr = <span class="string">'none'</span>;
+0803 <span class="keyword">switch</span> get(gcbf,<span class="string">'SelectionType'</span>)
+0804 <span class="keyword">case</span> <span class="string">'normal'</span>
+0805     <span class="keyword">try</span>, tmp = {<span class="string">' (not unique)'</span>,<span class="string">' (unique)'</span>};
+0806     str = sprintf(<span class="string">'Parameter %d : %s%s'</span>,<span class="keyword">...</span>
+0807         i,<span class="keyword">...</span>
+0808         <a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0809             struct(<span class="string">'type'</span>,{<span class="string">'.'</span>,<span class="string">'{}'</span>},<span class="string">'subs'</span>,{<span class="string">'Xnames'</span>,{i}})),<span class="keyword">...</span>
+0810         tmp{<a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0811             struct(<span class="string">'type'</span>,{<span class="string">'.'</span>,<span class="string">'()'</span>},<span class="string">'subs'</span>,{<span class="string">'est'</span>,{i}}))+1});
+0812         istr = <span class="string">'tex'</span>;
+0813     <span class="keyword">catch</span>, str=<span class="string">'(no cached data to surf)'</span>; <span class="keyword">end</span>
+0814 <span class="keyword">case</span> {<span class="string">'extend'</span>,<span class="string">'alt'</span>}
+0815     <span class="keyword">return</span>
+0816 <span class="keyword">case</span> <span class="string">'open'</span>
+0817     <span class="keyword">try</span>,    UD = get(gco,<span class="string">'UserData'</span>);
+0818         assignin(<span class="string">'base'</span>,<span class="string">'ans'</span>,<span class="keyword">...</span>
+0819             <a href="../../marsbar/@mardo/subsref.html" class="code" title="function result = subsref(this, Struct)">subsref</a>(get(gco,<span class="string">'UserData'</span>),<span class="keyword">...</span>
+0820                 struct(<span class="string">'type'</span>,{<span class="string">'.'</span>},<span class="string">'subs'</span>,{<span class="string">'est'</span>})))
+0821         evalin(<span class="string">'base'</span>,<span class="string">'ans'</span>)
+0822     <span class="keyword">catch</span>,    fprintf(<span class="string">'%s GUI: can''t find design orthogonality\n'</span>,mfilename)
+0823     <span class="keyword">end</span>
+0824     <span class="keyword">return</span>
+0825 <span class="keyword">end</span>
+0826 
+0827 set(h,<span class="string">'String'</span>,str,<span class="string">'Interpreter'</span>,istr)
+0828 
+0829 
+0830 
+0831 <span class="comment">%=======================================================================</span>
+0832 <span class="keyword">case</span> {<span class="string">'surfdeso_cb'</span>,<span class="string">'surfdesomo_cb'</span>,<span class="string">'surfdesoup_cb'</span>}    <span class="comment">%-Surf DesOrthIm</span>
+0833 <span class="comment">%=======================================================================</span>
+0834 <span class="comment">% ui_report(D, 'SurfDesO_CB')</span>
+0835 <span class="comment">% ui_report(D, 'SurfDesOMo_CB')</span>
+0836 <span class="comment">% ui_report(D, 'SurfDesOUp_CB')</span>
+0837 
+0838 h    = get(gca,<span class="string">'Xlabel'</span>);
+0839 
+0840 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfdesoup_cb'</span>)
+0841     UD = get(h,<span class="string">'UserData'</span>);
+0842     set(h,<span class="string">'String'</span>,UD.String,<span class="string">'Interpreter'</span>,UD.Interpreter,<span class="keyword">...</span>
+0843         <span class="string">'UserData'</span>,UD.UserData)
+0844     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,<span class="string">''</span>,<span class="string">'WindowButtonUpFcn'</span>,<span class="string">''</span>)
+0845     <span class="keyword">return</span>
+0846 <span class="keyword">end</span>
+0847 
+0848 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfdeso_cb'</span>)
+0849     UD = struct(    <span class="string">'String'</span>,    get(h,<span class="string">'String'</span>),<span class="keyword">...</span>
+0850             <span class="string">'Interpreter'</span>,    get(h,<span class="string">'Interpreter'</span>),<span class="keyword">...</span>
+0851             <span class="string">'UserData'</span>,    get(h,<span class="string">'UserData'</span>));
+0852     set(h,<span class="string">'UserData'</span>,UD)
+0853     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfDesOMo_CB'')'</span>],<span class="keyword">...</span>
+0854          <span class="string">'WindowButtonUpFcn'</span>,    [cb <span class="string">'ui_report(tmp, ''SurfDesOUp_CB'')'</span>])
+0855 <span class="keyword">end</span>
+0856 
+0857 mm  = [get(gca,<span class="string">'YLim'</span>)',get(gca,<span class="string">'XLim'</span>)']+[.5,.5;-.5,-.5];
+0858 ij  = get(gca,<span class="string">'CurrentPoint'</span>);
+0859 ij  = round(min(max(ij(1,[2,1]),mm(1,:)),mm(2,:)));
+0860 <span class="keyword">if</span> ij(1)&gt;ij(2), <span class="keyword">return</span>, <span class="keyword">end</span>
+0861 
+0862 istr = <span class="string">'none'</span>;
+0863 <span class="keyword">switch</span> get(gcbf,<span class="string">'SelectionType'</span>)
+0864 <span class="keyword">case</span> <span class="string">'normal'</span>
+0865     <span class="keyword">try</span>
+0866         UD = get(gco,<span class="string">'UserData'</span>);
+0867         <span class="keyword">if</span> abs(abs(UD.O(ij(1),ij(2)))-1) &lt; eps*1e1
+0868              str = <span class="string">'{\bf colinear}'</span>;
+0869         <span class="keyword">elseif</span> abs(UD.O(ij(1),ij(2))) &lt; eps*1e1
+0870             str = <span class="string">'{\bf orthogonal}'</span>;
+0871         <span class="keyword">else</span>
+0872             str = <span class="string">'{\bf not orthogonal}'</span>;
+0873         <span class="keyword">end</span>
+0874         <span class="keyword">if</span> ~diff(ij), str=[str,<span class="string">' {\it(same column)}'</span>]; <span class="keyword">end</span>
+0875         <span class="keyword">if</span> UD.bC(ij(1),ij(2)), tmp=<span class="string">' ={\it r}'</span>; <span class="keyword">else</span>, tmp=<span class="string">''</span>; <span class="keyword">end</span>
+0876         str = {    sprintf(<span class="string">'{\\bf %s} (col %d) &amp; {\\bf %s} (col %d)'</span>,<span class="keyword">...</span>
+0877                 UD.Xnames{ij(1)},ij(1),<span class="keyword">...</span>
+0878                 UD.Xnames{ij(2)},ij(2)),<span class="keyword">...</span>
+0879             sprintf(<span class="string">'cos(\\theta)%s = %1.2f'</span>,<span class="keyword">...</span>
+0880                 tmp,UD.O(ij(1),ij(2))),<span class="keyword">...</span>
+0881             [<span class="string">'\rightarrow '</span>,str]};
+0882         istr = <span class="string">'tex'</span>;
+0883     <span class="keyword">catch</span>, str=<span class="string">'(no cached data to surf)'</span>; <span class="keyword">end</span>
+0884 <span class="keyword">case</span> {<span class="string">'extend'</span>,<span class="string">'alt'</span>}
+0885     <span class="keyword">return</span>
+0886 <span class="keyword">case</span> <span class="string">'open'</span>
+0887     <span class="keyword">try</span>,    UD = get(gco,<span class="string">'UserData'</span>);
+0888         assignin(<span class="string">'base'</span>,<span class="string">'ans'</span>,UD.O)
+0889         evalin(<span class="string">'base'</span>,<span class="string">'ans'</span>)
+0890     <span class="keyword">catch</span>,    fprintf(<span class="string">'%s GUI: can''t find design orthogonality\n'</span>,mfilename)
+0891     <span class="keyword">end</span>
+0892     <span class="keyword">return</span>
+0893 <span class="keyword">end</span>
+0894 
+0895 set(h,<span class="string">'String'</span>,str,<span class="string">'Interpreter'</span>,istr)
+0896 
+0897 
+0898 <span class="comment">%=======================================================================</span>
+0899 <span class="keyword">case</span> {<span class="string">'surfcon_cb'</span>,<span class="string">'surfconmo_cb'</span>,<span class="string">'surfconup_cb'</span>}        <span class="comment">%-Surf Contrast</span>
+0900 <span class="comment">%=======================================================================</span>
+0901 <span class="comment">% ui_report(D, 'SurfCon_CB')</span>
+0902 <span class="comment">% ui_report(D, 'SurfConOMo_CB')</span>
+0903 <span class="comment">% ui_report(D, 'SurfConOUp_CB')</span>
+0904 
+0905 cUD = get(gco,<span class="string">'UserData'</span>);
+0906 <span class="keyword">if</span> ~isstruct(cUD) | ~<a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(cUD,<span class="string">'h'</span>)
+0907     warning(<span class="string">'contrast GUI objects setup incorrectly'</span>), <span class="keyword">return</span>
+0908 <span class="keyword">end</span>
+0909 h    = cUD.h;
+0910 
+0911 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfconup_cb'</span>)
+0912     UD = get(h,<span class="string">'UserData'</span>);
+0913     set(h,<span class="string">'String'</span>,UD.String,<span class="string">'Interpreter'</span>,UD.Interpreter,<span class="keyword">...</span>
+0914         <span class="string">'UserData'</span>,UD.UserData)
+0915     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,<span class="string">''</span>,<span class="string">'WindowButtonUpFcn'</span>,<span class="string">''</span>)
+0916     <span class="keyword">return</span>
+0917 <span class="keyword">end</span>
+0918 
+0919 <span class="keyword">if</span> strcmp(lower(varargin{1}),<span class="string">'surfcon_cb'</span>)
+0920     UD = struct(    <span class="string">'String'</span>,    get(h,<span class="string">'String'</span>),<span class="keyword">...</span>
+0921             <span class="string">'Interpreter'</span>,    get(h,<span class="string">'Interpreter'</span>),<span class="keyword">...</span>
+0922             <span class="string">'UserData'</span>,    get(h,<span class="string">'UserData'</span>));
+0923     set(h,<span class="string">'UserData'</span>,UD)
+0924     set(gcbf,<span class="string">'WindowButtonMotionFcn'</span>,[cb <span class="string">'ui_report(tmp, ''SurfConMo_CB'')'</span>],<span class="keyword">...</span>
+0925          <span class="string">'WindowButtonUpFcn'</span>,    [cb <span class="string">'ui_report(tmp, ''SurfConUp_CB'')'</span>])
+0926 <span class="keyword">end</span>
+0927 
+0928 mm  = [get(gca,<span class="string">'YLim'</span>)',get(gca,<span class="string">'XLim'</span>)']+[.5,.5;-.5,-.5];
+0929 ij  = get(gca,<span class="string">'CurrentPoint'</span>);
+0930 ij  = round(min(max(ij(1,[2,1]),mm(1,:)),mm(2,:)));
+0931 
+0932 istr = <span class="string">'none'</span>;
+0933 <span class="keyword">switch</span> get(gcbf,<span class="string">'SelectionType'</span>)
+0934 <span class="keyword">case</span> <span class="string">'normal'</span>
+0935     <span class="keyword">try</span>
+0936         <span class="keyword">if</span> cUD.i&gt;0, str = sprintf(<span class="string">'%d'</span>,cUD.i); <span class="keyword">else</span>, str = <span class="string">''</span>; <span class="keyword">end</span>
+0937         <span class="keyword">switch</span> get(gco,<span class="string">'Type'</span>)
+0938         <span class="keyword">case</span> <span class="string">'image'</span>
+0939             str = sprintf(<span class="string">'%s\\{F\\}: {\\bf%s} (%d,%d) = %.2f'</span>,<span class="keyword">...</span>
+0940                 str,cUD.xCon.name,ij(2),ij(1),<span class="keyword">...</span>
+0941                 cUD.xCon.c(ij(2),ij(1)));
+0942         <span class="keyword">case</span> <span class="string">'patch'</span>
+0943             str = sprintf(<span class="string">'%s\\{T\\}: {\\bf%s} (%d) = %.2f'</span>,<span class="keyword">...</span>
+0944                 str,cUD.xCon.name,ij(2),<span class="keyword">...</span>
+0945                 cUD.xCon.c(ij(2)));
+0946         <span class="keyword">otherwise</span>, error(<span class="string">'unexpected object type'</span>)
+0947         <span class="keyword">end</span>
+0948         istr = <span class="string">'TeX'</span>;
+0949     <span class="keyword">catch</span>, str=<span class="string">'(no cached data to surf)'</span>; <span class="keyword">end</span>
+0950 <span class="keyword">case</span> {<span class="string">'alt'</span>,<span class="string">'extend'</span>}
+0951     <span class="keyword">return</span>
+0952 <span class="keyword">case</span> <span class="string">'open'</span>
+0953     <span class="keyword">try</span>,    assignin(<span class="string">'base'</span>,<span class="string">'ans'</span>,cUD.xCon.c')
+0954         evalin(<span class="string">'base'</span>,<span class="string">'ans'</span>)
+0955     <span class="keyword">catch</span>,    fprintf(<span class="string">'%s GUI: can''t find contrast\n'</span>,mfilename)
+0956     <span class="keyword">end</span>
+0957     <span class="keyword">return</span>
+0958 <span class="keyword">end</span>
+0959 
+0960 set(h,<span class="string">'String'</span>,str,<span class="string">'Interpreter'</span>,istr)
+0961 
+0962 
+0963 <span class="comment">%=======================================================================</span>
+0964 <span class="keyword">otherwise</span>                                        <span class="comment">%-Unknown action string</span>
+0965 <span class="comment">%=======================================================================</span>
+0966 error([<span class="string">'Unknown action string: '</span>,varargin{1}])
+0967 
+0968 
+0969 
+0970 <span class="comment">%=======================================================================</span>
+0971 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Git for development &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Git for development</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="git-for-development">
+<span id="git-development"></span><h1>Git for development<a class="headerlink" href="#git-for-development" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="forking_hell.html">Making your own copy (fork) of marsbar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forking_hell.html#set-up-and-configure-a-github-account">Set up and configure a github account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forking_hell.html#create-your-own-forked-copy-of-marsbar">Create your own forked copy of marsbar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="set_up_fork.html">Set up your fork</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="set_up_fork.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="set_up_fork.html#in-detail">In detail</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configure_git.html">Configure git</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configure_git.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configure_git.html#in-detail">In detail</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development_workflow.html">Development workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#workflow-summary">Workflow summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#making-a-new-feature-branch">Making a new feature branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#the-editing-workflow">The editing workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#asking-for-code-review">Asking for code review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#asking-for-your-changes-to-be-merged-with-the-main-repo">Asking for your changes to be merged with the main repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#merging-from-trunk">Merging from trunk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#deleting-a-branch-on-github">Deleting a branch on github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#several-people-sharing-a-single-repository">Several people sharing a single repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_workflow.html#exploring-your-repository">Exploring your repository</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/development/gitwash/git_development.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Git for development</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

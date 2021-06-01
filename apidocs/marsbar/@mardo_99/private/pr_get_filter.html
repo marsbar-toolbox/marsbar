@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_get_filter</title>
+  <meta name="keywords" content="pr_get_filter">
+  <meta name="description" content="gets filter using spm_fmri_spm_ui routines">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_get_filter.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_get_filter
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>gets filter using spm_fmri_spm_ui routines</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [K, LFstr, HFstr] = pr_get_filter(RT, row) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> gets filter using spm_fmri_spm_ui routines
+ FORMAT [K, LFstr, HFstr]= pr_get_filter(RT, row)
+ or
+ FORMAT [K, LFstr, HFstr]= pr_get_filter(RT, Sess)
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../../marsbar/@mardo_2/private/pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_spm_filter.html" class="code" title="function [argout] = pr_spm_filter(K,Y)">pr_spm_filter</a>	Removes low frequency confounds X0</li>
+<li><a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>	contruct and/or apply high and/or low pass filter</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../../marsbar/@mardo_2/ui_get_filter.html" class="code" title="function [D,descrip] = ui_get_filter(D)">ui_get_filter</a>	method to get filter via GUI</li>
+<li><a href="../../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../../marsbar/@mardo_99/ui_get_filter.html" class="code" title="function [D,descrip] = ui_get_filter(D)">ui_get_filter</a>	method to get filter via GUI</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [K, LFstr, HFstr] = pr_get_filter(RT, row)</a>
+0002 <span class="comment">% gets filter using spm_fmri_spm_ui routines</span>
+0003 <span class="comment">% FORMAT [K, LFstr, HFstr]= pr_get_filter(RT, row)</span>
+0004 <span class="comment">% or</span>
+0005 <span class="comment">% FORMAT [K, LFstr, HFstr]= pr_get_filter(RT, Sess)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $Id$</span>
+0008   
+0009 <span class="keyword">if</span> nargin &lt; 2
+0010   error(<span class="string">'Need TR, row / Sess matrix'</span>);
+0011 <span class="keyword">end</span>
+0012 
+0013 <span class="comment">% number of sessions</span>
+0014 nsess = length(row);
+0015 
+0016 <span class="comment">% rows from Sess</span>
+0017 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(row{1}, <span class="string">'row'</span>)
+0018   Sess = row;
+0019   <span class="keyword">for</span> s = 1:nsess
+0020     row{s} = Sess{s}.row;
+0021   <span class="keyword">end</span>
+0022 <span class="keyword">else</span>
+0023   Sess = [];
+0024 <span class="keyword">end</span>
+0025 
+0026 <span class="comment">% copied from spm_fmri_spm_ui</span>
+0027 BM = 0;
+0028 
+0029 <span class="comment">% High-pass filtering</span>
+0030 <span class="comment">%-----------------------------------------------------------------------</span>
+0031 <span class="keyword">if</span> BM
+0032     cLF = <span class="string">'none'</span>;
+0033 <span class="keyword">else</span>
+0034     cLF = spm_input(<span class="string">'High-pass filter?'</span>,<span class="string">'+1'</span>,<span class="string">'b'</span>,<span class="string">'none|specify'</span>);
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">switch</span> cLF
+0037 
+0038     <span class="keyword">case</span> <span class="string">'specify'</span>
+0039 
+0040     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Sess)
+0041     <span class="comment">% default based on peristimulus time</span>
+0042     <span class="comment">% param = cut-off period (max = 512, min = 32)</span>
+0043     <span class="comment">%---------------------------------------------------------------</span>
+0044     HParam = 512*ones(1,nsess);
+0045     <span class="keyword">for</span>  i = 1:nsess
+0046         <span class="keyword">for</span> j = 1:length(Sess{i}.pst)
+0047            HParam(i) = min([HParam(i) 2*max(RT + Sess{i}.pst{j})]);
+0048         <span class="keyword">end</span>
+0049     <span class="keyword">end</span>
+0050     HParam = ceil(HParam);
+0051     HParam(HParam &lt; 32) = 32;
+0052     <span class="keyword">else</span> <span class="comment">% don't have SPM to work from</span>
+0053       HParam = 120 * ones(1,nsess);
+0054     <span class="keyword">end</span>
+0055     str    = <span class="string">'session cutoff period (secs)'</span>;
+0056     HParam = spm_input(str,<span class="string">'+1'</span>,<span class="string">'e'</span>,HParam,[1 nsess]);
+0057 
+0058     <span class="comment">% LF description</span>
+0059     <span class="comment">%---------------------------------------------------------------</span>
+0060     LFstr = sprintf(<span class="string">'[min] Cutoff period %d seconds'</span>,min(HParam));
+0061 
+0062     <span class="keyword">case</span> <span class="string">'none'</span>
+0063     <span class="comment">%---------------------------------------------------------------</span>
+0064     HParam = cell(1,nsess);
+0065     LFstr  = cLF;
+0066 
+0067 <span class="keyword">end</span>
+0068 
+0069 
+0070 <span class="comment">% Low-pass filtering</span>
+0071 <span class="comment">%-----------------------------------------------------------------------</span>
+0072 <span class="keyword">if</span> BM
+0073     cHF = <span class="string">'none'</span>;
+0074 <span class="keyword">else</span>
+0075     cHF = spm_input(<span class="string">'Low-pass filter?'</span>,<span class="string">'+1'</span>,<span class="string">'none|Gaussian|hrf'</span>);
+0076 
+0077 
+0078 <span class="keyword">end</span>
+0079 <span class="keyword">switch</span> cHF
+0080 
+0081     <span class="keyword">case</span> <span class="string">'Gaussian'</span>
+0082     <span class="comment">%---------------------------------------------------------------</span>
+0083     LParam  = spm_input(<span class="string">'Gaussian FWHM (secs)'</span>,<span class="string">'+1'</span>,<span class="string">'r'</span>,4);
+0084     HFstr   = sprintf(<span class="string">'Gaussian FWHM %0.1f seconds'</span>,LParam);
+0085     LParam  = LParam/sqrt(8*log(2));
+0086 
+0087     <span class="keyword">case</span> {<span class="string">'hrf'</span>, <span class="string">'none'</span>}
+0088     <span class="comment">%---------------------------------------------------------------</span>
+0089     LParam  = [];
+0090     HFstr   = cHF;
+0091 
+0092 <span class="keyword">end</span>
+0093 
+0094 <span class="comment">% create filter struct and band-pass specification</span>
+0095 <span class="comment">%-----------------------------------------------------------------------</span>
+0096 <span class="keyword">for</span> i = 1:nsess
+0097     K{i} = struct(    <span class="string">'HChoice'</span>,    cLF,<span class="keyword">...</span>
+0098             <span class="string">'HParam'</span>,    HParam(i),<span class="keyword">...</span>
+0099             <span class="string">'LChoice'</span>,    cHF,<span class="keyword">...</span>
+0100             <span class="string">'LParam'</span>,    LParam,<span class="keyword">...</span>
+0101             <span class="string">'row'</span>,        row{i},<span class="keyword">...</span>
+0102             <span class="string">'RT'</span>,        RT);
+0103 <span class="keyword">end</span>
+0104 
+0105 <span class="comment">% Construct K struct</span>
+0106 <span class="comment">%=======================================================================</span>
+0107 K       = <a href="pr_spm_filter.html" class="code" title="function [vargout] = pr_spm_filter(Action,K,Y)">pr_spm_filter</a>(<span class="string">'set'</span>,K);
+0108         
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of spm_get</title>
+  <meta name="keywords" content="spm_get">
+  <meta name="description" content="compatibility function to allow spm_get calls with SPM5">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm5</a> &gt; spm_get.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm5&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>spm_get
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>compatibility function to allow spm_get calls with SPM5</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = spm_get(Action, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> compatibility function to allow spm_get calls with SPM5
+
+ SPM5 uses a function called spm_select to do file selection instead of
+ the spm_get of versions 96-2.  This breaks a lot of old code; here we
+ wrap the most common calls to spm_get so that we can use
+ spm_select. I've only wrapped the spm_get calls used in marsbar.  
+
+ Usually, file / directory selection call is of format:
+ FORMAT P = spm_get(N, ext, prompt, newwdir)
+ Input
+ N        - matrix specifying what (file or dir) to select, and how
+            many to select.
+ ext      - the filter for files to select
+ prompt   - the prompt to display for the selection window
+ newwdir  - new working directory
+
+ Output
+ P        - a string matrix of file names
+
+ First argument can also be action string:
+ FORMAT cpath = spm_get('CPath',path,cwd)
+ (returns canonical version of file path 'path')
+ FORMAT [files,dirs]=spm_select('files',direc,filt)
+ (Returns files matching the filter (filt) and directories within dir)
+
+ See spm_select from the spm5 distribution, and spm_get from spm2
+ distribution
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/cd_images.html" class="code" title="function D = cd_images(D, newpath, byteswap)">cd_images</a>	method for changing path to image files in design</li>
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_2/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_2/private/pr_spm_ui.html" class="code" title="function varargout = pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/@mardo_5/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/fill.html" class="code" title="function D = fill(D, actions)">fill</a>	fills missing entries from SPM FMRI design matrix</li>
+<li><a href="../../marsbar/@mardo_99/private/pr_spm_ui.html" class="code" title="function varargout=pr_spm_ui(varargin)">pr_spm_ui</a>	MarsBaR: setting up the general linear model for independent data</li>
+<li><a href="../../marsbar/@maroi/private/my_roifname.html" class="code" title="function roifname = my_roifname(fname)">my_roifname</a>	changes fname to appropriate ROI format</li>
+<li><a href="../../marsbar/examples/batch/configure_er_model.html" class="code" title="function model_file = configure_er_model(sess_dir, sesses, sdirname)">configure_er_model</a>	batch script wrapper to configure model for MarsBaR ER data</li>
+<li><a href="../../marsbar/examples/batch/er_model_spm2.html" class="code" title="function SPM = er_model_spm2(sess_dir, sesses, ana_dir)">er_model_spm2</a>	SPM2 batch script wrapper for ER data</li>
+<li><a href="../../marsbar/examples/batch/er_model_spm99.html" class="code" title="">er_model_spm99</a>	------------------------------------------------------------------</li>
+<li><a href="../../marsbar/examples/batch/er_smooth.html" class="code" title="function er_smooth(subjroot, sesses, filt, fwhm)">er_smooth</a>	smooth images prior to analysis</li>
+<li><a href="../../marsbar/examples/batch/get_subjroot.html" class="code" title="function subjroot = get_subjroot()">get_subjroot</a>	FORMAT subjroot = get_subjroot()</li>
+<li><a href="../../marsbar/mars_arm_call.html" class="code" title="function [o,errf,msg] = mars_arm_call(action, o, item, old_o)">mars_arm_call</a>	services callbacks from marmoire object set functions</li>
+<li><a href="../../marsbar/mars_blobs2rois.html" class="code" title="function mars_blobs2rois(xSPM, roipath, rootn)">mars_blobs2rois</a>	creates ROIs from spm_results_ui SPM</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_image_scaling.html" class="code" title="function [VY,row] = mars_image_scaling(marsD)">mars_image_scaling</a>	get image scaling data for images, maybe via SPM design</li>
+<li><a href="../../marsbar/mars_img2rois.html" class="code" title="function mars_img2rois(P, roipath, rootn, flags)">mars_img2rois</a>	creates ROIs from cluster image or image containing ROIs defined by unique nos</li>
+<li><a href="../../marsbar/mars_options.html" class="code" title="function [mars, msgstr] = mars_options(optstr, mars, cfg_fname)">mars_options</a>	options utility routines</li>
+<li><a href="../../marsbar/mars_orthviews.html" class="code" title="function varargout = mars_orthviews(action,varargin)">mars_orthviews</a>	Display Orthogonal Views of a Normalized Image</li>
+<li><a href="../../marsbar/mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+<li><a href="../../marsbar/mars_utils.html" class="code" title="function varargout=mars_utils(varargin)">mars_utils</a>	collection of useful utility functions for MarsBaR etc</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+<li><a href="../../marsbar/release/test_rig.html" class="code" title="function res = test_rig(design_paths, params)">test_rig</a>	runs tests on MarsBaR using specified designs</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function F = sf_get_to_select_filt(F)</a></li>
+<li><a href="#_sub2" class="code">function new_str = sf_shexp_regexp(old_str)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = spm_get(Action, varargin)</a>
+0002 <span class="comment">% compatibility function to allow spm_get calls with SPM5</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% SPM5 uses a function called spm_select to do file selection instead of</span>
+0005 <span class="comment">% the spm_get of versions 96-2.  This breaks a lot of old code; here we</span>
+0006 <span class="comment">% wrap the most common calls to spm_get so that we can use</span>
+0007 <span class="comment">% spm_select. I've only wrapped the spm_get calls used in marsbar.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Usually, file / directory selection call is of format:</span>
+0010 <span class="comment">% FORMAT P = spm_get(N, ext, prompt, newwdir)</span>
+0011 <span class="comment">% Input</span>
+0012 <span class="comment">% N        - matrix specifying what (file or dir) to select, and how</span>
+0013 <span class="comment">%            many to select.</span>
+0014 <span class="comment">% ext      - the filter for files to select</span>
+0015 <span class="comment">% prompt   - the prompt to display for the selection window</span>
+0016 <span class="comment">% newwdir  - new working directory</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">% Output</span>
+0019 <span class="comment">% P        - a string matrix of file names</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% First argument can also be action string:</span>
+0022 <span class="comment">% FORMAT cpath = spm_get('CPath',path,cwd)</span>
+0023 <span class="comment">% (returns canonical version of file path 'path')</span>
+0024 <span class="comment">% FORMAT [files,dirs]=spm_select('files',direc,filt)</span>
+0025 <span class="comment">% (Returns files matching the filter (filt) and directories within dir)</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% See spm_select from the spm5 distribution, and spm_get from spm2</span>
+0028 <span class="comment">% distribution</span>
+0029 
+0030 nout = max(nargout,1);
+0031 
+0032 <span class="keyword">if</span> nargin &lt; 1
+0033   Action=Inf;
+0034 <span class="keyword">end</span>
+0035 
+0036 <span class="comment">% If the first argument is a string, this is an action</span>
+0037 <span class="keyword">if</span> ischar(Action)
+0038   <span class="keyword">switch</span>(lower(Action))
+0039    <span class="keyword">case</span> <span class="string">'cpath'</span>
+0040     varargout = {spm_select(<span class="string">'cpath'</span>, varargin{:})};
+0041    <span class="keyword">case</span> <span class="string">'files'</span>
+0042     <span class="keyword">if</span> nargin &lt; 2
+0043       Dir = pwd;
+0044     <span class="keyword">else</span>
+0045       Dir = varargin{1};
+0046     <span class="keyword">end</span>
+0047     <span class="keyword">if</span> nargin &lt; 3
+0048       Filt = <span class="string">'.*'</span>;
+0049     <span class="keyword">else</span>
+0050       Filt = <a href="#_sub1" class="code" title="subfunction F = sf_get_to_select_filt(F)">sf_get_to_select_filt</a>(varargin{2});
+0051     <span class="keyword">end</span>
+0052     varargout = {spm_select(<span class="string">'list'</span>, Dir, Filt)};
+0053     <span class="comment">% The old spm_get returned full file paths</span>
+0054     Files = varargout{1};
+0055     varargout{1} = [repmat([Dir filesep], size(Files, 1), 1) Files];
+0056    <span class="keyword">otherwise</span>
+0057     error([Action <span class="string">': I''m sorry, but I can''t do that'</span>]);
+0058   <span class="keyword">end</span>
+0059   <span class="keyword">if</span> strcmp(Action, <span class="string">'files'</span>), Action=<span class="string">'List'</span>; <span class="keyword">end</span>
+0060 
+0061   <span class="keyword">return</span>
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="comment">% Otherwise, must be file / directory selection</span>
+0065 <span class="keyword">if</span> nargin &lt; 2
+0066   Filt = <span class="string">'any'</span>;
+0067 <span class="keyword">else</span>
+0068   Filt = varargin{1};
+0069   varargin(1) = [];
+0070   Filt = <a href="#_sub1" class="code" title="subfunction F = sf_get_to_select_filt(F)">sf_get_to_select_filt</a>(Filt);
+0071 <span class="keyword">end</span>
+0072 <span class="keyword">if</span> any(Action &lt; 0)
+0073   <span class="comment">% Directory select</span>
+0074   Action = abs(Action);
+0075   Filt = <span class="string">'dir'</span>;
+0076 <span class="keyword">end</span>
+0077 <span class="keyword">if</span> nargin&lt;3
+0078   Prompt=<span class="string">'Select files...'</span>;
+0079 <span class="keyword">else</span>
+0080   Prompt = varargin{1};
+0081   varargin(1) = [];
+0082 <span class="keyword">end</span>
+0083 <span class="keyword">if</span> nargin&lt;4
+0084     wd = pwd;
+0085 <span class="keyword">else</span>
+0086     wd = varargin{1};
+0087     varargin(1) = []; <span class="comment">% pop processed argument</span>
+0088 <span class="keyword">end</span>
+0089 <span class="keyword">if</span> length(varargin) ~= 0
+0090     error(<span class="string">'Sorry, we do not handle this call to spm_select'</span>);
+0091 <span class="keyword">end</span>
+0092 varargout = {spm_select(Action, Filt, Prompt, {<span class="string">''</span>}, wd)};
+0093 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(varargout), <span class="keyword">return</span>, <span class="keyword">end</span>
+0094 <span class="comment">% Cell array prompt should return cell array of arguments</span>
+0095 <span class="keyword">if</span> iscellstr(Prompt)
+0096   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(varargout{1})
+0097     varargout{1} = {};
+0098   <span class="keyword">else</span>
+0099     varargout{1} = cellstr(varargout{1});
+0100   <span class="keyword">end</span>
+0101 <span class="keyword">end</span>
+0102 <span class="keyword">return</span>
+0103 
+0104 
+0105 <span class="comment">% Subfunctions</span>
+0106 <a name="_sub1" href="#_subfunctions" class="code">function F = sf_get_to_select_filt(F)</a>
+0107 <span class="comment">% Converts filter for old spm_get routine to something for spm_select</span>
+0108 <span class="keyword">if</span> strcmpi(F, <span class="string">'image'</span>), F = lower(F); <span class="keyword">return</span>, <span class="keyword">end</span>
+0109 F = <a href="#_sub2" class="code" title="subfunction new_str = sf_shexp_regexp(old_str)">sf_shexp_regexp</a>(F);
+0110 <span class="keyword">return</span>
+0111 
+0112 <a name="_sub2" href="#_subfunctions" class="code">function new_str = sf_shexp_regexp(old_str)</a>
+0113 <span class="comment">% Does basic conversion from shell expression to regexp</span>
+0114 <span class="comment">% Have ignored some quoting issues here:</span>
+0115 <span class="comment">% http://www.unix.org.ua/orelly/perl/cookbook/ch06_10.htm</span>
+0116 <span class="comment">% sub glob2pat {</span>
+0117 <span class="comment">%    my $globstr = shift;</span>
+0118 <span class="comment">%    my %patmap = (</span>
+0119 <span class="comment">%        '*' =&gt; '.*',</span>
+0120 <span class="comment">%        '?' =&gt; '.',</span>
+0121 <span class="comment">%        '[' =&gt; '[',</span>
+0122 <span class="comment">%        ']' =&gt; ']',</span>
+0123 <span class="comment">%    );</span>
+0124 <span class="comment">%    $globstr =~ s{(.)} { $patmap{$1} || &quot;\Q$1&quot; }ge;</span>
+0125 <span class="comment">%    return '^' . $globstr . '$';</span>
+0126 <span class="comment">%}</span>
+0127 
+0128 new_str = <span class="string">'^'</span>;
+0129 <span class="keyword">for</span> c = old_str
+0130   <span class="keyword">switch</span> c
+0131    <span class="keyword">case</span> <span class="string">'*'</span>
+0132     nc = <span class="string">'.*'</span>;
+0133    <span class="keyword">case</span> <span class="string">'?'</span>
+0134     nc = <span class="string">'.'</span>;
+0135    <span class="keyword">case</span> {<span class="string">'.'</span>, <span class="string">'^'</span>, <span class="string">'$'</span>, <span class="string">'+'</span>}
+0136     nc = [<span class="string">'\'</span> c]; 
+0137    <span class="keyword">otherwise</span>
+0138     nc = c;
+0139   <span class="keyword">end</span>
+0140   new_str = [new_str nc];
+0141 <span class="keyword">end</span>
+0142 new_str = [new_str <span class="string">'$'</span>];
+0143 <span class="keyword">return</span>
+0144   
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

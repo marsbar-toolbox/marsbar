@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of domaths</title>
+  <meta name="keywords" content="domaths">
+  <meta name="description" content="helper function to do maths on matrix object">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_matrix</a> &gt; domaths.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_matrix&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>domaths
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>helper function to do maths on matrix object</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = domaths(func, dat1, dat2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> helper function to do maths on matrix object
+ Binary operations (&amp; | ~ xor etc) return binarize type objects
+ Other operations return not-binarize type objects
+ ROI reslicing thresholds are set from defaults
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>	method gets cell string description of design</li>
+<li><a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>	binarize - returns / sets binarize value for object</li>
+<li><a href="../../marsbar/@maroi/descrip.html" class="code" title="function h = descrip(obj, val)">descrip</a>	name - returns / sets name value for object</li>
+<li><a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>	roithresh - returns / sets roithresh value for object</li>
+<li><a href="../../marsbar/@maroi/source.html" class="code" title="function h = source(obj, val)">source</a>	source - returns / sets source value for object</li>
+<li><a href="../../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>	overloaded xor function</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/and.html" class="code" title="function o = and(o1, o2)">and</a>	overloaded add function</li>
+<li><a href="../../marsbar/@maroi/eq.html" class="code" title="function o = eq(o1, o2)">eq</a>	overloaded eq function</li>
+<li><a href="../../marsbar/@maroi/ge.html" class="code" title="function o = ge(o1, o2)">ge</a>	overloaded ge function</li>
+<li><a href="../../marsbar/@maroi/gt.html" class="code" title="function o = gt(o1, o2)">gt</a>	overloaded gt (greater than) function</li>
+<li><a href="../../marsbar/@maroi/le.html" class="code" title="function o = le(o1, o2)">le</a>	overloaded le (less than or equal to) function</li>
+<li><a href="../../marsbar/@maroi/lt.html" class="code" title="function o = lt(o1, o2)">lt</a>	overloaded lt (less than) function</li>
+<li><a href="../../marsbar/@maroi/minus.html" class="code" title="function o = minus(o1, o2)">minus</a>	overloaded minus function</li>
+<li><a href="../../marsbar/@maroi/mrdivide.html" class="code" title="function o = mrdivide(o1, o2)">mrdivide</a>	overloaded mrdivide (matrix right divide) function</li>
+<li><a href="../../marsbar/@maroi/mtimes.html" class="code" title="function o = mtimes(o1, o2)">mtimes</a>	overloaded mtimes function</li>
+<li><a href="../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>	overloaded ne function</li>
+<li><a href="../../marsbar/@maroi/not.html" class="code" title="function o = not(o1)">not</a>	overloaded not function</li>
+<li><a href="../../marsbar/@maroi/or.html" class="code" title="function o = or(o1, o2)">or</a>	overloaded or function</li>
+<li><a href="../../marsbar/@maroi/plus.html" class="code" title="function o = plus(o1, o2)">plus</a>	overloaded plus function</li>
+<li><a href="../../marsbar/@maroi/rdivide.html" class="code" title="function o = rdivide(o1, o2)">rdivide</a>	overloaded rdivide function</li>
+<li><a href="../../marsbar/@maroi/times.html" class="code" title="function o = times(o1, o2)">times</a>	overloaded times function</li>
+<li><a href="../../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>	overloaded xor function</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function d = describething(o)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = domaths(func, dat1, dat2)</a>
+0002 <span class="comment">% helper function to do maths on matrix object</span>
+0003 <span class="comment">% Binary operations (&amp; | ~ xor etc) return binarize type objects</span>
+0004 <span class="comment">% Other operations return not-binarize type objects</span>
+0005 <span class="comment">% ROI reslicing thresholds are set from defaults</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $Id$</span>
+0008   
+0009 <span class="keyword">if</span> nargin &lt; 2
+0010   error(<span class="string">'Need function and object'</span>);
+0011 <span class="keyword">end</span>
+0012 <span class="keyword">if</span> nargin &lt; 3
+0013    dat2 = [];
+0014 <span class="keyword">end</span>
+0015 d1 = <a href="#_sub1" class="code" title="subfunction d = describething(o)">describething</a>(dat1);
+0016 d2 = <a href="#_sub1" class="code" title="subfunction d = describething(o)">describething</a>(dat2);
+0017 
+0018 <span class="keyword">if</span> isa(dat1, <span class="string">'maroi'</span>)
+0019   o = dat1; dat1 = dat1.dat;
+0020 <span class="keyword">else</span> <span class="comment">% second must be an object</span>
+0021   o = dat2; 
+0022 <span class="keyword">end</span>
+0023 <span class="keyword">if</span> isa(dat2, <span class="string">'maroi'</span>)
+0024   dat2 = dat2.dat;
+0025 <span class="keyword">end</span>
+0026 
+0027 <span class="keyword">if</span> nargin &lt; 3 <span class="comment">% no second object</span>
+0028   d = sprintf(<span class="string">'%s(%s)'</span>, func, d1);
+0029 <span class="keyword">else</span> <span class="comment">% there is a second object / thing</span>
+0030   d = sprintf(<span class="string">'%s(%s, %s)'</span>, func, d1, d2);
+0031 <span class="keyword">end</span>
+0032 
+0033 <span class="keyword">switch</span> func
+0034   <span class="keyword">case</span> <span class="string">'and'</span>
+0035    o.dat = dat1 &amp; dat2;
+0036   <span class="keyword">case</span> <span class="string">'or'</span>
+0037    o.dat = dat1 | dat2;
+0038   <span class="keyword">case</span> <span class="string">'not'</span>
+0039    o.dat = ~dat1;
+0040   <span class="keyword">case</span> <span class="string">'xor'</span>
+0041    o.dat = <a href="../../marsbar/@maroi/xor.html" class="code" title="function o = xor(o1, o2)">xor</a>(dat1, dat2);
+0042   <span class="keyword">case</span> <span class="string">'plus'</span>
+0043    o.dat = dat1 + dat2;
+0044   <span class="keyword">case</span> <span class="string">'minus'</span>
+0045    o.dat = dat1 - dat2;
+0046   <span class="keyword">case</span> <span class="string">'times'</span>
+0047    o.dat = dat1 .* dat2;
+0048   <span class="keyword">case</span> <span class="string">'divide'</span>
+0049    o.dat = dat1 ./ dat2;
+0050   <span class="keyword">case</span> <span class="string">'lt'</span>
+0051    o.dat = dat1 &lt; dat2;
+0052   <span class="keyword">case</span> <span class="string">'gt'</span>
+0053    o.dat = dat1 &gt; dat2;
+0054   <span class="keyword">case</span> <span class="string">'le'</span>
+0055    o.dat = dat1 &lt;= dat2;
+0056   <span class="keyword">case</span> <span class="string">'ge'</span>
+0057    o.dat = dat1 &gt;= dat2;
+0058   <span class="keyword">case</span> <span class="string">'eq'</span>
+0059    o.dat = dat1 == dat2;
+0060   <span class="keyword">case</span> <span class="string">'ne'</span>
+0061    o.dat = dat1 ~= dat2;
+0062  <span class="keyword">otherwise</span>
+0063   error([<span class="string">'Function '</span> func <span class="string">' not yet defined'</span>]);
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="comment">% convert from logical to double if necessary</span>
+0067 o.dat = double(o.dat);
+0068 
+0069 binf = ismember(func, {<span class="keyword">...</span>
+0070     <span class="string">'and'</span>,<span class="keyword">...</span>
+0071     <span class="string">'or'</span>,<span class="keyword">...</span>
+0072     <span class="string">'not'</span>,<span class="keyword">...</span>
+0073     <span class="string">'xor'</span>,<span class="keyword">...</span>
+0074     <span class="string">'lt'</span>,<span class="keyword">...</span>
+0075     <span class="string">'gt'</span>,<span class="keyword">...</span>
+0076     <span class="string">'le'</span>,<span class="keyword">...</span>
+0077     <span class="string">'ge'</span>,<span class="keyword">...</span>
+0078     <span class="string">'eq'</span>,<span class="keyword">...</span>
+0079     <span class="string">'ne'</span>});
+0080 
+0081 o = <a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>(o, binf);
+0082 <span class="keyword">if</span> binf
+0083   o = <a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>(o, <a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'classdata'</span>, <span class="string">'def_binthresh'</span>));
+0084 <span class="keyword">else</span>
+0085   o = <a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>(o, <a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(<span class="string">'classdata'</span>, <span class="string">'def_wtthresh'</span>));
+0086 <span class="keyword">end</span>
+0087 o = <a href="../../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>(o, d);
+0088 o = <a href="../../marsbar/@maroi/source.html" class="code" title="function h = source(obj, val)">source</a>(o, <span class="string">''</span>);
+0089 
+0090 <a name="_sub1" href="#_subfunctions" class="code">function d = describething(o)</a>
+0091 <span class="keyword">if</span> isa(o, <span class="string">'maroi'</span>)
+0092   d = <a href="../../marsbar/@mardo/descrip.html" class="code" title="function strs = descrip(D)">descrip</a>(o);
+0093 <span class="keyword">elseif</span> isnumeric(o)
+0094   <span class="keyword">if</span> prod(size(o)) == 1 <span class="comment">% scalar</span>
+0095     d = num2str(o);
+0096   <span class="keyword">else</span>
+0097     d = <span class="string">'[matrix]'</span>;
+0098   <span class="keyword">end</span>    
+0099 <span class="keyword">else</span>
+0100   d = <span class="string">'[non numeric input]'</span>;
+0101 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of residuals</title>
+  <meta name="keywords" content="residuals">
+  <meta name="description" content="method returns residuals from model">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; residuals.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>residuals
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method returns residuals from model</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function r = residuals(D) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method returns residuals from model
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="get_data.html" class="code" title="function d = get_data(D)">get_data</a>	method to get data from design object</li>
+<li><a href="has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>	method returns 1 if design has been estimated in MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>	returns 1 if object contains filter</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@marsy/is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>	returns 1 if object contains calculated summary data</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="../../marsbar/@marsy/resummarize.html" class="code" title="function o = resummarize(o)">resummarize</a>	recalculate summary data if possible</li>
+<li><a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="../../marsbar/@marsy/summary_descrip.html" class="code" title="function res = summary_descrip(o, descrip)">summary_descrip</a>	get/set method for summary data description</li>
+<li><a href="../../marsbar/@marsy/summary_info.html" class="code" title="function res = summary_info(o, descrip)">summary_info</a>	get/set method for summary data info</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function r = residuals(D)</a>
+0002 <span class="comment">% method returns residuals from model</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005   
+0006 <span class="keyword">if</span> ~<a href="is_mars_estimated.html" class="code" title="function tf = is_mars_estimated(D)">is_mars_estimated</a>(D)
+0007   error(<span class="string">'Need estimated model'</span>);
+0008 <span class="keyword">end</span>
+0009 Y = <a href="get_data.html" class="code" title="function d = get_data(D)">get_data</a>(D);
+0010 <span class="keyword">if</span> ~<a href="../../marsbar/@marsy/is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>(Y)
+0011   Y = <a href="../../marsbar/@marsy/resummarize.html" class="code" title="function o = resummarize(o)">resummarize</a>(Y);
+0012 <span class="keyword">end</span>
+0013 <span class="keyword">if</span> ~<a href="../../marsbar/@marsy/is_summarized.html" class="code" title="function tf = is_summarized(o)">is_summarized</a>(Y)
+0014   error(<span class="string">'Cannot get summarized data from model data'</span>);
+0015 <span class="keyword">end</span>
+0016 y = <a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(Y);
+0017 
+0018 <span class="keyword">if</span> <a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D) 
+0019   <span class="keyword">if</span> ~<a href="has_filter.html" class="code" title="function tf = has_filter(o)">has_filter</a>(D)
+0020     error(<span class="string">'FMRI design lacks filter'</span>);
+0021   <span class="keyword">end</span>
+0022   y = <a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(D, y);
+0023 <span class="keyword">end</span>
+0024 
+0025 SPM = <a href="des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0026 r   = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(spm_sp(<span class="string">'r'</span>,SPM.xX.xKXs,y), <span class="keyword">...</span>
+0027         <a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(Y), <span class="keyword">...</span>
+0028         struct(<span class="string">'info'</span>,   <a href="../../marsbar/@marsy/summary_info.html" class="code" title="function res = summary_info(o, descrip)">summary_info</a>(Y),<span class="keyword">...</span>
+0029            <span class="string">'descrip'</span>, [<span class="string">'Residuals for '</span> <a href="../../marsbar/@marsy/summary_descrip.html" class="code" title="function res = summary_descrip(o, descrip)">summary_descrip</a>(Y)],<span class="keyword">...</span>
+0030            <span class="string">'block_rows'</span>, {<a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>(D)}));
+0031 
+0032 
+0033 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of do_write_image</title>
+  <meta name="keywords" content="do_write_image">
+  <meta name="description" content="method saves matrix as image and returns spm_vol">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_matrix</a> &gt; do_write_image.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_matrix&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>do_write_image
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method saves matrix as image and returns spm_vol</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function v = do_write_image(o, fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method saves matrix as image and returns spm_vol
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>	binarize - returns / sets binarize value for object</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+<li><a href="../../marsbar/spm99/spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>	Wrapper for spm_create_image, for compatibility with SPM2</li>
+<li><a href="../../marsbar/spm99/spm_write_vol.html" class="code" title="function V = spm_write_vol(V,Y)">spm_write_vol</a>	Write an image volume to disk, setting scales and offsets as appropriate</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/save_as_image.html" class="code" title="function v = save_as_image(o, fname, sp)">save_as_image</a>	method save_as_image - saves ROI as image</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function v = do_write_image(o, fname)</a>
+0002 <span class="comment">% method saves matrix as image and returns spm_vol</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 v = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'def_vol'</span>);
+0007 v.fname = fname;
+0008 v.mat = o.mat;
+0009 v.dim = size(o.dat);
+0010 
+0011 <span class="keyword">if</span> <a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>(o)
+0012   v = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'set_type'</span>, v, <span class="string">'uint8'</span>);
+0013 <span class="keyword">else</span>
+0014   v = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'set_type'</span>, v, <span class="string">'float'</span>);
+0015 <span class="keyword">end</span>
+0016 
+0017 v = <a href="../../marsbar/spm99/spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>(v);
+0018 v = <a href="../../marsbar/spm99/spm_write_vol.html" class="code" title="function V = spm_write_vol(V,Y)">spm_write_vol</a>(v, o.dat);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

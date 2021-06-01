@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of are_same</title>
+  <meta name="keywords" content="are_same">
+  <meta name="description" content="returns 1 if rois are the same">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi</a> &gt; are_same.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>are_same
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>returns 1 if rois are the same</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function tf = are_same(roi1, roi2, sp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns 1 if rois are the same
+ FORMAT tf = are_same(roi1, roi2)
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="../../marsbar/@maroi_matrix/maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+<li><a href="../../marsbar/@maroi_matrix/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_pointlist/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function tf = are_same(roi1, roi2, sp)</a>
+0002 <span class="comment">% returns 1 if rois are the same</span>
+0003 <span class="comment">% FORMAT tf = are_same(roi1, roi2)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% $Id$</span>
+0006 
+0007 <span class="keyword">if</span> nargin &lt; 2
+0008   error(<span class="string">'Need two ROIs'</span>);
+0009 <span class="keyword">end</span>
+0010 <span class="keyword">if</span> nargin &lt; 3
+0011   sp  = <a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(roi1);
+0012   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp)
+0013     sp = <a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(roi2);
+0014   <span class="keyword">end</span>
+0015   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp)
+0016     error(<span class="string">'Need space for comparison'</span>);
+0017   <span class="keyword">end</span>
+0018 <span class="keyword">end</span>
+0019 
+0020 mat1 = <a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>(<a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(roi1, sp));
+0021 mat2 = <a href="../../marsbar/@maroi_matrix/matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>(<a href="maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>(roi2, sp));
+0022 
+0023 tf = all(mat1(:)==mat2(:));
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

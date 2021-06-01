@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_blob2roi</title>
+  <meta name="keywords" content="mars_blob2roi">
+  <meta name="description" content="saves ROI for cluster in xSPM structure, containing point pt">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_blob2roi.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_blob2roi
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>saves ROI for cluster in xSPM structure, containing point pt</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function mars_blob2roi(xSPM, pt) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> saves ROI for cluster in xSPM structure, containing point pt
+ FORMAT mars_blob2roi(xSPM, pt)
+
+ Input
+ xSPM         - SPM results structure with needed fields
+                  title
+                  XYZ   - voxel coordinates of activated points
+                  Z     - statistic values for activated points
+                  M     - 4x4 matrix from voxels to mm 
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>	maroi_pointlist - class constructor</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/spm2/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm5/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+<li><a href="../marsbar/spm99/mars_blob_ui.html" class="code" title="function mars_blob_ui(action)">mars_blob_ui</a>	Displays SPM results, and ROI menu in SPM input window</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function mars_blob2roi(xSPM, pt)</a>
+0002 <span class="comment">% saves ROI for cluster in xSPM structure, containing point pt</span>
+0003 <span class="comment">% FORMAT mars_blob2roi(xSPM, pt)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Input</span>
+0006 <span class="comment">% xSPM         - SPM results structure with needed fields</span>
+0007 <span class="comment">%                  title</span>
+0008 <span class="comment">%                  XYZ   - voxel coordinates of activated points</span>
+0009 <span class="comment">%                  Z     - statistic values for activated points</span>
+0010 <span class="comment">%                  M     - 4x4 matrix from voxels to mm</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013 
+0014 <span class="keyword">if</span> nargin &lt; 1
+0015   error(<span class="string">'Need SPM structure'</span>);
+0016 <span class="keyword">end</span>
+0017 <span class="keyword">if</span> nargin &lt; 2
+0018   error(<span class="string">'Need point to identify cluster'</span>);
+0019 <span class="keyword">end</span>
+0020 
+0021 vx_i = spm_XYZreg(<span class="string">'findxyz'</span>, pt, xSPM.XYZmm);
+0022 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(vx_i)
+0023   msgbox(<span class="string">'No activated voxel at this location'</span>);
+0024   <span class="keyword">return</span>
+0025 <span class="keyword">end</span>
+0026 Clusters = spm_clusters(xSPM.XYZ);
+0027 cXYZ = xSPM.XYZmm(:, Clusters==Clusters(vx_i));  
+0028 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cXYZ), <span class="keyword">return</span>, <span class="keyword">end</span>
+0029 d = sprintf(<span class="string">'%s cluster at [%0.1f %0.1f %0.1f]'</span>, xSPM.title, pt);
+0030 l = sprintf(<span class="string">'%s_%0.0f_%0.0f_%0.0f'</span>, xSPM.title, pt);
+0031 o = <a href="../marsbar/@maroi_pointlist/maroi_pointlist.html" class="code" title="function [o, others] = maroi_pointlist(params, type)">maroi_pointlist</a>(struct(<span class="string">'XYZ'</span>,cXYZ, <span class="string">'mat'</span>, xSPM.M, <span class="keyword">...</span>
+0032                <span class="string">'label'</span>, l, <span class="string">'descrip'</span>, d));
+0033 <a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>(<span class="string">'saveroi'</span>, o);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

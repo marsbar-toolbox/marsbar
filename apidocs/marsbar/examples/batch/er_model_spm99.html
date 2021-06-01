@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of er_model_spm99</title>
+  <meta name="keywords" content="er_model_spm99">
+  <meta name="description" content="------------------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="#">examples</a> &gt; <a href="index.html">batch</a> &gt; er_model_spm99.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/examples/batch&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>er_model_spm99
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>------------------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">------------------------------------------------------------------
+ SPM99 batch mfile to configure analysis for 3 sessions of ER data
+------------------------------------------------------------------
+
+ $Id: er_model_spm99.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $ 
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%------------------------------------------------------------------</span>
+0002 <span class="comment">% SPM99 batch mfile to configure analysis for 3 sessions of ER data</span>
+0003 <span class="comment">%------------------------------------------------------------------</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% $Id: er_model_spm99.m,v 1.1.1.1 2004/08/14 00:07:52 matthewbrett Exp $</span>
+0006 
+0007 <span class="keyword">global</span> SPM_BCH_VARS
+0008 
+0009 sess_dir = SPM_BCH_VARS.sess_dir;
+0010 sesses = SPM_BCH_VARS.sesses;
+0011 nsessions = length(sesses);
+0012 
+0013 TR = 2.02726;
+0014 condnames = {<span class="string">'vis_stim'</span>};
+0015 nconds = length(condnames);
+0016   
+0017 clear scannames scannos;
+0018 <span class="keyword">for</span> ss = 1:nsessions
+0019   fildir = fullfile(sess_dir, sesses{ss});
+0020   <span class="comment">% get scan names for the analysis</span>
+0021   files = <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'Files'</span>, fildir, <span class="string">'s*.img'</span>);
+0022   scannos(ss) = size(files,1);
+0023   scannames(ss) = {files};
+0024   
+0025   <span class="comment">% Condition stuff - onset times for visual stimulus</span>
+0026   condir = fullfile(fildir, <span class="string">'onsets'</span>);
+0027   condfile = <a href="../../../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(<span class="string">'Files'</span>, condir, <span class="string">'flash*.txt'</span>);
+0028   condons = spm_load(condfile);
+0029   stimons = condons(:,2); <span class="comment">% get stimulus column</span>
+0030   stimons(stimons &lt; 0) = 0;  <span class="comment">% correct negative onsets</span>
+0031   
+0032   conditions(ss) = struct( <span class="keyword">...</span>
+0033       <span class="string">'names'</span>, {condnames},<span class="keyword">...</span>
+0034       <span class="string">'onsets'</span>,{{stimons}},<span class="keyword">...</span>
+0035       <span class="string">'types'</span>,   {repmat({<span class="string">'events'</span>},1,nconds)}, <span class="keyword">...</span><span class="comment"> </span>
+0036       <span class="string">'bf_ev'</span>,   [ones(1,nconds)], <span class="keyword">...</span>
+0037       <span class="string">'bf_ep'</span>,   [0], <span class="keyword">...</span>
+0038       <span class="string">'volterra'</span>,  0, <span class="keyword">...</span>
+0039       <span class="string">'variable_dur'</span>, 0 <span class="keyword">...</span>
+0040       );
+0041 
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%---------------------------------------------------------------</span>
+0045 <span class="comment">% batch variables defined here for analysis 'model'</span>
+0046 <span class="comment">%---------------------------------------------------------------</span>
+0047 o = ones(1, nsessions);
+0048 model(1) = struct( <span class="keyword">...</span>
+0049  <span class="string">'types'</span>,          4, <span class="keyword">...</span>
+0050  <span class="string">'global_effects'</span>, {<span class="string">'None'</span>}, <span class="keyword">...</span>
+0051  <span class="string">'burst_mode'</span>,     0, <span class="keyword">...</span>
+0052  <span class="string">'HF_fil'</span>,         <span class="string">'specify'</span>,  <span class="keyword">...</span>
+0053  <span class="string">'HF_cut'</span>,         o * 60, <span class="keyword">...</span>
+0054  <span class="string">'LF_fil'</span>,         <span class="string">'hrf'</span>, <span class="keyword">...</span>
+0055  <span class="string">'LF_cut'</span>,         4, <span class="keyword">...</span>
+0056  <span class="string">'int_corr'</span>,       <span class="string">'none'</span>, <span class="keyword">...</span><span class="comment"> </span>
+0057  <span class="string">'now_later'</span>,      0 , <span class="keyword">...</span><span class="comment">   % flag is 0 -&gt; configure only</span>
+0058  <span class="string">'stop_writing'</span>,   0, <span class="keyword">...</span>
+0059  <span class="string">'trial_fcon'</span>,     0, <span class="keyword">...</span>
+0060  <span class="string">'RT'</span>,             TR, <span class="keyword">...</span>
+0061  <span class="string">'replicated'</span>,     0, <span class="keyword">...</span>
+0062  <span class="string">'nsess'</span>,          nsessions, <span class="keyword">...</span>
+0063  <span class="string">'nscans'</span>,         scannos, <span class="keyword">...</span>
+0064  <span class="string">'files'</span>,          {scannames}, <span class="keyword">...</span>
+0065  <span class="string">'conditions_nb'</span>,  [ones(1,nsessions) * nconds], <span class="keyword">...</span><span class="comment">     </span>
+0066  <span class="string">'conditions'</span>,     [1:nsessions], <span class="keyword">...</span>
+0067  <span class="string">'regressors_nb'</span>,  o * 0, <span class="keyword">...</span>
+0068  <span class="string">'regressors'</span>,     [], <span class="keyword">...</span>
+0069  <span class="string">'parametrics_type'</span>, {repmat({<span class="string">'none'</span>},1,nsessions)}, <span class="keyword">...</span>
+0070  <span class="string">'parametrics'</span>,    [], <span class="keyword">...</span>
+0071  <span class="string">'stochastics_flag'</span>, [0], <span class="keyword">...</span>
+0072  <span class="string">'stochastics'</span>,    [] <span class="keyword">...</span>
+0073 );
+0074 
+0075 <span class="comment">%-------------------------------------------</span>
+0076 
+0077 bf_ev(1) = struct( <span class="keyword">...</span>
+0078   <span class="string">'ev_type'</span>, 2, <span class="keyword">...</span><span class="comment"> %   2 &lt;-&gt;  'hrf + temporal derivative',</span>
+0079   <span class="string">'win_len'</span>,[], <span class="keyword">...</span>
+0080   <span class="string">'order'</span>,  [] <span class="keyword">...</span><span class="comment">  </span>
+0081 );
+0082 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

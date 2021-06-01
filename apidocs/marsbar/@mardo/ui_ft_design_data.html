@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ui_ft_design_data</title>
+  <meta name="keywords" content="ui_ft_design_data">
+  <meta name="description" content="method plots FT of design and data to graphics window">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; ui_ft_design_data.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>ui_ft_design_data
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method plots FT of design and data to graphics window</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function ui_ft_design_data(D, mY, e_s, opts) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method plots FT of design and data to graphics window
+ FORMAT ui_ft_design_data(D, mY, e_s, opts)
+ 
+ Inputs
+ D           - design object
+ mY          - marsy data object
+ e_s         - event specification (session no, event no)
+ opts        - struct containing optional fields
+               'event_name' - name for the event
+               'filter' - apply design filter
+               'fig'    - figure handle to plot to
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="design_matrix.html" class="code" title="function X = design_matrix(D)">design_matrix</a>	method returns design matrix from design</li>
+<li><a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points in design</li>
+<li><a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_2/ui_get_event.html" class="code" title="function [e_spec, e_name] = ui_get_event(D)">ui_get_event</a>	method to select an event</li>
+<li><a href="../../marsbar/@mardo_99/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>	applies filter in design to data</li>
+<li><a href="../../marsbar/@mardo_99/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>	returns cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@mardo_99/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>	method gets design columns for single event</li>
+<li><a href="../../marsbar/@mardo_99/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@mardo_99/ui_get_event.html" class="code" title="function [e_spec, e_name] = ui_get_event(D)">ui_get_event</a>	method to select an event</li>
+<li><a href="../../marsbar/@marsy/block_rows.html" class="code" title="function r = block_rows(Y, rows)">block_rows</a>	gets/sets cell array of rows for each (subject/session) block</li>
+<li><a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>	Class constructor for marsy: the MarsBaR data object</li>
+<li><a href="../../marsbar/@marsy/n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>	get number of time_points</li>
+<li><a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>	method gets or sets data for region name</li>
+<li><a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>	method to get summary data, maybe set sumfunc</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ui_ft_design_data(D, mY, e_s, opts)</a>
+0002 <span class="comment">% method plots FT of design and data to graphics window</span>
+0003 <span class="comment">% FORMAT ui_ft_design_data(D, mY, e_s, opts)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% D           - design object</span>
+0007 <span class="comment">% mY          - marsy data object</span>
+0008 <span class="comment">% e_s         - event specification (session no, event no)</span>
+0009 <span class="comment">% opts        - struct containing optional fields</span>
+0010 <span class="comment">%               'event_name' - name for the event</span>
+0011 <span class="comment">%               'filter' - apply design filter</span>
+0012 <span class="comment">%               'fig'    - figure handle to plot to</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% $Id$</span>
+0015   
+0016 <span class="keyword">if</span> ~<a href="is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0017   disp(<span class="string">'Need an FMRI design for design/data plot'</span>);
+0018   <span class="keyword">return</span>
+0019 <span class="keyword">end</span>
+0020 <span class="keyword">if</span> nargin &lt; 2
+0021   error(<span class="string">'Need data to plot against'</span>);
+0022 <span class="keyword">end</span>
+0023 mY = <a href="../../marsbar/@marsy/marsy.html" class="code" title="function [o,others] = marsy(params, region_stuff, summary_stuff)">marsy</a>(mY);
+0024 <span class="keyword">if</span> <a href="n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(mY) ~= <a href="n_time_points.html" class="code" title="function n = n_time_points(o)">n_time_points</a>(D)
+0025   error(<span class="string">'Design and data have different number of rows'</span>);
+0026 <span class="keyword">end</span>
+0027 
+0028 <span class="keyword">if</span> nargin &lt; 3, e_s = []; <span class="keyword">end</span>
+0029 <span class="keyword">if</span> nargin &lt; 4, opts = []; <span class="keyword">end</span>
+0030 
+0031 e_n = <span class="string">'Event'</span>;
+0032 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(e_s)
+0033   <span class="comment">% Setup input window</span>
+0034   [Finter,Fgraph,CmdLine] = spm(<span class="string">'FnUIsetup'</span>,<span class="string">'Design filter'</span>, 1);
+0035   [e_s e_n] = <a href="../../marsbar/@mardo_2/ui_get_event.html" class="code" title="function [e_spec, e_name] = ui_get_event(D)">ui_get_event</a>(D);
+0036 <span class="keyword">end</span>
+0037 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(opts, <span class="string">'fig'</span>)
+0038   Fgraph = opts.fig; 
+0039 <span class="keyword">else</span> 
+0040   Fgraph = spm_figure(<span class="string">'GetWin'</span>);
+0041 <span class="keyword">end</span>
+0042 e_n_tmp = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, opts, <span class="string">'event_name'</span>);
+0043 <span class="keyword">if</span> ~<a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(e_n_tmp)
+0044   e_n = e_n_tmp;
+0045 <span class="keyword">end</span>
+0046 
+0047 s = e_s(1);
+0048 e = e_s(2);
+0049 
+0050 <span class="comment">% Get the regressors and data</span>
+0051 X         = <a href="design_matrix.html" class="code" title="function X = design_matrix(D)">design_matrix</a>(D);
+0052 R         = X(:, <a href="../../marsbar/@mardo_2/event_cols.html" class="code" title="function I = event_cols(D, e_spec)">event_cols</a>(D,e_s));
+0053 Y         = <a href="../../marsbar/@marsy/summary_data.html" class="code" title="function [Y,Yvar,o] = summary_data(o, sumfunc_str)">summary_data</a>(mY);
+0054 r         = <a href="../../marsbar/@mardo_2/block_rows.html" class="code" title="function rows = block_rows(D)">block_rows</a>(D);
+0055 r         = r{s};
+0056 R         = R(r,:);
+0057 Y         = Y(r,:);
+0058 
+0059 <span class="comment">% Filter data if requested</span>
+0060 <span class="keyword">if</span> <a href="isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(opts, <span class="string">'filter'</span>)
+0061     R = <a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(D, R, struct(<span class="string">'sessions'</span>, s));
+0062     Y = <a href="../../marsbar/@mardo_2/apply_filter.html" class="code" title="function Y = apply_filter(D, Y, flags)">apply_filter</a>(D, Y, struct(<span class="string">'sessions'</span>, s));
+0063 <span class="keyword">end</span> 
+0064 
+0065 TR        = <a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>(D);
+0066 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(TR)
+0067   b_len = 1; 
+0068   b_str   = <span class="string">'cycles per time point'</span>;
+0069 <span class="keyword">else</span>
+0070   b_len = TR; 
+0071   b_str   = <span class="string">'Hz'</span>;
+0072 <span class="keyword">end</span>
+0073 q         = length(r);
+0074 Hz        = [0:(q - 1)]/(q * b_len);
+0075 q         = 2:fix(q/2);
+0076 Hz        = Hz(q);
+0077 
+0078 figure(Fgraph)
+0079 subplot(2,1,1);
+0080 gX    = abs(fft(R)).^2;
+0081 gX    = gX*diag(1./sum(gX));
+0082 gX    = gX(q,:);
+0083 plot(Hz, gX);
+0084 xlabel(sprintf(<span class="string">'Frequency (%s)'</span>, b_str))
+0085 ylabel(<span class="string">'Relative spectral density'</span>)
+0086 t_str = sprintf(<span class="string">'Regressors for %s: block %d'</span>, e_n, e_s(1));
+0087 title(t_str, <span class="string">'interpreter'</span>, <span class="string">'none'</span>);
+0088 axis tight
+0089 
+0090 subplot(2,1,2);
+0091 gX    = abs(fft(spm_detrend(Y))).^2;
+0092 gX    = gX*diag(1./sum(gX));
+0093 gX    = gX(q,:);
+0094 plot(Hz, gX);
+0095 xlabel(sprintf(<span class="string">'Frequency (%s)'</span>, b_str))
+0096 ylabel(<span class="string">'Relative spectral density'</span>)
+0097 title(<span class="string">'Region data'</span>);
+0098 legend(<a href="../../marsbar/@marsy/region_name.html" class="code" title="function res = region_name(o, r_nos, new_data, default_prefix)">region_name</a>(mY));
+0099 axis tight
+0100 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

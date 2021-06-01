@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of rebase</title>
+  <meta name="keywords" content="rebase">
+  <meta name="description" content="rebase method - returns data from maroi_matrix in new space">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_matrix</a> &gt; rebase.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_matrix&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>rebase
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>rebase method - returns data from maroi_matrix in new space</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [pts, vals] = rebase(obj, sp, flags) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> rebase method - returns data from maroi_matrix in new space
+ Unless flags contains 'i', returns [pts, vals]
+ otherwise returns matrix in new space
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>	binarize - returns / sets binarize value for object</li>
+<li><a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>	roithresh - returns / sets roithresh value for object</li>
+<li><a href="../../marsbar/@maroi/spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>	hold - returns / sets hold value for object</li>
+<li><a href="../../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>	vol - returns / sets image vol for object</li>
+<li><a href="spm_mat.html" class="code" title="function M = spm_mat(obj)">spm_mat</a>	spm_mat method - returns mat file defining orientation etc</li>
+<li><a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="voxpts.html" class="code" title="function [pts, vals] = voxpts(obj, sp)">voxpts</a>	voxpts method - returns 3xN ijk matrix in voxels</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [pts, vals] = rebase(obj, sp, flags)</a>
+0002 <span class="comment">% rebase method - returns data from maroi_matrix in new space</span>
+0003 <span class="comment">% Unless flags contains 'i', returns [pts, vals]</span>
+0004 <span class="comment">% otherwise returns matrix in new space</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% $Id$</span>
+0007 
+0008 <span class="keyword">if</span> nargin &lt; 2
+0009   error(<span class="string">'Need space to give voxel points'</span>);
+0010 <span class="keyword">end</span>
+0011 <span class="keyword">if</span> nargin &lt; 3
+0012   flags = <span class="string">''</span>;
+0013 <span class="keyword">end</span>
+0014 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(flags), flags = <span class="string">' '</span>;<span class="keyword">end</span>
+0015 
+0016 sp = <a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(sp);
+0017 <a href="../../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = obj.dat;
+0018 mat = <a href="spm_mat.html" class="code" title="function M = spm_mat(obj)">spm_mat</a>(obj);
+0019 Hold = <a href="../../marsbar/@maroi/spm_hold.html" class="code" title="function h = spm_hold(obj, val)">spm_hold</a>(obj);
+0020 th = <a href="../../marsbar/@maroi/roithresh.html" class="code" title="function h = roithresh(obj, val)">roithresh</a>(obj);
+0021 binf = <a href="../../marsbar/@maroi/binarize.html" class="code" title="function h = binarize(obj, val)">binarize</a>(obj);
+0022 
+0023 <span class="keyword">if</span> any(flags == <span class="string">'i'</span>)
+0024   pts = zeros(sp.dim(1:3));
+0025   vals = [];
+0026 <span class="keyword">else</span> <span class="comment">% points call</span>
+0027   pts = cell(1, sp.dim(3));
+0028   multvc = cell(1, sp.dim(3));
+0029 <span class="keyword">end</span>
+0030 
+0031 <span class="keyword">for</span> z=1:sp.dim(3),
+0032   M = inv(mat) * sp.mat * spm_matrix([0 0 z]);
+0033   img = spm_slice_vol(<a href="../../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,M,sp.dim(1:2),Hold);
+0034   tmp = abs(img) &gt;= th;
+0035   img(~tmp) = 0;
+0036   <span class="keyword">if</span> any(tmp(:))
+0037     <span class="keyword">if</span> binf, img(tmp) = 1; <span class="keyword">end</span>
+0038     <span class="keyword">if</span> any(flags == <span class="string">'i'</span>) <span class="comment">% image to return</span>
+0039       pts(:,:,z) = img;
+0040     <span class="keyword">else</span> <span class="comment">% point list</span>
+0041       tmp = find(tmp);
+0042       multvc(z) = {img(tmp)'};
+0043       tmp = tmp-1;
+0044       y = floor(tmp/sp.dim(1));
+0045       x = tmp - (y*sp.dim(1));
+0046       o = ones(1, length(x));
+0047       pts(z) = {[[x y]'+1; o*z]};
+0048     <span class="keyword">end</span>
+0049   <span class="keyword">end</span>
+0050 <span class="keyword">end</span>
+0051 <span class="keyword">if</span> ~any(flags == <span class="string">'i'</span>)
+0052   pts =  [pts{:}];  
+0053   vals = [multvc{:}];
+0054 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

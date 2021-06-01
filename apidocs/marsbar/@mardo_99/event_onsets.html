@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of event_onsets</title>
+  <meta name="keywords" content="event_onsets">
+  <meta name="description" content="method gets (estimated) onsets and durations for event/session">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; event_onsets.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>event_onsets
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method gets (estimated) onsets and durations for event/session</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [onsets, durations] = event_onsets(D, e_spec) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method gets (estimated) onsets and durations for event/session
+ FORMAT [onsets durations] = event_onsets(D, e_spec)
+
+ D          - design object
+ e_spec     - event specification (see event_fitted for details)
+ 
+ Returns
+ onsets     - onset times in TRs
+ durations  - duration of events in TRs
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>	get/set method for des_struct field</li>
+<li><a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>	method returns 1 if this is an fmri design</li>
+<li><a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+<li><a href="../../marsbar/@mardo_2/bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="../../marsbar/@mardo_2/tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>	method returns length of time bin for basis functions</li>
+<li><a href="tr.html" class="code" title="function t = tr(o)">tr</a>	method returns TR in seconds, or empty if not available</li>
+<li><a href="../../marsbar/@marsy/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>	get/set method for verbose field</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="event_x_fir.html" class="code" title="function Xn = event_x_fir(D, e_spec, bin_length, bin_no, opts)">event_x_fir</a>	method to return FIR design matrix columns for session</li>
+<li><a href="mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [onsets, durations] = event_onsets(D, e_spec)</a>
+0002 <span class="comment">% method gets (estimated) onsets and durations for event/session</span>
+0003 <span class="comment">% FORMAT [onsets durations] = event_onsets(D, e_spec)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - design object</span>
+0006 <span class="comment">% e_spec     - event specification (see event_fitted for details)</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Returns</span>
+0009 <span class="comment">% onsets     - onset times in TRs</span>
+0010 <span class="comment">% durations  - duration of events in TRs</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013   
+0014 <span class="keyword">if</span> nargin &lt; 2
+0015   error(<span class="string">'Need design and event spec'</span>);
+0016 <span class="keyword">end</span>
+0017 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/is_fmri.html" class="code" title="function tf = is_fmri(D)">is_fmri</a>(D)
+0018   error(<span class="string">'Needs FMRI design'</span>);
+0019 <span class="keyword">end</span>
+0020 <span class="keyword">if</span> prod(size(e_spec)) &gt; 2
+0021   error(<span class="string">'Can only deal with one event at a time'</span>); 
+0022 <span class="keyword">end</span>
+0023 dt = <a href="bf_dt.html" class="code" title="function d = bf_dt(D)">bf_dt</a>(D);
+0024 TR = <a href="tr.html" class="code" title="function t = tr(o)">tr</a>(D);
+0025 
+0026 s={<span class="string">'SPM99 design: attempting dodgy reconstruction of onsets/durations'</span>, <span class="keyword">...</span>
+0027    <span class="string">'Reconstruction assumes that:'</span>,<span class="keyword">...</span>
+0028    <span class="string">'Events of this trial type never overlap in time (before convolution)'</span>, <span class="keyword">...</span>
+0029    <span class="string">'(if they do, your SPM99 model will be badly messed up in any case)'</span>,<span class="keyword">...</span>
+0030    <span class="string">'and:'</span>, <span class="keyword">...</span>
+0031    <span class="string">'The gap between the end of one event and beginning of the next '</span>, <span class="keyword">...</span>
+0032    sprintf(<span class="string">'is always more than %3.2f seconds'</span>, dt)};
+0033 <span class="keyword">if</span> <a href="../../marsbar/@mardo/verbose.html" class="code" title="function res = verbose(obj, data)">verbose</a>(D), warning(sprintf(<span class="string">'%s\n'</span>, s{:})); <span class="keyword">end</span>
+0034 
+0035 s = e_spec(1);
+0036 e = e_spec(2);
+0037 SPM   = <a href="../../marsbar/@mardo/des_struct.html" class="code" title="function res = des_struct(obj, Struct)">des_struct</a>(D);
+0038 sf    = SPM.Sess{s}.sf{e}(:,1);
+0039 
+0040 sfi    = find(sf);
+0041 dsfi   = [1; diff(sfi) &gt; 1];
+0042 onsets = sfi(logical(dsfi));
+0043 durations = zeros(size(onsets));
+0044 
+0045 <span class="keyword">for</span> oi = 1:length(onsets)
+0046   pos  = onsets(oi);
+0047   durations(oi) = 0;
+0048   <span class="keyword">while</span>(sf(pos))
+0049     durations(oi) = durations(oi) + 1;
+0050     pos = pos + 1;
+0051     <span class="keyword">if</span> pos &gt; length(sf), <span class="keyword">break</span>, <span class="keyword">end</span>
+0052   <span class="keyword">end</span>
+0053 <span class="keyword">end</span>
+0054 
+0055 sc = dt / TR;
+0056 onsets    = (onsets - 1) * sc;
+0057 durations = (durations - 1) * sc;
+0058        
+0059 <span class="comment">% In fact, the above is durations, as entered by the users.  The durations</span>
+0060 <span class="comment">% as expressed in the design matrix are given by (durations) * sc</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

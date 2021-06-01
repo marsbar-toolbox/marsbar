@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of savestruct</title>
+  <meta name="keywords" content="savestruct">
+  <meta name="description" content="saves data in structure as variables in .mat file">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; savestruct.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>savestruct
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>saves data in structure as variables in .mat file</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function savestruct(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> saves data in structure as variables in .mat file
+ FORMAT savestruct(matname, struct) or
+ FORMAT savestruct(struct, matname)  
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in def_struct as variables in .mat file</li>
+<li><a href="../marsbar/@mardo_99/save_spm.html" class="code" title="function tf = save_spm(D, fname);">save_spm</a>	method to save design as SPM format design structure</li>
+<li><a href="../marsbar/@marmoire/do_save.html" class="code" title="function [res, o] = do_save(o, item, flags, filename)">do_save</a>	method  to save data for item</li>
+<li><a href="../marsbar/@marsy/savestruct.html" class="code" title="function savestruct(obj, filename)">savestruct</a>	saves data in y_struct as variables in .mat file</li>
+<li><a href="mars_armoire.html" class="code" title="function varargout = mars_armoire(action, item, data, filename)">mars_armoire</a>	multifunction function to get/set various stores of stuff</li>
+<li><a href="marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function savestruct(varargin)</a>
+0002 <span class="comment">% saves data in structure as variables in .mat file</span>
+0003 <span class="comment">% FORMAT savestruct(matname, struct) or</span>
+0004 <span class="comment">% FORMAT savestruct(struct, matname)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% $Id$</span>
+0007   
+0008 <span class="keyword">if</span> nargin ~= 2
+0009   error(<span class="string">'Need matfile name and structure (only)'</span>);
+0010 <span class="keyword">end</span>
+0011 <span class="keyword">if</span> isstruct(varargin{1}), varargin = varargin([2 1]); <span class="keyword">end</span>
+0012 varargin{3} = fieldnames(varargin{2});
+0013 <span class="keyword">if</span> any(ismember(varargin{3}, {<span class="string">'wombat_tongue'</span>}))
+0014   error(<span class="string">'Whoops, unexpected use of wombat_tongue'</span>);
+0015 <span class="keyword">end</span>
+0016 <span class="keyword">for</span> wombat_tongue = 1:length(varargin{3})
+0017   eval([varargin{3}{wombat_tongue} <span class="string">' = varargin{2}.'</span> varargin{3}{wombat_tongue} <span class="keyword">...</span>
+0018     <span class="string">';'</span>]);
+0019 <span class="keyword">end</span>
+0020 save(varargin{1}, varargin{3}{:});
+0021 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

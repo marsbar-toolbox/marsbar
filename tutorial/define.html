@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Defining ROIs &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running the ROI analysis" href="estimate.html" />
+    <link rel="prev" title="The MarsBaR / SPM interface" href="interface.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="estimate.html" title="Running the ROI analysis"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="interface.html" title="The MarsBaR / SPM interface"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Defining ROIs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="defining-rois">
+<h1>Defining ROIs<a class="headerlink" href="#defining-rois" title="Permalink to this headline">¶</a></h1>
+<p>The preprocessing script has already run an SPM model for run 2 (and run 1 and
+run 3). Now we need to find an activation cluster in the visual cortex.</p>
+<p>Go to the MarsBaR window, and click on ROI definition. You should get a menu
+like this:</p>
+<img alt="../_images/define_menu.png" src="../_images/define_menu.png" />
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - the ROI definition menu</p>
+<dl class="simple">
+<dt>View</dt><dd><p>displays one or ROIs on a structural image.</p>
+</dd>
+<dt>Get SPM cluster(s)</dt><dd><p>uses the SPM results interface to select and save activation
+clusters as ROIs.</p>
+</dd>
+<dt>Build</dt><dd><p>gives an interface to various methods for defining ROIs, using
+shapes (boxes, spheres), activation clusters, and binary images.</p>
+</dd>
+<dt>Transform</dt><dd><p>offers a GUI for combining ROIs, and for flipping the orientation
+of an ROI to the right or left side of the brain.</p>
+</dd>
+<dt>Import</dt><dd><p>allows you to import all SPM activations as ROIs, or to import ROIs
+from cluster images, such as those written by the SPM results
+interface, or from images where ROIs are defined by number labels
+(ROI 1 has value 1, ROI 2 has value 2, etc.). Similarly</p>
+</dd>
+<dt>Export</dt><dd><p>writes ROIs as images for use in other packages, such as <a class="reference external" href="http://www.mricro.com/">MRIcro</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="defining-a-functional-roi">
+<h2>Defining a functional ROI<a class="headerlink" href="#defining-a-functional-roi" title="Permalink to this headline">¶</a></h2>
+<p>We are going to define the functional ROI using the SPM analysis for
+run 2. Select <em>Get SPM cluster(s)…</em>: from the menu. This runs the
+standard SPM results interface. Use the file selection window that SPM
+offers to navigate to the <code class="docutils literal notranslate"><span class="pre">sess2/SPM8_ana</span></code> directory. Select the
+SPM.mat file and click <em>Done</em>. Choose the <code class="docutils literal notranslate"><span class="pre">stim_hrf</span></code> t contrast from
+the SPM contrast manager, click <em>Done</em>. Then accept all the default
+answers from the interface, like this:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 76%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prompt</p></th>
+<th class="head"><p>Response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>apply masking</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-odd"><td><p>title for comparison</p></td>
+<td><p>stim_hrf</p></td>
+</tr>
+<tr class="row-even"><td><p>p value adjustment to control</p></td>
+<td><p>none</p></td>
+</tr>
+<tr class="row-odd"><td><p>threshold {T or p value}</p></td>
+<td><p>0.05</p></td>
+</tr>
+<tr class="row-even"><td><p>&amp; extent threshold {voxels}</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - MarsBaR and SPM designs</p>
+<p>For the large majority of tasks, MarsBaR can use SPM designs
+interchangeably.  For example, when running with SPM5, you can load
+SPM99 designs and estimate them in MarsBaR; you can also estimate
+SPM5 designs from MarsBaR, even if you are using - say -
+SPM99. However, MarsBaR uses the standard SPM routines for the ‘Get
+SPM cluster(s)’ routines. This means that if, for example, you are
+running SPM5 you can only get clusters from an SPM5 design and you
+can only get clusters from an SPM99 design if you are running SPM99.</p>
+</div>
+<p>Now you have run the <em>Get SPM cluster(s)</em> interface, you should have an SPM
+activation map in the graphics window:</p>
+<img alt="../_images/spm_run2.png" src="../_images/spm_run2.png" />
+<p>Meanwhile, you may have noticed there is a new menu in the SPM input window:</p>
+<img alt="../_images/write_rois_menu.png" src="../_images/write_rois_menu.png" />
+<p>Another thing you may not have noticed is that the matlab working
+directory has now changed to the <code class="docutils literal notranslate"><span class="pre">sess2/SPM8_ana</span></code>. SPM does this to be
+able to keep track of where its results files are.</p>
+<p>Move the red arrow in the SPM graphics window to the activation cluster in the
+visual cortex. You can do this by dragging the arrow, or right-clicking to the
+right of the axial view and choosing <code class="docutils literal notranslate"><span class="pre">goto</span> <span class="pre">global</span> <span class="pre">maxima</span></code>.</p>
+<p>When the red arrow is in the main cluster, click on the Write ROI(s) menu in
+the SPM input window and select Write one cluster.</p>
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - Write ROI(s)</p>
+<dl class="simple">
+<dt>Write one cluster</dt><dd><p>writes out a single cluster at the selected location.</p>
+</dd>
+<dt>Write all clusters</dt><dd><p>writes all clusters from the SPM map; MarsBaR will ask for a
+directory to save the files, and a root name for the ROI files
+before saving each ROI as a separate file.</p>
+</dd>
+<dt>Rerun results UI</dt><dd><p>restarts the SPM results interface as if you had clicked on the
+SPM results button; Clear clears the SPM graphics window.</p>
+</dd>
+</dl>
+</div>
+<p>After you have selected Write one cluster, MarsBaR asks for details to save
+with the ROI, which are a description, and a label. Both provide information
+about the ROI for statistical output and display. The label should be 20
+characters or so, the description can be longer. For the moment, accept the
+defaults, which derive from the coordinates of the voxel under the red arrow
+and the title of the contrast:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prompt</p></th>
+<th class="head"><p>Response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Description of ROI</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stim_hrf</span></code> cluster at [-9.0 -93.0 -15.0]</p></td>
+</tr>
+<tr class="row-odd"><td><p>Label for ROI</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stim_hrf_-9_-93_-15</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>After this, MarsBaR offers a dialog box to give a filename for the
+ROI. By default the offered filename will be
+<code class="docutils literal notranslate"><span class="pre">stim_hrf_-9_-93_-15_roi.mat</span></code> in the <code class="docutils literal notranslate"><span class="pre">sess2/SPM8_ana</span></code> directory. For
+simplicity, why not accept the default name and click Save to save the
+ROI.</p>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - ROIs and filenames</p>
+<p>MarsBaR stores each ROI in a separate file. In fact, the files are in
+the Matlab <code class="docutils literal notranslate"><span class="pre">.mat</span></code> format.  MarsBaR will accept any filename for the
+ROI, and can load ROIs from any file that you have saved them to, but
+it will suggest that you save the ROI with a filename that ends in
+<code class="docutils literal notranslate"><span class="pre">_roi.mat</span></code>. This is just for convenience, so that when you are asked to
+select ROIs, the MarsBaR GUI can assume that ROI files end with this
+suffix. It will probably make your life easier if you keep to this
+convention.</p>
+</div>
+</div>
+<div class="section" id="review-the-roi">
+<h2>Review the ROI<a class="headerlink" href="#review-the-roi" title="Permalink to this headline">¶</a></h2>
+<p>We can now review this ROI to check if it is a good definition of the visual
+cortex. Click on the ROI definition menu in the MarsBaR window, and select
+View…. Choose the ROI and click Done. Your ROI should be displayed in blue on
+an average structural image:</p>
+<img alt="../_images/roi_view.png" src="../_images/roi_view.png" />
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - the view utility</p>
+<p>The view utility allows you to click around the image to review the
+ROI in the standard orthogonal views. You can select multiple ROIs to
+view on the same structural. The list box to the left of the axial
+view allows you to move to a particular ROI (if you have more than
+one). When the cross-hairs are in the ROI, the information panel will
+show details for that ROI, such as centre of mass, and volume in
+mm. The default structural image is the MNI 152 T1 average brain; you
+can choose any image to display ROIs on by clicking on the
+Options… menu in the MarsBaR window, then choosing Edit Options…,
+followed by Default structural.</p>
+</div>
+</div>
+<div class="section" id="refining-the-roi">
+<h2>Refining the ROI<a class="headerlink" href="#refining-the-roi" title="Permalink to this headline">¶</a></h2>
+<p>Now we have reviewed the ROI, we see that the cluster does include
+visual cortex, but there also seems to be some connected activation
+lateral and inferior to the primary visual cortex. The cross-hairs in
+the figure are at something like the border between primary visual
+cortex and more lateral voxels. Ideally we would like to restrict the
+ROI to voxels in the primary visual cortex.</p>
+<p>We can do this by defining a box ROI that covers the area we are interested in,
+and combining this with the activation cluster.</p>
+<div class="section" id="defining-a-box-roi">
+<h3>Defining a box ROI<a class="headerlink" href="#defining-a-box-roi" title="Permalink to this headline">¶</a></h3>
+<p>To decide on the box dimensions, click around the ROI in the view interface and
+note the coordinates of the cross-hairs that are shown at the top of the bottom
+left panel. This may suggest to you, as it did to us, that it would be good to
+restrict the ROI to between -20 and +20mm in X, -66 to -106mm in Y, and -20 to
++7mm in Z.</p>
+<p>To define this box ROI, click on ROI definition, and choose Build…, . You
+will see a new menu in the SPM input window:</p>
+<img alt="../_images/roi_build.png" src="../_images/roi_build.png" />
+<p>From the menu, select Box (ranges XYZ). Answer the prompts like this:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prompt</p></th>
+<th class="head"><p>Response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>[2] Range in X (mm)</p></td>
+<td><p>-20 20</p></td>
+</tr>
+<tr class="row-odd"><td><p>[2] Range in Y (mm)</p></td>
+<td><p>-66 -106</p></td>
+</tr>
+<tr class="row-even"><td><p>[2] Range in Z (mm)</p></td>
+<td><p>-20 7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description of ROI</p></td>
+<td><p>box at -20.0&gt;X&lt;20.0 -106.0&gt;Y&lt;-66.0 -20.0&gt;Z&lt;7.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Label for ROI</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">box_x_-20:20_y_-106:-66_z_-20:7</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Filename</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">box_x_-20_20_y_-106_-66_z_-20_7_roi.mat</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The last three values here are the defaults.</p>
+<p>To check this is as you want it, choose ROI Definition, View, select
+both of <code class="docutils literal notranslate"><span class="pre">box_x_-20_20_y_-106_-66_z_-20_7_roi.mat</span></code> and
+<code class="docutils literal notranslate"><span class="pre">stim_hrf_-9_-93_-12_roi.mat</span></code>, in that order, and click Done. You
+should see the box in blue, with the activation cluster overlaid in red.</p>
+<p>We now need to combine the two ROIs, to select only those voxels that are
+shared by the box and the activation cluster.</p>
+</div>
+<div class="section" id="combining-rois">
+<h3>Combining ROIs<a class="headerlink" href="#combining-rois" title="Permalink to this headline">¶</a></h3>
+<p>Choose ROI Definition, Transform… A new menu comes up in the SPM input
+window. Choose Combine ROIs; select both the box and the cluster ROIs, click
+on Done. The prompt now asks for a function with which to combine the ROIs.
+In this function, the first ROI you selected is r1, and the second ROI is r2.
+Here we want to get the overlap, and this is represented by the logical AND
+operator, which is <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> in Matlab. Enter the function <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">&amp;</span> <span class="pre">r2</span></code>.</p>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - combining ROIs</p>
+<p>You can use most mathematical functions to combine ROIs. If you wanted to
+combine two ROIs, so the new ROI has all the voxels in ROI 1 and all the
+voxels in ROI2, you could use the function <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">|</span> <span class="pre">r2</span></code> (read as “r1 or
+r2”). If you wanted only the voxels in ROI 1 that are not in ROI 2: <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">&amp;</span>
+<span class="pre">~</span> <span class="pre">r2</span></code>. Similarly, you can choose more than two ROIs and combine them. The
+function <code class="docutils literal notranslate"><span class="pre">(r1</span> <span class="pre">&amp;</span> <span class="pre">r2)</span> <span class="pre">&amp;</span> <span class="pre">~r3</span></code> gives all the voxels that in <em>both of</em> ROI 1
+and ROI 2, but excluding those voxels that are in ROI 3.</p>
+<p>Be careful: <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">&amp;</span> <span class="pre">r2</span></code> gives all the voxels that are in ROI 1 <em>and in</em> ROI
+2 - so <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">&amp;</span> <span class="pre">r2</span></code> is the <em>intersection</em> of ROI 1 and ROI 2.  <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">|</span> <span class="pre">r2</span></code>
+gives the voxels that are in <em>either of</em> ROI 1 or ROI 2 - so <code class="docutils literal notranslate"><span class="pre">r1</span> <span class="pre">|</span> <span class="pre">r2</span></code> is
+the <em>union</em> of ROI 1 and ROI 2.</p>
+</div>
+<p>After this, accept the default description, set the label to something like
+“Trimmed stim run 2”, and save the ROI as <code class="docutils literal notranslate"><span class="pre">trim_stim_roi.mat</span></code>.</p>
+</div>
+</div>
+<div class="section" id="writing-the-roi-as-an-image">
+<h2>Writing the ROI as an image<a class="headerlink" href="#writing-the-roi-as-an-image" title="Permalink to this headline">¶</a></h2>
+<p>Just for practice, let us write our new ROI as a binary image. You might want
+to do this so you can review the ROI using another program, such as the
+excellent <a class="reference external" href="http://www.mricro.com/">MRIcro</a>. Click on ROI definition, then Export….
+Select image from the new menu in the SPM input window, and choose the new
+trim_stim_roi.mat as the ROI to export. Another menu appears, asking for a
+Space for ROI image. The three options are Base space for ROIs, From image, or
+ROI native space.</p>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - ROIs and image spaces</p>
+<p>An ROI can be one of two fundamental types: a shape (such as a box or
+sphere) or a list of points (such as an activation cluster or
+coordinates read in from an ROI in an image). Shape ROIs know nothing
+about such vulgarities as voxels, they are abstract concepts waiting
+to be applied. In order to display shapes, or write them to images,
+or combine them with other ROIs, we need to convert them to point
+lists in a certain space – with dimensions in X Y and Z, and voxels
+with specified sizes. For example, when MarsBaR combines ROIs, it
+needs some default space (dimensions, voxel sizes) in which to define
+the new point list ROI. By default, this is the space of the MNI
+template; so the Base space for ROIs in the menu above will be MNI
+space. This is a good space to use if you are working with spatially
+normalized data, but ROIs are often defined on a subject’s data
+before spatial normalization. In this case, it may be more useful to
+set the ROI base space to match the subject’s own activation images,
+using Options, Edit options from the MarsBaR window.</p>
+<p>The issue of the ROI space comes up here, because we need to define
+what dimensions and voxels we should use when writing the image. We
+can either write the image using the Base space, or we can use some
+arbitrary space defined by an image, or we can get the space directly
+from the ROI. Here, the ROI is an activation cluster, and the native
+ROI space for an activation cluster uses the minimum dimensions
+necessary to hold all the voxels in the ROI. An ROI image for this
+cluster using native space uses minimum disk storage, but does not
+give a good impression of the ROI location when displayed in, for
+example, <a class="reference external" href="http://www.mricro.com/">MRIcro</a>.</p>
+</div>
+<p>In our case, the data are spatially normalized, and so are in the space of the
+MNI template. The MNI template space is the default base space for ROIs, so
+select Base space for ROIs, choose a directory to save the image, and accept
+the default filename for the image, which should be trim_stim. You can check
+this has worked, by finding the SPM buttons window, selecting Display, and
+choosing the new trim_stim.img.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Defining ROIs</a><ul>
+<li><a class="reference internal" href="#defining-a-functional-roi">Defining a functional ROI</a></li>
+<li><a class="reference internal" href="#review-the-roi">Review the ROI</a></li>
+<li><a class="reference internal" href="#refining-the-roi">Refining the ROI</a><ul>
+<li><a class="reference internal" href="#defining-a-box-roi">Defining a box ROI</a></li>
+<li><a class="reference internal" href="#combining-rois">Combining ROIs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-the-roi-as-an-image">Writing the ROI as an image</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="interface.html"
+                        title="previous chapter">The MarsBaR / SPM interface</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="estimate.html"
+                        title="next chapter">Running the ROI analysis</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/define.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="estimate.html" title="Running the ROI analysis"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="interface.html" title="The MarsBaR / SPM interface"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Defining ROIs</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

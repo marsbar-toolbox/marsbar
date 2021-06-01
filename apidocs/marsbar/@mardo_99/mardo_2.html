@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mardo_2</title>
+  <meta name="keywords" content="mardo_2">
+  <meta name="description" content="method to convert SPM2 design to SPM99 design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo_99</a> &gt; mardo_2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mardo_2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to convert SPM2 design to SPM99 design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function o = mardo_2(o) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to convert SPM2 design to SPM99 design
+
+ Heavily based with thanks on work by Jeff Cooper:
+ Written June 2003 by Jeff Cooper (jcooper@stanford.edu)
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/image_names.html" class="code" title="function P = image_names(D)">image_names</a>	method returning image file names for design</li>
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../../marsbar/@mardo/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>	returns struct with fields from maroi object useful for copying objects</li>
+<li><a href="../../marsbar/@mardo_2/event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets onsets and durations for event/session</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/mardo_2.html" class="code" title="function [o, others] = mardo_2(params, others, varargin)">mardo_2</a>	class constructor for SPM2 MarsBaR design object</li>
+<li><a href="event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>	method gets (estimated) onsets and durations for event/session</li>
+<li><a href="get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/@maroi/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>	returns struct with fields from maroi object useful for copying objects</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/mardo.html" class="code" title="function [o, others] = mardo(params, others, passf)">mardo</a>	mardo - class constructor for MarsBaR design object</li>
+<li><a href="../../marsbar/@mardo_5/mardo_5.html" class="code" title="function [o, others] = mardo_5(params, others, varargin)">mardo_5</a>	class constructor for SPM5 MarsBaR design object</li>
+<li><a href="mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>	method to convert SPM2 design to SPM99 design</li>
+<li><a href="../../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function o = mardo_2(o)</a>
+0002 <span class="comment">% method to convert SPM2 design to SPM99 design</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Heavily based with thanks on work by Jeff Cooper:</span>
+0005 <span class="comment">% Written June 2003 by Jeff Cooper (jcooper@stanford.edu)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% $Id$</span>
+0008 
+0009 <span class="comment">% Process design</span>
+0010 params = <a href="../../marsbar/@mardo/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>(o);
+0011 SPM99  = params.des_struct;
+0012 xX     = SPM99.xX;
+0013 
+0014 SPM.xY = struct(<span class="string">'P'</span>, char(<a href="../../marsbar/@mardo/image_names.html" class="code" title="function P = image_names(D)">image_names</a>(o)), <span class="keyword">...</span>
+0015         <span class="string">'VY'</span>, <a href="get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(o));
+0016 RT =  <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, SPM99, <span class="string">'xX'</span>, <span class="string">'RT'</span>);
+0017 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(RT), SPM.xY.RT = RT; <span class="keyword">end</span>
+0018 
+0019 SPM = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'merge'</span>, SPM, <span class="keyword">...</span>
+0020           <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, SPM99, {<span class="string">'xM'</span>, <span class="string">'xGX'</span>}));
+0021 SPM.xCon = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'getifthere'</span>, SPM99, <span class="string">'xCon'</span>);
+0022 
+0023 <span class="comment">% This is the first substructure that we have to do some</span>
+0024 <span class="comment">% actual work to assemble.  Much of the details of the</span>
+0025 <span class="comment">% condition structures (U) can be gleaned from the SPM99</span>
+0026 <span class="comment">% Sess variable - onset vectors, stick functions, etc. - but</span>
+0027 <span class="comment">% not quite everything.  Trial durations are difficult to figure out, but</span>
+0028 <span class="comment">% we'll give it a go here with the event_onsets method</span>
+0029 
+0030 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM99, <span class="string">'Sess'</span>), Sess = SPM99.Sess; <span class="keyword">else</span> Sess = []; <span class="keyword">end</span>
+0031 <span class="keyword">for</span> i = 1:length(Sess)
+0032     currsess = Sess{i};
+0033     
+0034     <span class="comment">% indices for this session's row in design matrix</span>
+0035     SPM.Sess(i).row = currsess.row;      
+0036     
+0037     <span class="comment">% indices for this session's cols in design matrix</span>
+0038     SPM.Sess(i).col = currsess.col;      
+0039     
+0040     <span class="comment">% number of scans in this session</span>
+0041     SPM.nscan(i) = length(currsess.row);
+0042     
+0043     <span class="comment">% We can use the length of the onset cell array as an</span>
+0044     <span class="comment">% effective number of conditions variable - only 'true'</span>
+0045     <span class="comment">% conditions have onset vectors, not Volterra items or</span>
+0046     <span class="comment">% user-specified covariates.</span>
+0047     <span class="keyword">for</span> j = 1:length(currsess.ons) 
+0048       
+0049       <span class="comment">% Try getting onsets and durations from design</span>
+0050       [ons dur] = <a href="event_onsets.html" class="code" title="function [onsets, durations] = event_onsets(D, e_spec)">event_onsets</a>(D, [i j]);
+0051       
+0052       <span class="comment">% time bin length in seconds</span>
+0053       SPM.Sess(i).U(j).dt = xX.dt;
+0054       
+0055       <span class="comment">% name of trial type</span>
+0056       SPM.Sess(i).U(j).name = {currsess.name{j}};
+0057       
+0058       <span class="comment">% vector of onsets</span>
+0059       SPM.Sess(i).U(j).ons = ons;
+0060       
+0061       <span class="comment">% duration of trials</span>
+0062       SPM.Sess(i).U(j).dur = dur;
+0063       
+0064       <span class="comment">% actual stick functions - SPM2 uses 32-bin offset.</span>
+0065       SPM.Sess(i).U(j).u = [zeros(32,1); currsess.sf{j}];
+0066       
+0067       <span class="comment">% peristimulus time course (seconds)</span>
+0068       SPM.Sess(i).U(j).pst = currsess.pst{j};
+0069       
+0070       <span class="comment">% parameter name</span>
+0071       SPM.Sess(i).U(j).P.name = currsess.Pname{j};
+0072       <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(currsess.Pname{j})
+0073     <span class="comment">% SPM2 includes these values for 'none'</span>
+0074     <span class="comment">% parameters - just mimicking what they do...</span>
+0075     SPM.Sess(i).U(j).P.name = <span class="string">'none'</span>;
+0076     SPM.Sess(i).U(j).P.P = currsess.ons{j};         <span class="comment">% values of parameter</span>
+0077     SPM.Sess(i).U(j).P.h = 0;                       <span class="comment">% order of polynomial expansion</span>
+0078       <span class="keyword">else</span>
+0079     SPM.Sess(i).U(j).P.name = currsess.Pname{j};    <span class="comment">% parameter name</span>
+0080     SPM.Sess(i).U(j).P.P = currsess.Pv{j};          <span class="comment">% parameter values</span>
+0081                             <span class="comment">% leave h and i blank for now...</span>
+0082       <span class="keyword">end</span>
+0083     <span class="keyword">end</span>
+0084     <span class="comment">% SPM99 doesn't save regressors in independent</span>
+0085     <span class="comment">% structures as SPM2 does, but it does always append</span>
+0086     <span class="comment">% them to the end of the session and append 'user</span>
+0087     <span class="comment">% specified covariates' to the description string of the</span>
+0088     <span class="comment">% session if they exist, which we can use.</span>
+0089     <span class="comment">%</span>
+0090     <span class="comment">% First check and see if there are any:</span>
+0091     <span class="keyword">if</span> ~(<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(strfind(lower(currsess.DSstr), <span class="string">'user specified covariates'</span>)))
+0092       <span class="comment">% i.e., some are in here, so find out what their indices</span>
+0093       <span class="comment">% are - all the columns that don't correspond to</span>
+0094       <span class="comment">% specified conditions with onsets and such.</span>
+0095       <span class="comment">% Note that Volterra items aren't included in</span>
+0096       <span class="comment">% onsets, either, but they are included in 'the 'name'</span>
+0097       <span class="comment">% field - so we want to use that as our chopping</span>
+0098       <span class="comment">% point for finding covariate columns - everything</span>
+0099       <span class="comment">% after name is a covariate.</span>
+0100       reg_indices = currsess.col((length(currsess.name)+1):end);
+0101       <span class="comment">% extract values from design matrix</span>
+0102       SPM.Sess(i).C.C = xX.X(currsess.row, reg_indices);  <span class="comment">% user-specified covariate values</span>
+0103       SPM.Sess(i).name = xX.Xnames(reg_indices);          <span class="comment">% user-specified covariate names</span>
+0104     <span class="keyword">else</span>
+0105       <span class="comment">% there are no user specified covariates</span>
+0106       SPM.Sess(i).C.C = [];
+0107       SPM.Sess(i).C.name = {};
+0108     <span class="keyword">end</span>
+0109     <span class="comment">% Everything which is in the 'name' field is either an</span>
+0110     <span class="comment">% actual condition or a Volterra item, so that's our</span>
+0111     <span class="comment">% effective number for the Fc array.</span>
+0112     <span class="keyword">for</span> j = 1:length(currsess.name)
+0113       SPM.Sess(i).Fc(j).i = currsess.ind{j};      <span class="comment">% index for input j and interactions</span>
+0114       SPM.Sess(i).Fc(j).name = char(currsess.name(j));  <span class="comment">% name for input j and interactions</span>
+0115     <span class="keyword">end</span>
+0116 <span class="keyword">end</span> <span class="comment">% Session loop</span>
+0117 
+0118 <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Sess)
+0119   <span class="comment">%%%%%%%%%%</span>
+0120   <span class="comment">% SPM.xBF - basis function structure</span>
+0121   <span class="comment">%%%%%%%%%%</span>
+0122   
+0123   <span class="comment">% NOTE on the BF structure - where SPM99 allows the</span>
+0124   <span class="comment">% individual specification of basis functions for each trial</span>
+0125   <span class="comment">% type, SPM2 just has one basis function set for the whole</span>
+0126   <span class="comment">% experiment.  Since it's difficult to figure out which of</span>
+0127   <span class="comment">% the various SPM99 basis functions to use on any kind of</span>
+0128   <span class="comment">% reasoned basis, this program takes the arbitrary step of</span>
+0129   <span class="comment">% just taking the first one from the first session.  This</span>
+0130   <span class="comment">% should work fine for most experiments, but those with</span>
+0131   <span class="comment">% mixed basis functions that want to select a different one</span>
+0132   <span class="comment">% among the ones save are encouraged to modify the lines</span>
+0133   <span class="comment">% below to get the one to their liking...</span>
+0134   sess_idx_for_bf = 1;
+0135   cond_idx_for_bf = 1;
+0136   
+0137   SPM.xBF.T = xX.RT / xX.dt;
+0138 
+0139   <span class="comment">% # of time bins per scan</span>
+0140   <span class="comment">% T0 - the reference time bin - isn't saved by SPM99, and</span>
+0141   <span class="comment">% it's not extractable from the design matrix in any way I</span>
+0142   <span class="comment">% can figure out.  So we'll take a stab at loading it from</span>
+0143   <span class="comment">% the site's defaults, and if you re-set it, you'd better be</span>
+0144   <span class="comment">% paying attention...</span>
+0145   <span class="comment">% first run local defaults file - that'll pull something</span>
+0146   <span class="comment">% up uniquely.</span>
+0147   spm_defaults;
+0148   <span class="keyword">global</span> defaults; <span class="comment">%SPM2-style</span>
+0149   <span class="keyword">global</span> fMRI_T0;  <span class="comment">%SPM99-style</span>
+0150   <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(defaults)
+0151     SPM.xBF.T0 = defaults.stats.fmri.t0;    <span class="comment">% reference time bin</span>
+0152   <span class="keyword">elseif</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(fMRI_T0)
+0153     SPM.xBF.T0 = fMRI_T0;
+0154   <span class="keyword">else</span>
+0155     <span class="comment">% shouldn't get here - there should be some defaults on</span>
+0156     <span class="comment">% this system - but not a killer error.  One they should</span>
+0157     <span class="comment">% know about, though...</span>
+0158     disp(<span class="string">'Warning: Defaults don''t contain reference slice value!'</span>);
+0159     SPM.xBF.T0 = 1;
+0160   <span class="keyword">end</span>
+0161   <span class="comment">% SPM99 onsets were reconstructed in scan units</span>
+0162   <span class="comment">% units that onsets are in ['scans', 'seconds']</span>
+0163   SPM.xBF.UNITS = <span class="string">'scans'</span>;
+0164   <span class="keyword">if</span> length(SPM.Sess(1).U) &lt; length(SPM.Sess(1).Fc)
+0165     <span class="comment">% Volterra flag [1=no Volterra, 2=Volterra modeled]</span>
+0166     SPM.xBF.Volterra = 2;                   
+0167   <span class="keyword">else</span>
+0168     SPM.xBF.Volterra = 1;
+0169   <span class="keyword">end</span>
+0170   SPM.xBF.dt = xX.dt;                         <span class="comment">% time bin length in seconds</span>
+0171   SPM.xBF.name = <span class="string">''</span>;                          <span class="comment">% string: type of basis function - not saved by SPM99 batching</span>
+0172   SPM.xBF.bf = Sess{sess_idx_for_bf}.bf(cond_idx_for_bf);     
+0173   <span class="comment">% the actual basis function matrix</span>
+0174   <span class="comment">% SPM99 doesn't explicitly save length or order of basis</span>
+0175   <span class="comment">% functions, but this below should work for all non-Fourier,</span>
+0176   <span class="comment">% non-Gamma basis fns, and maybe even some of them...</span>
+0177   SPM.xBF.length = xX.dt*size(SPM.xBF.bf, 1);        <span class="comment">% window length of basis fn in secs</span>
+0178   SPM.xBF.order = size(SPM.xBF.bf,2);                <span class="comment">% order of basis fn</span>
+0179   
+0180 <span class="keyword">end</span>
+0181 
+0182 <span class="comment">%%%%%%%%%%</span>
+0183 <span class="comment">% SPM.xVi - temporal non-sphericity struct</span>
+0184 <span class="comment">%%%%%%%%%%</span>
+0185 
+0186 <span class="comment">% We'll be assuming that SPM99 results, in general, made the</span>
+0187 <span class="comment">% i.i.d. assumption.  Estimation of results with the AR(1)</span>
+0188 <span class="comment">% option specified proceeds very differently in SPM2 than in</span>
+0189 <span class="comment">% SPM99, and so those that used AR(1) in SPM99 are warned</span>
+0190 <span class="comment">% that their results will not translate perfectly to SPM2,</span>
+0191 <span class="comment">% as the whitening matrix W will always be set to identity</span>
+0192 <span class="comment">% in importing these results.</span>
+0193 
+0194 <span class="keyword">switch</span> xX.xVi.Form
+0195  <span class="keyword">case</span> <span class="string">'none'</span>
+0196   SPM.xVi.form = <span class="string">'i.i.d'</span>;                 <span class="comment">% string description of xVi</span>
+0197   <span class="comment">% covariance constraints - sparse identity matrix in this option for both SPM99 and SPM2.</span>
+0198   SPM.xVi.Vi = {xX.xVi.Vi};               
+0199   SPM.xVi.V = speye(size(xX.xVi));         <span class="comment">% estimated non-sphericity itself.</span>
+0200  <span class="keyword">case</span> <span class="string">'AR(1)'</span>
+0201   SPM.xVi.form = <span class="string">'AR(0.2)'</span>;               <span class="comment">% string description of xVi - this is parallel to what SPM2 does</span>
+0202   SPM.xVi.Vi = {xX.xVi.Vi}                <span class="comment">% covariance constraints</span>
+0203   
+0204   <span class="comment">% I don't think this will actually make a</span>
+0205   <span class="comment">% difference, as the whitening matrix W is always</span>
+0206   <span class="comment">% going to be identity.  But it may be useful to</span>
+0207   <span class="comment">% have.  True SPM2 results will also have xVi.V and</span>
+0208   <span class="comment">% so forth, but not these imported ones...</span>
+0209 <span class="keyword">end</span>
+0210 
+0211 <span class="comment">%%%%%%%%%%</span>
+0212 <span class="comment">% SPM.xX - design matrix structure</span>
+0213 <span class="comment">%%%%%%%%%%</span>
+0214 
+0215 <span class="comment">% Here's the big 'un.  Much of this stuff will be translated</span>
+0216 <span class="comment">% directly from the SPM99 results, and it remains to be seen</span>
+0217 <span class="comment">% how well that's going to work.  We will assume that</span>
+0218 <span class="comment">% ordinary least squares estimation has been used in SPM99,</span>
+0219 <span class="comment">% and therefore set W to the identity matrix.</span>
+0220 
+0221 SPM.xX = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, xX, <span class="keyword">...</span>
+0222              {<span class="string">'X'</span>,<span class="string">'iH'</span>, <span class="string">'iC'</span>, <span class="string">'iB'</span>, <span class="string">'iG'</span>, <span class="string">'V'</span>, <span class="string">'I'</span> <span class="keyword">...</span>
+0223             <span class="string">'xKXs'</span>, <span class="string">'pKX'</span>, <span class="string">'Bcov'</span>, <span class="string">'trRV'</span>, <span class="string">'trRVRV'</span>, <span class="string">'erdf'</span>, <span class="string">'nKX'</span>});
+0224 SPM.xX.name = xX.Xnames;
+0225 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(xX, <span class="string">'K'</span>)
+0226   <span class="keyword">if</span> iscell(xX.K)
+0227     <span class="keyword">for</span> i = 1:length(xX.K)
+0228       SPM.xX.K(i).RT = SPM.xY.RT;             <span class="comment">% experimental RT</span>
+0229       SPM.xX.K(i).row = xX.K{i}.row;          <span class="comment">% row indices in design matrix for this filter</span>
+0230       SPM.xX.K(i).HParam = xX.K{i}.HParam;    <span class="comment">% high-pass cutoff period in secs</span>
+0231       SPM.xX.K(i).X0 = full(xX.K{i}.KH);      <span class="comment">% frequencies to be removed by filter.</span>
+0232     <span class="keyword">end</span>
+0233   <span class="keyword">else</span>
+0234     SPM.xX.K = xX.K;
+0235   <span class="keyword">end</span>
+0236 <span class="keyword">end</span>
+0237 SPM.xX.W = speye(size(xX.X,1));       <span class="comment">% whitening matrix - identity for ordinary least squares estimates</span>
+0238 
+0239 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM99, <span class="string">'M'</span>)
+0240   SPM.xVol = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, SPM99, <span class="keyword">...</span>
+0241              {<span class="string">'M'</span>, <span class="string">'DIM'</span>, <span class="string">'XYZ'</span>, <span class="string">'S'</span>, <span class="string">'R'</span>, <span class="string">'FWHM'</span>});
+0242   SPM.xVol.iM = inv(SPM.xVol.M);   <span class="comment">% inverse of M</span>
+0243   <span class="comment">% We will deal with the RPV image later on...</span>
+0244 <span class="keyword">end</span>
+0245 
+0246 <span class="comment">%%%%%%%%%%</span>
+0247 <span class="comment">% SPM.miscellaneous stuff</span>
+0248 <span class="comment">%%%%%%%%%%</span>
+0249 
+0250 <span class="comment">% various string descriptions of experimental design</span>
+0251 SPM.xsDes = SPM99.xsDes;
+0252 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM.xsDes, <span class="string">'Conditions_per_session'</span>)
+0253   SPM.xsDes.Trials_per_session = SPM.xsDes.Conditions_per_session;
+0254   rmfield(SPM.xsDes, <span class="string">'Conditions_per_session'</span>);
+0255 <span class="keyword">end</span>
+0256 SPM.xsDes.Serial_correlations = SPM.xVi.form;
+0257 
+0258 SPM.SPMid = [<span class="string">'SPM2: Results imported from SPM99 design: '</span> SPM99.SPMid];
+0259 
+0260 <span class="comment">% Try and deal with estimated result volumes</span>
+0261 <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM99, <span class="string">'swd'</span>)
+0262   SPM.swd = SPM99.swd;
+0263   <span class="keyword">if</span> ~exist(SPM99.swd, <span class="string">'dir'</span>)
+0264     warning([<span class="string">'Could not find directory: '</span> SPM.swd]);
+0265   <span class="keyword">else</span>
+0266     o_pwd = pwd;
+0267     cd(SPM99.swd);
+0268     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM99, <span class="string">'Vbeta'</span>)
+0269       <span class="keyword">for</span> i = 1:length(SPM99.Vbeta)
+0270     SPM.Vbeta(i) = spm_vol(SPM99.Vbeta{i});
+0271       <span class="keyword">end</span>
+0272       SPM.VResMS = spm_vol(SPM99.VResMS);
+0273       SPM.VM = spm_vol(SPM99.VM);
+0274     <span class="keyword">end</span>
+0275     <span class="keyword">for</span> i = 1:length(SPM.xCon) 
+0276       <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(SPM.xCon(i).Vcon)
+0277     SPM.xCon(i).Vcon = spm_vol(SPM.xCon(i).Vcon);
+0278       <span class="keyword">end</span>
+0279       <span class="keyword">if</span> ~<a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(SPM.xCon(i).Vspm)
+0280     SPM.xCon(i).Vspm = spm_vol(SPM.xCon(i).Vspm);   
+0281       <span class="keyword">end</span>
+0282     <span class="keyword">end</span>
+0283     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(SPM99, <span class="string">'M'</span>)
+0284       <span class="comment">% Now deal with RPV image</span>
+0285       <span class="keyword">if</span> exist(<span class="string">'RPV.img'</span>, <span class="string">'file'</span>)
+0286     <span class="comment">% filehandle of resels per voxel image</span>
+0287     SPM.xVol.VRpv = spm_vol(<span class="string">'RPV.img'</span>); 
+0288       <span class="keyword">else</span>
+0289     <span class="comment">% Don't really understand this one...</span>
+0290     SPM.xVol.VRpv.fname = [<span class="string">'../'</span> SPM.xVol.VRpv.fname];
+0291       <span class="keyword">end</span>
+0292     <span class="keyword">end</span>
+0293     cd(o_pwd);
+0294   <span class="keyword">end</span>
+0295 <span class="keyword">end</span>
+0296 
+0297 <span class="comment">% put into parent object</span>
+0298 params.des_struct = SPM;
+0299 o = <a href="mardo_2.html" class="code" title="function o = mardo_2(o)">mardo_2</a>(params);
+0300 
+0301 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

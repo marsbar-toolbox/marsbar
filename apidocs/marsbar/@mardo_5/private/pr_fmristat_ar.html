@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_fmristat_ar</title>
+  <meta name="keywords" content="pr_fmristat_ar">
+  <meta name="description" content="function returns estimated AR coefficients using fmristat algorithm">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_fmristat_ar.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_fmristat_ar
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function returns estimated AR coefficients using fmristat algorithm</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function returns estimated AR coefficients using fmristat algorithm
+ FORMAT [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)
+ 
+ See http://www.math.mcgill.ca/keith/fmristat/ and
+ fmrilm.m in fmristat package for code, and
+ Worsley, K.J., Liao, C., Aston, J., Petre, V., Duncan, G.H., Morales,
+ F., Evans, A.C. (2002). A general statistical analysis for fMRI
+ data. NeuroImage, 15:1-15 - for description of the algorithm
+  
+ $Id: pr_fmristat_ar.m 301 2004-02-04 03:53:23Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+<li><a href="pr_estimate.html" class="code" title="function SPM = pr_estimate(SPM, marsY)">pr_estimate</a>	Estimation of a General Linear Model</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)</a>
+0002 <span class="comment">% function returns estimated AR coefficients using fmristat algorithm</span>
+0003 <span class="comment">% FORMAT [rho,Vmhalf,V] = pr_fmristat_ar(res,X,nlags)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% See http://www.math.mcgill.ca/keith/fmristat/ and</span>
+0006 <span class="comment">% fmrilm.m in fmristat package for code, and</span>
+0007 <span class="comment">% Worsley, K.J., Liao, C., Aston, J., Petre, V., Duncan, G.H., Morales,</span>
+0008 <span class="comment">% F., Evans, A.C. (2002). A general statistical analysis for fMRI</span>
+0009 <span class="comment">% data. NeuroImage, 15:1-15 - for description of the algorithm</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% $Id: pr_fmristat_ar.m 301 2004-02-04 03:53:23Z matthewbrett $</span>
+0012 
+0013 <span class="comment">% This is the copyright notice from fmrilm:</span>
+0014 <span class="comment">%############################################################################</span>
+0015 <span class="comment">% COPYRIGHT:   Copyright 2002 K.J. Worsley</span>
+0016 <span class="comment">%              Department of Mathematics and Statistics,</span>
+0017 <span class="comment">%              McConnell Brain Imaging Center,</span>
+0018 <span class="comment">%              Montreal Neurological Institute,</span>
+0019 <span class="comment">%              McGill University, Montreal, Quebec, Canada.</span>
+0020 <span class="comment">%              worsley@math.mcgill.ca, liao@math.mcgill.ca</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%              Permission to use, copy, modify, and distribute this</span>
+0023 <span class="comment">%              software and its documentation for any purpose and without</span>
+0024 <span class="comment">%              fee is hereby granted, provided that the above copyright</span>
+0025 <span class="comment">%              notice appear in all copies.  The author and McGill University</span>
+0026 <span class="comment">%              make no representations about the suitability of this</span>
+0027 <span class="comment">%              software for any purpose.  It is provided &quot;as is&quot; without</span>
+0028 <span class="comment">%              express or implied warranty.</span>
+0029 <span class="comment">%############################################################################</span>
+0030   
+0031 <span class="keyword">if</span> nargin &lt; 2
+0032   error(<span class="string">'Need covariance and design'</span>);
+0033 <span class="keyword">end</span>
+0034 <span class="keyword">if</span> nargin &lt; 3
+0035   nlags = 1;
+0036 <span class="keyword">end</span>
+0037 
+0038 sX = spm_sp(<span class="string">'Set'</span>, X);
+0039 R  = spm_sp(<span class="string">'r'</span>, sX);
+0040 
+0041 nlp1     = nlags+1;
+0042 [n nvox] = size(res);
+0043 
+0044 <span class="comment">% Bias reduction</span>
+0045 M=zeros(nlp1);
+0046 <span class="keyword">for</span> i=1:(nlp1)
+0047   <span class="keyword">for</span> j=1:(nlp1)
+0048     Di=(diag(ones(1,n-i+1),i-1)+diag(ones(1,n-i+1),-i+1))/(1+(i==1));
+0049     Dj=(diag(ones(1,n-j+1),j-1)+diag(ones(1,n-j+1),-j+1))/(1+(j==1));
+0050     M(i,j)=trace(R*Di*R*Dj)/(1+(i&gt;1));
+0051   <span class="keyword">end</span>
+0052 <span class="keyword">end</span>
+0053 invM = inv(M);
+0054 
+0055 a = zeros(nlp1,nvox);
+0056 <span class="keyword">for</span> lag = 0:nlags
+0057   a(lag+1,:)= sum(res(1:(n-lag),:).*res((lag+1):n,:));
+0058 <span class="keyword">end</span>
+0059 
+0060 vhat = invM*a;
+0061 rho  = vhat(2:<span class="keyword">end</span>,:) ./ (ones(nlags, 1) * vhat(1,:));
+0062 rho  = mean(rho,2)';
+0063 
+0064 <span class="keyword">if</span> nargout &gt; 1
+0065   <span class="comment">% Whitening matrix; Appendix A3 Worsley et al (2002)</span>
+0066   <span class="comment">% Modified according to fmrilm code</span>
+0067   [Ainvt posdef] = chol(toeplitz([1 rho]));
+0068   nl=size(Ainvt,1);
+0069   A=inv(Ainvt');
+0070   Vmhalf = zeros(n,n);
+0071   B=ones(n-nl,1)*A(nl,:);
+0072   Vmhalf(nl+1:<span class="keyword">end</span>,:) = spdiags(B,1:nl,n-nl,n);
+0073   Vmhalf(1:nl,1:nl)  = A;
+0074 <span class="keyword">end</span>
+0075 
+0076 <span class="keyword">if</span> nargout &gt; 2
+0077   <span class="comment">% Estimated covariance</span>
+0078   V = inv(Vmhalf*Vmhalf');
+0079 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

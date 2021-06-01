@@ -1,0 +1,590 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_get_ons</title>
+  <meta name="keywords" content="pr_spm_get_ons">
+  <meta name="description" content="returns onset times for events">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_99</a> &gt; <a href="index.html">private</a> &gt; pr_spm_get_ons.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_99/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_get_ons
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>returns onset times for events</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [sf,Cname,Pv,Pname,DSstr] = pr_spm_get_ons(k,T,dt,STOC,Fstr,v,Cname,s) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> returns onset times for events
+ FORMAT [sf,Cname,Pv,Pname,DSstr] = spm_get_ons(k,T,dt,STOC,Fstr,v,Cname,s)
+
+ k     - number of scans
+ T     - time bins per scan
+ dt    - time bin length (secs)
+ STOC  - flag to enable stochastic designs [0 or 1]
+ Fstr  - Prompt string (usually indicates session)
+ v     - number of conditions or trials                : can be empty
+ Cname - {1 x v}   cell of names for each condition    : can be empty
+ s     - session number (used by batch system)
+
+ sf    - {1 x n}   cell of stick function matrices
+ Cname - {1 x n}   cell of names for each condition
+ Pv    - {1 x n}   cell of parametric vectors
+ Pname - {1 x n}   cell of names for each parameter
+ DSstr - Design string
+_______________________________________________________________________
+
+ spm_get_ons contructs a cell of sparse delta functions specifying the
+ onset of events or epochs (or both). These are convolved with a basis set
+ at a later stage to give regressors that enter into the design matrix.
+ Interactions of evoked responses with some parameter (time or a specified 
+ variate Pv) enter at this stage as additional columns in sf with each delta
+ function multiplied by the [expansion of the] trial-specific parameter.
+ If parametric modulation is modeled, P contains the original variate and
+ Pname is its name.  Otherwise Pv{i} = [] and Pname{i} = '';
+
+ Notes on responding to questions:
+
+ 'number of conditions or trials':  The number of conditions, trials,
+        events or epochs in the design.  Generally the baseline condition
+        (epoch-related) or null event (event-related) should not be included
+        e.g. for a simple ABABAB.. design enter 1
+ 
+ STOCHASTIC DESIGNS
+
+ 'stochastic design': If you want a random design select yes.  The ensuing
+        design matrix and onset times in Sess are then used in 
+        subsequent analysis of the data and stimulus design respectively.
+
+       'include a null event': for stochastic designs a null event should
+                be included if you want to estimate responses common to
+                all trial types
+
+       'SOA (scans)': Stimulus onset asynchrony for the sucessive occurrence
+                of trials.  This is the time (in scans) between the onset
+                of sucessive stimuli or trials (usually a fraction of a scan)
+
+       'relative frequency [trial 1,..n null]':  Enter a vector with a
+                relative frequency of presentation for each trial type
+                (and the null event if included).  The null event is last.
+                The most efficient designs are given when all the frequencies
+                are equal.
+
+       'stationary|modulated': If the occurence probabilities are
+                the same for all scans then choose 'stationary'.  Modulated
+                designs are more efficient but entail 'runs' of the
+                same trial type.
+
+ NON STOCHASTIC DESIGNS
+
+ 'Fixed|Variable':  If the event of epoch starts with a fixed
+        SOA choose 'Fixed'. If the SOA changes within any trial type
+        choose variable.
+
+        'vector of onsets (scans) for trial n':  If the SOA are variable
+                you have to enter a vector of onet times for each event or
+                epoch.  Time is specified in terms of scans, where the
+                start of the session begins at 0.
+
+        'variable durations'.  If you want to model trains of
+                onsets then select 'yes'.  You will then be prompted for
+                a vector of durations for each onset.  This is useful when 
+                modeling short epochs of variable duration.
+ 
+        'SOA (scans)' and 'first trial (scans)':  If the SOA is fixed you
+                only have to specify what it is and when the first condition 
+ses in terms of an interaction with the specified
+         variate.
+
+ SLCIE TIMIING
+
+ With longs TRs you may want to shift the regressors so that they are
+ aligned to a particular slice.  This is effected by resetting the
+ values of fMRI_T and fMRI_T0 in som_defaults.  fMRI_T is the number of
+ time-bins per scan used when building regressors.  Onsets are defined
+ in temporal units of scans starting at 0.  fMRI_T0 is the first
+ time-bin at which the regressors are resampled to coincide with data
+ acquisition.  If fMRI_T0 = 1 then the regressors will be appropriate
+ for the first slice.  If you want to temporally realign the regressors
+ so that they match responses in the middle slice then make fMRI_T0 =
+ fMRI_T/2 (assuming there is a negligible gap between volume
+ acquisitions. Default values are fMRI_T = 16 and fMRI_T0 = 1.
+
+
+_______________________________________________________________________
+ @(#)spm_get_ons.m     2.30 Karl Friston 01/03/22
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>	overloaded ne function</li>
+<li><a href="../../../marsbar/@marsy/ne.html" class="code" title="function tf = ne(Y1, Y2)">ne</a>	method overrides ~= operator</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo_2/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="../../../marsbar/@mardo_5/private/pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+<li><a href="pr_fmri_design.html" class="code" title="function [SPM] = pr_fmri_design(SPM)">pr_fmri_design</a>	MarsBaR version of spm_fMRI design - asssembles a design for fMRI studies</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [sf,Cname,Pv,Pname,DSstr] = pr_spm_get_ons(k,T,dt,STOC,Fstr,v,Cname,s)</a>
+0002 <span class="comment">% returns onset times for events</span>
+0003 <span class="comment">% FORMAT [sf,Cname,Pv,Pname,DSstr] = spm_get_ons(k,T,dt,STOC,Fstr,v,Cname,s)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% k     - number of scans</span>
+0006 <span class="comment">% T     - time bins per scan</span>
+0007 <span class="comment">% dt    - time bin length (secs)</span>
+0008 <span class="comment">% STOC  - flag to enable stochastic designs [0 or 1]</span>
+0009 <span class="comment">% Fstr  - Prompt string (usually indicates session)</span>
+0010 <span class="comment">% v     - number of conditions or trials                : can be empty</span>
+0011 <span class="comment">% Cname - {1 x v}   cell of names for each condition    : can be empty</span>
+0012 <span class="comment">% s     - session number (used by batch system)</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">% sf    - {1 x n}   cell of stick function matrices</span>
+0015 <span class="comment">% Cname - {1 x n}   cell of names for each condition</span>
+0016 <span class="comment">% Pv    - {1 x n}   cell of parametric vectors</span>
+0017 <span class="comment">% Pname - {1 x n}   cell of names for each parameter</span>
+0018 <span class="comment">% DSstr - Design string</span>
+0019 <span class="comment">%_______________________________________________________________________</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% spm_get_ons contructs a cell of sparse delta functions specifying the</span>
+0022 <span class="comment">% onset of events or epochs (or both). These are convolved with a basis set</span>
+0023 <span class="comment">% at a later stage to give regressors that enter into the design matrix.</span>
+0024 <span class="comment">% Interactions of evoked responses with some parameter (time or a specified</span>
+0025 <span class="comment">% variate Pv) enter at this stage as additional columns in sf with each delta</span>
+0026 <span class="comment">% function multiplied by the [expansion of the] trial-specific parameter.</span>
+0027 <span class="comment">% If parametric modulation is modeled, P contains the original variate and</span>
+0028 <span class="comment">% Pname is its name.  Otherwise Pv{i} = [] and Pname{i} = '';</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% Notes on responding to questions:</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">% 'number of conditions or trials':  The number of conditions, trials,</span>
+0033 <span class="comment">%        events or epochs in the design.  Generally the baseline condition</span>
+0034 <span class="comment">%        (epoch-related) or null event (event-related) should not be included</span>
+0035 <span class="comment">%        e.g. for a simple ABABAB.. design enter 1</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">% STOCHASTIC DESIGNS</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% 'stochastic design': If you want a random design select yes.  The ensuing</span>
+0040 <span class="comment">%        design matrix and onset times in Sess are then used in</span>
+0041 <span class="comment">%        subsequent analysis of the data and stimulus design respectively.</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">%       'include a null event': for stochastic designs a null event should</span>
+0044 <span class="comment">%                be included if you want to estimate responses common to</span>
+0045 <span class="comment">%                all trial types</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">%       'SOA (scans)': Stimulus onset asynchrony for the sucessive occurrence</span>
+0048 <span class="comment">%                of trials.  This is the time (in scans) between the onset</span>
+0049 <span class="comment">%                of sucessive stimuli or trials (usually a fraction of a scan)</span>
+0050 <span class="comment">%</span>
+0051 <span class="comment">%       'relative frequency [trial 1,..n null]':  Enter a vector with a</span>
+0052 <span class="comment">%                relative frequency of presentation for each trial type</span>
+0053 <span class="comment">%                (and the null event if included).  The null event is last.</span>
+0054 <span class="comment">%                The most efficient designs are given when all the frequencies</span>
+0055 <span class="comment">%                are equal.</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">%       'stationary|modulated': If the occurence probabilities are</span>
+0058 <span class="comment">%                the same for all scans then choose 'stationary'.  Modulated</span>
+0059 <span class="comment">%                designs are more efficient but entail 'runs' of the</span>
+0060 <span class="comment">%                same trial type.</span>
+0061 <span class="comment">%</span>
+0062 <span class="comment">% NON STOCHASTIC DESIGNS</span>
+0063 <span class="comment">%</span>
+0064 <span class="comment">% 'Fixed|Variable':  If the event of epoch starts with a fixed</span>
+0065 <span class="comment">%        SOA choose 'Fixed'. If the SOA changes within any trial type</span>
+0066 <span class="comment">%        choose variable.</span>
+0067 <span class="comment">%</span>
+0068 <span class="comment">%        'vector of onsets (scans) for trial n':  If the SOA are variable</span>
+0069 <span class="comment">%                you have to enter a vector of onet times for each event or</span>
+0070 <span class="comment">%                epoch.  Time is specified in terms of scans, where the</span>
+0071 <span class="comment">%                start of the session begins at 0.</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">%        'variable durations'.  If you want to model trains of</span>
+0074 <span class="comment">%                onsets then select 'yes'.  You will then be prompted for</span>
+0075 <span class="comment">%                a vector of durations for each onset.  This is useful when</span>
+0076 <span class="comment">%                modeling short epochs of variable duration.</span>
+0077 <span class="comment">%</span>
+0078 <span class="comment">%        'SOA (scans)' and 'first trial (scans)':  If the SOA is fixed you</span>
+0079 <span class="comment">%                only have to specify what it is and when the first condition</span>
+0080 <span class="comment">%ses in terms of an interaction with the specified</span>
+0081 <span class="comment">%         variate.</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">% SLCIE TIMIING</span>
+0084 <span class="comment">%</span>
+0085 <span class="comment">% With longs TRs you may want to shift the regressors so that they are</span>
+0086 <span class="comment">% aligned to a particular slice.  This is effected by resetting the</span>
+0087 <span class="comment">% values of fMRI_T and fMRI_T0 in som_defaults.  fMRI_T is the number of</span>
+0088 <span class="comment">% time-bins per scan used when building regressors.  Onsets are defined</span>
+0089 <span class="comment">% in temporal units of scans starting at 0.  fMRI_T0 is the first</span>
+0090 <span class="comment">% time-bin at which the regressors are resampled to coincide with data</span>
+0091 <span class="comment">% acquisition.  If fMRI_T0 = 1 then the regressors will be appropriate</span>
+0092 <span class="comment">% for the first slice.  If you want to temporally realign the regressors</span>
+0093 <span class="comment">% so that they match responses in the middle slice then make fMRI_T0 =</span>
+0094 <span class="comment">% fMRI_T/2 (assuming there is a negligible gap between volume</span>
+0095 <span class="comment">% acquisitions. Default values are fMRI_T = 16 and fMRI_T0 = 1.</span>
+0096 <span class="comment">%</span>
+0097 <span class="comment">%</span>
+0098 <span class="comment">%_______________________________________________________________________</span>
+0099 <span class="comment">% @(#)spm_get_ons.m     2.30 Karl Friston 01/03/22</span>
+0100 
+0101 <span class="comment">%-GUI setup</span>
+0102 <span class="comment">%-----------------------------------------------------------------------</span>
+0103 spm_help(<span class="string">'!ContextHelp'</span>,mfilename)
+0104 
+0105 
+0106 <span class="comment">%-Condition arguments</span>
+0107 <span class="comment">%-----------------------------------------------------------------------</span>
+0108 <span class="keyword">if</span> nargin &lt; 5, Fstr = <span class="string">''</span>; <span class="keyword">end</span>
+0109 spm_input(Fstr,1,<span class="string">'d'</span>)
+0110 
+0111 
+0112 <span class="comment">% initialize variables</span>
+0113 <span class="comment">%-----------------------------------------------------------------------</span>
+0114 sf     = {};
+0115 Pv     = {};
+0116 Pname  = {};
+0117 DSstr  = <span class="string">''</span>;
+0118 <span class="comment">%--------</span>
+0119 sillyvar=0;
+0120 
+0121 
+0122 <span class="comment">% get stick functions {ons} and names</span>
+0123 <span class="comment">%=======================================================================</span>
+0124 
+0125 
+0126 <span class="comment">% get trials</span>
+0127 <span class="comment">%-----------------------------------------------------------------------</span>
+0128 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(v)
+0129         v     = spm_input(<span class="string">'number of conditions or trials'</span>,2,<span class="string">'w1'</span>);
+0130 <span class="keyword">end</span>
+0131 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Cname)
+0132         Cname = {};
+0133         <span class="keyword">for</span> i = 1:v
+0134                 <span class="comment">% get names</span>
+0135                 <span class="comment">%---------------------------------------------------------------</span>
+0136                 str         = sprintf(<span class="string">'name for condition/trial %d ?'</span>,i);
+0137                 Cname{i}    = spm_input(str,3,<span class="string">'s'</span>,sprintf(<span class="string">'trial %d'</span>,i));
+0138         <span class="keyword">end</span>
+0139 <span class="keyword">end</span>
+0140 
+0141 
+0142 
+0143 <span class="comment">% event/epoch-related responses</span>
+0144 <span class="comment">%-----------------------------------------------------------------------</span>
+0145 <span class="keyword">if</span> v    
+0146 
+0147 
+0148         <span class="comment">% stochastic designs</span>
+0149         <span class="comment">%---------------------------------------------------------------</span>
+0150         spm_input(<span class="string">'Trial specification...'</span>,1,<span class="string">'d'</span>,Fstr)
+0151         <span class="keyword">if</span> STOC
+0152                  STOC = spm_input(<span class="string">'stochastic design'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1 0]);
+0153         <span class="keyword">end</span>
+0154         <span class="keyword">if</span> STOC
+0155 
+0156 
+0157                 <span class="comment">% minimum SOA</span>
+0158                 <span class="comment">%-------------------------------------------------------</span>
+0159                 <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>      = spm_input(<span class="string">'include a null event'</span>,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1 0]);
+0160                 soa     = spm_input(<span class="string">'SOA (scans)'</span>,<span class="string">'+1'</span>,<span class="string">'r'</span>,2)*T;
+0161                 on      = fix(1:soa:(k*T));
+0162                 ns      = length(on);
+0163                 DSstr   = [DSstr sprintf(<span class="string">'Stochastic: %.2fsec SOA '</span>,soa*dt)];
+0164 
+0165 
+0166                 <span class="comment">% occurence probabilities - stationary</span>
+0167                 <span class="comment">%-------------------------------------------------------</span>
+0168                 <span class="keyword">if</span> <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>
+0169           str = sprintf(<span class="string">'relative frequency [trial 1,..%d null]'</span>,v);
+0170                 <span class="keyword">else</span>
+0171           str = sprintf(<span class="string">'relative frequency [trial 1,..%d]'</span>,v);
+0172         <span class="keyword">end</span>
+0173                 P       = ones(1,(v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>));
+0174                 P       = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,P,[1 (v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>)]);
+0175                 str     = <span class="string">'occurence probability'</span>;
+0176                 <span class="keyword">if</span> spm_input(str,<span class="string">'+1'</span>,<span class="string">'stationary|modulated'</span>,[1 0])
+0177                         DSstr = [DSstr <span class="string">'(stationary) '</span>];
+0178                         P     = P(:)*ones(1,ns);
+0179  
+0180                 <span class="comment">% occurence probabilities - modulated (32 sec period)</span>
+0181                 <span class="comment">%-------------------------------------------------------</span>
+0182                 <span class="keyword">else</span>
+0183                         DSstr = [DSstr <span class="string">'(modulated) '</span>];
+0184                         p     = ones((v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>),ns);
+0185                         dc    = 32/dt;
+0186                         <span class="keyword">for</span> i = 1:(v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>);
+0187                                 q      = sin(2*pi*(on/dc + (i - 1)/(v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>)));
+0188                                 p(i,:) = 1 + q;
+0189                         <span class="keyword">end</span>
+0190                         P     = diag(P)*p;
+0191                 <span class="keyword">end</span>
+0192 
+0193 
+0194                 <span class="comment">% assign trials</span>
+0195                 <span class="comment">%-------------------------------------------------------</span>
+0196                 P     = [zeros(1,ns); cumsum(P)];
+0197                 P     = P*diag(1./max(P));
+0198                 q     = zeros(size(on));
+0199                 Q     = rand(size(on));
+0200                 <span class="keyword">for</span> i = 1:(v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>);
+0201                         j       = find(Q &gt;= P(i,:) &amp; Q &lt; P(i + 1,:));
+0202                         q(j)    = i;
+0203                 <span class="keyword">end</span>
+0204 
+0205 
+0206                 <span class="comment">% create stick functions</span>
+0207                 <span class="comment">%-------------------------------------------------------</span>
+0208                 ons   = sparse(on,q,1,k*T,v + <a href="../../../marsbar/@maroi/ne.html" class="code" title="function o = ne(o1, o2)">ne</a>);
+0209 
+0210 
+0211                 <span class="comment">% stick function array (and delete null event)</span>
+0212                 <span class="comment">%-------------------------------------------------------</span>
+0213                 <span class="keyword">for</span>  i = 1:v
+0214                         sf{i}   = full(ons(:,i));
+0215                 <span class="keyword">end</span>
+0216 
+0217 
+0218         <span class="comment">% non-stochastic designs</span>
+0219         <span class="comment">%---------------------------------------------------------------</span>
+0220         <span class="keyword">else</span>
+0221 
+0222 
+0223             <span class="comment">% get onsets</span>
+0224             <span class="comment">%-----------------------------------------------------------</span>
+0225         Sstr  = spm_input(<span class="string">'SOA'</span>,2,<span class="string">'Fixed|Variable'</span>);
+0226             DSstr = [DSstr  Sstr <span class="string">' SOA '</span>];
+0227             i     = 1;
+0228             <span class="keyword">while</span> i &lt;= v
+0229 
+0230 
+0231                 <span class="comment">% get onsets</span>
+0232                 <span class="comment">%-------------------------------------------------------</span>
+0233                 <span class="keyword">switch</span> Sstr
+0234 
+0235 
+0236                         <span class="keyword">case</span> <span class="string">'Fixed'</span>
+0237                         <span class="comment">%- In batch mode, Sstr is always 'Variable'</span>
+0238                         <span class="comment">%-----------------------------------------------</span>
+0239                         str   = [<span class="string">'SOA (scans) for '</span> Cname{i}];
+0240                         soa   = spm_input(str,3,<span class="string">'r'</span>);
+0241                         on    = spm_input(<span class="string">'time to 1st trial (scans)'</span>,4,<span class="string">'r'</span>,0);
+0242                         on    = {on:soa:k};
+0243                         dur   = {zeros(size(on{1}))};
+0244 
+0245 
+0246                         <span class="keyword">case</span> <span class="string">'Variable'</span>
+0247                         <span class="comment">%-----------------------------------------------</span>
+0248                         str   = [<span class="string">'vector of onsets (scans) - '</span> Cname{i}];
+0249                         on    = spm_input(str,3);
+0250                         <span class="keyword">if</span> ~iscell(on), on = {on}; <span class="keyword">end</span>
+0251         
+0252                         <span class="comment">% get durationa</span>
+0253                         <span class="comment">%-----------------------------------------------</span>
+0254                         dur   = {};
+0255                         <span class="keyword">for</span> j = 1:length(on)
+0256                             dur{j}  = zeros(size(on{j}));
+0257                             <span class="keyword">if</span> length(on) == 1
+0258                                 str = <span class="string">'variable durations'</span>;
+0259                                 <span class="keyword">if</span> spm_input(str,<span class="string">'+1'</span>,<span class="string">'y/n'</span>,[1 0],2)
+0260                                     dur{j} = spm_input(<span class="string">'durations (scans)'</span>,<span class="keyword">...</span>
+0261                                              <span class="string">'+1'</span>,<span class="string">'e'</span>,[],[1 length(on{j})]);
+0262                                     dur{j} = round(dur{j}*T);
+0263                                 <span class="keyword">end</span>
+0264                             <span class="keyword">end</span>
+0265                         <span class="keyword">end</span>
+0266 
+0267 
+0268                 <span class="keyword">end</span>
+0269 
+0270 
+0271                 <span class="comment">% create stick functions</span>
+0272                 <span class="comment">%-----------------------------------------------</span>
+0273                 <span class="keyword">for</span> j = 1:length(on)
+0274                         ons   = sparse(k*T,1);
+0275                         <span class="keyword">for</span> p = 1:length(on{j})
+0276                                 q  = round(on{j}(p)*T + 1);
+0277                                 ons(q:(q + dur{j}(p))) = 1;
+0278                         <span class="keyword">end</span>
+0279                         sf{i} = ons(1:(k*T));
+0280                         i     = i + 1;
+0281                 <span class="keyword">end</span>
+0282 
+0283 
+0284             <span class="keyword">end</span>
+0285         <span class="keyword">end</span>
+0286 
+0287 
+0288 
+0289         <span class="comment">% get parameters, contruct interactions and append</span>
+0290         <span class="comment">%================================================================</span>
+0291         spm_input(<span class="string">'Parametric specification...'</span>,<span class="string">'+1'</span>,<span class="string">'d'</span>,Fstr)
+0292 
+0293 
+0294         <span class="comment">% paramteric representation of causes - defaults for main effects</span>
+0295         <span class="comment">%----------------------------------------------------------------</span>
+0296         <span class="keyword">for</span> i = 1:v
+0297                 Pv{i}     = [];
+0298                 Pname{i} = <span class="string">''</span>;
+0299         <span class="keyword">end</span>
+0300 
+0301 
+0302         <span class="comment">% get parameter type</span>
+0303         <span class="comment">%----------------------------------------------------------------</span>
+0304         Ptype = {<span class="string">'none'</span>,<span class="keyword">...</span>
+0305                  <span class="string">'time'</span>,<span class="keyword">...</span>
+0306                  <span class="string">'other'</span>};
+0307         Ptype = spm_input(<span class="string">'parametric modulation'</span>,<span class="string">'+1'</span>,<span class="string">'b'</span>,Ptype);
+0308         <span class="keyword">switch</span> Ptype
+0309 
+0310 
+0311                 <span class="keyword">case</span> <span class="string">'none'</span>
+0312                 <span class="comment">%--------------------------------------------------------</span>
+0313                 <span class="keyword">return</span>
+0314 
+0315 
+0316                 <span class="keyword">case</span> <span class="string">'other'</span>
+0317                 <span class="comment">%--------------------------------------------------------</span>
+0318                 Pstr   = spm_input(<span class="string">'name of parameter'</span>,<span class="string">'+1'</span>,<span class="string">'s'</span>);
+0319 
+0320 
+0321                 <span class="keyword">case</span> <span class="string">'time'</span>
+0322                 <span class="comment">%--------------------------------------------------------</span>
+0323                 Pstr   = Ptype;
+0324         <span class="keyword">end</span>
+0325 
+0326 
+0327         <span class="comment">% get parameters of expansion</span>
+0328         <span class="comment">%----------------------------------------------------------------</span>
+0329         Etype = {<span class="string">'linear'</span>,<span class="keyword">...</span>
+0330                  <span class="string">'exponen'</span>,<span class="keyword">...</span>
+0331                  <span class="string">'polynom'</span>};
+0332         Etype = spm_input(<span class="string">'expansion'</span>,<span class="string">'+1'</span>,<span class="string">'b'</span>,Etype);
+0333         DSstr = [DSstr  <span class="string">'[ x '</span> Pstr <span class="string">' ('</span> Etype <span class="string">')] '</span>];
+0334         <span class="keyword">switch</span> Etype
+0335 
+0336 
+0337                 <span class="keyword">case</span> <span class="string">'exponen'</span>
+0338                 <span class="comment">%--------------------------------------------------------</span>
+0339                 <span class="keyword">if</span> strcmp(Ptype,<span class="string">'time'</span>)
+0340                         h = round(k*T*dt/4);
+0341                         h = spm_input(<span class="string">'time constant {secs}'</span>,<span class="string">'+1'</span>,<span class="string">'r'</span>,h);
+0342 
+0343 
+0344                 <span class="keyword">else</span>
+0345                         h = spm_input(<span class="string">'decay constant'</span>,<span class="string">'+1'</span>,<span class="string">'r'</span>);
+0346                 <span class="keyword">end</span>
+0347 
+0348 
+0349                 <span class="keyword">case</span> <span class="string">'polynom'</span>
+0350                 <span class="comment">%--------------------------------------------------------</span>
+0351                 str       = <span class="string">'order of polynomial expansion'</span>;
+0352                 h         = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,2);
+0353 
+0354 
+0355         <span class="keyword">end</span>
+0356 
+0357 
+0358 
+0359         <span class="comment">% cycle over selected trial types</span>
+0360         <span class="comment">%----------------------------------------------------------------</span>
+0361         str   = sprintf(<span class="string">'which trial[s] 1 to %d'</span>,v);
+0362         Ypos  = spm_input(<span class="string">'!NextPos'</span>);
+0363 
+0364 
+0365         <span class="keyword">for</span> i = spm_input(str,<span class="string">'+1'</span>,<span class="string">'e'</span>,1)
+0366                          <span class="comment">%-----------------</span>
+0367              sillyvar=sillyvar+1;    
+0368                 spm_input(Cname{i},Ypos,<span class="string">'d'</span>,Fstr);
+0369                 on    = find(sf{i}(:,1));
+0370                 ns    = length(on);
+0371 
+0372 
+0373                 <span class="comment">% get parameters</span>
+0374                 <span class="comment">%-------------------------------------------------------</span>
+0375                 <span class="keyword">switch</span> Ptype
+0376 
+0377 
+0378                         <span class="keyword">case</span> <span class="string">'other'</span>
+0379                         <span class="comment">%-----------------------------------------------</span>
+0380                         str   = [<span class="string">'parameters for '</span> Cname{i}];
+0381                         p     = spm_input(str,<span class="string">'+1'</span>,<span class="string">'r'</span>,[],[ns,1]);
+0382 
+0383 
+0384                         <span class="keyword">case</span> <span class="string">'time'</span>
+0385                         <span class="comment">%-----------------------------------------------</span>
+0386                         p     = on*dt;
+0387 
+0388 
+0389                 <span class="keyword">end</span>
+0390 
+0391 
+0392                 <span class="comment">% expansion</span>
+0393                 <span class="comment">%--------------------------------------------------------</span>
+0394                 <span class="keyword">switch</span> Etype
+0395 
+0396 
+0397 
+0398                         <span class="keyword">case</span> <span class="string">'polynom'</span>
+0399                         <span class="comment">%------------------------------------------------</span>
+0400                         u              = spm_detrend(p(:));
+0401                         v              = zeros(size(u,1),h + 1);
+0402                         q              = sparse(size(sf{i},1),h);
+0403                         <span class="keyword">for</span> j = 0:h
+0404                                 v(:,(j + 1)) = (u.^j) - v*(pinv(v)*(u.^j));
+0405                         <span class="keyword">end</span>
+0406                         <span class="keyword">for</span> j = 1:h
+0407                                 u      = v(:,(j + 1));
+0408                                 q(:,j) = sparse(on,1,u,size(sf{i},1),1);
+0409                         <span class="keyword">end</span>
+0410 
+0411 
+0412                         <span class="keyword">case</span> <span class="string">'exponen'</span>
+0413                         <span class="comment">%------------------------------------------------</span>
+0414                         q              = exp(-p/h);
+0415                         q              = spm_detrend(q(:));
+0416                         q              = sparse(on,1,q,size(sf{i},1),1);
+0417 
+0418 
+0419                         <span class="keyword">case</span> <span class="string">'linear'</span>
+0420                         <span class="comment">%------------------------------------------------</span>
+0421                         q              = spm_detrend(p(:));
+0422                         q              = sparse(on,1,q,size(sf{i},1),1);
+0423 
+0424 
+0425 
+0426                 <span class="keyword">end</span>
+0427 
+0428 
+0429                 <span class="comment">% append as modulated stick functions</span>
+0430                 <span class="comment">%--------------------------------------------------------</span>
+0431                 sf{i}    = [sf{i} q];
+0432                 Pv{i}    = p;
+0433                 Pname{i} = Pstr;
+0434 
+0435 
+0436         <span class="keyword">end</span>
+0437 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

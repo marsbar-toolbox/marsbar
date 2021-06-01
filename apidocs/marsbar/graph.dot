@@ -1,0 +1,58 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  mars_arm -> mars_arm;
+  mars_arm -> mars_utils;
+  mars_arm_call -> mars_get_option;
+  mars_arm_call -> mars_struct;
+  mars_armoire -> mars_armoire;
+  mars_armoire -> mars_uifile;
+  mars_armoire -> savestruct;
+  mars_blob2roi -> marsbar;
+  mars_blobs2rois -> mars_utils;
+  mars_display_roi -> mars_display_roi;
+  mars_display_roi -> mars_orthviews;
+  mars_get_option -> mars_options;
+  mars_get_option -> mars_struct;
+  mars_options -> mars_options;
+  mars_options -> mars_struct;
+  mars_options -> mars_uifile;
+  mars_options -> marsbar;
+  mars_rois2img -> mars_utils;
+  mars_rois2img -> mars_vol_utils;
+  mars_struct -> mars_struct;
+  mars_utils -> mars_vol_utils;
+  marsbar -> mars_arm;
+  marsbar -> mars_build_roi;
+  marsbar -> mars_image_scaling;
+  marsbar -> mars_img2rois;
+  marsbar -> mars_options;
+  marsbar -> mars_rois2img;
+  marsbar -> mars_struct;
+  marsbar -> mars_uifile;
+  marsbar -> mars_utils;
+  marsbar -> marsbar;
+  marsbar -> savestruct;
+
+  mars_arm [URL="mars_arm.html"];
+  mars_arm_call [URL="mars_arm_call.html"];
+  mars_armoire [URL="mars_armoire.html"];
+  mars_blob2roi [URL="mars_blob2roi.html"];
+  mars_blob_menu [URL="mars_blob_menu.html"];
+  mars_blobs2rois [URL="mars_blobs2rois.html"];
+  mars_build_roi [URL="mars_build_roi.html"];
+  mars_display_roi [URL="mars_display_roi.html"];
+  mars_get_option [URL="mars_get_option.html"];
+  mars_image_scaling [URL="mars_image_scaling.html"];
+  mars_img2rois [URL="mars_img2rois.html"];
+  mars_new_space [URL="mars_new_space.html"];
+  mars_options [URL="mars_options.html"];
+  mars_orthviews [URL="mars_orthviews.html"];
+  mars_rois2img [URL="mars_rois2img.html"];
+  mars_struct [URL="mars_struct.html"];
+  mars_uifile [URL="mars_uifile.html"];
+  mars_utils [URL="mars_utils.html"];
+  mars_vol_check [URL="mars_vol_check.html"];
+  mars_vol_utils [URL="mars_vol_utils.html"];
+  marsbar [URL="marsbar.html"];
+  savestruct [URL="savestruct.html"];
+}

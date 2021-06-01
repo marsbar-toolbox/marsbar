@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of spm_create_image</title>
+  <meta name="keywords" content="spm_create_image">
+  <meta name="description" content="Wrapper for spm_create_vol, for compatibility with SPM99">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">spm5</a> &gt; spm_create_image.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/spm5&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>spm_create_image
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Wrapper for spm_create_vol, for compatibility with SPM99</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function V = spm_create_image(V) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Wrapper for spm_create_vol, for compatibility with SPM99
+ FORMAT V = spm_create_image(V)
+
+ Actually, MarsBaR itself does not use this function; it's included here
+ for compatibility with Phiwave (phiwave.sourceforge.net), that depends
+ on MarsBaR for its design interface and such.
+
+ $Id: spm_create_image.m 510 2004-11-17 01:51:58Z matthewbrett $
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/spm99/spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>	Wrapper for spm_create_image, for compatibility with SPM2</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/spm99/spm_close_vol.html" class="code" title="function Vo = spm_close_vol(Vi)">spm_close_vol</a>	Close image volume - for SPM2 / SPM99 compatibility</li>
+<li><a href="../../marsbar/spm99/spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>	Wrapper for spm_create_image, for compatibility with SPM2</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function V = spm_create_image(V)</a>
+0002 <span class="comment">% Wrapper for spm_create_vol, for compatibility with SPM99</span>
+0003 <span class="comment">% FORMAT V = spm_create_image(V)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Actually, MarsBaR itself does not use this function; it's included here</span>
+0006 <span class="comment">% for compatibility with Phiwave (phiwave.sourceforge.net), that depends</span>
+0007 <span class="comment">% on MarsBaR for its design interface and such.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% $Id: spm_create_image.m 510 2004-11-17 01:51:58Z matthewbrett $</span>
+0010 
+0011 V = <a href="../../marsbar/spm99/spm_create_vol.html" class="code" title="function V = spm_create_vol(V)">spm_create_vol</a>(V);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

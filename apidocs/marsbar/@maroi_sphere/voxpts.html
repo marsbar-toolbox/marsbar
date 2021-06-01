@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of voxpts</title>
+  <meta name="keywords" content="voxpts">
+  <meta name="description" content="voxpts method - voxels within a sphere in given space">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_sphere</a> &gt; voxpts.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_sphere&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>voxpts
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>voxpts method - voxels within a sphere in given space</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [pts, vals] = voxpts(obj, sp) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> voxpts method - voxels within a sphere in given space
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/c_o_m.html" class="code" title="function pt = c_o_m(o, sp, pt_type)">c_o_m</a>	c_o_m method - calculates unweighted centre of mass</li>
+<li><a href="../../marsbar/@maroi/realpts.html" class="code" title="function [pts, vals] = realpts(o,sp)">realpts</a>	realpts method - returns 3xN XYZ matrix in mm</li>
+<li><a href="../../marsbar/@maroi/volume.html" class="code" title="function v = volume(obj)">volume</a>	volume method - returns volume of ROI in mm</li>
+<li><a href="../../marsbar/@maroi_pointlist/voxpts.html" class="code" title="function [pts, vals] = voxpts(o, sp)">voxpts</a>	voxpts method - returns 3xN ijk matrix in voxels</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [pts, vals] = voxpts(obj, sp)</a>
+0002 <span class="comment">% voxpts method - voxels within a sphere in given space</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% $Id$</span>
+0005 
+0006 <span class="keyword">if</span> nargin &lt; 2
+0007   error(<span class="string">'Need object and space arguments'</span>);
+0008 <span class="keyword">end</span>
+0009 sp = <a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(sp);
+0010 
+0011 mc = obj.centre;
+0012 mr = obj.radius;
+0013 
+0014 <span class="comment">% find voxels that are within sphere</span>
+0015 vox = sqrt(sum(sp.mat(1:3,1:3)'.^2));
+0016 vr = mr ./ vox;
+0017 vc = sp.mat \ [mc(1:3) 1]';
+0018 vc = vc(1:3)';
+0019 blim = [max([1 1 1; ceil(vc-vr)]); min([sp.dim(1:3); floor(vc+vr)])];
+0020 [R,C,P]=ndgrid(<span class="keyword">...</span>
+0021     blim(1,1):blim(2,1),blim(1,2):blim(2,2),blim(1,3):blim(2,3));
+0022 vXYZ = [R(:)';C(:)';P(:)'];
+0023 o = ones(1, size(vXYZ, 2));
+0024 pts = find(sqrt(sum(((vXYZ-(vc'*o)) .* (vox'*o)).^2)) &lt;= mr);
+0025 pts = vXYZ(:,pts);
+0026 vals = ones(1, size(pts, 2));
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

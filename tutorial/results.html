@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic results &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using a structural ROI" href="andmore.html" />
+    <link rel="prev" title="Running the ROI analysis" href="estimate.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="andmore.html" title="Using a structural ROI"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="estimate.html" title="Running the ROI analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basic results</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="basic-results">
+<h1>Basic results<a class="headerlink" href="#basic-results" title="Permalink to this headline">¶</a></h1>
+<p>Let us start the assessment by getting some t and F values for the effects in
+the design. Click on the Results button in the MarsBaR window:</p>
+<img alt="../_images/results_menu.png" src="../_images/results_menu.png" />
+<div class="interfacenote note admonition">
+<p class="admonition-title">Interface summary - the results menu</p>
+<dl class="simple">
+<dt>Estimate results</dt><dd><p>as we know, takes the default design, and the ROI data, and
+estimates the model. MarsBaR stores the estimated results in
+memory as the estimated design.</p>
+</dd>
+<dt>Import contrasts</dt><dd><p>gives an interface for you to select contrasts from other
+analyses, and import them into the list of contrasts for the
+current analysis.</p>
+</dd>
+<dt>Refresh F contrasts</dt><dd><p>In earlier versions of marsbar (&lt;= 0.42), F contrasts added from other
+designs (Import contrasts above) could give wrong results due to cached
+fields in the contrasts that were specific to the design from which they
+were imported.  Unless you tell MarsBaR otherwise, it will automatically
+fix F contrasts in estimated designs when you load them so you should not
+need this menu option.  If you have set MarsBaR not to refresh F contrasts
+on load (see Options: Statistics: Load updates F contrasts), then you can
+use this <code class="docutils literal notranslate"><span class="pre">Refresh</span> <span class="pre">F</span> <span class="pre">contrasts</span></code> menu option to refresh the contrasts.</p>
+</dd>
+<dt>Add trial specific F</dt><dd><p>will add F contrasts for each trial, and each session, if they are
+not already present.</p>
+</dd>
+<dt>Default contrast</dt><dd><p>will set one contrast as the default to use for other options on
+this menu, such as the MarsBaR SPM graph plotting function.</p>
+</dd>
+<dt>Default region</dt><dd><p>applies only if the current results are for more than one
+region. It will select one region from the data to use for
+analysis and plots.</p>
+</dd>
+<dt>Plot residuals</dt><dd><p>puts up various plots of the residual errors from the model, to
+check for violation of assumptions or major outliers.</p>
+</dd>
+<dt>MarsBaR SPM graph</dt><dd><p>uses the SPM plotting functions to plot contrasts of parameter
+estimates, fitted and adjusted responses, estimates of event or
+block related response, and so on.</p>
+</dd>
+<dt>Statistic table</dt><dd><p>shows various statistics for selected contrasts, as we will see in
+the tutorial.</p>
+</dd>
+<dt>% signal change</dt><dd><p>will show an estimate for the percent signal change for a single
+event. There are many assumptions for this analysis; please treat
+it like you would treat your children: with a combination of great
+care and weary scepticism.</p>
+</dd>
+<dt>Set results from file</dt><dd><p>allows you to choose the results you want to review.  When you
+estimate a model in MarsBaR, the program will automatically set
+the new results to be current for the results menu. If you want to
+analyze some other set of MarsBaR results, you can use this option
+to select and load another analysis file. The default file suffix
+for MarsBaR estimated results is <code class="docutils literal notranslate"><span class="pre">_mres.mat</span></code>.</p>
+</dd>
+<dt>Save results to file</dt><dd><p>will save the current estimated results, including the data used
+for the estimation, to a file on disk.</p>
+</dd>
+</dl>
+</div>
+<p>To continue with our analysis, we next need to specify a contrast. In
+our case the contrast is very simple: just a 1 in the column for the HRF
+regressor used to model the visual event. Usually the contrast will be
+more complicated, and you may have already entered it for a previous SPM
+or MarsBaR analysis. The Import contrasts option allows you to get
+contrasts from a previous analysis.  To show how it works, click on this
+option. The SPM file selection window should appear. Navigate to the
+<code class="docutils literal notranslate"><span class="pre">sess1/SPM8_ana</span></code> directory, and select the <code class="docutils literal notranslate"><span class="pre">SPM.mat</span></code> file there. The
+SPM contrast manager comes up, showing all the F and t contrasts in the
+<code class="docutils literal notranslate"><span class="pre">SPM.mat</span></code> file. Select the <code class="docutils literal notranslate"><span class="pre">stim_hrf</span></code> t contrast, and click Done.
+MarsBaR will put this contrast into the current estimated design. Here
+we only selected one contrast, but you can select many contrasts by
+dragging the mouse, shift clicking etc. (depending on your system).</p>
+<p>Now click on the Statistic table option in the MarsBaR results menu. Select
+the <code class="docutils literal notranslate"><span class="pre">stim_hrf</span></code> contrast and click Done. The results will print out in a rather
+ugly fashion in the Matlab window. You might want to enlarge your Matlab
+window to stop the text wrapping in an annoying way. Here is the output on my
+machine:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span> <span class="s">Contrast</span> <span class="s">value:</span>    <span class="s">t</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
+<span class="o">----------------------------------------------------------------------------------------</span>
+
+<span class="n">stim_hrf</span>
+<span class="s">--------------------------</span>
+
+      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>           <span class="s">2.21:</span>           <span class="s">4.44:</span>       <span class="s">0.000011:</span>       <span class="s">0.000011</span>
+</pre></div>
+</div>
+<p>At the left you see the contrast name. Under this, and to the right, MarsBaR
+has printed the ROI label that you entered a while ago. The t statistic is
+self explanatory, and the uncorrected p value is just the one-tailed p value
+for this t statistic given the degrees of freedom for the analysis. The
+corrected p is the uncorrected p value, with a Bonferroni correction for the
+number of regions in the analysis. In this case, we only analyzed one region,
+so the corrected p value is the same as the uncorrected p value. MarsBaR (like
+SPM), will not attempt to correct the p value for the number of contrasts,
+because the contrasts may not be orthogonal, and this will make a Bonferroni
+correction too conservative.</p>
+<p>There is also a column called <em>Contrast value</em>. For a t statistic, as here, this
+value is an effect size. Remember that a t statistic consists of an effect
+size, divided by the standard deviation of this effect. Here our contrast is
+very simple, containing only a single 1, so the contrast value is the same as
+the value of the first parameter in the model. The value of this parameter
+will be the best-fitting slope of the line relating the height of the HRF
+regressor to the FMRI signal. This effect size measure is the number that SPM
+stores for each voxel in the <code class="docutils literal notranslate"><span class="pre">con_0001.img</span></code>, <code class="docutils literal notranslate"><span class="pre">con_0002.img</span></code> … series, and these
+are the values that are used for standard second level / random effect
+analyses.</p>
+<p>Just for practice, let us also run an F contrast. Click Statistic table again,
+choose the effects of interest contrast, click Done:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span>       <span class="s">Extra</span> <span class="s">SS:</span>    <span class="s">F</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
+<span class="o">----------------------------------------------------------------------------------------</span>
+
+<span class="n">effects</span> <span class="s">of</span> <span class="s">interest</span>
+<span class="o">--------------------------</span>
+
+      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>          <span class="s">40.48:</span>          <span class="s">25.01:</span>       <span class="s">0.000000:</span>       <span class="s">0.000000</span>
+</pre></div>
+</div>
+<p>Now the Contrast value has become the <em>Extra SS</em>.  This is a measure of the
+variance that would be added to a model that does not contain the effects in
+the contrast.  The F statistic is this measure, adjusted for the number of
+effects, and divided by the residual variance for the whole model. There is
+no simple way of using this <em>Extra SS</em> value in second level analyses.</p>
+<div class="section" id="comparing-fast-and-slow-events">
+<h2>Comparing fast and slow events<a class="headerlink" href="#comparing-fast-and-slow-events" title="Permalink to this headline">¶</a></h2>
+<p>Our results so far show that there is indeed a highly significant effect of
+visual stimulation on the visual cortex, even for very frequent events. This
+is not a Nature paper so far. To make things a bit more interesting, we can
+compare this effect, from run 1, with the effect in run 3, for which the events
+were much less frequent.</p>
+<p>Click on Design in the MarsBaR window, then Set design from file. Choose
+<code class="docutils literal notranslate"><span class="pre">SPM.mat</span></code> from <code class="docutils literal notranslate"><span class="pre">sess3/SPM8_ana</span></code>. Now we need to extract the data;
+select <em>Extract ROI data (default)</em> from the data menu. MarsBaR will ask
+you if you want to save the previous data. Why not say ‘no’ for the
+moment. Next choose <code class="docutils literal notranslate"><span class="pre">trim_stim_roi.mat</span></code> again. When that is done, run
+<em>Estimate results</em> from the Results menu. Again choose ‘no’ when asked if
+you want to save the previous estimated design.</p>
+<div class="technote note admonition">
+<p class="admonition-title">Technical note - directories and saving results</p>
+<p>MarsBaR, unlike SPM, does not need a new directory for each new set of results.
+Designs, results and data are kept in memory until you save them, and you can
+save them with any filename. This means you can keep many sets of results in
+the same directory.</p>
+</div>
+<p>When the estimation has finished, click on Results, <em>Statistic
+table</em>. Next you need to enter the HRF contrast. Earlier, we imported
+the HRF column contrast from an SPM model. To save time, why not enter
+this contrast directly using the contrast manager; it is just a t
+statistic with a single 1 in the first column:</p>
+<img alt="../_images/defining_contrast.png" src="../_images/defining_contrast.png" />
+<p>In the end, you get a new statistic table:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span> <span class="s">Contrast</span> <span class="s">value:</span>    <span class="s">t</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
+<span class="o">----------------------------------------------------------------------------------------</span>
+
+<span class="n">stim_hrf</span>
+<span class="s">--------------------------</span>
+
+      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>           <span class="s">2.96:</span>           <span class="s">3.98:</span>       <span class="s">0.000061:</span>       <span class="s">0.000061</span>
+</pre></div>
+</div>
+<p>You can see that the contrast value – which is proportional to the change in
+signal for a single event – is greater for run 3 than for run 1. Despite this,
+the t statistic for run 3 is lower than for run 1. One explanation for this is
+that there are many more events in run 1, so the estimate of signal change per
+event is more reliable (has less variance).</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basic results</a><ul>
+<li><a class="reference internal" href="#comparing-fast-and-slow-events">Comparing fast and slow events</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="estimate.html"
+                        title="previous chapter">Running the ROI analysis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="andmore.html"
+                        title="next chapter">Using a structural ROI</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/results.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="andmore.html" title="Using a structural ROI"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="estimate.html" title="Running the ROI analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >MarsBaR tutorial</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basic results</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

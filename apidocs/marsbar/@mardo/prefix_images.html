@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of prefix_images</title>
+  <meta name="keywords" content="prefix_images">
+  <meta name="description" content="method for adding or removing prefix from file names in design">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; prefix_images.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>prefix_images
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method for adding or removing prefix from file names in design</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function D = prefix_images(D, action, prefix, flags) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method for adding or removing prefix from file names in design
+ FORMAT D = prefix_images(D, action, prefix)
+
+ D          - mardo design
+ action     - one of 'add' or 'remove'
+ prefix     - prefix to remove
+ flags      - optional struct containing none or more of fields
+              'check_exist' - one of 'warn', 'error', 'none'
+                      If not 'none' checks images exist with new
+                      filenames
+              'check_all'   - if not 0, checks all images, instead of
+                              the first image in the image list
+              'check_swap'  - if not 0, checks if images with new
+                      filenames need byte swapping, and swaps if so
+             
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images, NaN if not known</li>
+<li><a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_2/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols to design</li>
+<li><a href="../../marsbar/@mardo_99/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>	method to get image vols from design</li>
+<li><a href="../../marsbar/@mardo_99/has_images.html" class="code" title="function tf = has_images(o)">has_images</a>	returns 1 if design contains images</li>
+<li><a href="../../marsbar/@mardo_99/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>	method to set image vols into design</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+<li><a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>	collection of useful utility functions for vol structs</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function D = prefix_images(D, action, prefix, flags)</a>
+0002 <span class="comment">% method for adding or removing prefix from file names in design</span>
+0003 <span class="comment">% FORMAT D = prefix_images(D, action, prefix)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% D          - mardo design</span>
+0006 <span class="comment">% action     - one of 'add' or 'remove'</span>
+0007 <span class="comment">% prefix     - prefix to remove</span>
+0008 <span class="comment">% flags      - optional struct containing none or more of fields</span>
+0009 <span class="comment">%              'check_exist' - one of 'warn', 'error', 'none'</span>
+0010 <span class="comment">%                      If not 'none' checks images exist with new</span>
+0011 <span class="comment">%                      filenames</span>
+0012 <span class="comment">%              'check_all'   - if not 0, checks all images, instead of</span>
+0013 <span class="comment">%                              the first image in the image list</span>
+0014 <span class="comment">%              'check_swap'  - if not 0, checks if images with new</span>
+0015 <span class="comment">%                      filenames need byte swapping, and swaps if so</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% $Id$</span>
+0018   
+0019 def_flags = struct(<span class="string">'check_exist'</span>, <span class="string">'none'</span>, <span class="keyword">...</span>
+0020            <span class="string">'check_all'</span>,   1, <span class="keyword">...</span>
+0021            <span class="string">'check_swap'</span>,  0);
+0022   
+0023 <span class="keyword">if</span> nargin &lt; 2
+0024   action = <span class="string">'remove'</span>;
+0025 <span class="keyword">end</span>
+0026 <span class="keyword">if</span> nargin &lt; 3
+0027   prefix = <span class="string">'s'</span>;
+0028 <span class="keyword">end</span>
+0029 <span class="keyword">if</span> nargin &lt; 4
+0030   flags = [];
+0031 <span class="keyword">end</span>
+0032 flags = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillsplit'</span>, def_flags, flags);
+0033 <span class="keyword">if</span> flags.check_swap, flags.check_exist = <span class="string">'error'</span>; <span class="keyword">end</span>
+0034 
+0035 <span class="comment">% get images</span>
+0036 <span class="keyword">if</span> ~<a href="has_images.html" class="code" title="function tf = has_images(o)">has_images</a>(D)
+0037   warning(<span class="string">'Design does not contain images'</span>);
+0038   <span class="keyword">return</span>
+0039 <span class="keyword">end</span>
+0040 VY = <a href="../../marsbar/@mardo_2/get_images.html" class="code" title="function VY = get_images(marsD)">get_images</a>(D);
+0041 
+0042 <span class="comment">% remove prefix</span>
+0043 files  = strvcat(VY(:).fname);
+0044 fpaths = spm_str_manip(files, <span class="string">'h'</span>);
+0045 fns    = spm_str_manip(files, <span class="string">'t'</span>);
+0046 nf     = size(files, 1);
+0047 
+0048 <span class="keyword">switch</span> lower(action)
+0049   <span class="keyword">case</span> <span class="string">'remove'</span>
+0050    s_is = strmatch(prefix, fns);
+0051    <span class="keyword">if</span> length(s_is) == nf
+0052      fns(:, 1:length(prefix)) = [];
+0053    <span class="keyword">else</span>
+0054      warning([<span class="string">'Not all analysis files prefixed with '''</span> prefix <span class="keyword">...</span>
+0055           <span class="string">''', design has not been changed'</span>])
+0056      <span class="keyword">return</span>
+0057    <span class="keyword">end</span>
+0058  <span class="keyword">case</span> <span class="string">'add'</span>
+0059   fns = [repmat(prefix, nf, 1) fns];
+0060  <span class="keyword">otherwise</span>
+0061   error([<span class="string">'Warped action '</span> action]);
+0062 <span class="keyword">end</span>
+0063 
+0064 newfns = cellstr(strcat(fpaths, filesep, fns));
+0065 [VY(:).fname] = deal(newfns{:});
+0066 
+0067 <span class="comment">% Do checks if necessary</span>
+0068 c_e = lower(flags.check_exist);
+0069 <span class="keyword">switch</span> c_e
+0070  <span class="keyword">case</span> <span class="string">'none'</span>
+0071  <span class="keyword">case</span> {<span class="string">'error'</span>, <span class="string">'warn'</span>}
+0072   <span class="keyword">if</span> ~flags.check_all, cV = VY(1); <span class="keyword">else</span> cV = VY; <span class="keyword">end</span>
+0073   e_f = 1;
+0074   n_chk = prod(size(cV));
+0075   <span class="keyword">for</span> v = 1:n_chk
+0076     <span class="keyword">if</span> ~exist(newfns{v}, <span class="string">'file'</span>), e_f = 0; <span class="keyword">break</span>; <span class="keyword">end</span>
+0077   <span class="keyword">end</span>
+0078   <span class="keyword">if</span> ~e_f
+0079     str = sprintf(<span class="string">'Image %s does not exist'</span>, newfns{v});
+0080     <span class="keyword">if</span> strcmp(c_e, <span class="string">'error'</span>), error(str); <span class="keyword">else</span> warn(str); <span class="keyword">end</span>
+0081   <span class="keyword">end</span>
+0082  <span class="keyword">otherwise</span>
+0083   error(sprintf(<span class="string">'Who asked for %s?'</span>, c_e));
+0084 <span class="keyword">end</span>
+0085 <span class="keyword">if</span> flags.check_swap
+0086   <span class="keyword">if</span> flags.check_all
+0087     <span class="keyword">for</span> v = 1:nf
+0088       <span class="keyword">if</span> <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'is_swapped_wrong'</span>, VY(v))
+0089     VY(v) = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'byte_swap'</span>, VY(v));
+0090       <span class="keyword">end</span>
+0091     <span class="keyword">end</span>
+0092   <span class="keyword">else</span> <span class="comment">% just check the first and apply to all</span>
+0093     <span class="keyword">if</span> <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'is_swapped_wrong'</span>, VY(1))
+0094       VY = <a href="../../marsbar/mars_vol_utils.html" class="code" title="function varargout=mars_vol_utils(varargin)">mars_vol_utils</a>(<span class="string">'byte_swap'</span>, VY);
+0095     <span class="keyword">end</span>
+0096   <span class="keyword">end</span>
+0097 <span class="keyword">end</span>
+0098 
+0099 D = <a href="../../marsbar/@mardo_2/set_images.html" class="code" title="function marsD = set_images(marsD, VY)">set_images</a>(D, VY);
+0100 
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

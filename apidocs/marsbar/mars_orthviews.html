@@ -1,0 +1,1266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mars_orthviews</title>
+  <meta name="keywords" content="mars_orthviews">
+  <meta name="description" content="Display Orthogonal Views of a Normalized Image">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">marsbar</a> &gt; mars_orthviews.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>mars_orthviews
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Display Orthogonal Views of a Normalized Image</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = mars_orthviews(action,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Display Orthogonal Views of a Normalized Image
+ MarsBaR version of spm_orthviews with very minor modifications 
+ FORMAT H = mars_orthviews('Image',filename[,position])
+ filename - name of image to display
+ area     - position of image
+            -  area(1) - position x
+            -  area(2) - position y
+            -  area(3) - size x
+            -  area(4) - size y
+ H        - handle for ortho sections
+ FORMAT mars_orthviews('BB',bb)
+ bb       - bounding box
+            [loX loY loZ
+             hiX hiY hiZ]
+
+ FORMAT mars_orthviews('Redraw')
+ Redraws the images
+
+ FORMAT mars_orthviews('Reposition',centre)
+ centre   - X, Y &amp; Z coordinates of centre voxel
+
+ FORMAT mars_orthviews('Space'[,handle])
+ handle   - the view to define the space by
+ with no arguments - puts things into mm space
+
+ FORMAT mars_orthviews('MaxBB')
+ sets the bounding box big enough display the whole of all images
+
+ FORMAT mars_orthviews('Resolution',res)
+ res      - resolution (mm)
+
+ FORMAT mars_orthviews('Delete', handle)
+ handle   - image number to delete
+
+ FORMAT mars_orthviews('Reset')
+ clears the orthogonal views
+
+ FORMAT mars_orthviews('Pos')
+ returns the co-ordinate of the crosshairs in millimetres in the
+ standard space.
+
+ FORMAT mars_orthviews('Pos', i)
+ returns the voxel co-ordinate of the crosshairs in the image in the
+ ith orthogonal section.
+
+ FORMAT mars_orthviews('Xhairs','off') OR mars_orthviews('Xhairs')
+ disables the cross-hairs on the display.
+
+ FORMAT mars_orthviews('Xhairs','on')
+ enables the cross-hairs.
+
+ FORMAT mars_orthviews('Interp',hld)
+ sets the hold value to hld (see spm_slice_vol).
+
+ FORMAT mars_orthviews('AddBlobs',handle,XYZ,Z,mat)
+ Adds blobs from a pointlist to the image specified by the handle(s).
+ handle   - image number to add blobs to
+ XYZ      - blob voxel locations (currently in millimeters)
+ Z        - blob voxel intensities
+ mat      - matrix from millimeters to voxels of blob.
+ This method only adds one set of blobs, and displays them using a
+ split colour table.
+
+ mars_orthviews('AddColouredBlobs',handle,XYZ,Z,mat,colour)
+ Adds blobs from a pointlist to the image specified by the handle(s).
+ handle   - image number to add blobs to
+ XYZ      - blob voxel locations (currently in millimeters)
+ Z        - blob voxel intensities
+ mat      - matrix from millimeters to voxels of blob.
+ colour   - the 3 vector containing the colour that the blobs should be
+ Several sets of blobs can be added in this way, and it uses full colour.
+ Although it may not be particularly attractive on the screen, the colour
+ blobs print well.
+
+ mars_orthviews('AddColouredMatrix',handle,matrix,mat,colour)
+ Adds blobs from a matrix to the image specified by the handle(s).
+ handle   - image number to add blobs to
+ matrix   - voxel matrix
+ mat      - matrix from matrix coordinates to millimeters 
+ colour   - the 3 vector containing the colour that the blobs should be
+
+ FORMAT mars_orthviews('RemoveBlobs',handle)
+ Removes all blobs from the image specified by the handle(s).
+
+ mars_orthviews('Register',hReg)
+ hReg      - Handle of HandleGraphics object to build registry in.
+ See spm_XYZreg for more information.
+
+_______________________________________________________________________
+ @(#)mars_orthviews.m    2.25 John Ashburner &amp; Matthew Brett 01/03/19
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>	method to overload isfield for mardo objects</li>
+<li><a href="../marsbar/@maroi_box/centre.html" class="code" title="function c = centre(obj, val)">centre</a>	centre method - sets / returns centre of ROI in mm</li>
+<li><a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>	vol - returns / sets image vol for object</li>
+<li><a href="../marsbar/@maroi_sphere/centre.html" class="code" title="function c = centre(obj, val)">centre</a>	centre method - sets / returns centre of ROI in mm</li>
+<li><a href="../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>	gets XYZ coordinates for region</li>
+<li><a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+<li><a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>	compatibility function to allow spm_get calls with SPM5</li>
+<li><a href="../marsbar/spm99/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>	returns SPM version specific parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function addblobs(handle, xyz, t, mat)</a></li>
+<li><a href="#_sub2" class="code">function addimage(handle, fname)</a></li>
+<li><a href="#_sub3" class="code">function addcolouredblobs(handle, xyz, t, mat,colour)</a></li>
+<li><a href="#_sub4" class="code">function addcolouredmatrix(handle, vol, mat,colour)</a></li>
+<li><a href="#_sub5" class="code">function addcolouredimage(handle, fname,colour)</a></li>
+<li><a href="#_sub6" class="code">function addtruecolourimage(handle,vol,colourmap,prop,mx,mn)</a></li>
+<li><a href="#_sub7" class="code">function rmblobs(handle)</a></li>
+<li><a href="#_sub8" class="code">function register(hreg)</a></li>
+<li><a href="#_sub9" class="code">function xhairs(arg1),</a></li>
+<li><a href="#_sub10" class="code">function H = pos(arg1)</a></li>
+<li><a href="#_sub11" class="code">function my_reset</a></li>
+<li><a href="#_sub12" class="code">function my_delete(arg1)</a></li>
+<li><a href="#_sub13" class="code">function resolution(arg1)</a></li>
+<li><a href="#_sub14" class="code">function move(handle,pos)</a></li>
+<li><a href="#_sub15" class="code">function bb = maxbb</a></li>
+<li><a href="#_sub16" class="code">function space(arg1)</a></li>
+<li><a href="#_sub17" class="code">function H = specify_image(arg1, arg2)</a></li>
+<li><a href="#_sub18" class="code">function bbox</a></li>
+<li><a href="#_sub19" class="code">function redraw_all</a></li>
+<li><a href="#_sub20" class="code">function mx = maxval(vol)</a></li>
+<li><a href="#_sub21" class="code">function mn = minval(vol)</a></li>
+<li><a href="#_sub22" class="code">function redraw(arg1)</a></li>
+<li><a href="#_sub23" class="code">function centre = findcent</a></li>
+<li><a href="#_sub24" class="code">function handles = valid_handles(handles)</a></li>
+<li><a href="#_sub25" class="code">function reset_st</a></li>
+<li><a href="#_sub26" class="code">function img = scaletocmap(inpimg,mn,mx,cmap,miscol)</a></li>
+<li><a href="#_sub27" class="code">function cmap = getcmap(acmapname)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = mars_orthviews(action,varargin)</a>
+0002 <span class="comment">% Display Orthogonal Views of a Normalized Image</span>
+0003 <span class="comment">% MarsBaR version of spm_orthviews with very minor modifications</span>
+0004 <span class="comment">% FORMAT H = mars_orthviews('Image',filename[,position])</span>
+0005 <span class="comment">% filename - name of image to display</span>
+0006 <span class="comment">% area     - position of image</span>
+0007 <span class="comment">%            -  area(1) - position x</span>
+0008 <span class="comment">%            -  area(2) - position y</span>
+0009 <span class="comment">%            -  area(3) - size x</span>
+0010 <span class="comment">%            -  area(4) - size y</span>
+0011 <span class="comment">% H        - handle for ortho sections</span>
+0012 <span class="comment">% FORMAT mars_orthviews('BB',bb)</span>
+0013 <span class="comment">% bb       - bounding box</span>
+0014 <span class="comment">%            [loX loY loZ</span>
+0015 <span class="comment">%             hiX hiY hiZ]</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% FORMAT mars_orthviews('Redraw')</span>
+0018 <span class="comment">% Redraws the images</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% FORMAT mars_orthviews('Reposition',centre)</span>
+0021 <span class="comment">% centre   - X, Y &amp; Z coordinates of centre voxel</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">% FORMAT mars_orthviews('Space'[,handle])</span>
+0024 <span class="comment">% handle   - the view to define the space by</span>
+0025 <span class="comment">% with no arguments - puts things into mm space</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% FORMAT mars_orthviews('MaxBB')</span>
+0028 <span class="comment">% sets the bounding box big enough display the whole of all images</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">% FORMAT mars_orthviews('Resolution',res)</span>
+0031 <span class="comment">% res      - resolution (mm)</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% FORMAT mars_orthviews('Delete', handle)</span>
+0034 <span class="comment">% handle   - image number to delete</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">% FORMAT mars_orthviews('Reset')</span>
+0037 <span class="comment">% clears the orthogonal views</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">% FORMAT mars_orthviews('Pos')</span>
+0040 <span class="comment">% returns the co-ordinate of the crosshairs in millimetres in the</span>
+0041 <span class="comment">% standard space.</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% FORMAT mars_orthviews('Pos', i)</span>
+0044 <span class="comment">% returns the voxel co-ordinate of the crosshairs in the image in the</span>
+0045 <span class="comment">% ith orthogonal section.</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">% FORMAT mars_orthviews('Xhairs','off') OR mars_orthviews('Xhairs')</span>
+0048 <span class="comment">% disables the cross-hairs on the display.</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% FORMAT mars_orthviews('Xhairs','on')</span>
+0051 <span class="comment">% enables the cross-hairs.</span>
+0052 <span class="comment">%</span>
+0053 <span class="comment">% FORMAT mars_orthviews('Interp',hld)</span>
+0054 <span class="comment">% sets the hold value to hld (see spm_slice_vol).</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% FORMAT mars_orthviews('AddBlobs',handle,XYZ,Z,mat)</span>
+0057 <span class="comment">% Adds blobs from a pointlist to the image specified by the handle(s).</span>
+0058 <span class="comment">% handle   - image number to add blobs to</span>
+0059 <span class="comment">% XYZ      - blob voxel locations (currently in millimeters)</span>
+0060 <span class="comment">% Z        - blob voxel intensities</span>
+0061 <span class="comment">% mat      - matrix from millimeters to voxels of blob.</span>
+0062 <span class="comment">% This method only adds one set of blobs, and displays them using a</span>
+0063 <span class="comment">% split colour table.</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">% mars_orthviews('AddColouredBlobs',handle,XYZ,Z,mat,colour)</span>
+0066 <span class="comment">% Adds blobs from a pointlist to the image specified by the handle(s).</span>
+0067 <span class="comment">% handle   - image number to add blobs to</span>
+0068 <span class="comment">% XYZ      - blob voxel locations (currently in millimeters)</span>
+0069 <span class="comment">% Z        - blob voxel intensities</span>
+0070 <span class="comment">% mat      - matrix from millimeters to voxels of blob.</span>
+0071 <span class="comment">% colour   - the 3 vector containing the colour that the blobs should be</span>
+0072 <span class="comment">% Several sets of blobs can be added in this way, and it uses full colour.</span>
+0073 <span class="comment">% Although it may not be particularly attractive on the screen, the colour</span>
+0074 <span class="comment">% blobs print well.</span>
+0075 <span class="comment">%</span>
+0076 <span class="comment">% mars_orthviews('AddColouredMatrix',handle,matrix,mat,colour)</span>
+0077 <span class="comment">% Adds blobs from a matrix to the image specified by the handle(s).</span>
+0078 <span class="comment">% handle   - image number to add blobs to</span>
+0079 <span class="comment">% matrix   - voxel matrix</span>
+0080 <span class="comment">% mat      - matrix from matrix coordinates to millimeters</span>
+0081 <span class="comment">% colour   - the 3 vector containing the colour that the blobs should be</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">% FORMAT mars_orthviews('RemoveBlobs',handle)</span>
+0084 <span class="comment">% Removes all blobs from the image specified by the handle(s).</span>
+0085 <span class="comment">%</span>
+0086 <span class="comment">% mars_orthviews('Register',hReg)</span>
+0087 <span class="comment">% hReg      - Handle of HandleGraphics object to build registry in.</span>
+0088 <span class="comment">% See spm_XYZreg for more information.</span>
+0089 <span class="comment">%</span>
+0090 <span class="comment">%_______________________________________________________________________</span>
+0091 <span class="comment">% @(#)mars_orthviews.m    2.25 John Ashburner &amp; Matthew Brett 01/03/19</span>
+0092 <span class="comment">%</span>
+0093 <span class="comment">% $Id$</span>
+0094 
+0095 
+0096 <span class="comment">% The basic fields of st are:</span>
+0097 <span class="comment">%         n        - the number of images currently being displayed</span>
+0098 <span class="comment">%         vols     - a cell array containing the data on each of the</span>
+0099 <span class="comment">%                    displayed images.</span>
+0100 <span class="comment">%         Space    - a mapping between the displayed images and the</span>
+0101 <span class="comment">%                    mm space of each image.</span>
+0102 <span class="comment">%         bb       - the bounding box of the displayed images.</span>
+0103 <span class="comment">%         centre   - the current centre of the orthogonal views</span>
+0104 <span class="comment">%         callback - a callback to be evaluated on a button-click.</span>
+0105 <span class="comment">%         xhairs   - crosshairs off/on</span>
+0106 <span class="comment">%         hld      - the interpolation method</span>
+0107 <span class="comment">%         fig      - the figure that everything is displayed in</span>
+0108 <span class="comment">%         mode     - the position/orientation of the sagittal view.</span>
+0109 <span class="comment">%                    - currently always 1</span>
+0110 <span class="comment">%</span>
+0111 <span class="comment">%         st.registry.hReg \_ See spm_XYZreg for documentation</span>
+0112 <span class="comment">%         st.registry.hMe  /</span>
+0113 <span class="comment">%</span>
+0114 <span class="comment">% For each of the displayed images, there is a non-empty entry in the</span>
+0115 <span class="comment">% vols cell array.  Handles returned by &quot;mars_orthviews('Image',.....)&quot;</span>
+0116 <span class="comment">% indicate the position in the cell array of the newly created ortho-view.</span>
+0117 <span class="comment">% Operations on each ortho-view require the handle to be passed.</span>
+0118 <span class="comment">%</span>
+0119 <span class="comment">% When a new image is displayed, the cell entry contains the information</span>
+0120 <span class="comment">% returned by spm_vol (type help spm_vol for more info).  In addition,</span>
+0121 <span class="comment">% there are a few other fields, some of which I will document here:</span>
+0122 <span class="comment">%</span>
+0123 <span class="comment">%         premul - a matrix to premultiply the .mat field by.  Useful</span>
+0124 <span class="comment">%                  for re-orienting images.</span>
+0125 <span class="comment">%         window - either 'auto' or an intensity range to display the</span>
+0126 <span class="comment">%                  image with.</span>
+0127 <span class="comment">%</span>
+0128 <span class="comment">%         ax     - a cell array containing an element for the three</span>
+0129 <span class="comment">%                  views.  The fields of each element are handles for</span>
+0130 <span class="comment">%                  the axis, image and crosshairs.</span>
+0131 <span class="comment">%</span>
+0132 <span class="comment">%         blobs - optional.  Is there for using to superimpose blobs.</span>
+0133 <span class="comment">%                 vol     - 3D array of image data</span>
+0134 <span class="comment">%                 mat     - a mapping from vox-to-mm (see spm_vol, or</span>
+0135 <span class="comment">%                           help on image formats).</span>
+0136 <span class="comment">%                 max     - maximum intensity for scaling to.  If it</span>
+0137 <span class="comment">%                           does not exist, then images are auto-scaled.</span>
+0138 <span class="comment">%</span>
+0139 <span class="comment">%                 There are two colouring modes: full colour, and split</span>
+0140 <span class="comment">%                 colour.  When using full colour, there should be a</span>
+0141 <span class="comment">%                 'colour' field for each cell element.  When using</span>
+0142 <span class="comment">%                 split colourscale, there is a handle for the colorbar</span>
+0143 <span class="comment">%                 axis.</span>
+0144 <span class="comment">%</span>
+0145 <span class="comment">%                 colour  - if it exists it contains the</span>
+0146 <span class="comment">%                           red,green,blue that the blobs should be</span>
+0147 <span class="comment">%                           displayed in.</span>
+0148 <span class="comment">%                 cbar    - handle for colorbar (for split colourscale).</span>
+0149 
+0150 <span class="keyword">global</span> st;
+0151 
+0152 <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st), <a href="#_sub25" class="code" title="subfunction reset_st">reset_st</a>; <span class="keyword">end</span>;
+0153 
+0154 spm(<span class="string">'Pointer'</span>,<span class="string">'watch'</span>);
+0155 
+0156 <span class="keyword">if</span> nargin == 0, action = <span class="string">''</span>; <span class="keyword">end</span>;
+0157 action = lower(action);
+0158 
+0159 <span class="keyword">switch</span> lower(action),
+0160 <span class="keyword">case</span> <span class="string">'image'</span>,
+0161     H = <a href="#_sub17" class="code" title="subfunction H = specify_image(arg1, arg2)">specify_image</a>(varargin{1});
+0162     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(H)
+0163         <span class="keyword">if</span> length(varargin)&gt;=2, st.vols{H}.area = varargin{2}; <span class="keyword">end</span>;
+0164         <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st.bb), st.bb = <a href="#_sub15" class="code" title="subfunction bb = maxbb">maxbb</a>; <span class="keyword">end</span>;
+0165         <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0166         <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(H);
+0167     <span class="keyword">end</span>;
+0168     varargout{1} = H;
+0169 
+0170 <span class="keyword">case</span> <span class="string">'bb'</span>,
+0171     <span class="keyword">if</span> length(varargin)&gt; 0 &amp; all(size(varargin{1})==[2 3]), st.bb = varargin{1}; <span class="keyword">end</span>;
+0172     <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0173     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0174 
+0175 <span class="keyword">case</span> <span class="string">'redraw'</span>,
+0176     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0177     eval(st.callback);
+0178     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st,<span class="string">'registry'</span>),
+0179         spm_XYZreg(<span class="string">'SetCoords'</span>,st.centre,st.registry.hReg,st.registry.hMe);
+0180     <span class="keyword">end</span>;
+0181 
+0182 <span class="keyword">case</span> <span class="string">'reposition'</span>,
+0183     <span class="keyword">if</span> length(varargin)&lt;1, tmp = <a href="#_sub23" class="code" title="subfunction centre = findcent">findcent</a>;
+0184     <span class="keyword">else</span>, tmp = varargin{1}; <span class="keyword">end</span>;
+0185     <span class="keyword">if</span> length(tmp)==3, st.centre = tmp(:); <span class="keyword">end</span>;
+0186     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0187     eval(st.callback);
+0188     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st,<span class="string">'registry'</span>),
+0189         spm_XYZreg(<span class="string">'SetCoords'</span>,st.centre,st.registry.hReg,st.registry.hMe);
+0190     <span class="keyword">end</span>;
+0191 
+0192 <span class="keyword">case</span> <span class="string">'setcoords'</span>,
+0193     st.centre = varargin{1};
+0194     st.centre = st.centre(:);
+0195     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0196     eval(st.callback);
+0197 
+0198 <span class="keyword">case</span> <span class="string">'space'</span>,
+0199     <span class="keyword">if</span> length(varargin)&lt;1,
+0200         st.Space = eye(4);
+0201         st.bb = <a href="#_sub15" class="code" title="subfunction bb = maxbb">maxbb</a>;
+0202         <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0203     <span class="keyword">else</span>,
+0204         <a href="#_sub16" class="code" title="subfunction space(arg1)">space</a>(varargin{1});
+0205         <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0206     <span class="keyword">end</span>;
+0207     <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0208 
+0209 <span class="keyword">case</span> <span class="string">'maxbb'</span>,
+0210     st.bb = <a href="#_sub15" class="code" title="subfunction bb = maxbb">maxbb</a>;
+0211     <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0212     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0213 
+0214 <span class="keyword">case</span> <span class="string">'resolution'</span>,
+0215     <a href="#_sub13" class="code" title="subfunction resolution(arg1)">resolution</a>(varargin{1});
+0216     <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0217     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0218 
+0219 <span class="keyword">case</span> <span class="string">'window'</span>,
+0220     <span class="keyword">if</span> length(varargin)&lt;2,
+0221         win = <span class="string">'auto'</span>;
+0222     <span class="keyword">elseif</span> length(varargin{2})==2,
+0223         win = varargin{2};
+0224     <span class="keyword">end</span>;
+0225     <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(varargin{1}),
+0226         st.vols{i}.window = win;
+0227     <span class="keyword">end</span>;
+0228     <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(varargin{1});
+0229 
+0230 <span class="keyword">case</span> <span class="string">'delete'</span>,
+0231     <a href="#_sub12" class="code" title="subfunction my_delete(arg1)">my_delete</a>(varargin{1});
+0232 
+0233 <span class="keyword">case</span> <span class="string">'move'</span>,
+0234     <a href="#_sub14" class="code" title="subfunction move(handle,pos)">move</a>(varargin{1},varargin{2});
+0235     <span class="comment">% redraw_all;</span>
+0236 
+0237 <span class="keyword">case</span> <span class="string">'reset'</span>,
+0238     <a href="#_sub11" class="code" title="subfunction my_reset">my_reset</a>;
+0239 
+0240 <span class="keyword">case</span> <span class="string">'pos'</span>,
+0241     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(varargin),
+0242         H = st.centre(:);
+0243     <span class="keyword">else</span>,
+0244         H = <a href="#_sub10" class="code" title="subfunction H = pos(arg1)">pos</a>(varargin{1});
+0245     <span class="keyword">end</span>;
+0246     varargout{1} = H;
+0247 
+0248 <span class="keyword">case</span> <span class="string">'interp'</span>,
+0249     st.hld = varargin{1};
+0250     <a href="#_sub19" class="code" title="subfunction redraw_all">redraw_all</a>;
+0251 
+0252 <span class="keyword">case</span> <span class="string">'xhairs'</span>,
+0253     <a href="#_sub9" class="code" title="subfunction xhairs(arg1),">xhairs</a>(varargin{1});
+0254 
+0255 <span class="keyword">case</span> <span class="string">'register'</span>,
+0256     <a href="#_sub8" class="code" title="subfunction register(hreg)">register</a>(varargin{1});
+0257 
+0258 <span class="keyword">case</span> <span class="string">'addblobs'</span>,
+0259     <a href="#_sub1" class="code" title="subfunction addblobs(handle, xyz, t, mat)">addblobs</a>(varargin{1}, varargin{2},varargin{3},varargin{4});
+0260     <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(varargin{1});
+0261 
+0262 <span class="keyword">case</span> <span class="string">'addcolouredblobs'</span>,
+0263     <a href="#_sub3" class="code" title="subfunction addcolouredblobs(handle, xyz, t, mat,colour)">addcolouredblobs</a>(varargin{1}, varargin{2},varargin{3},varargin{4},varargin{5});
+0264 
+0265 <span class="keyword">case</span> <span class="string">'addcolouredmatrix'</span>,
+0266     <a href="#_sub4" class="code" title="subfunction addcolouredmatrix(handle, vol, mat,colour)">addcolouredmatrix</a>(varargin{1}, varargin{2},varargin{3},varargin{4});
+0267 
+0268 <span class="keyword">case</span> <span class="string">'addimage'</span>,
+0269     <a href="#_sub2" class="code" title="subfunction addimage(handle, fname)">addimage</a>(varargin{1}, varargin{2});
+0270     <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(varargin{1});
+0271 
+0272 <span class="keyword">case</span> <span class="string">'addcolouredimage'</span>,
+0273     <a href="#_sub5" class="code" title="subfunction addcolouredimage(handle, fname,colour)">addcolouredimage</a>(varargin{1}, varargin{2},varargin{3});
+0274  
+0275 <span class="keyword">case</span> <span class="string">'addtruecolourimage'</span>,
+0276  <span class="comment">% mars_orthviews('Addtruecolourimage',handle,filename,colourmap,prop,mx,mn)</span>
+0277  <span class="comment">% Adds blobs from an image in true colour</span>
+0278  <span class="comment">% handle   - image number to add blobs to [default 1]</span>
+0279  <span class="comment">% filename of image containing blob data [default - request via GUI]</span>
+0280  <span class="comment">% colourmap - colormap to display blobs in [GUI input]</span>
+0281  <span class="comment">% prop - intensity proportion of activation cf grayscale [0.4]</span>
+0282  <span class="comment">% mx   - maximum intensity to scale to [maximum value in activation image]</span>
+0283  <span class="comment">% mn   - minimum intensity to scale to [minimum value in activation image]</span>
+0284  <span class="comment">%</span>
+0285  
+0286  <span class="comment">% For selecting images, later</span>
+0287 img_flt = <a href="../marsbar/spm2/mars_veropts.html" class="code" title="function varargout = mars_veropts(arg, varargin)">mars_veropts</a>(<span class="string">'get_img_ext'</span>);
+0288 
+0289  <span class="keyword">if</span> nargin &lt; 2
+0290    varargin(1) = {1};
+0291  <span class="keyword">end</span>
+0292  <span class="keyword">if</span> nargin &lt; 3
+0293    varargin(2) = {<a href="../marsbar/spm5/spm_get.html" class="code" title="function varargout = spm_get(Action, varargin)">spm_get</a>(1, img_flt, <span class="string">'Image with activation signal'</span>)};
+0294  <span class="keyword">end</span>
+0295  <span class="keyword">if</span> ischar(varargin{2}),varargin{2} = spm_vol(varargin{2});<span class="keyword">end</span>
+0296  <span class="keyword">if</span> nargin &lt; 4
+0297    actc = [];
+0298    <span class="keyword">while</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(actc)
+0299      actc = <a href="#_sub27" class="code" title="subfunction cmap = getcmap(acmapname)">getcmap</a>(spm_input(<span class="string">'Colourmap for activation image'</span>, <span class="string">'+1'</span>,<span class="string">'s'</span>));
+0300    <span class="keyword">end</span>
+0301    varargin(3) = {actc};
+0302  <span class="keyword">end</span>
+0303  <span class="keyword">if</span> nargin &lt; 5
+0304    varargin(4) = {0.4};
+0305  <span class="keyword">end</span>
+0306  <span class="keyword">if</span> nargin &lt; 6
+0307    varargin(5) = {max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(varargin{2})])};
+0308  <span class="keyword">end</span>
+0309  <span class="keyword">if</span> nargin &lt; 7
+0310    varargin(6) = {min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(varargin{2})])};
+0311  <span class="keyword">end</span>
+0312 
+0313  <a href="#_sub6" class="code" title="subfunction addtruecolourimage(handle,vol,colourmap,prop,mx,mn)">addtruecolourimage</a>(varargin{1}, varargin{2},varargin{3}, varargin{4}, <span class="keyword">...</span>
+0314             varargin{5}, varargin{6});
+0315  <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(varargin{1});
+0316 
+0317 <span class="keyword">case</span> <span class="string">'rmblobs'</span>,
+0318     <a href="#_sub7" class="code" title="subfunction rmblobs(handle)">rmblobs</a>(varargin{1});
+0319     <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(varargin{1});
+0320 
+0321 <span class="keyword">otherwise</span>,
+0322     warning(<span class="string">'Unknown action string'</span>)
+0323 <span class="keyword">end</span>;
+0324 
+0325 spm(<span class="string">'Pointer'</span>);
+0326 <span class="keyword">return</span>;
+0327 
+0328 
+0329 <span class="comment">%_______________________________________________________________________</span>
+0330 <span class="comment">%_______________________________________________________________________</span>
+0331 <a name="_sub1" href="#_subfunctions" class="code">function addblobs(handle, xyz, t, mat)</a>
+0332 <span class="keyword">global</span> st
+0333 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0334     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>),
+0335         rcp      = round(<a href="../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>);
+0336         dim      = max(rcp,[],2)';
+0337         off      = rcp(1,:) + dim(1)*(rcp(2,:)-1 + dim(2)*(rcp(3,:)-1));
+0338         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>      = zeros(dim)+NaN;
+0339         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>(off) = t;
+0340         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>      = reshape(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,dim);
+0341         st.vols{i}.blobs=cell(1,1);
+0342         <span class="keyword">if</span> st.mode == 0,
+0343             axpos = get(st.vols{i}.ax{2}.ax,<span class="string">'Position'</span>);
+0344         <span class="keyword">else</span>,
+0345             axpos = get(st.vols{i}.ax{1}.ax,<span class="string">'Position'</span>);
+0346         <span class="keyword">end</span>;
+0347         ax = axes(<span class="string">'Parent'</span>,st.fig,<span class="string">'Position'</span>,[(axpos(1)+axpos(3)+0.1) (axpos(2)+0.005) 0.05 (axpos(4)-0.01)],<span class="keyword">...</span>
+0348             <span class="string">'Box'</span>,<span class="string">'on'</span>);
+0349         mx = max([eps max(t)]);
+0350         mn = min([0 min(t)]);
+0351         image([0 1],[mn mx],[1:64]' + 64,<span class="string">'Parent'</span>,ax);
+0352         set(ax,<span class="string">'YDir'</span>,<span class="string">'normal'</span>,<span class="string">'XTickLabel'</span>,[]);
+0353         st.vols{i}.blobs{1} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'cbar'</span>,ax,<span class="string">'max'</span>,mx, <span class="string">'min'</span>,mn);
+0354     <span class="keyword">end</span>;
+0355 <span class="keyword">end</span>;
+0356 <span class="keyword">return</span>;
+0357 <span class="comment">%_______________________________________________________________________</span>
+0358 <span class="comment">%_______________________________________________________________________</span>
+0359 <a name="_sub2" href="#_subfunctions" class="code">function addimage(handle, fname)</a>
+0360 <span class="keyword">global</span> st
+0361 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0362     <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = spm_vol(fname);
+0363     mat = vol.mat;
+0364     st.vols{i}.blobs=cell(1,1);
+0365     <span class="keyword">if</span> st.mode == 0,
+0366         axpos = get(st.vols{i}.ax{2}.ax,<span class="string">'Position'</span>);
+0367     <span class="keyword">else</span>,
+0368         axpos = get(st.vols{i}.ax{1}.ax,<span class="string">'Position'</span>);
+0369     <span class="keyword">end</span>;
+0370     ax = axes(<span class="string">'Parent'</span>,st.fig,<span class="string">'Position'</span>,[(axpos(1)+axpos(3)+0.05) (axpos(2)+0.005) 0.05 (axpos(4)-0.01)],<span class="keyword">...</span>
+0371         <span class="string">'Box'</span>,<span class="string">'on'</span>);
+0372     mx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0373     mn = min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0374     image([0 1],[mn mx],[1:64]' + 64,<span class="string">'Parent'</span>,ax);
+0375     set(ax,<span class="string">'YDir'</span>,<span class="string">'normal'</span>,<span class="string">'XTickLabel'</span>,[]);
+0376     st.vols{i}.blobs{1} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'cbar'</span>,ax,<span class="string">'max'</span>,mx);
+0377 <span class="keyword">end</span>;
+0378 <span class="keyword">return</span>;
+0379 <span class="comment">%_______________________________________________________________________</span>
+0380 <span class="comment">%_______________________________________________________________________</span>
+0381 <a name="_sub3" href="#_subfunctions" class="code">function addcolouredblobs(handle, xyz, t, mat,colour)</a>
+0382 <span class="keyword">global</span> st
+0383 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0384     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>),
+0385         rcp      = round(<a href="../marsbar/@marsy/xyz.html" class="code" title="function [XYZ, M]= xyz(o, r_no, xyz_type)">xyz</a>);
+0386         dim      = max(rcp,[],2)';
+0387         off      = rcp(1,:) + dim(1)*(rcp(2,:)-1 + dim(2)*(rcp(3,:)-1));
+0388         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>      = zeros(dim)+NaN;
+0389         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>(off) = t;
+0390         <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>      = reshape(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,dim);
+0391         <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0392             st.vols{i}.blobs=cell(1,1);
+0393             bset = 1;
+0394         <span class="keyword">else</span>,
+0395             bset = length(st.vols{i}.blobs)+1;
+0396         <span class="keyword">end</span>;
+0397         axpos = get(st.vols{i}.ax{2}.ax,<span class="string">'Position'</span>);
+0398         mx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0399         mn = min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0400         st.vols{i}.blobs{bset} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'max'</span>,mx,<span class="string">'min'</span>,mn,<span class="string">'colour'</span>,colour);
+0401     <span class="keyword">end</span>;
+0402 <span class="keyword">end</span>;
+0403 <span class="keyword">return</span>;
+0404 <span class="comment">%_______________________________________________________________________</span>
+0405 <span class="comment">%_______________________________________________________________________</span>
+0406 <a name="_sub4" href="#_subfunctions" class="code">function addcolouredmatrix(handle, vol, mat,colour)</a>
+0407 <span class="keyword">global</span> st
+0408 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0409     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>),
+0410       <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0411         st.vols{i}.blobs=cell(1,1);
+0412         bset = 1;
+0413       <span class="keyword">else</span>,
+0414         bset = length(st.vols{i}.blobs)+1;
+0415       <span class="keyword">end</span>;
+0416       axpos = get(st.vols{i}.ax{2}.ax,<span class="string">'Position'</span>);
+0417       mx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0418       mn = min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0419       st.vols{i}.blobs{bset} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'max'</span>,mx,<span class="string">'min'</span>,mn,<span class="string">'colour'</span>,colour);
+0420     <span class="keyword">end</span>;
+0421 <span class="keyword">end</span>;
+0422 <span class="keyword">return</span>;
+0423 <span class="comment">%_______________________________________________________________________</span>
+0424 <span class="comment">%_______________________________________________________________________</span>
+0425 <a name="_sub5" href="#_subfunctions" class="code">function addcolouredimage(handle, fname,colour)</a>
+0426 <span class="keyword">global</span> st
+0427 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0428 
+0429     <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = spm_vol(fname);
+0430     mat = vol.mat;
+0431     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0432         st.vols{i}.blobs=cell(1,1);
+0433         bset = 1;
+0434     <span class="keyword">else</span>,
+0435         bset = length(st.vols{i}.blobs)+1;
+0436     <span class="keyword">end</span>;
+0437     axpos = get(st.vols{i}.ax{2}.ax,<span class="string">'Position'</span>);
+0438     mx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0439     mn = min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>)]);
+0440     st.vols{i}.blobs{bset} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'max'</span>,mx,<span class="string">'min'</span>,mn,<span class="string">'colour'</span>,colour);
+0441 <span class="keyword">end</span>;
+0442 <span class="keyword">return</span>;
+0443 <span class="comment">%_______________________________________________________________________</span>
+0444 <span class="comment">%_______________________________________________________________________</span>
+0445 <a name="_sub6" href="#_subfunctions" class="code">function addtruecolourimage(handle,vol,colourmap,prop,mx,mn)</a>
+0446 <span class="comment">% adds true colour image to current displayed image</span>
+0447 <span class="keyword">global</span> st
+0448 mat = vol.mat;
+0449 <span class="keyword">if</span> isstruct(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>) &amp; <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>, <span class="string">'vol'</span>), <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = vol.vol;<span class="keyword">end</span>
+0450 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0451   <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0452     st.vols{i}.blobs=cell(1,1);
+0453     bset = 1;
+0454   <span class="keyword">else</span>,
+0455     bset = length(st.vols{i}.blobs)+1;
+0456   <span class="keyword">end</span>;
+0457 <span class="comment">% axpos = get(st.vols{i}.ax{2}.ax,'Position');</span>
+0458   c = struct(<span class="string">'cmap'</span>, colourmap,<span class="string">'prop'</span>,prop);
+0459   st.vols{i}.blobs{bset} = struct(<span class="string">'vol'</span>,<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,<span class="string">'mat'</span>,mat,<span class="string">'max'</span>,mx,<span class="string">'min'</span>,mn,<span class="string">'colour'</span>,c);
+0460 <span class="keyword">end</span>;
+0461 <span class="keyword">return</span>;
+0462 <span class="comment">%_______________________________________________________________________</span>
+0463 <span class="comment">%_______________________________________________________________________</span>
+0464 <a name="_sub7" href="#_subfunctions" class="code">function rmblobs(handle)</a>
+0465 <span class="keyword">global</span> st
+0466 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0467     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0468         <span class="keyword">for</span> j=1:length(st.vols{i}.blobs),
+0469             <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{j},<span class="string">'cbar'</span>) &amp; ishandle(st.vols{i}.blobs{j}.cbar),
+0470                 delete(st.vols{i}.blobs{j}.cbar);
+0471             <span class="keyword">end</span>;
+0472         <span class="keyword">end</span>;
+0473         st.vols{i} = rmfield(st.vols{i},<span class="string">'blobs'</span>);
+0474     <span class="keyword">end</span>;
+0475 <span class="keyword">end</span>;
+0476 <span class="keyword">return</span>;
+0477 <span class="comment">%_______________________________________________________________________</span>
+0478 <span class="comment">%_______________________________________________________________________</span>
+0479 <a name="_sub8" href="#_subfunctions" class="code">function register(hreg)</a>
+0480 <span class="keyword">global</span> st
+0481 tmp = uicontrol(<span class="string">'Position'</span>,[0 0 1 1],<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="string">'Parent'</span>,st.fig);
+0482 h   = <a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(1:24);
+0483 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(h),
+0484     tmp = st.vols{h(1)}.ax{1}.ax;
+0485     st.registry = struct(<span class="string">'hReg'</span>,hreg,<span class="string">'hMe'</span>, tmp);
+0486     spm_XYZreg(<span class="string">'Add2Reg'</span>,st.registry.hReg,st.registry.hMe, <span class="string">'mars_orthviews'</span>);
+0487 <span class="keyword">else</span>,
+0488     warning(<span class="string">'Nothing to register with'</span>);
+0489 <span class="keyword">end</span>;
+0490 st.centre = spm_XYZreg(<span class="string">'GetCoords'</span>,st.registry.hReg);
+0491 st.centre = st.centre(:);
+0492 <span class="keyword">return</span>;
+0493 <span class="comment">%_______________________________________________________________________</span>
+0494 <span class="comment">%_______________________________________________________________________</span>
+0495 <a name="_sub9" href="#_subfunctions" class="code">function xhairs(arg1),</a>
+0496 <span class="keyword">global</span> st
+0497 st.xhairs = 0;
+0498 opt = <span class="string">'on'</span>;
+0499 <span class="keyword">if</span> ~strcmp(arg1,<span class="string">'on'</span>),
+0500     opt = <span class="string">'off'</span>;
+0501 <span class="keyword">else</span>,
+0502     st.xhairs = 1;
+0503 <span class="keyword">end</span>;
+0504 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(1:24),
+0505     <span class="keyword">for</span> j=1:3,
+0506         set(st.vols{i}.ax{j}.lx,<span class="string">'Visible'</span>,opt); 
+0507         set(st.vols{i}.ax{j}.ly,<span class="string">'Visible'</span>,opt);  
+0508     <span class="keyword">end</span>; 
+0509 <span class="keyword">end</span>;
+0510 <span class="keyword">return</span>;
+0511 <span class="comment">%_______________________________________________________________________</span>
+0512 <span class="comment">%_______________________________________________________________________</span>
+0513 <a name="_sub10" href="#_subfunctions" class="code">function H = pos(arg1)</a>
+0514 <span class="keyword">global</span> st
+0515 H = [];
+0516 <span class="keyword">for</span> arg1=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(arg1),
+0517     is = inv(st.vols{arg1}.premul*st.vols{arg1}.mat);
+0518     H = is(1:3,1:3)*st.centre(:) + is(1:3,4);
+0519 <span class="keyword">end</span>;
+0520 <span class="keyword">return</span>;
+0521 <span class="comment">%_______________________________________________________________________</span>
+0522 <span class="comment">%_______________________________________________________________________</span>
+0523 <a name="_sub11" href="#_subfunctions" class="code">function my_reset</a>
+0524 <span class="keyword">global</span> st
+0525 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st) &amp; <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st,<span class="string">'registry'</span>) &amp; ishandle(st.registry.hMe),
+0526     delete(st.registry.hMe); st = rmfield(st,<span class="string">'registry'</span>);
+0527 <span class="keyword">end</span>;
+0528 <a href="#_sub12" class="code" title="subfunction my_delete(arg1)">my_delete</a>(1:24);
+0529 <a href="#_sub25" class="code" title="subfunction reset_st">reset_st</a>;
+0530 <span class="keyword">return</span>;
+0531 <span class="comment">%_______________________________________________________________________</span>
+0532 <span class="comment">%_______________________________________________________________________</span>
+0533 <a name="_sub12" href="#_subfunctions" class="code">function my_delete(arg1)</a>
+0534 <span class="keyword">global</span> st
+0535 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(arg1),
+0536     kids = get(st.fig,<span class="string">'Children'</span>);
+0537     <span class="keyword">for</span> j=1:3,
+0538         <span class="keyword">if</span> any(kids == st.vols{i}.ax{j}.ax),
+0539             set(get(st.vols{i}.ax{j}.ax,<span class="string">'Children'</span>),<span class="string">'DeleteFcn'</span>,<span class="string">''</span>);
+0540             delete(st.vols{i}.ax{j}.ax);
+0541         <span class="keyword">end</span>;
+0542     <span class="keyword">end</span>;
+0543     st.vols{i} = [];
+0544 <span class="keyword">end</span>;
+0545 <span class="keyword">return</span>;
+0546 <span class="comment">%_______________________________________________________________________</span>
+0547 <span class="comment">%_______________________________________________________________________</span>
+0548 <a name="_sub13" href="#_subfunctions" class="code">function resolution(arg1)</a>
+0549 <span class="keyword">global</span> st
+0550 res      = arg1/mean(svd(st.Space(1:3,1:3)));
+0551 Mat      = diag([res res res 1]);
+0552 st.Space = st.Space*Mat;
+0553 st.bb    = st.bb/res;
+0554 <span class="keyword">return</span>;
+0555 <span class="comment">%_______________________________________________________________________</span>
+0556 <span class="comment">%_______________________________________________________________________</span>
+0557 <a name="_sub14" href="#_subfunctions" class="code">function move(handle,pos)</a>
+0558 <span class="keyword">global</span> st
+0559 <span class="keyword">for</span> handle = <a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(handle),
+0560     st.vols{handle}.area = <a href="#_sub10" class="code" title="subfunction H = pos(arg1)">pos</a>;
+0561 <span class="keyword">end</span>;
+0562 <a href="#_sub18" class="code" title="subfunction bbox">bbox</a>;
+0563 <span class="comment">% redraw(valid_handles(handle));</span>
+0564 <span class="keyword">return</span>;
+0565 <span class="comment">%_______________________________________________________________________</span>
+0566 <span class="comment">%_______________________________________________________________________</span>
+0567 <a name="_sub15" href="#_subfunctions" class="code">function bb = maxbb</a>
+0568 <span class="keyword">global</span> st
+0569 mn = [Inf Inf Inf];
+0570 mx = -mn;
+0571 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(1:24),
+0572     bb = [[1 1 1];st.vols{i}.dim(1:3)];
+0573     c = [    bb(1,1) bb(1,2) bb(1,3) 1
+0574         bb(1,1) bb(1,2) bb(2,3) 1
+0575         bb(1,1) bb(2,2) bb(1,3) 1
+0576         bb(1,1) bb(2,2) bb(2,3) 1
+0577         bb(2,1) bb(1,2) bb(1,3) 1
+0578         bb(2,1) bb(1,2) bb(2,3) 1
+0579         bb(2,1) bb(2,2) bb(1,3) 1
+0580         bb(2,1) bb(2,2) bb(2,3) 1]';
+0581     tc = st.Space\(st.vols{i}.premul*st.vols{i}.mat)*c;
+0582     tc = tc(1:3,:)';
+0583     mx = max([tc ; mx]);
+0584     mn = min([tc ; mn]);
+0585 <span class="keyword">end</span>;
+0586 bb = [mn ; mx];
+0587 <span class="keyword">return</span>;
+0588 <span class="comment">%_______________________________________________________________________</span>
+0589 <span class="comment">%_______________________________________________________________________</span>
+0590 <a name="_sub16" href="#_subfunctions" class="code">function space(arg1)</a>
+0591 <span class="keyword">global</span> st
+0592 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st.vols{arg1})
+0593     num = arg1;
+0594     Mat = st.vols{num}.premul(1:3,1:3)*st.vols{num}.mat(1:3,1:3);
+0595     Mat = diag([sqrt(sum(Mat.^2)) 1]);
+0596     Space = (st.vols{num}.mat)/Mat;
+0597     bb = [1 1 1;st.vols{num}.dim(1:3)];
+0598     bb = [bb [1;1]];
+0599     bb=bb*Mat';
+0600     bb=bb(:,1:3);
+0601     st.Space  = Space;
+0602     st.bb = bb;
+0603 <span class="keyword">end</span>;
+0604 <span class="keyword">return</span>;
+0605 <span class="comment">%_______________________________________________________________________</span>
+0606 <span class="comment">%_______________________________________________________________________</span>
+0607 <a name="_sub17" href="#_subfunctions" class="code">function H = specify_image(arg1, arg2)</a>
+0608 <span class="keyword">global</span> st
+0609 H=[];
+0610 ok = 1;
+0611 eval(<span class="string">'V = spm_vol(arg1);'</span>,<span class="string">'ok=0;'</span>);
+0612 <span class="keyword">if</span> ok == 0,
+0613     fprintf(<span class="string">'Can not use image &quot;%s&quot;\n'</span>, arg1);
+0614     <span class="keyword">return</span>;
+0615 <span class="keyword">end</span>;
+0616 
+0617 ii = 1;
+0618 <span class="keyword">while</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st.vols{ii}), ii = ii + 1; <span class="keyword">end</span>;
+0619 
+0620 DeleteFcn = [<span class="string">'mars_orthviews(''Delete'','</span> num2str(ii) <span class="string">');'</span>];
+0621 V.ax = cell(3,1);
+0622 <span class="keyword">for</span> i=1:3,
+0623     ax = axes(<span class="string">'Visible'</span>,<span class="string">'off'</span>,<span class="string">'DrawMode'</span>,<span class="string">'fast'</span>,<span class="string">'Parent'</span>,st.fig,<span class="string">'DeleteFcn'</span>,DeleteFcn,<span class="keyword">...</span>
+0624         <span class="string">'YDir'</span>,<span class="string">'normal'</span>);
+0625     d  = image(0,<span class="string">'Tag'</span>,<span class="string">'Transverse'</span>,<span class="string">'Parent'</span>,ax,<span class="keyword">...</span>
+0626         <span class="string">'DeleteFcn'</span>,DeleteFcn);
+0627     set(ax,<span class="string">'Ydir'</span>,<span class="string">'normal'</span>);
+0628     lx = line(0,0,<span class="string">'Parent'</span>,ax,<span class="string">'DeleteFcn'</span>,DeleteFcn);
+0629     ly = line(0,0,<span class="string">'Parent'</span>,ax,<span class="string">'DeleteFcn'</span>,DeleteFcn);
+0630     <span class="keyword">if</span> ~st.xhairs,
+0631         set(lx,<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0632         set(ly,<span class="string">'Visible'</span>,<span class="string">'off'</span>);
+0633     <span class="keyword">end</span>;
+0634     V.ax{i} = struct(<span class="string">'ax'</span>,ax,<span class="string">'d'</span>,d,<span class="string">'lx'</span>,lx,<span class="string">'ly'</span>,ly);
+0635 <span class="keyword">end</span>;
+0636 V.premul    = eye(4);
+0637 V.window    = <span class="string">'auto'</span>;
+0638 st.vols{ii} = V;
+0639 
+0640 H = ii;
+0641 <span class="keyword">return</span>;
+0642 <span class="comment">%_______________________________________________________________________</span>
+0643 <span class="comment">%_______________________________________________________________________</span>
+0644 <a name="_sub18" href="#_subfunctions" class="code">function bbox</a>
+0645 <span class="keyword">global</span> st
+0646 Dims = diff(st.bb)'+1;
+0647 
+0648 TD = Dims([1 2])';
+0649 CD = Dims([1 3])';
+0650 <span class="keyword">if</span> st.mode == 0, SD = Dims([3 2])'; <span class="keyword">else</span>, SD = Dims([2 3])'; <span class="keyword">end</span>;
+0651 
+0652 un    = get(st.fig,<span class="string">'Units'</span>);set(st.fig,<span class="string">'Units'</span>,<span class="string">'Pixels'</span>);sz=get(st.fig,<span class="string">'Position'</span>);set(st.fig,<span class="string">'Units'</span>,un);
+0653 sz    = sz(3:4);
+0654 sz(2) = sz(2)-40;
+0655 
+0656 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(1:24),
+0657     area = st.vols{i}.area(:);
+0658     area = [area(1)*sz(1) area(2)*sz(2) area(3)*sz(1) area(4)*sz(2)];
+0659     <span class="keyword">if</span> st.mode == 0,
+0660         sx   = area(3)/(Dims(1)+Dims(3))/1.02;
+0661     <span class="keyword">else</span>,
+0662         sx   = area(3)/(Dims(1)+Dims(2))/1.02;
+0663     <span class="keyword">end</span>;
+0664     sy   = area(4)/(Dims(2)+Dims(3))/1.02;
+0665     s    = min([sx sy]);
+0666 
+0667     offy = (area(4)-(Dims(2)+Dims(3))*1.02*s)/2 + area(2);
+0668     sky = s*(Dims(2)+Dims(3))*0.02;
+0669     <span class="keyword">if</span> st.mode == 0,
+0670         offx = (area(3)-(Dims(1)+Dims(3))*1.02*s)/2 + area(1);
+0671         skx = s*(Dims(1)+Dims(3))*0.02;
+0672     <span class="keyword">else</span>,
+0673         offx = (area(3)-(Dims(1)+Dims(2))*1.02*s)/2 + area(1);
+0674         skx = s*(Dims(1)+Dims(2))*0.02;
+0675     <span class="keyword">end</span>;
+0676 
+0677     DeleteFcn = [<span class="string">'mars_orthviews(''Delete'','</span> num2str(i) <span class="string">');'</span>];
+0678 
+0679     <span class="comment">% Transverse</span>
+0680     set(st.vols{i}.ax{1}.ax,<span class="string">'Units'</span>,<span class="string">'pixels'</span>, <span class="keyword">...</span>
+0681         <span class="string">'Position'</span>,[offx offy s*Dims(1) s*Dims(2)],<span class="keyword">...</span>
+0682         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Xlim'</span>,[0 TD(1)]+0.5,<span class="string">'Ylim'</span>,[0 TD(2)]+0.5,<span class="keyword">...</span>
+0683         <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+0684 
+0685     <span class="comment">% Coronal</span>
+0686     set(st.vols{i}.ax{2}.ax,<span class="string">'Units'</span>,<span class="string">'Pixels'</span>,<span class="keyword">...</span>
+0687         <span class="string">'Position'</span>,[offx offy+s*Dims(2)+sky s*Dims(1) s*Dims(3)],<span class="keyword">...</span>
+0688         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Xlim'</span>,[0 CD(1)]+0.5,<span class="string">'Ylim'</span>,[0 CD(2)]+0.5,<span class="keyword">...</span>
+0689         <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+0690 
+0691     <span class="comment">% Sagittal</span>
+0692     <span class="keyword">if</span> st.mode == 0,
+0693         set(st.vols{i}.ax{3}.ax,<span class="string">'Units'</span>,<span class="string">'Pixels'</span>, <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0694             <span class="string">'Position'</span>,[offx+s*Dims(1)+skx offy s*Dims(3) s*Dims(2)],<span class="keyword">...</span>
+0695             <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Xlim'</span>,[0 SD(1)]+0.5,<span class="string">'Ylim'</span>,[0 SD(2)]+0.5,<span class="keyword">...</span>
+0696             <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+0697     <span class="keyword">else</span>,
+0698         set(st.vols{i}.ax{3}.ax,<span class="string">'Units'</span>,<span class="string">'Pixels'</span>, <span class="string">'Box'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0699             <span class="string">'Position'</span>,[offx+s*Dims(1)+skx offy+s*Dims(2)+sky s*Dims(2) s*Dims(3)],<span class="keyword">...</span>
+0700             <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Xlim'</span>,[0 SD(1)]+0.5,<span class="string">'Ylim'</span>,[0 SD(2)]+0.5,<span class="keyword">...</span>
+0701             <span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="string">'XTick'</span>,[],<span class="string">'YTick'</span>,[]);
+0702     <span class="keyword">end</span>;
+0703 <span class="keyword">end</span>;
+0704 <span class="keyword">return</span>;
+0705 <span class="comment">%_______________________________________________________________________</span>
+0706 <span class="comment">%_______________________________________________________________________</span>
+0707 <a name="_sub19" href="#_subfunctions" class="code">function redraw_all</a>
+0708 <span class="keyword">global</span> st
+0709 <a href="#_sub22" class="code" title="subfunction redraw(arg1)">redraw</a>(1:24);
+0710 <span class="keyword">return</span>;
+0711 <span class="comment">%_______________________________________________________________________</span>
+0712 <a name="_sub20" href="#_subfunctions" class="code">function mx = maxval(vol)</a>
+0713 <span class="keyword">if</span> isstruct(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>) &amp; <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>, <span class="string">'vol'</span>), <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = vol.vol;<span class="keyword">end</span>
+0714 <span class="keyword">if</span> isstruct(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>),
+0715     mx = -Inf;
+0716     <span class="keyword">for</span> i=1:vol.dim(3),
+0717         tmp = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,spm_matrix([0 0 i]),vol.dim(1:2),0);
+0718         imx = max(tmp(find(isfinite(tmp))));
+0719         <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imx),mx = max(mx,imx);<span class="keyword">end</span>
+0720     <span class="keyword">end</span>;
+0721 <span class="keyword">else</span>,
+0722     mx = max(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>(find(isfinite(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>))));
+0723 <span class="keyword">end</span>;
+0724 <span class="comment">%_______________________________________________________________________</span>
+0725 <a name="_sub21" href="#_subfunctions" class="code">function mn = minval(vol)</a>
+0726 <span class="keyword">if</span> isstruct(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>) &amp; <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>, <span class="string">'vol'</span>), <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = vol.vol;<span class="keyword">end</span>
+0727 <span class="keyword">if</span> isstruct(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>),
+0728         mn = Inf;
+0729         <span class="keyword">for</span> i=1:vol.dim(3),
+0730                 tmp = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,spm_matrix([0 0 i]),vol.dim(1:2),0);
+0731         imn = min(tmp(find(isfinite(tmp))));
+0732         <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imn),mn = min(mn,imn);<span class="keyword">end</span>
+0733         <span class="keyword">end</span>;
+0734 <span class="keyword">else</span>,
+0735         mn = min(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>(find(isfinite(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>))));
+0736 <span class="keyword">end</span>;
+0737 
+0738 <span class="comment">%_______________________________________________________________________</span>
+0739 <span class="comment">%_______________________________________________________________________</span>
+0740 <a name="_sub22" href="#_subfunctions" class="code">function redraw(arg1)</a>
+0741 <span class="keyword">global</span> st
+0742 bb   = st.bb;
+0743 Dims = diff(bb)'+1;
+0744 is   = inv(st.Space);
+0745 cent = is(1:3,1:3)*st.centre(:) + is(1:3,4);
+0746 
+0747 <span class="keyword">for</span> i = <a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(arg1),
+0748     M = st.vols{i}.premul*st.vols{i}.mat;
+0749     TM0 = [    1 0 0 -bb(1,1)+1
+0750         0 1 0 -bb(1,2)+1
+0751         0 0 1 -cent(3)
+0752         0 0 0 1];
+0753     TM = inv(TM0*(st.Space\M));
+0754     TD = Dims([1 2]);
+0755 
+0756     CM0 = [    1 0 0 -bb(1,1)+1
+0757         0 0 1 -bb(1,3)+1
+0758         0 1 0 -cent(2)
+0759         0 0 0 1];
+0760     CM = inv(CM0*(st.Space\M));
+0761     CD = Dims([1 3]);
+0762 
+0763     <span class="keyword">if</span> st.mode ==0,
+0764         SM0 = [    0 0 1 -bb(1,3)+1
+0765             0 1 0 -bb(1,2)+1
+0766             1 0 0 -cent(1)
+0767             0 0 0 1];
+0768         SM = inv(SM0*(st.Space\M)); SD = Dims([3 2]);
+0769     <span class="keyword">else</span>,
+0770         SM0 = [    0  1 0 -bb(1,2)+1
+0771             0  0 1 -bb(1,3)+1
+0772             1  0 0 -cent(1)
+0773             0  0 0 1];
+0774         SM0 = [    0 -1 0 +bb(2,2)+1
+0775             0  0 1 -bb(1,3)+1
+0776             1  0 0 -cent(1)
+0777             0  0 0 1];
+0778         SM = inv(SM0*(st.Space\M));
+0779         SD = Dims([2 3]);
+0780     <span class="keyword">end</span>;
+0781 
+0782     ok=1;
+0783     eval(<span class="string">'imgt  = (spm_slice_vol(st.vols{i},TM,TD,st.hld))'';'</span>,<span class="string">'ok=0;'</span>);
+0784     eval(<span class="string">'imgc  = (spm_slice_vol(st.vols{i},CM,CD,st.hld))'';'</span>,<span class="string">'ok=0;'</span>);
+0785     eval(<span class="string">'imgs  = (spm_slice_vol(st.vols{i},SM,SD,st.hld))'';'</span>,<span class="string">'ok=0;'</span>);
+0786     <span class="keyword">if</span> (ok==0), fprintf(<span class="string">'Image &quot;%s&quot; can not be resampled\n'</span>, st.vols{i}.fname);
+0787     <span class="keyword">else</span>,
+0788         <span class="keyword">if</span> strcmp(st.vols{i}.window,<span class="string">'auto'</span>),
+0789             mx = -Inf; mn = Inf;
+0790             <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imgt),
+0791                 mx = max([mx max(max(imgt))]);
+0792                 mn = min([mn min(min(imgt))]);
+0793             <span class="keyword">end</span>;
+0794             <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imgc),
+0795                 mx = max([mx max(max(imgc))]);
+0796                 mn = min([mn min(min(imgc))]);
+0797             <span class="keyword">end</span>;
+0798             <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(imgs),
+0799                 mx = max([mx max(max(imgs))]);
+0800                 mn = min([mn min(min(imgs))]);
+0801             <span class="keyword">end</span>;
+0802             <span class="keyword">if</span> mx==mn, mx=mn+eps; <span class="keyword">end</span>;
+0803         <span class="keyword">else</span>,
+0804             mx = st.vols{i}.window(2);
+0805             mn = st.vols{i}.window(1);
+0806             r=min([mn mx]);imgt = max(imgt,r); r=max([mn mx]);imgt = min(imgt,r);
+0807             r=min([mn mx]);imgc = max(imgc,r); r=max([mn mx]);imgc = min(imgc,r);
+0808             r=min([mn mx]);imgs = max(imgs,r); r=max([mn mx]);imgs = min(imgs,r);
+0809         <span class="keyword">end</span>;
+0810 
+0811         <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i},<span class="string">'blobs'</span>),
+0812             <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{1},<span class="string">'colour'</span>),
+0813                 <span class="comment">% Add blobs for display using the split colourmap</span>
+0814                 scal = 64/(mx-mn);
+0815                 dcoff = -mn*scal;
+0816                 imgt = imgt*scal+dcoff;
+0817                 imgc = imgc*scal+dcoff;
+0818                 imgs = imgs*scal+dcoff;
+0819 
+0820                 <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = st.vols{i}.blobs{1}.vol;
+0821                 mat = st.vols{i}.premul*st.vols{i}.blobs{1}.mat;
+0822                 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{1},<span class="string">'max'</span>),
+0823                     mx = st.vols{i}.blobs{1}.max;
+0824                 <span class="keyword">else</span>,
+0825                     mx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(st.vols{i}.blobs{1}.vol)]);
+0826                     st.vols{i}.blobs{1}.max = mx;
+0827                 <span class="keyword">end</span>;
+0828                 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{1},<span class="string">'min'</span>),
+0829                     mn = st.vols{i}.blobs{1}.min;
+0830                 <span class="keyword">else</span>,
+0831                     mn = min([0 <a href="#_sub21" class="code" title="subfunction mn = minval(vol)">minval</a>(st.vols{i}.blobs{1}.vol)]);
+0832                     st.vols{i}.blobs{1}.min = mn;
+0833                 <span class="keyword">end</span>;
+0834 
+0835                 <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>  = st.vols{i}.blobs{1}.vol;
+0836                 M    = st.vols{i}.premul*st.vols{i}.blobs{1}.mat;
+0837                 tmpt = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(TM0*(st.Space\M)),TD,[0 NaN])';
+0838                 tmpc = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(CM0*(st.Space\M)),CD,[0 NaN])';
+0839                 tmps = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(SM0*(st.Space\M)),SD,[0 NaN])';
+0840 
+0841                 sc   = 64/(mx-mn);
+0842                 off  = 65.51-mn*sc;
+0843                 msk  = find(isfinite(tmpt)); imgt(msk) = off+tmpt(msk)*sc;
+0844                 msk  = find(isfinite(tmpc)); imgc(msk) = off+tmpc(msk)*sc;
+0845                 msk  = find(isfinite(tmps)); imgs(msk) = off+tmps(msk)*sc;
+0846 
+0847                 cmap = get(st.fig,<span class="string">'Colormap'</span>);
+0848                 <span class="keyword">if</span> size(cmap,1)~=128
+0849                     figure(st.fig)
+0850                     spm_figure(<span class="string">'Colormap'</span>,<span class="string">'gray-hot'</span>)
+0851                 <span class="keyword">end</span>;
+0852             <span class="keyword">elseif</span> isstruct(st.vols{i}.blobs{1}.colour),
+0853                 <span class="comment">% Add blobs for display using a defined</span>
+0854                                 <span class="comment">% colourmap</span>
+0855 
+0856                 <span class="comment">% colourmaps</span>
+0857                 gryc = [0:63]'*ones(1,3)/63;
+0858                 actc = <span class="keyword">...</span>
+0859                     st.vols{1}.blobs{1}.colour.cmap;
+0860                 actp = <span class="keyword">...</span>
+0861                     st.vols{1}.blobs{1}.colour.prop;
+0862                 
+0863                 <span class="comment">% scale grayscale image, not finite -&gt; black</span>
+0864                 imgt = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(imgt,mn,mx,gryc,65);
+0865                 imgc = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(imgc,mn,mx,gryc,65);
+0866                 imgs = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(imgs,mn,mx,gryc,65);
+0867                 gryc = [gryc; 0 0 0];
+0868                 
+0869                 <span class="comment">% get max for blob image</span>
+0870                 <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = st.vols{i}.blobs{1}.vol;
+0871                 mat = st.vols{i}.premul*st.vols{i}.blobs{1}.mat;
+0872                 <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{1},<span class="string">'max'</span>),
+0873                     cmx = st.vols{i}.blobs{1}.max;
+0874                 <span class="keyword">else</span>,
+0875                     cmx = max([eps <a href="#_sub20" class="code" title="subfunction mx = maxval(vol)">maxval</a>(st.vols{i}.blobs{1}.vol)]);
+0876                 <span class="keyword">end</span>;
+0877 
+0878                 <span class="comment">% get blob data</span>
+0879                 <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>  = st.vols{i}.blobs{1}.vol;
+0880                 M    = st.vols{i}.premul*st.vols{i}.blobs{1}.mat;
+0881                 tmpt = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(TM0*(st.Space\M)),TD,[0 NaN])';
+0882                 tmpc = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(CM0*(st.Space\M)),CD,[0 NaN])';
+0883                 tmps = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(SM0*(st.Space\M)),SD,[0 NaN])';
+0884                 
+0885                 <span class="comment">% actimg scaled round 0, black NaNs</span>
+0886                                 topc = size(actc,1)+1;
+0887                 tmpt = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(tmpt,-cmx,cmx,actc,topc);
+0888                 tmpc = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(tmpc,-cmx,cmx,actc,topc);
+0889                 tmps = <a href="#_sub26" class="code" title="subfunction img = scaletocmap(inpimg,mn,mx,cmap,miscol)">scaletocmap</a>(tmps,-cmx,cmx,actc,topc);
+0890                 actc = [actc; 0 0 0];
+0891                 
+0892                 <span class="comment">% combine gray and blob data to</span>
+0893                                 <span class="comment">% truecolour</span>
+0894                 imgt = reshape(actc(tmpt(:),:)*actp+ <span class="keyword">...</span>
+0895                            gryc(imgt(:),:)*(1-actp), <span class="keyword">...</span>
+0896                            [size(imgt) 3]);
+0897                 imgc = reshape(actc(tmpc(:),:)*actp+ <span class="keyword">...</span>
+0898                            gryc(imgc(:),:)*(1-actp), <span class="keyword">...</span>
+0899                            [size(imgc) 3]);
+0900                 imgs = reshape(actc(tmps(:),:)*actp+ <span class="keyword">...</span>
+0901                            gryc(imgs(:),:)*(1-actp), <span class="keyword">...</span>
+0902                            [size(imgs) 3]);
+0903                 
+0904                 
+0905             <span class="keyword">else</span>,
+0906                 <span class="comment">% Add full colour blobs - several sets at once</span>
+0907                 scal = 1/(mx-mn);
+0908                 dcoff = -mn*scal;
+0909                 imgt = repmat(imgt*scal+dcoff,[1,1,3]);
+0910                 imgc = repmat(imgc*scal+dcoff,[1,1,3]);
+0911                 imgs = repmat(imgs*scal+dcoff,[1,1,3]);
+0912 
+0913                 <span class="keyword">for</span> j=1:length(st.vols{i}.blobs),
+0914                     <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a> = st.vols{i}.blobs{j}.vol;
+0915                     mat = st.vols{i}.premul*st.vols{i}.blobs{j}.mat;
+0916                     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{j},<span class="string">'colour'</span>),
+0917                         colour = st.vols{i}.blobs{j}.colour;
+0918                     <span class="keyword">else</span>,
+0919                         colour = [1 0 0];
+0920                     <span class="keyword">end</span>;
+0921                     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{j},<span class="string">'max'</span>),
+0922                         mx = st.vols{i}.blobs{j}.max;
+0923                     <span class="keyword">else</span>,
+0924                         mx = max([eps max(st.vols{i}.blobs{j}.vol(:))]);
+0925                         st.vols{i}.blobs{j}.max = mx;
+0926                     <span class="keyword">end</span>;
+0927                     <span class="keyword">if</span> <a href="../marsbar/@mardo/isfield.html" class="code" title="function result = isfield(this, fieldn)">isfield</a>(st.vols{i}.blobs{j},<span class="string">'min'</span>),
+0928                         mn = st.vols{i}.blobs{j}.min;
+0929                     <span class="keyword">else</span>,
+0930                         mn = min([0 min(st.vols{i}.blobs{j}.vol(:))]);
+0931                         st.vols{i}.blobs{j}.min = mn;
+0932                     <span class="keyword">end</span>;
+0933 
+0934                     <a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>  = st.vols{i}.blobs{j}.vol;
+0935                     M    = st.vols{i}.premul*st.vols{i}.blobs{j}.mat;
+0936                     tmpt = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(TM0*(st.Space\M)),TD,[0 NaN])'/(mx-mn)+mn;
+0937                     tmpc = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(CM0*(st.Space\M)),CD,[0 NaN])'/(mx-mn)+mn;
+0938                     tmps = spm_slice_vol(<a href="../marsbar/@maroi_image/vol.html" class="code" title="function h = vol(obj, val)">vol</a>,inv(SM0*(st.Space\M)),SD,[0 NaN])'/(mx-mn)+mn;
+0939                     tmpt(find(~isfinite(tmpt))) = 0;
+0940                     tmpc(find(~isfinite(tmpc))) = 0;
+0941                     tmps(find(~isfinite(tmps))) = 0;
+0942 
+0943                     tmp  = cat(3,tmpt*colour(1),tmpt*colour(2),tmpt*colour(3));
+0944                     imgt = (repmat(1-tmpt,[1 1 3]).*imgt+tmp);
+0945                     tmp = find(imgt&lt;0); imgt(tmp)=0; tmp = find(imgt&gt;1); imgt(tmp)=1;
+0946 
+0947                     tmp  = cat(3,tmpc*colour(1),tmpc*colour(2),tmpc*colour(3));
+0948                     imgc = (repmat(1-tmpc,[1 1 3]).*imgc+tmp);
+0949                     tmp = find(imgc&lt;0); imgc(tmp)=0; tmp = find(imgc&gt;1); imgc(tmp)=1;
+0950 
+0951                     tmp  = cat(3,tmps*colour(1),tmps*colour(2),tmps*colour(3));
+0952                     imgs = (repmat(1-tmps,[1 1 3]).*imgs+tmp);
+0953                     tmp = find(imgs&lt;0); imgs(tmp)=0; tmp = find(imgs&gt;1); imgs(tmp)=1;
+0954                 <span class="keyword">end</span>;
+0955             <span class="keyword">end</span>;
+0956         <span class="keyword">else</span>,
+0957             scal = 64/(mx-mn);
+0958             dcoff = -mn*scal;
+0959             imgt = imgt*scal+dcoff;
+0960             imgc = imgc*scal+dcoff;
+0961             imgs = imgs*scal+dcoff;
+0962         <span class="keyword">end</span>;
+0963 
+0964         callback = <span class="string">'mars_orthviews(''Reposition'');'</span>;
+0965 
+0966         set(st.vols{i}.ax{1}.d,<span class="string">'ButtonDownFcn'</span>,callback, <span class="string">'Cdata'</span>,imgt);
+0967         set(st.vols{i}.ax{1}.lx,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0968             <span class="string">'Xdata'</span>,[0 TD(1)]+0.5,<span class="string">'Ydata'</span>,[1 1]*(cent(2)-bb(1,2)+1));
+0969         set(st.vols{i}.ax{1}.ly,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0970             <span class="string">'Ydata'</span>,[0 TD(2)]+0.5,<span class="string">'Xdata'</span>,[1 1]*(cent(1)-bb(1,1)+1));
+0971 
+0972         set(st.vols{i}.ax{2}.d,<span class="string">'ButtonDownFcn'</span>,callback, <span class="string">'Cdata'</span>,imgc);
+0973         set(st.vols{i}.ax{2}.lx,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0974             <span class="string">'Xdata'</span>,[0 CD(1)]+0.5,<span class="string">'Ydata'</span>,[1 1]*(cent(3)-bb(1,3)+1));
+0975         set(st.vols{i}.ax{2}.ly,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0976             <span class="string">'Ydata'</span>,[0 CD(2)]+0.5,<span class="string">'Xdata'</span>,[1 1]*(cent(1)-bb(1,1)+1));
+0977 
+0978         set(st.vols{i}.ax{3}.d,<span class="string">'ButtonDownFcn'</span>,callback,<span class="string">'Cdata'</span>,imgs);
+0979         <span class="keyword">if</span> st.mode ==0,
+0980             set(st.vols{i}.ax{3}.lx,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0981                 <span class="string">'Xdata'</span>,[0 SD(1)]+0.5,<span class="string">'Ydata'</span>,[1 1]*(cent(2)-bb(1,2)+1));
+0982             set(st.vols{i}.ax{3}.ly,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0983                 <span class="string">'Ydata'</span>,[0 SD(2)]+0.5,<span class="string">'Xdata'</span>,[1 1]*(cent(3)-bb(1,3)+1));
+0984         <span class="keyword">else</span>,
+0985             set(st.vols{i}.ax{3}.lx,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0986                 <span class="string">'Xdata'</span>,[0 SD(1)]+0.5,<span class="string">'Ydata'</span>,[1 1]*(cent(3)-bb(1,3)+1));
+0987             set(st.vols{i}.ax{3}.ly,<span class="string">'ButtonDownFcn'</span>,callback,<span class="keyword">...</span>
+0988                 <span class="string">'Ydata'</span>,[0 SD(2)]+0.5,<span class="string">'Xdata'</span>,[1 1]*(bb(2,2)+1-cent(2)));
+0989         <span class="keyword">end</span>;
+0990     <span class="keyword">end</span>;
+0991 <span class="keyword">end</span>;
+0992 drawnow;
+0993 <span class="keyword">return</span>;
+0994 <span class="comment">%_______________________________________________________________________</span>
+0995 <span class="comment">%_______________________________________________________________________</span>
+0996 <a name="_sub23" href="#_subfunctions" class="code">function centre = findcent</a>
+0997 <span class="keyword">global</span> st
+0998 obj    = get(st.fig,<span class="string">'CurrentObject'</span>);
+0999 <a href="../marsbar/@maroi_box/centre.html" class="code" title="function c = centre(obj, val)">centre</a> = [];
+1000 cent   = [];
+1001 cp     = [];
+1002 <span class="keyword">for</span> i=<a href="#_sub24" class="code" title="subfunction handles = valid_handles(handles)">valid_handles</a>(1:24),
+1003     <span class="keyword">for</span> j=1:3,
+1004         <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(obj),
+1005             <span class="keyword">if</span> any([st.vols{i}.ax{j}.d  <span class="keyword">...</span>
+1006                 st.vols{i}.ax{j}.lx <span class="keyword">...</span>
+1007                 st.vols{i}.ax{j}.ly]== obj)
+1008                 cp = get(get(obj,<span class="string">'Parent'</span>),<span class="string">'CurrentPoint'</span>);
+1009             <span class="keyword">elseif</span> (st.vols{i}.ax{j}.ax == obj),
+1010                 cp = get(obj,<span class="string">'CurrentPoint'</span>);
+1011             <span class="keyword">end</span>;
+1012         <span class="keyword">end</span>;
+1013         <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cp),
+1014             cp   = cp(1,1:2);
+1015             is   = inv(st.Space);
+1016             cent = is(1:3,1:3)*st.centre(:) + is(1:3,4);
+1017             <span class="keyword">switch</span> j,
+1018                 <span class="keyword">case</span> 1,
+1019                 cent([1 2])=[cp(1)+st.bb(1,1)-1 cp(2)+st.bb(1,2)-1];
+1020                 <span class="keyword">case</span> 2,
+1021                 cent([1 3])=[cp(1)+st.bb(1,1)-1 cp(2)+st.bb(1,3)-1];
+1022                 <span class="keyword">case</span> 3,
+1023                 <span class="keyword">if</span> st.mode ==0,
+1024                     cent([3 2])=[cp(1)+st.bb(1,3)-1 cp(2)+st.bb(1,2)-1];
+1025                 <span class="keyword">else</span>,
+1026                     cent([2 3])=[st.bb(2,2)+1-cp(1) cp(2)+st.bb(1,3)-1];
+1027                 <span class="keyword">end</span>;
+1028             <span class="keyword">end</span>;
+1029             <span class="keyword">break</span>;
+1030         <span class="keyword">end</span>;
+1031     <span class="keyword">end</span>;
+1032     <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cent), <span class="keyword">break</span>; <span class="keyword">end</span>;
+1033 <span class="keyword">end</span>;
+1034 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cent), <a href="../marsbar/@maroi_box/centre.html" class="code" title="function c = centre(obj, val)">centre</a> = st.Space(1:3,1:3)*cent(:) + st.Space(1:3,4); <span class="keyword">end</span>;
+1035 <span class="keyword">return</span>;
+1036 <span class="comment">%_______________________________________________________________________</span>
+1037 <span class="comment">%_______________________________________________________________________</span>
+1038 <a name="_sub24" href="#_subfunctions" class="code">function handles = valid_handles(handles)</a>
+1039 <span class="keyword">global</span> st;
+1040 handles = handles(:)';
+1041 handles = handles(find(handles&lt;=24 &amp; handles&gt;=1 &amp; ~rem(handles,1)));
+1042 <span class="keyword">for</span> h=handles,
+1043     <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(st.vols{h}), handles(find(handles==h))=[]; <span class="keyword">end</span>;
+1044 <span class="keyword">end</span>;
+1045 <span class="keyword">return</span>;
+1046 <span class="comment">%_______________________________________________________________________</span>
+1047 <span class="comment">%_______________________________________________________________________</span>
+1048 <a name="_sub25" href="#_subfunctions" class="code">function reset_st</a>
+1049 <span class="keyword">global</span> st
+1050 fig     = spm_figure(<span class="string">'FindWin'</span>,<span class="string">'Graphics'</span>);
+1051 bb      = [ [-78 78]' [-112 76]' [-50 85]' ];
+1052 st      = struct(<span class="string">'n'</span>, 0, <span class="string">'vols'</span>,[], <span class="string">'bb'</span>,bb,<span class="string">'Space'</span>,eye(4),<span class="string">'centre'</span>,[0 0 0],<span class="string">'callback'</span>,<span class="string">';'</span>,<span class="string">'xhairs'</span>,1,<span class="string">'hld'</span>,1,<span class="string">'fig'</span>,fig,<span class="string">'mode'</span>,1);
+1053 st.vols = cell(24,1);
+1054 <span class="keyword">return</span>;
+1055 <span class="comment">%_______________________________________________________________________</span>
+1056 <span class="comment">%_______________________________________________________________________</span>
+1057 <a name="_sub26" href="#_subfunctions" class="code">function img = scaletocmap(inpimg,mn,mx,cmap,miscol)</a>
+1058 <span class="keyword">if</span> nargin &lt; 5, miscol=1;<span class="keyword">end</span>
+1059 cml = size(cmap,1);
+1060 scf = (cml-1)/(mx-mn);
+1061 img = round((inpimg-mn)*scf)+1;
+1062 img(find(img&lt;1))=1; 
+1063 img(find(img&gt;cml))=cml;
+1064 img(~isfinite(img)) = miscol;
+1065 <span class="comment">%_______________________________________________________________________</span>
+1066 <span class="comment">%_______________________________________________________________________</span>
+1067 <a name="_sub27" href="#_subfunctions" class="code">function cmap = getcmap(acmapname)</a>
+1068 <span class="comment">% get colormap of name acmapname</span>
+1069 <span class="keyword">if</span> ~<a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(acmapname)
+1070   cmap = evalin(<span class="string">'base'</span>,acmapname,<span class="string">'[]'</span>);
+1071   <span class="keyword">if</span> <a href="../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(cmap) <span class="comment">% not a matrix, is .mat file?</span>
+1072     [p f e] = fileparts(acmapname);
+1073     acmat = fullfile(p, [f <span class="string">'.mat'</span>]);
+1074     <span class="keyword">if</span> exist(acmat, <span class="string">'file'</span>)
+1075       s = struct2cell(load(acmat));
+1076       cmap = s{1};
+1077     <span class="keyword">end</span>
+1078   <span class="keyword">end</span>
+1079 <span class="keyword">end</span>
+1080 <span class="keyword">if</span> size(cmap, 2)~=3
+1081   warning(<span class="string">'Colormap was not an N by 3 matrix'</span>)
+1082   cmap = [];
+1083 <span class="keyword">end</span>
+1084 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

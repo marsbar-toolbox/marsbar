@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pr_spm_justify</title>
+  <meta name="keywords" content="pr_spm_justify">
+  <meta name="description" content="Justify text">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">marsbar</a> &gt; <a href="../index.html">@mardo_5</a> &gt; <a href="index.html">private</a> &gt; pr_spm_justify.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo_5/private&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>pr_spm_justify
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>Justify text</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function out = pr_spm_justify(n,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Justify text
+ FORMAT out = justify(n,txt)
+ out - a cell array of lines of text
+ n   - line length
+ txt - a text string or a cell array of text strings
+
+ If txt is a cell array, then each element is treated
+ as a paragraph and justified, otherwise the string is
+ treated as a paragraph and is justified.
+ Non a-z or A-Z characters at the start of a paragraph
+ are used to define any indentation required (such as
+ for enumeration, bullets etc.  If less than one line
+ of text is returned, then no formatting is done.
+
+ Example usage:
+
+    out = pr_spm_justify(40,{['Statistical Parametric ',...
+    'Mapping refers to the construction and ',...
+    'assessment of spatially extended ',...
+    'statistical process used to test hypotheses ',...
+    'about [neuro]imaging data from SPECT/PET &amp; ',...
+    'fMRI. These ideas have been instantiated ',...
+    'in software that is called SPM']});
+    strvcat(out{:})
+
+------------------------------------------------------------------------
+ Copyright (C) 2005 Wellcome Department of Imaging Neuroscience
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="pr_spm_select.html" class="code" title="function [t,sts] = pr_spm_select(varargin)">pr_spm_select</a>	File selector</li>
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function out = justify_paragraph(n,txt)</a></li>
+<li><a href="#_sub2" class="code">function out = justify_para(n,varargin)</a></li>
+</ul>
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out = pr_spm_justify(n,varargin)</a>
+0002 <span class="comment">% Justify text</span>
+0003 <span class="comment">% FORMAT out = justify(n,txt)</span>
+0004 <span class="comment">% out - a cell array of lines of text</span>
+0005 <span class="comment">% n   - line length</span>
+0006 <span class="comment">% txt - a text string or a cell array of text strings</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% If txt is a cell array, then each element is treated</span>
+0009 <span class="comment">% as a paragraph and justified, otherwise the string is</span>
+0010 <span class="comment">% treated as a paragraph and is justified.</span>
+0011 <span class="comment">% Non a-z or A-Z characters at the start of a paragraph</span>
+0012 <span class="comment">% are used to define any indentation required (such as</span>
+0013 <span class="comment">% for enumeration, bullets etc.  If less than one line</span>
+0014 <span class="comment">% of text is returned, then no formatting is done.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% Example usage:</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%    out = pr_spm_justify(40,{['Statistical Parametric ',...</span>
+0019 <span class="comment">%    'Mapping refers to the construction and ',...</span>
+0020 <span class="comment">%    'assessment of spatially extended ',...</span>
+0021 <span class="comment">%    'statistical process used to test hypotheses ',...</span>
+0022 <span class="comment">%    'about [neuro]imaging data from SPECT/PET &amp; ',...</span>
+0023 <span class="comment">%    'fMRI. These ideas have been instantiated ',...</span>
+0024 <span class="comment">%    'in software that is called SPM']});</span>
+0025 <span class="comment">%    strvcat(out{:})</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%------------------------------------------------------------------------</span>
+0028 <span class="comment">% Copyright (C) 2005 Wellcome Department of Imaging Neuroscience</span>
+0029 
+0030 <span class="comment">% John Ashburner</span>
+0031 <span class="comment">% $Id: spm_justify.m 232 2005-09-15 19:02:59Z john $</span>
+0032 
+0033 out = {};
+0034 <span class="keyword">for</span> i=1:nargin-1,
+0035     <span class="keyword">if</span> iscell(varargin{i}),
+0036         <span class="keyword">for</span> j=1:numel(varargin{i}),
+0037             para = <a href="#_sub1" class="code" title="subfunction out = justify_paragraph(n,txt)">justify_paragraph</a>(n,varargin{i}{j});
+0038             out  = {out{:},para{:}};
+0039         <span class="keyword">end</span>;
+0040     <span class="keyword">else</span>
+0041         para = <a href="#_sub1" class="code" title="subfunction out = justify_paragraph(n,txt)">justify_paragraph</a>(n,varargin{i});
+0042         out = {out{:},para{:}};
+0043     <span class="keyword">end</span>;
+0044 <span class="keyword">end</span>;
+0045 
+0046 <a name="_sub1" href="#_subfunctions" class="code">function out = justify_paragraph(n,txt)</a>
+0047 <span class="keyword">if</span> numel(txt)&gt;1 &amp;&amp; txt(1)==<span class="string">'%'</span>,
+0048     txt = txt(2:end);
+0049 <span class="keyword">end</span>;
+0050 <span class="comment">%txt = regexprep(txt,'/\*([^(/\*)]*)\*/','');</span>
+0051 st1  = findstr(txt,<span class="string">'/*'</span>);
+0052 en1  = findstr(txt,<span class="string">'*/'</span>);
+0053 st = [];
+0054 en = [];
+0055 <span class="keyword">for</span> i=1:numel(st1),
+0056     en1  = en1(en1&gt;st1(i));
+0057     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(en1),
+0058         st  = [st st1(i)];
+0059         en  = [en en1(1)];
+0060         en1 = en1(2:end);
+0061     <span class="keyword">end</span>;
+0062 <span class="keyword">end</span>;
+0063 
+0064 str = [];
+0065 pen = 1;
+0066 <span class="keyword">for</span> i=1:numel(st),
+0067     str = [str txt(pen:st(i)-1)];
+0068     pen = en(i)+2;
+0069 <span class="keyword">end</span>;
+0070 str = [str txt(pen:numel(txt))];
+0071 txt = str;
+0072 
+0073 off = find((txt'&gt;=<span class="string">'a'</span> &amp; txt'&lt;=<span class="string">'z'</span>) | (txt'&gt;=<span class="string">'A'</span> &amp; txt'&lt;=<span class="string">'Z'</span>));
+0074 off = off(off&lt;n);
+0075 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(off),
+0076     out{1} = txt;
+0077 <span class="keyword">else</span>
+0078     off  = off(1);
+0079     para = <a href="#_sub2" class="code" title="subfunction out = justify_para(n,varargin)">justify_para</a>(n-off+1,txt(off:end));
+0080     <span class="keyword">if</span> numel(para)&gt;1,
+0081         out{1} = [txt(1:(off-1)) para{1}];
+0082         <span class="keyword">for</span> j=2:numel(para),
+0083             out{j} = [repmat(<span class="string">' '</span>,1,off-1) para{j}];
+0084         <span class="keyword">end</span>;
+0085     <span class="keyword">else</span>
+0086         out{1} = txt;
+0087     <span class="keyword">end</span>;
+0088 <span class="keyword">end</span>;
+0089 <span class="keyword">return</span>;
+0090 
+0091 <a name="_sub2" href="#_subfunctions" class="code">function out = justify_para(n,varargin)</a>
+0092 <span class="comment">% Collect varargs into a single string</span>
+0093 str = varargin{1};
+0094 <span class="keyword">for</span> i=2:length(varargin),
+0095     str = [str <span class="string">' '</span> varargin{i}];
+0096 <span class="keyword">end</span>;
+0097 
+0098 <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(str), out = {<span class="string">''</span>}; <span class="keyword">return</span>; <span class="keyword">end</span>;
+0099 
+0100 <span class="comment">% Remove repeats</span>
+0101 sp  = find(str==<span class="string">' '</span>);
+0102 rep = sp(diff(sp)==1);
+0103 str(rep) = [];
+0104 <span class="keyword">if</span> str(1)  ==<span class="string">' '</span>, str(1)   = <span class="string">''</span>; <span class="keyword">end</span>;
+0105 <span class="keyword">if</span> str(end)==<span class="string">' '</span>, str(end) = <span class="string">''</span>; <span class="keyword">end</span>;
+0106 
+0107 out = {};
+0108 <span class="keyword">while</span> length(str)&gt;n,
+0109 
+0110     <span class="comment">% Break the string into lines</span>
+0111     sp  = find(str==<span class="string">' '</span>);
+0112     brk = sp(sp&lt;=n);
+0113     <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(brk),
+0114         <span class="keyword">if</span> <a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp),
+0115             brk = length(str)+1;
+0116         <span class="keyword">else</span>
+0117             brk = sp(1);
+0118         <span class="keyword">end</span>;
+0119     <span class="keyword">else</span>
+0120         brk = brk(end);
+0121     <span class="keyword">end</span>;
+0122 
+0123     <span class="comment">% Pad the line to n characters wide</span>
+0124     current = str(1:(brk-1));
+0125     <span class="comment">% l   = length(current);</span>
+0126     <span class="comment">% l   = n-l;</span>
+0127     sp  = find(current==<span class="string">' '</span>);
+0128     <span class="keyword">if</span> ~<a href="../../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(sp),
+0129 
+0130         <span class="comment">% Break into words</span>
+0131         sp    = [sp length(current)+1];
+0132         words = {current(1:(sp(1)-1))};
+0133         <span class="keyword">for</span> i=1:(length(sp)-1),
+0134             words = {words{:}, current((sp(i)+1):(sp(i+1)-1))};
+0135         <span class="keyword">end</span>;
+0136 
+0137         <span class="comment">% Figure out how much padding on average</span>
+0138         nsp = length(sp)-1;
+0139         pad = (n-(length(current)-nsp))/nsp;
+0140 
+0141         <span class="comment">% Pad all spaces by the same integer amount</span>
+0142         sp  = repmat(floor(pad),1,nsp);
+0143 
+0144         <span class="comment">% Pad a random selection of spaces by one</span>
+0145         pad = round((pad-floor(pad))*nsp);
+0146         [unused,ind] = sort(rand(pad,1));
+0147         ind = ind(1:pad);
+0148         sp(ind) = sp(ind)+1;
+0149 
+0150         <span class="comment">% Re-construct line from individual words</span>
+0151         current = words{1};
+0152         <span class="keyword">for</span> i=2:length(words),
+0153             current = [current repmat(<span class="string">' '</span>,1,sp(i-1)) words{i}];
+0154         <span class="keyword">end</span>;
+0155     <span class="keyword">end</span>;
+0156 
+0157     out = {out{:},current};
+0158     str = str((brk+1):end);
+0159 <span class="keyword">end</span>;
+0160 
+0161 out = {out{:},str};
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

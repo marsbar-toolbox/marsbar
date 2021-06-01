@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to release &#8212; MarsBaR 0.44 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/marsbar.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to release</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-release">
+<h1>How to release<a class="headerlink" href="#how-to-release" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p>Download and unpack the marsbar example data to some directory, e.g.
+<code class="docutils literal notranslate"><span class="pre">~/data/marbar_example_data-0.3</span></code>.</p></li>
+<li><p>Set the environment variable with something like:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="s">MARSBAR_EG_DATAPATH=$HOME/data/marsbar_example_data-0.3</span>
+</pre></div>
+</div>
+</li>
+<li><p>Change directory to the marsbar git repository root directory (containing
+<code class="docutils literal notranslate"><span class="pre">test.m</span></code> file);</p></li>
+<li><p>Start matlab with SPM on the path (marsbar gets appended automatically);</p></li>
+<li><p>Run tests with:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">test</span>
+<span class="o">&gt;&gt;</span> <span class="n">data_test</span>
+</pre></div>
+</div>
+<p>The second of these will ask for the location of the data directory above if
+you have not set it with the environment variable <code class="docutils literal notranslate"><span class="pre">MARSBAR_EG_DATAPATH</span></code>.
+<code class="docutils literal notranslate"><span class="pre">data_test</span></code> runs the preprocessing batch scripts and checks the results
+estimated in SPM against the results estimated in marsbar;</p>
+</li>
+<li><p>Do this for as many versions of MATLAB and SPM as possible;</p></li>
+<li><p>Review the documentation;</p></li>
+<li><p>Review and update the release notes.  Review and update the <code class="file docutils literal notranslate"><span class="pre">Changelog</span></code>
+file.  Get a partial list of contributors with something like:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">log</span> <span class="s">v0.42..</span> <span class="s">|</span> <span class="s">grep</span> <span class="s">&#39;^Author&#39;</span> <span class="s">|</span> <span class="s">cut</span> <span class="s">-d&#39; &#39;</span> <span class="s">-f</span> <span class="s">2-</span> <span class="s">|</span> <span class="s">sort</span> <span class="s">|</span> <span class="s">uniq</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">v0.42</span></code> was the last release tag name.</p>
+<p>Then manually go over the <em>git log</em> to make sure the release notes are
+as complete as possible and that every contributor was recognized.</p>
+</li>
+<li><p>Bump the version number in marsbar.m and <code class="docutils literal notranslate"><span class="pre">doc/source/conf.py</span></code>; commit;</p></li>
+<li><p>Run the pre release script in <code class="docutils literal notranslate"><span class="pre">&lt;marsbar&gt;/marsbar/release/pre_release.m</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="s">dist</span>
+<span class="n">cd</span> <span class="s">dist</span>
+<span class="n">matlab</span>
+<span class="s">&gt;&gt;</span> <span class="s">addpath</span> <span class="s">../marsbar</span>
+<span class="o">&gt;&gt;</span> <span class="n">addpath</span> <span class="p">.</span><span class="o">./</span><span class="n">marsbar</span><span class="o">/</span><span class="n">release</span>
+<span class="o">&gt;&gt;</span> <span class="n">pre_release</span>
+</pre></div>
+</div>
+<p>This creates the marsbar code archives (<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>, <code class="docutils literal notranslate"><span class="pre">.zip</span></code>) in the current
+working directory (by default);</p>
+</li>
+<li><p>Check you have a copy of the <a class="reference external" href="http://www.artefact.tk/software/matlab/m2html">m2html</a> scripts on your default
+matlab path;</p></li>
+<li><p>Run the doc scripts to build the documentation (these depend on <code class="docutils literal notranslate"><span class="pre">m2html</span></code>):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="s">doc</span>
+<span class="n">make</span> <span class="s">clean</span>
+<span class="n">make</span> <span class="s">doc-release</span>
+</pre></div>
+</div>
+</li>
+<li><p>Do the full monty with:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="s">clean</span>
+<span class="n">make</span> <span class="s">public-web</span>
+</pre></div>
+</div>
+<p>This should upload the web documentation;</p>
+</li>
+<li><p>Upload source code to the file release directories;</p></li>
+<li><p>Tag the release commit;</p></li>
+<li><p>Announce.</p></li>
+</ul>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/releasing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">How to release</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2000-2015, Matthew Brett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of get_item_param</title>
+  <meta name="keywords" content="get_item_param">
+  <meta name="description" content="method to get item parameters">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@marmoire</a> &gt; get_item_param.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@marmoire&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>get_item_param
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>method to get item parameters</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function value = get_item_param(o, item, param) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> method to get item parameters
+ FORMAT value = get_item_param(o, item, param)
+
+ o     - object
+ item  - item name
+ param - parameter name
+
+ Returns
+ value - value for parameter
+ 
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>	get whole item structure, including parameters</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/mars_arm.html" class="code" title="function varargout = mars_arm(action, varargin)">mars_arm</a>	wrapper function for MarsBaR marmoire object</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function value = get_item_param(o, item, param)</a>
+0002 <span class="comment">% method to get item parameters</span>
+0003 <span class="comment">% FORMAT value = get_item_param(o, item, param)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% o     - object</span>
+0006 <span class="comment">% item  - item name</span>
+0007 <span class="comment">% param - parameter name</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Returns</span>
+0010 <span class="comment">% value - value for parameter</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% $Id$</span>
+0013   
+0014 <span class="keyword">if</span> nargin &lt; 2
+0015   error(<span class="string">'Need item name'</span>);
+0016 <span class="keyword">end</span>
+0017 <span class="keyword">if</span> nargin &lt; 3
+0018   error(<span class="string">'Need parameter name'</span>);
+0019 <span class="keyword">end</span>
+0020 
+0021 I = <a href="get_item_struct.html" class="code" title="function I = get_item_struct(o, item)">get_item_struct</a>(o, item);
+0022 
+0023 fns = fieldnames(I);
+0024 tmp = strmatch(<span class="string">'data'</span>, fns, <span class="string">'exact'</span>);
+0025 fns(tmp) = [];
+0026 
+0027 <span class="keyword">if</span> ~ismember(param, fns)
+0028   error([<span class="string">'There is no parameter callled: '</span> param]);
+0029 <span class="keyword">end</span>
+0030 
+0031 value = getfield(I, param);
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

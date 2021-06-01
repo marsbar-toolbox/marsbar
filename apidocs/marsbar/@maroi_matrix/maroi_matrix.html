@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of maroi_matrix</title>
+  <meta name="keywords" content="maroi_matrix">
+  <meta name="description" content="maroi_matrix - class constructor">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@maroi_matrix</a> &gt; maroi_matrix.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@maroi_matrix&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>maroi_matrix
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>maroi_matrix - class constructor</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [o, others] = maroi_matrix(params, space) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> maroi_matrix - class constructor
+ There are two usual forms of the call:
+ 1) Constructor call: obj = maroi_matrix(params);
+ where input is [defaults]
+  params  - a structure containing any fields for a maroi parent and
+            .dat - a matrix
+            .mat - mapping of matrix indices to mm
+
+ 2) Rebase call: obj = maroi_matrix(obj, space)
+ where input is [defaults]
+  obj - a maroi_matrix object
+  space - mars_space object defining space to reslice to
+
+ This maroi_matrix object is used for conversion between
+ different types of rois, and for combining rois
+ Much of the work is in the converter routines for other roi objects, to
+ return objects of this type
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="../../marsbar/@mardo/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>	returns struct with fields from maroi object useful for copying objects</li>
+<li><a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>	maroi - class constructor for umbrella ROI object</li>
+<li><a href="../../marsbar/@maroi/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, sp)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>	returns struct with fields from maroi object useful for copying objects</li>
+<li><a href="../../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+<li><a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="rebase.html" class="code" title="function [pts, vals] = rebase(obj, sp, flags)">rebase</a>	rebase method - returns data from maroi_matrix in new space</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_pointlist/native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>	native_space method - returns native space of object</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+<li><a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>	mars_space - class constructor for space defining object</li>
+<li><a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>	multifunction function for manipulating structures</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/@maroi/are_same.html" class="code" title="function tf = are_same(roi1, roi2, sp)">are_same</a>	returns 1 if rois are the same</li>
+<li><a href="../../marsbar/@maroi/back2base.html" class="code" title="function o = back2base(o)">back2base</a>	back2base method - check for spacebase, transform thereto</li>
+<li><a href="../../marsbar/@maroi/rle.html" class="code" title="function rlem = rle(o, sp)">rle</a>	run length encoding method</li>
+<li><a href="../../marsbar/@maroi/save_as_image.html" class="code" title="function v = save_as_image(o, fname, sp)">save_as_image</a>	method save_as_image - saves ROI as image</li>
+<li><a href="../../marsbar/@maroi_image/flip_lr.html" class="code" title="function o = flip_lr(o)">flip_lr</a>	flips ROI left / right</li>
+<li><a href="../../marsbar/@maroi_image/maroi_image.html" class="code" title="function [o, others] = maroi_image(params)">maroi_image</a>	maroi_image - class constructor</li>
+<li><a href="../../marsbar/@maroi_image/maroi_matrix.html" class="code" title="function o = maroi_matrix(o, sp)">maroi_matrix</a>	maroi_matrix method - converts maroi_image to maroi_matrix</li>
+<li><a href="maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>	maroi_matrix - class constructor</li>
+<li><a href="matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>	matrixdata method - gets matrix from ROI object</li>
+<li><a href="../../marsbar/@maroi_pointlist/maroi_matrix.html" class="code" title="function obj2 = maroi_matrix(obj, space)">maroi_matrix</a>	maroi_matrix method - converts roi to maroi matrix type</li>
+<li><a href="../../marsbar/@maroi_pointlist/voxpts.html" class="code" title="function [pts, vals] = voxpts(o, sp)">voxpts</a>	voxpts method - returns 3xN ijk matrix in voxels</li>
+<li><a href="../../marsbar/@maroi_shape/maroi_matrix.html" class="code" title="function o2 = maroi_matrix(o, space)">maroi_matrix</a>	method to convert shape objects to maroi_matrix objects</li>
+<li><a href="../../marsbar/mars_build_roi.html" class="code" title="function o = mars_build_roi">mars_build_roi</a>	builds ROIs via the SPM GUI</li>
+<li><a href="../../marsbar/mars_display_roi.html" class="code" title="function varargout=mars_display_roi(action_str, varargin)">mars_display_roi</a>	utility routines for display of ROIs in graphic window</li>
+<li><a href="../../marsbar/mars_rois2img.html" class="code" title="function mars_rois2img(roi_list, img_name, roi_space, flags)">mars_rois2img</a>	creates cluster or number labelled ROI image from ROIs</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [o, others] = maroi_matrix(params, space)</a>
+0002 <span class="comment">% maroi_matrix - class constructor</span>
+0003 <span class="comment">% There are two usual forms of the call:</span>
+0004 <span class="comment">% 1) Constructor call: obj = maroi_matrix(params);</span>
+0005 <span class="comment">% where input is [defaults]</span>
+0006 <span class="comment">%  params  - a structure containing any fields for a maroi parent and</span>
+0007 <span class="comment">%            .dat - a matrix</span>
+0008 <span class="comment">%            .mat - mapping of matrix indices to mm</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% 2) Rebase call: obj = maroi_matrix(obj, space)</span>
+0011 <span class="comment">% where input is [defaults]</span>
+0012 <span class="comment">%  obj - a maroi_matrix object</span>
+0013 <span class="comment">%  space - mars_space object defining space to reslice to</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% This maroi_matrix object is used for conversion between</span>
+0016 <span class="comment">% different types of rois, and for combining rois</span>
+0017 <span class="comment">% Much of the work is in the converter routines for other roi objects, to</span>
+0018 <span class="comment">% return objects of this type</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% $Id$</span>
+0021 
+0022 myclass = <span class="string">'maroi_matrix'</span>;
+0023 defstruct = struct(<span class="string">'dat'</span>, [],<span class="string">'mat'</span>, eye(4));
+0024 
+0025 <span class="keyword">if</span> nargin &lt; 1
+0026   params = [];
+0027 <span class="keyword">end</span>
+0028 <span class="keyword">if</span> isa(params, myclass)
+0029   o = params;
+0030   <span class="keyword">if</span> nargin &lt; 2 <span class="comment">% simple object return call</span>
+0031     <span class="keyword">return</span>
+0032   <span class="keyword">end</span> 
+0033   <span class="comment">% Rebase call</span>
+0034   <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(space)
+0035     space = <a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(o);
+0036     <span class="keyword">if</span> <a href="../../marsbar/@mardo/isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(space)
+0037       error(<span class="string">'Cannot define default space for object'</span>);
+0038     <span class="keyword">end</span>
+0039   <span class="keyword">else</span>
+0040     space = <a href="../../marsbar/@mars_space/mars_space.html" class="code" title="function [o, others] = mars_space(params, params2)">mars_space</a>(space);
+0041   <span class="keyword">end</span>
+0042   
+0043   <span class="comment">% check if this in fact the same as object native space</span>
+0044   <span class="keyword">if</span> space == <a href="native_space.html" class="code" title="function sp = native_space(obj)">native_space</a>(o), <span class="keyword">return</span>, <span class="keyword">end</span>
+0045   <span class="comment">% if not, then rebase</span>
+0046   params = <a href="../../marsbar/@mardo/paramfields.html" class="code" title="function params = paramfields(o)">paramfields</a>(o);
+0047   params.label = [params.label <span class="string">'_rebased'</span>]; 
+0048   params.descrip = [params.descrip <span class="string">': rebased'</span>]; 
+0049   params.dat = <a href="rebase.html" class="code" title="function [pts, vals] = rebase(obj, sp, flags)">rebase</a>(o,space,<span class="string">'i'</span>);
+0050   params.mat = space.mat;
+0051   o = <a href="maroi_matrix.html" class="code" title="function [o, others] = maroi_matrix(params, space)">maroi_matrix</a>(params);
+0052   <span class="keyword">return</span>
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">% Constructor call</span>
+0056 
+0057 <span class="comment">% fill with defaults</span>
+0058 pparams = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'ffillmerge'</span>, defstruct, params);
+0059 
+0060 <span class="comment">% umbrella object, parse out fields for (this object and children)</span>
+0061 [uo, pparams] = <a href="../../marsbar/@maroi/maroi.html" class="code" title="function [o, others] = maroi(params, varargin)">maroi</a>(pparams);
+0062 
+0063 <span class="comment">% reparse parameters into those for this object, children</span>
+0064 [pparams, others] = <a href="../../marsbar/mars_struct.html" class="code" title="function varargout = mars_struct(action, varargin)">mars_struct</a>(<span class="string">'split'</span>, pparams, defstruct);
+0065 
+0066 <span class="comment">% bless into object</span>
+0067 o = class(pparams, myclass, uo);
+0068 
+0069 <span class="comment">% apply implied thresholding</span>
+0070 o = <a href="matrixdata.html" class="code" title="function dat = matrixdata(o, dat)">matrixdata</a>(o, o.dat);
+0071 
+0072 <span class="keyword">return</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>

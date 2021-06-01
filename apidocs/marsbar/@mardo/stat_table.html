@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of stat_table</title>
+  <meta name="keywords" content="stat_table">
+  <meta name="description" content="gets Mars statistics and creates statistic table as cell array">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2003-2019 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">marsbar</a> &gt; <a href="index.html">@mardo</a> &gt; stat_table.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for marsbar/@mardo&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>stat_table
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>gets Mars statistics and creates statistic table as cell array</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> gets Mars statistics and creates statistic table as cell array
+ FORMAT [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic)
+
+ Inputs
+ marsD                - MarsBaR design structure
+ Ic                   - indices for contrasts to be displayed
+ 
+ Outputs
+ rep_strs             - Cell array containing table report
+ marsS                - MarsBaR statistics structure
+ marsD                - design, including contrast structure (which
+                                might have changed)  
+ changef              - flag to indicate if design has changed
+
+ $Id$
+</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>	overloaded isempty method for mardo object</li>
+<li><a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>	SPM contrast UI, wrapped for MarsBaR</li>
+<li><a href="../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return results of contrast statistics</li>
+<li><a href="../../marsbar/@mardo_99/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>	compute and return stats</li>
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../marsbar/marsbar.html" class="code" title="function varargout=marsbar(varargin)">marsbar</a>	Startup, callback and utility routine for Marsbar</li>
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic)</a>
+0002 <span class="comment">% gets Mars statistics and creates statistic table as cell array</span>
+0003 <span class="comment">% FORMAT [rep_strs, marsS, marsD, changef] = stat_table(marsD, Ic)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">% marsD                - MarsBaR design structure</span>
+0007 <span class="comment">% Ic                   - indices for contrasts to be displayed</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Outputs</span>
+0010 <span class="comment">% rep_strs             - Cell array containing table report</span>
+0011 <span class="comment">% marsS                - MarsBaR statistics structure</span>
+0012 <span class="comment">% marsD                - design, including contrast structure (which</span>
+0013 <span class="comment">%                                might have changed)</span>
+0014 <span class="comment">% changef              - flag to indicate if design has changed</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% $Id$</span>
+0017 
+0018 <span class="keyword">if</span> nargin &lt; 2
+0019   Ic = [];
+0020 <span class="keyword">end</span>
+0021 
+0022 changef = 0;
+0023 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(Ic)
+0024   [Ic marsD changef] = <a href="ui_get_contrasts.html" class="code" title="function varargout=ui_get_contrasts(D, varargin)">ui_get_contrasts</a>(marsD,<span class="string">'T|F'</span>,Inf,<span class="keyword">...</span>
+0025              <span class="string">'Select contrasts '</span>,<span class="string">''</span>,1);
+0026 <span class="keyword">end</span>
+0027 
+0028 <span class="comment">% Do statistics work</span>
+0029 [marsS] = <a href="../../marsbar/@mardo_2/compute_contrasts.html" class="code" title="function [marsS] = compute_contrasts(marsDe, Ic)">compute_contrasts</a>(marsD, Ic);
+0030 
+0031 <span class="comment">% output to text table</span>
+0032 <span class="keyword">if</span> <a href="isempty.html" class="code" title="function tf = isempty(o)">isempty</a>(marsS), <span class="keyword">return</span>, <span class="keyword">end</span>
+0033 <span class="comment">% output column headings</span>
+0034 <span class="keyword">if</span> marsS.rows{1}.stat == <span class="string">'T'</span>
+0035   numstr = <span class="string">'Contrast value'</span>;
+0036   statstr = <span class="string">'t statistic'</span>;
+0037 <span class="keyword">else</span>
+0038   numstr = <span class="string">'Extra SS'</span>;
+0039   statstr = <span class="string">'F statistic'</span>;
+0040 <span class="keyword">end</span>
+0041 str = sprintf(<span class="string">'%-20s%20s:%15s:%15s:%15s:%15s'</span>,<span class="keyword">...</span>
+0042           <span class="string">'Contrast name'</span>,<span class="keyword">...</span>
+0043           <span class="string">'ROI name'</span>,<span class="keyword">...</span>
+0044           numstr,<span class="keyword">...</span>
+0045           statstr,<span class="keyword">...</span>
+0046           <span class="string">'Uncorrected P'</span>,<span class="keyword">...</span>
+0047           <span class="string">'Corrected P'</span>);
+0048 rep_strs{1} = sprintf(<span class="string">'\n%s\n%s\n'</span>,str, repmat(<span class="string">'-'</span>,1,length(str)));
+0049 
+0050 <span class="keyword">for</span> con = 1:length(marsS.rows)
+0051   rep_strs{end+1} = sprintf(<span class="string">'%s\n%s\n'</span>, <span class="keyword">...</span>
+0052                 marsS.rows{con}.name,<span class="keyword">...</span>
+0053                 repmat(<span class="string">'-'</span>,1,42));
+0054   <span class="keyword">for</span> roi = 1:length(marsS.columns)
+0055     rep_strs{end+1} = sprintf(<span class="string">'%40s:%15.2f:%15.2f:%15.6f:%15.6f\n'</span>, <span class="keyword">...</span>
+0056                  marsS.columns{roi},<span class="keyword">...</span>
+0057                  marsS.con(con,roi),<span class="keyword">...</span>
+0058                  marsS.stat(con,roi),<span class="keyword">...</span>
+0059                  marsS.P(con,roi),<span class="keyword">...</span>
+0060                  marsS.Pc(con,roi));
+0061   <span class="keyword">end</span>
+0062 <span class="keyword">end</span>
+</pre></div>
+
+<hr><address>Generated on Tue 01-Jun-2021 15:51:18 by <strong><a href="https://www.artefact.tk/software/matlab/m2html/">m2html</a></strong> &copy; 2003-2019</address>
+</body>
+</html>
