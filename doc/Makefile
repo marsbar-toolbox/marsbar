@@ -1,6 +1,9 @@
 # Makefile for Sphinx documentation
-#
-MATLAB_BIN ?= matlab
+
+# Octave also seems to work:
+# export MATLAB_CMD="octave --eval"
+# Make sure m2html is on the path (e.g. with .octaverc).
+MATLAB_CMD ?= matlab -nosplash -nodesktop -r
 
 # https://sourceforge.net/apps/trac/sourceforge/wiki/Release files for download
 WWW=matthewbrett,marsbar@web.sourceforge.net:htdocs
@@ -42,7 +45,7 @@ pdf: latex
 apidocs: apidocs-stamp
 
 apidocs-stamp:
-	cd scripts && $(MATLAB_BIN) -nosplash -nodesktop -r "make_apidocs;exit"
+	cd scripts && $(MATLAB_CMD) "make_apidocs;exit"
 	touch $@
 
 all: apidocs html pdf
