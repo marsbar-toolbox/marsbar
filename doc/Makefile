@@ -72,6 +72,14 @@ doc-release: dist-stamp
 
 public-web: public-web-stamp
 
+github-pages: github-pages-stamp
+
+github-pages-stamp: dist-stamp
+	ghp-import -n dist/
+	git push origin gh-pages:gh-pages --force
+	@echo
+	@echo "Published to Github"
+
 public-web-stamp: dist-stamp
 	rsync -avl --delete dist/ $(WWW)/
 	touch $@
