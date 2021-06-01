@@ -1,5 +1,6 @@
 # Makefile for Sphinx documentation
 #
+MATLAB_BIN ?= matlab
 
 # https://sourceforge.net/apps/trac/sourceforge/wiki/Release files for download
 WWW=matthewbrett,marsbar@web.sourceforge.net:htdocs
@@ -41,7 +42,7 @@ pdf: latex
 apidocs: apidocs-stamp
 
 apidocs-stamp:
-	cd scripts && matlab -nosplash -nodesktop -r "make_apidocs;exit"
+	cd scripts && $(MATLAB_BIN) -nosplash -nodesktop -r "make_apidocs;exit"
 	touch $@
 
 all: apidocs html pdf
