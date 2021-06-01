@@ -4,7 +4,7 @@ Marsbar
 
 This is the Marsbar repository.
 
-Please see: http://marsbar.sourceforge.net/ for documentation, and
+Please see: http://matthew-brett.github.io/marsbar for documentation, and
 http://github.com/matthew-brett/marsbar for the code.
 
 *****
@@ -20,8 +20,8 @@ to get the testing code.
 
 Then make sure:
 
-* SPM is on the matlab path
-* ``/path/to/marsbar-repo/testing`` is on the matlab path
+* SPM is on the Matlab path
+* ``/path/to/marsbar-repo/testing`` is on the Matlab path
 
 Finally::
 
@@ -35,8 +35,8 @@ Data
 ****
 
 There's a ``marsbar_example_data`` sub-directory, but this is only to store a
-few smaller files that will go into the marsbar data package.  To reconstruct
-the marsbar example data, download and unpack the current marsbar example data
+few smaller files that will go into the Marsbar data package.  To reconstruct
+the Marsbar example data, download and unpack the current Marsbar example data
 somewhere (outside the repository working tree), copy the
 ``marsbar_example_data`` files into this tree, bump the version number in the
 directory name of the example data, and re-release.
