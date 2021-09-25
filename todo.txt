@@ -1,0 +1,3 @@
+Set downloads page away from sourceforge.
+
+grep for 'sourceforge'.
