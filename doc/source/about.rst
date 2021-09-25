@@ -14,6 +14,11 @@ apparently be cited as:
   the Human Brain, June 2-6, 2002, Sendai, Japan. Available on CD-ROM in
   NeuroImage, Vol 16, No 2.
 
+Support
+~~~~~~~
+
+See the :doc:`support page <support>`.
+
 Thanks
 ~~~~~~
 

@@ -13,7 +13,7 @@
 .. _`MarsBaR project download page`: http://sourceforge.net/projects/marsbar/files
 .. _`m2html`: http://www.artefact.tk/software/matlab/m2html/
 .. _`MarsBaR users mailing list`: https://marsbar.discourse.group
-.. _`MarsBaR mailing list archive`: https://marsbar.discourse.group
+.. _`MarsBaR users Discourse site`: https://marsbar.discourse.group
 .. _`SourceForge`: http://sourceforge.net
 .. _`mricro`: http://www.mricro.com/
 
