@@ -12,9 +12,8 @@
 .. _`marsbar hbm abstract`: https://matthew.dynevor.org/research/abstracts/marsbar/marsbar_abstract.pdf
 .. _`MarsBaR project download page`: http://sourceforge.net/projects/marsbar/files
 .. _`m2html`: http://www.artefact.tk/software/matlab/m2html/
-.. _`MarsBaR users mailing list`: https://lists.sourceforge.net/lists/listinfo/marsbar-users
-.. _`MarsBaR mailing list archive`: http://sourceforge.net/mailarchive/forum.php?forum_name=marsbar-users
-.. _`Gmane`: http://gmane.org/
+.. _`MarsBaR users mailing list`: https://marsbar.discourse.group
+.. _`MarsBaR mailing list archive`: https://marsbar.discourse.group
 .. _`SourceForge`: http://sourceforge.net
 .. _`mricro`: http://www.mricro.com/
 

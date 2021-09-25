@@ -29,9 +29,9 @@
 .. _`dipy mailing list`: http://mail.scipy.org/mailman/listinfo/nipy-devel
 
 .. marsbar
-.. _marsbar: http://marsbar.sourceforge.net
+.. _marsbar: https://marsbar-toolbox.github.io
 .. _`marsbar github`: http://github.com/matthew-brett/marsbar
-.. _`MarsBaR mailing list`: https://lists.sourceforge.net/lists/listinfo/marsbar-users
+.. _`MarsBaR mailing list`: https://marsbar.discourse.group
 
 .. git stuff
 .. _git: http://git-scm.com/

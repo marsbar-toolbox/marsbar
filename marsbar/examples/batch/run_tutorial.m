@@ -1,6 +1,6 @@
 % MarsBaR batch script to show off MarsBaR batching
 % This script replicates most of the work in the MarsBaR tutorial.
-% See http://marsbar.sourceforge.net
+% See https://marsbar-toolbox.github.io
 %
 % The script assumes that the current directory is the 'batch' directory
 % of the example data set files.

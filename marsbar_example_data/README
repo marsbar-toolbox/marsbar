@@ -10,7 +10,7 @@ http://www.mrc-cbu.cam.ac.uk/Imaging/~matthew.brett/abstracts/ER/er_analysis.htm
 The dataset is designed to be used with the MarsBaR tutorial, which
 should be available via the MarsBaR home page:
 
-http://marsbar.sourceforge.net/
+https://marsbar-toolbox.github.io/
 
 We acquired the three runs (sessions) during a task using visual
 events presented with random intervals between events.  In session 1
@@ -35,7 +35,7 @@ The routines should work with SPM99 through SPM8.
 
 There is also an example batch script for MarsBaR that replicates the
 analyses described in the MarsBaR tutorial; see
-http://marsbar.sourceforge.net.  To run:
+https://marsbar-toolbox.github.io.  To run:
 
 run_tutorial
 
