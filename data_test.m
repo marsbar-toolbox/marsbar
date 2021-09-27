@@ -1,7 +1,7 @@
 % Runs tests that depend on example data
 %
 % Download marsbar example data from
-% http://sourceforge.net/projects/marsbar/files/marsbar%20example%20data/
+% https://github.com/marsbar-toolbox/marsbar-example-data/releases
 %
 % Unpack into a directory such as /home/mb312/data
 %

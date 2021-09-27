@@ -3,11 +3,11 @@
 Download and install
 ~~~~~~~~~~~~~~~~~~~~
 
-All MarsBaR file releases are available via the `MarsBaR project download
-page`_. 
-
 Installing MarsBaR
 ++++++++++++++++++
+
+The MarsBaR code releases are available via the `MarsBaR project download
+page`_.
 
 MarsBaR needs a version of SPM_, so if you don't have SPM, please
 download and install that first.  MarsBaR works with SPM versions 99, 2,
@@ -31,13 +31,13 @@ within SPM.
    unpacked the MarsBaR distribution, giving you a directory
    ``/home/myhome/marsbar-0.42``.  You could then create the marsbar SPM
    toolbox directory with::
-            
+
       mkdir /usr/local/spm/spm8/toolbox/marsbar
-   
+
    and copy the MarsBaR distribution into this directory with::
-   
+
       cp -r /home/myhome/marsbar-0.42/* /usr/local/spm/spm8/toolbox/marsbar
-   
+
    Alternatively, you could do the same job by making a symbolic link
    between the directories with something like::
 
@@ -57,7 +57,7 @@ Example dataset
 ```````````````
 You may want the example dataset to try out MarsBaR, or to run the :ref:`tutorial`.
 
-Download the dataset from the `MarsBaR project download page`_.
+Download the dataset from the `MarsBaR example data download page`_.
 
 To install, unpack the archive in a directory you can write to. This
 will give you a subdirectory like ``marsbar_example_data-0.3``, where
@@ -89,12 +89,12 @@ MarsBaR distribution, see :ref:`tutorial-processing` for more details.
 .. _aal-rois:
 
 AAL structural ROIs
-```````````````````````````
+```````````````````
 These ROIs can be useful as a standard set of anatomical definitions.
 
-To install, download the AAL ROI archive file from the `MarsBaR project
+To install, download the AAL ROI archive file from the `MarsBaR AAL
 download page`_. Unpack the archive somewhere; it will create a new
-directory, called something like ``marsbar-aal-0.2``. 
+directory, called something like ``marsbar-aal-0.2``.
 
 The AAL ROI library contains ROIs in MarsBaR format that were
 anatomically defined by hand on a single brain matched to the MNI / ICBM

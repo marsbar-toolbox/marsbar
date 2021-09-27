@@ -10,7 +10,9 @@
 
 .. _`SPM`: http://www.fil.ion.ucl.ac.uk/spm
 .. _`marsbar hbm abstract`: https://matthew.dynevor.org/research/abstracts/marsbar/marsbar_abstract.pdf
-.. _`MarsBaR project download page`: http://sourceforge.net/projects/marsbar/files
+.. _`MarsBaR project download page`: https://github.com/marsbar-toolbox/marsbar/releases
+.. _`MarsBaR example data download page`: https://github.com/marsbar-toolbox/marsbar-example-data/releases
+.. _`MarsBaR AAL download page`: https://github.com/marsbar-toolbox/marsbar-aal-rois/releases
 .. _`m2html`: http://www.artefact.tk/software/matlab/m2html/
 .. _`MarsBaR users mailing list`: https://marsbar.discourse.group
 .. _`MarsBaR users Discourse site`: https://marsbar.discourse.group

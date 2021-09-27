@@ -3,9 +3,9 @@ Batch processing scripts for MarsBaR example data
 
 This directory contains the batch scripts for preprocessing of the
 MarsBaR example dataset.  You can get the dataset from the MarsBaR
-download page, currently:
+dateset download page:
 
-https://sourceforge.net/project/showfiles.php?group_id=76381
+https://github.com/marsbar-toolbox/marsbar-example-data/releases
 
 To run initial processing on the dataset in SPM, start matlab, change
 ('cd') to the '<marsbar>/examples/batch' directory, and, from the

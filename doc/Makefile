@@ -5,10 +5,6 @@
 # Make sure m2html is on the path (e.g. with .octaverc).
 MATLAB_CMD ?= matlab -nosplash -nodesktop -r
 
-# https://sourceforge.net/apps/trac/sourceforge/wiki/Release files for download
-WWW=matthewbrett,marsbar@web.sourceforge.net:htdocs
-FRS=matthewbrett@frs.sourceforge.net:uploads
-
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
@@ -79,10 +75,6 @@ github-pages-stamp: dist-stamp
 	git push origin gh-pages:gh-pages --force
 	@echo
 	@echo "Published to Github"
-
-public-web-stamp: dist-stamp
-	rsync -avl --delete dist/ $(WWW)/
-	touch $@
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
