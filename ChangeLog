@@ -22,6 +22,12 @@ Releases
 
 Most work on MarsBaR so far has been by Matthew Brett (MB)
 
+* 0.45 (Tuesday 28 September 2021)
+
+  No functional changes.
+
+  * Moved from Sourceforge to Github releases.
+
 * 0.44 (Thursday 21 January 2015)
 
   * Feature and bugfix release;
