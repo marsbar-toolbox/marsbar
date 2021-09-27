@@ -8,7 +8,7 @@ function pre_release(rname, outdir, proj, proj_descrip, proj_url)
 % proj         - project name (and name of main project file) ['marsbar']
 % proj_descrip - short description of project ['MarsBaR ROI toolbox']
 % proj_url     - URL from which to clone project
-%                ['git://github.com/matthew-brett/marsbar.git']
+%                ['git://github.com/marsbar-toolbox/marsbar.git']
 %
 % e.g.  pre_release('-devel-%s', '/tmp')
 % would output a release called marsbar-devel-0.34.tar.gz (if the marsbar
@@ -33,7 +33,7 @@ if nargin < 4
   proj_descrip = 'MarsBaR ROI toolbox';
 end
 if nargin < 5
-    proj_url = 'git://github.com/matthew-brett/marsbar.git';
+    proj_url = 'git://github.com/marsbar-toolbox/marsbar.git';
 end
 
 % project version

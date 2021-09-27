@@ -32,9 +32,9 @@ function varargout=marsbar(varargin)
 % -----------------
 % For a list of the functions implemented here, try
 % grep "^case " marsbar.m
-  
+
 % Marsbar version
-MBver = '0.44';  % First release for SPM12 and earlier
+MBver = '0.45';  % First Github release
 
 % Various working variables in global variable structure
 global MARS;

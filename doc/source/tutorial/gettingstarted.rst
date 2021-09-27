@@ -35,8 +35,8 @@ Gearing up
 To run all the examples in this tutorial you will need to download and install
 two packages:
 
-#. MarsBaR: this tutorial assumes marsbar version 0.44;
-#. the example dataset (version 0.3).
+#. MarsBaR: this tutorial assumes marsbar version >= 0.44;
+#. the example dataset (version >=0.3).
 
 To install these packages, see :ref:`download-install`
 
