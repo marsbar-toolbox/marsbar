@@ -66,15 +66,8 @@ dist-stamp: all
 doc-release: dist-stamp
 	python scripts/write_doc_release.py dist ../marsbar archives
 
-public-web: public-web-stamp
-
-github-pages: github-pages-stamp
-
-github-pages-stamp: dist-stamp
-	ghp-import -n dist/
-	git push origin gh-pages:gh-pages --force
-	@echo
-	@echo "Published to Github"
+github-pages:
+	echo "See marsbar-toolbox.github.io repository"
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html
