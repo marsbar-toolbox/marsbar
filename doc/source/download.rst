@@ -9,9 +9,8 @@ Installing MarsBaR
 The MarsBaR code releases are available via the `MarsBaR project download
 page`_.
 
-MarsBaR needs a version of SPM_, so if you don't have SPM, please
-download and install that first.  MarsBaR works with SPM versions 99, 2,
-5, and 8.
+MarsBaR needs a version of SPM_, so if you don't have SPM, please download and
+install that first.  MarsBaR works with SPM versions 99 and 2 through 12.
 
 For the current stable release of MarsBaR, look for the marsbar package;
 marsbar-devel is the development release. Releases consist of an archive
