@@ -10,6 +10,8 @@ How to release
 
 * Change directory to the marsbar git repository root directory (containing
   ``test.m`` file);
+* Make sure you have the ``testing`` submodule updated with ``git submodule
+  update --init``.
 * Start Matlab with SPM on the path (marsbar gets appended automatically);
 * Run tests with::
 

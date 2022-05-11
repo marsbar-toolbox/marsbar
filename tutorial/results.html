@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Basic results &#8212; MarsBaR 0.44 documentation</title>
+    <title>Basic results &#8212; MarsBaR 0.45 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/marsbar.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="estimate.html" title="Running the ROI analysis"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MarsBaR tutorial</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Basic results</a></li> 
       </ul>
@@ -123,13 +123,13 @@ the <code class="docutils literal notranslate"><span class="pre">stim_hrf</span>
 ugly fashion in the Matlab window. You might want to enlarge your Matlab
 window to stop the text wrapping in an annoying way. Here is the output on my
 machine:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span> <span class="s">Contrast</span> <span class="s">value:</span>    <span class="s">t</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
-<span class="o">----------------------------------------------------------------------------------------</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span><span class="w"> </span><span class="s">name</span><span class="w">   </span><span class="s">ROI</span><span class="w"> </span><span class="s">name:</span><span class="w"> </span><span class="s">Contrast</span><span class="w"> </span><span class="s">value:</span><span class="w">    </span><span class="s">t</span><span class="w"> </span><span class="s">statistic:</span><span class="w">  </span><span class="s">Uncorrected</span><span class="w"> </span><span class="s">P:</span><span class="w">    </span><span class="s">Corrected</span><span class="w"> </span><span class="s">P</span><span class="w"></span>
+<span class="o">----------------------------------------------------------------------------------------</span><span class="w"></span>
 
-<span class="n">stim_hrf</span>
-<span class="s">--------------------------</span>
+<span class="n">stim_hrf</span><span class="w"></span>
+<span class="o">--------------------------</span><span class="w"></span>
 
-      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>           <span class="s">2.21:</span>           <span class="s">4.44:</span>       <span class="s">0.000011:</span>       <span class="s">0.000011</span>
+<span class="w">      </span><span class="n">trimmed</span><span class="w"> </span><span class="n">stim</span><span class="w"> </span><span class="nb">run</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w">           </span><span class="mf">2.21</span><span class="p">:</span><span class="w">           </span><span class="mf">4.44</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000011</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000011</span><span class="w"></span>
 </pre></div>
 </div>
 <p>At the left you see the contrast name. Under this, and to the right, MarsBaR
@@ -154,13 +154,13 @@ are the values that are used for standard second level / random effect
 analyses.</p>
 <p>Just for practice, let us also run an F contrast. Click Statistic table again,
 choose the effects of interest contrast, click Done:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span>       <span class="s">Extra</span> <span class="s">SS:</span>    <span class="s">F</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
-<span class="o">----------------------------------------------------------------------------------------</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span><span class="w"> </span><span class="s">name</span><span class="w">   </span><span class="s">ROI</span><span class="w"> </span><span class="s">name:</span><span class="w">       </span><span class="s">Extra</span><span class="w"> </span><span class="s">SS:</span><span class="w">    </span><span class="s">F</span><span class="w"> </span><span class="s">statistic:</span><span class="w">  </span><span class="s">Uncorrected</span><span class="w"> </span><span class="s">P:</span><span class="w">    </span><span class="s">Corrected</span><span class="w"> </span><span class="s">P</span><span class="w"></span>
+<span class="o">----------------------------------------------------------------------------------------</span><span class="w"></span>
 
-<span class="n">effects</span> <span class="s">of</span> <span class="s">interest</span>
-<span class="o">--------------------------</span>
+<span class="n">effects</span><span class="w"> </span><span class="s">of</span><span class="w"> </span><span class="s">interest</span><span class="w"></span>
+<span class="o">--------------------------</span><span class="w"></span>
 
-      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>          <span class="s">40.48:</span>          <span class="s">25.01:</span>       <span class="s">0.000000:</span>       <span class="s">0.000000</span>
+<span class="w">      </span><span class="n">trimmed</span><span class="w"> </span><span class="n">stim</span><span class="w"> </span><span class="nb">run</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w">          </span><span class="mf">40.48</span><span class="p">:</span><span class="w">          </span><span class="mf">25.01</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000000</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000000</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Now the Contrast value has become the <em>Extra SS</em>.  This is a measure of the
@@ -196,13 +196,13 @@ this contrast directly using the contrast manager; it is just a t
 statistic with a single 1 in the first column:</p>
 <img alt="../_images/defining_contrast.png" src="../_images/defining_contrast.png" />
 <p>In the end, you get a new statistic table:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span> <span class="s">name</span>   <span class="s">ROI</span> <span class="s">name:</span> <span class="s">Contrast</span> <span class="s">value:</span>    <span class="s">t</span> <span class="s">statistic:</span>  <span class="s">Uncorrected</span> <span class="s">P:</span>    <span class="s">Corrected</span> <span class="s">P</span>
-<span class="o">----------------------------------------------------------------------------------------</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Contrast</span><span class="w"> </span><span class="s">name</span><span class="w">   </span><span class="s">ROI</span><span class="w"> </span><span class="s">name:</span><span class="w"> </span><span class="s">Contrast</span><span class="w"> </span><span class="s">value:</span><span class="w">    </span><span class="s">t</span><span class="w"> </span><span class="s">statistic:</span><span class="w">  </span><span class="s">Uncorrected</span><span class="w"> </span><span class="s">P:</span><span class="w">    </span><span class="s">Corrected</span><span class="w"> </span><span class="s">P</span><span class="w"></span>
+<span class="o">----------------------------------------------------------------------------------------</span><span class="w"></span>
 
-<span class="n">stim_hrf</span>
-<span class="s">--------------------------</span>
+<span class="n">stim_hrf</span><span class="w"></span>
+<span class="o">--------------------------</span><span class="w"></span>
 
-      <span class="n">trimmed</span> <span class="s">stim</span> <span class="s">run</span> <span class="s">2:</span>           <span class="s">2.96:</span>           <span class="s">3.98:</span>       <span class="s">0.000061:</span>       <span class="s">0.000061</span>
+<span class="w">      </span><span class="n">trimmed</span><span class="w"> </span><span class="n">stim</span><span class="w"> </span><span class="nb">run</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w">           </span><span class="mf">2.96</span><span class="p">:</span><span class="w">           </span><span class="mf">3.98</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000061</span><span class="p">:</span><span class="w">       </span><span class="mf">0.000061</span><span class="w"></span>
 </pre></div>
 </div>
 <p>You can see that the contrast value – which is proportional to the change in
@@ -267,14 +267,14 @@ event is more reliable (has less variance).</p>
         <li class="right" >
           <a href="estimate.html" title="Running the ROI analysis"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >MarsBaR tutorial</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Basic results</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2000-2015, Matthew Brett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

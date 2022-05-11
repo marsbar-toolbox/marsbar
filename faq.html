@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MarsBaR FAQ &#8212; MarsBaR 0.44 documentation</title>
+    <title>MarsBaR FAQ &#8212; MarsBaR 0.45 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/marsbar.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="tutorial/andmore.html" title="Using a structural ROI"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">MarsBaR FAQ</a></li> 
       </ul>
     </div>  
@@ -77,23 +77,23 @@ day in 1780!</p>
 longer point to valid files. For example, when you first estimated
 the design, the time series images might have been in a directory
 called <code class="docutils literal notranslate"><span class="pre">/now/dead/directory</span></code> - like this:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
-<span class="o">/</span><span class="n">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_02</span><span class="p">.</span><span class="n">img</span>
-<span class="c">...</span>
-<span class="o">/</span><span class="n">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess2</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
-<span class="c">...</span>
-<span class="o">/</span><span class="n">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject2</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="nb">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="o">/</span><span class="nb">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_02</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+<span class="o">/</span><span class="nb">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess2</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+<span class="o">/</span><span class="nb">now</span><span class="o">/</span><span class="n">dead</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">subject2</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
 </pre></div>
 </div>
 <p>etc.</p>
 <p>Time passed, you reorganized your files, and these images have now
 moved to another directory, like this:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
-<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_02</span><span class="p">.</span><span class="n">img</span>
-<span class="c">...</span>
-<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess2</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
-<span class="c">...</span>
-<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">subject2</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="nb">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="nb">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_02</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="nb">path</span><span class="o">/</span><span class="n">subject1</span><span class="o">/</span><span class="n">sess2</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+<span class="o">/</span><span class="n">currently</span><span class="o">/</span><span class="n">extant</span><span class="o">/</span><span class="nb">path</span><span class="o">/</span><span class="n">subject2</span><span class="o">/</span><span class="n">sess1</span><span class="o">/</span><span class="n">image_01</span><span class="p">.</span><span class="n">img</span><span class="w"></span>
 </pre></div>
 </div>
 <p>etc.</p>
@@ -119,9 +119,9 @@ worked; click Design, choose <em>Check image names in design</em> and hope that
 you get the message <code class="docutils literal notranslate"><span class="pre">All</span> <span class="pre">images</span> <span class="pre">in</span> <span class="pre">design</span> <span class="pre">appear</span> <span class="pre">to</span> <span class="pre">exist</span></code> in the
 matlab window.</p>
 <p>The same thing from the command line would be:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="p">=</span> <span class="n">mardo</span><span class="p">(</span><span class="s">&#39;/path/to/spm/mat/SPM.mat&#39;</span><span class="p">);</span>
-<span class="n">D</span> <span class="p">=</span> <span class="n">cd_images</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="s">&#39;/currently/extant/path&#39;</span><span class="p">);</span>
-<span class="n">save_spm</span><span class="p">(</span><span class="n">D</span><span class="p">);</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mardo</span><span class="p">(</span><span class="s">&#39;/path/to/spm/mat/SPM.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">D</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">cd_images</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;/currently/extant/path&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">save_spm</span><span class="p">(</span><span class="n">D</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -199,25 +199,25 @@ specified.</p>
 <p>This example script assumes your design is stored in
 <code class="docutils literal notranslate"><span class="pre">/my/path/SPM.mat</span></code> and you have an ROI stored in
 <code class="docutils literal notranslate"><span class="pre">/my/path/my_roi.mat</span></code>:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">spm_name</span> <span class="p">=</span> <span class="s">&#39;/my/path/SPM.mat&#39;</span><span class="p">;</span>
-<span class="n">roi_file</span> <span class="p">=</span> <span class="s">&#39;/my/path/my_roi.mat&#39;</span><span class="p">;</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">spm_name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/my/path/SPM.mat&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">roi_file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/my/path/my_roi.mat&#39;</span><span class="p">;</span><span class="w"></span>
 
-<span class="c">% Make marsbar design object</span>
-<span class="n">D</span>  <span class="s">=</span> <span class="s">mardo(spm_name)</span><span class="p">;</span>
-<span class="c">% Make marsbar ROI object</span>
-<span class="n">R</span>  <span class="s">=</span> <span class="s">maroi(roi_file)</span><span class="p">;</span>
-<span class="c">% Fetch data into marsbar data object</span>
-<span class="n">Y</span>  <span class="s">=</span> <span class="s">get_marsy(R,</span> <span class="s">D,</span> <span class="s">&#39;mean&#39;)</span><span class="p">;</span>
-<span class="c">% Get contrasts from original design</span>
-<span class="n">xCon</span> <span class="p">=</span> <span class="n">get_contrasts</span><span class="p">(</span><span class="n">D</span><span class="p">);</span>
-<span class="c">% Estimate design on ROI data</span>
-<span class="n">E</span> <span class="p">=</span> <span class="n">estimate</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">Y</span><span class="p">);</span>
-<span class="c">% Put contrasts from original design back into design object</span>
-<span class="n">E</span> <span class="p">=</span> <span class="n">set_contrasts</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">xCon</span><span class="p">);</span>
-<span class="c">% get design betas</span>
-<span class="n">b</span> <span class="p">=</span> <span class="n">betas</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="c">% get stats and stuff for all contrasts into statistics structure</span>
-<span class="n">marsS</span> <span class="p">=</span> <span class="n">compute_contrasts</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">xCon</span><span class="p">));</span>
+<span class="c">% Make marsbar design object</span><span class="w"></span>
+<span class="n">D</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">mardo</span><span class="p">(</span><span class="n">spm_name</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Make marsbar ROI object</span><span class="w"></span>
+<span class="n">R</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">maroi</span><span class="p">(</span><span class="n">roi_file</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Fetch data into marsbar data object</span><span class="w"></span>
+<span class="n">Y</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">get_marsy</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;mean&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Get contrasts from original design</span><span class="w"></span>
+<span class="n">xCon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">get_contrasts</span><span class="p">(</span><span class="n">D</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Estimate design on ROI data</span><span class="w"></span>
+<span class="n">E</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">estimate</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Put contrasts from original design back into design object</span><span class="w"></span>
+<span class="n">E</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">set_contrasts</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">xCon</span><span class="p">);</span><span class="w"></span>
+<span class="c">% get design betas</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">betas</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="c">% get stats and stuff for all contrasts into statistics structure</span><span class="w"></span>
+<span class="n">marsS</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">compute_contrasts</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">xCon</span><span class="p">));</span><span class="w"></span>
 </pre></div>
 </div>
 <p>See the help for the <a class="reference external" href="./apidocs/marsbar/&#64;mardo_99/compute_contrasts.html">compute_contrasts</a> function for details on the
@@ -227,15 +227,15 @@ contents of the marsS structure.</p>
 <h2>How can I extract the percent of activated voxels from an ROI?<a class="headerlink" href="#how-can-i-extract-the-percent-of-activated-voxels-from-an-roi" title="Permalink to this headline">¶</a></h2>
 <p>There is no easy way of doing this using the MarsBaR GUI, but you can
 do it using scipts like this one:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_file</span> <span class="p">=</span> <span class="s">&#39;my_roi.mat&#39;</span><span class="p">;</span>
-<span class="n">t_imgs</span> <span class="p">=</span> <span class="n">strvcat</span><span class="p">(</span><span class="s">&#39;spmT_0002.img&#39;</span><span class="p">,</span> <span class="s">&#39;spmT_0003.img&#39;</span><span class="p">);</span>
-<span class="n">thresholds</span> <span class="p">=</span> <span class="p">[</span><span class="mf">3.4</span> <span class="mf">4.6</span><span class="p">];</span>
-<span class="n">roi_obj</span> <span class="p">=</span> <span class="n">maroi</span><span class="p">(</span><span class="n">roi_file</span><span class="p">);</span>
-<span class="n">y</span> <span class="p">=</span> <span class="n">getdata</span><span class="p">(</span><span class="n">roi_obj</span><span class="p">,</span> <span class="n">t_imgs</span><span class="p">);</span>
-<span class="n">n_voxels</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="n">for</span> <span class="s">i</span> <span class="s">=</span> <span class="s">1:size(t_imgs,</span> <span class="s">1)</span>
-  <span class="n">pc_above_thresh</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="p">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">&gt;</span> <span class="n">thresholds</span><span class="p">(</span><span class="nb">i</span><span class="p">))</span> <span class="o">/</span> <span class="n">n_voxels</span> <span class="o">*</span> <span class="mi">100</span><span class="p">;</span>
-<span class="n">end</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;my_roi.mat&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">t_imgs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">strvcat</span><span class="p">(</span><span class="s">&#39;spmT_0002.img&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;spmT_0003.img&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">thresholds</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">3.4</span><span class="w"> </span><span class="mf">4.6</span><span class="p">];</span><span class="w"></span>
+<span class="n">roi_obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maroi</span><span class="p">(</span><span class="n">roi_file</span><span class="p">);</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">getdata</span><span class="p">(</span><span class="n">roi_obj</span><span class="p">,</span><span class="w"> </span><span class="n">t_imgs</span><span class="p">);</span><span class="w"></span>
+<span class="n">n_voxels</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">size</span><span class="p">(</span><span class="n">t_imgs</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">pc_above_thresh</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">thresholds</span><span class="p">(</span><span class="nb">i</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n_voxels</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -245,12 +245,12 @@ do it using scipts like this one:</p>
 ROIs and your design (if you had not set it previously). MarsBaR
 extracts the data; you can then plot it or save it in various formats
 using Data - Export. In script form, this would be something like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_files</span> <span class="p">=</span> <span class="n">spm_get</span><span class="p">(</span><span class="n">Inf</span><span class="p">,</span><span class="s">&#39;*roi.mat&#39;</span><span class="p">,</span> <span class="s">&#39;Select ROI files&#39;</span><span class="p">);</span>
-<span class="n">des_path</span> <span class="p">=</span> <span class="n">spm_get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;SPM.mat&#39;</span><span class="p">,</span> <span class="s">&#39;Select SPM.mat&#39;</span><span class="p">);</span>
-<span class="n">rois</span> <span class="p">=</span> <span class="n">maroi</span><span class="p">(</span><span class="s">&#39;load_cell&#39;</span><span class="p">,</span> <span class="n">roi_files</span><span class="p">);</span> <span class="c">% make maroi ROI objects</span>
-<span class="n">des</span> <span class="p">=</span> <span class="n">mardo</span><span class="p">(</span><span class="n">des_path</span><span class="p">);</span>  <span class="c">% make mardo design object</span>
-<span class="n">mY</span> <span class="p">=</span> <span class="n">get_marsy</span><span class="p">(</span><span class="n">rois</span><span class="p">{:},</span> <span class="n">des</span><span class="p">,</span> <span class="s">&#39;mean&#39;</span><span class="p">);</span> <span class="c">% extract data into marsy data object</span>
-<span class="n">y</span>  <span class="s">=</span> <span class="s">summary_data(mY)</span><span class="p">;</span>  <span class="c">% get summary time course(s)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_files</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spm_get</span><span class="p">(</span><span class="nb">Inf</span><span class="p">,</span><span class="s">&#39;*roi.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Select ROI files&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">des_path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spm_get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;SPM.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Select SPM.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">rois</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maroi</span><span class="p">(</span><span class="s">&#39;load_cell&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">roi_files</span><span class="p">);</span><span class="w"> </span><span class="c">% make maroi ROI objects</span><span class="w"></span>
+<span class="n">des</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mardo</span><span class="p">(</span><span class="n">des_path</span><span class="p">);</span><span class="w">  </span><span class="c">% make mardo design object</span><span class="w"></span>
+<span class="n">mY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">get_marsy</span><span class="p">(</span><span class="n">rois</span><span class="p">{:},</span><span class="w"> </span><span class="n">des</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;mean&#39;</span><span class="p">);</span><span class="w"> </span><span class="c">% extract data into marsy data object</span><span class="w"></span>
+<span class="n">y</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">summary_data</span><span class="p">(</span><span class="n">mY</span><span class="p">);</span><span class="w">  </span><span class="c">% get summary time course(s)</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -262,11 +262,11 @@ of images, 1 for number of subjects. Select the images you want to
 extract data from, Raw data for scaling, and 0 for grand mean. Now
 you can plot the data from the GUI, or save in various formats using
 Data - Export data. The script to do this might be:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_files</span> <span class="p">=</span> <span class="n">spm_get</span><span class="p">(</span><span class="n">Inf</span><span class="p">,</span><span class="s">&#39;*roi.mat&#39;</span><span class="p">,</span> <span class="s">&#39;Select ROI files&#39;</span><span class="p">);</span>
-<span class="n">P</span> <span class="p">=</span> <span class="n">spm_get</span><span class="p">(</span><span class="n">Inf</span><span class="p">,</span><span class="s">&#39;*.img&#39;</span><span class="p">,</span><span class="s">&#39;Select images&#39;</span><span class="p">);</span>
-<span class="n">rois</span> <span class="p">=</span> <span class="n">maroi</span><span class="p">(</span><span class="s">&#39;load_cell&#39;</span><span class="p">,</span> <span class="n">roi_files</span><span class="p">);</span>  <span class="c">% make maroi ROI objects</span>
-<span class="n">mY</span> <span class="p">=</span> <span class="n">get_marsy</span><span class="p">(</span><span class="n">rois</span><span class="p">{:},</span> <span class="n">P</span><span class="p">,</span> <span class="s">&#39;mean&#39;</span><span class="p">);</span>  <span class="c">% extract data into marsy data object</span>
-<span class="n">y</span> <span class="p">=</span> <span class="n">summary_data</span><span class="p">(</span><span class="n">mY</span><span class="p">);</span> <span class="c">% get summary time course(s)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_files</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spm_get</span><span class="p">(</span><span class="nb">Inf</span><span class="p">,</span><span class="s">&#39;*roi.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Select ROI files&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">P</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spm_get</span><span class="p">(</span><span class="nb">Inf</span><span class="p">,</span><span class="s">&#39;*.img&#39;</span><span class="p">,</span><span class="s">&#39;Select images&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">rois</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maroi</span><span class="p">(</span><span class="s">&#39;load_cell&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">roi_files</span><span class="p">);</span><span class="w">  </span><span class="c">% make maroi ROI objects</span><span class="w"></span>
+<span class="n">mY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">get_marsy</span><span class="p">(</span><span class="n">rois</span><span class="p">{:},</span><span class="w"> </span><span class="n">P</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;mean&#39;</span><span class="p">);</span><span class="w">  </span><span class="c">% extract data into marsy data object</span><span class="w"></span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">summary_data</span><span class="p">(</span><span class="n">mY</span><span class="p">);</span><span class="w"> </span><span class="c">% get summary time course(s)</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -280,10 +280,10 @@ design. Set the high-pass filter as you wish, and then choose “fmristat
 AR(n)” for serial autocorrelations. Set the order of the model (AR(1),
 AR(2) etc) - 2 is a good choice. Estimate the model in the usual way.</p>
 <p>In batch mode this would look like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Make marsbar design object</span>
-<span class="n">D</span>  <span class="s">=</span> <span class="s">mardo(spm_name)</span><span class="p">;</span>
-<span class="c">% Set fmristat AR modelling</span>
-<span class="n">D</span> <span class="p">=</span> <span class="n">autocorr</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="s">&#39;fmristat&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Make marsbar design object</span><span class="w"></span>
+<span class="n">D</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">mardo</span><span class="p">(</span><span class="n">spm_name</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Set fmristat AR modelling</span><span class="w"></span>
+<span class="n">D</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">autocorr</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;fmristat&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -315,55 +315,55 @@ Brain Mapp. 1999;8(2-3):109-14.</p>
 <p>You can of course do this via the GUI. The most efficient is to do it
 with a batch script. You have already run the batch script above up
 to <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">estimate(D,</span> <span class="pre">Y);</span></code>. Then:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get definitions of all events in model</span>
-<span class="p">[</span><span class="n">e_specs</span><span class="p">,</span> <span class="n">e_names</span><span class="p">]</span> <span class="p">=</span> <span class="n">event_specs</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="n">n_events</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">e_specs</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="c">% Bin size in seconds for FIR</span>
-<span class="n">bin_size</span> <span class="p">=</span> <span class="n">tr</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="c">% Length of FIR in seconds</span>
-<span class="n">fir_length</span> <span class="p">=</span> <span class="mi">24</span><span class="p">;</span>
-<span class="c">% Number of FIR time bins to cover length of FIR</span>
-<span class="n">bin_no</span> <span class="p">=</span> <span class="n">fir_length</span> <span class="o">/</span> <span class="n">bin_size</span><span class="p">;</span>
-<span class="c">% Options - here &#39;single&#39; FIR model, return estimated</span>
-<span class="n">opts</span> <span class="p">=</span> <span class="n">struct</span><span class="p">(</span><span class="s">&#39;single&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;percent&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-<span class="c">% Return time courses for all events in fir_tc matrix</span>
-<span class="k">for</span> <span class="n">e_s</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_events</span>
-  <span class="n">fir_tc</span><span class="p">(:,</span> <span class="n">e_s</span><span class="p">)</span> <span class="p">=</span> <span class="n">event_fitted_fir</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">e_specs</span><span class="p">(:,</span><span class="n">e_s</span><span class="p">),</span> <span class="n">bin_size</span><span class="p">,</span> <span class="c">...</span>
-                                 <span class="n">bin_no</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
-<span class="n">end</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get definitions of all events in model</span><span class="w"></span>
+<span class="p">[</span><span class="n">e_specs</span><span class="p">,</span><span class="w"> </span><span class="n">e_names</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_specs</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="n">n_events</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">e_specs</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Bin size in seconds for FIR</span><span class="w"></span>
+<span class="n">bin_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">tr</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Length of FIR in seconds</span><span class="w"></span>
+<span class="n">fir_length</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Number of FIR time bins to cover length of FIR</span><span class="w"></span>
+<span class="n">bin_no</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fir_length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bin_size</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Options - here &#39;single&#39; FIR model, return estimated</span><span class="w"></span>
+<span class="n">opts</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">struct</span><span class="p">(</span><span class="s">&#39;single&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;percent&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Return time courses for all events in fir_tc matrix</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">e_s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">n_events</span><span class="w"></span>
+<span class="w">  </span><span class="n">fir_tc</span><span class="p">(:,</span><span class="w"> </span><span class="n">e_s</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_fitted_fir</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">e_specs</span><span class="p">(:,</span><span class="n">e_s</span><span class="p">),</span><span class="w"> </span><span class="n">bin_size</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">                                 </span><span class="n">bin_no</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If your events have the same name across sessions, and you want to
 average across the events with the same name:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get compound event types structure</span>
-<span class="n">ets</span> <span class="p">=</span> <span class="n">event_types_named</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="n">n_event_types</span> <span class="p">=</span> <span class="nb">length</span><span class="p">(</span><span class="n">ets</span><span class="p">);</span>
-<span class="c">% Bin size in seconds for FIR</span>
-<span class="n">bin_size</span> <span class="p">=</span> <span class="n">tr</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="c">% Length of FIR in seconds</span>
-<span class="n">fir_length</span> <span class="p">=</span> <span class="mi">24</span><span class="p">;</span>
-<span class="c">% Number of FIR time bins to cover length of FIR</span>
-<span class="n">bin_no</span> <span class="p">=</span> <span class="n">fir_length</span> <span class="o">/</span> <span class="n">bin_size</span><span class="p">;</span>
-<span class="c">% Options - here &#39;single&#39; FIR model, return estimated % signal change</span>
-<span class="n">opts</span> <span class="p">=</span> <span class="n">struct</span><span class="p">(</span><span class="s">&#39;single&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;percent&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-<span class="n">for</span> <span class="s">e_t</span> <span class="s">=</span> <span class="s">1:n_event_types</span>
-   <span class="n">fir_tc</span><span class="p">(:,</span> <span class="n">e_t</span><span class="p">)</span> <span class="p">=</span> <span class="n">event_fitted_fir</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">ets</span><span class="p">(</span><span class="n">e_t</span><span class="p">).</span><span class="n">e_spec</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">,</span> <span class="c">...</span>
-      <span class="n">bin_no</span><span class="p">,</span> <span class="n">opts</span><span class="p">);</span>
-<span class="n">end</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get compound event types structure</span><span class="w"></span>
+<span class="n">ets</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_types_named</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="n">n_event_types</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">length</span><span class="p">(</span><span class="n">ets</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Bin size in seconds for FIR</span><span class="w"></span>
+<span class="n">bin_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">tr</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Length of FIR in seconds</span><span class="w"></span>
+<span class="n">fir_length</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Number of FIR time bins to cover length of FIR</span><span class="w"></span>
+<span class="n">bin_no</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fir_length</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">bin_size</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Options - here &#39;single&#39; FIR model, return estimated % signal change</span><span class="w"></span>
+<span class="n">opts</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">struct</span><span class="p">(</span><span class="s">&#39;single&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;percent&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">e_t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">n_event_types</span><span class="w"></span>
+<span class="w">   </span><span class="n">fir_tc</span><span class="p">(:,</span><span class="w"> </span><span class="n">e_t</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_fitted_fir</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">ets</span><span class="p">(</span><span class="n">e_t</span><span class="p">).</span><span class="n">e_spec</span><span class="p">,</span><span class="w"> </span><span class="n">bin_size</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">      </span><span class="n">bin_no</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="how-do-i-extract-percent-signal-change-from-my-design-using-batch">
 <span id="extract-pct"></span><h2>How do I extract percent signal change from my design using batch?<a class="headerlink" href="#how-do-i-extract-percent-signal-change-from-my-design-using-batch" title="Permalink to this headline">¶</a></h2>
 <p>Maybe something like this:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get definitions of all events in model</span>
-<span class="p">[</span><span class="n">e_specs</span><span class="p">,</span> <span class="n">e_names</span><span class="p">]</span> <span class="p">=</span> <span class="n">event_specs</span><span class="p">(</span><span class="n">E</span><span class="p">);</span>
-<span class="n">n_events</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">e_specs</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="n">dur</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="c">% Return percent signal esimate for all events in design</span>
-<span class="k">for</span> <span class="n">e_s</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_events</span>
-  <span class="n">pct_ev</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span> <span class="p">=</span> <span class="n">event_signal</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">e_specs</span><span class="p">(:,</span><span class="n">e_s</span><span class="p">),</span> <span class="n">dur</span><span class="p">);</span>
-<span class="n">end</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get definitions of all events in model</span><span class="w"></span>
+<span class="p">[</span><span class="n">e_specs</span><span class="p">,</span><span class="w"> </span><span class="n">e_names</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_specs</span><span class="p">(</span><span class="n">E</span><span class="p">);</span><span class="w"></span>
+<span class="n">n_events</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">e_specs</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="n">dur</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Return percent signal esimate for all events in design</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">e_s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">n_events</span><span class="w"></span>
+<span class="w">  </span><span class="n">pct_ev</span><span class="p">(</span><span class="n">e_s</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">event_signal</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">e_specs</span><span class="p">(:,</span><span class="n">e_s</span><span class="p">),</span><span class="w"> </span><span class="n">dur</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>See also the documentation for <a class="reference external" href="./apidocs/marsbar/&#64;mardo/event_signal.html">event_signal.m</a>.</p>
@@ -456,7 +456,7 @@ click on them in the matlab “uigetfile” interface that MarsBaR uses. If
 you are using the default method of running matlab, which uses the fancy
 Java desktop, you can get round it using the workaround documented at
 the link above, which is to run the following command:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">setappdata</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;UseNativeSystemDialogs&#39;</span><span class="p">,</span><span class="n">false</span><span class="p">)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">setappdata</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;UseNativeSystemDialogs&#39;</span><span class="p">,</span><span class="nb">false</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>in matlab, before you ever start a file selection dialog, such as those
@@ -473,7 +473,7 @@ above. For details, search for comments containing ‘uigetfile’ in
 <div class="section" id="why-do-i-get-a-no-valid-data-for-roi-warning-when-extracting-data">
 <span id="novalid"></span><h2>Why do I get a “No valid data for roi” warning when extracting data?<a class="headerlink" href="#why-do-i-get-a-no-valid-data-for-roi-warning-when-extracting-data" title="Permalink to this headline">¶</a></h2>
 <p>You might run into a warning like this:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">Warning</span><span class="p">:</span> <span class="n">No</span> <span class="n">valid</span> <span class="n">data</span> <span class="k">for</span> <span class="n">roi</span> <span class="mi">1</span> <span class="c">...</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="n">Warning</span><span class="p">:</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">roi</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This is almost invariably because you are sampling from SPM results
@@ -482,10 +482,10 @@ resampling by default to get the data from the images, so voxels at
 the edge of the brain disappear due to resampling with NaN values.
 The fix is to change the ROI resampling to nearest neighbour using
 something like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_filename</span> <span class="p">=</span> <span class="s">&#39;my_roi.mat&#39;</span><span class="p">;</span>
-<span class="n">my_roi</span> <span class="p">=</span> <span class="n">maroi</span><span class="p">(</span><span class="n">roi_filename</span><span class="p">);</span>
-<span class="n">my_roi</span> <span class="p">=</span> <span class="n">spm_hold</span><span class="p">(</span><span class="n">my_roi</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c">% set NN resampling</span>
-<span class="n">saveroi</span><span class="p">(</span><span class="n">my_roi</span><span class="p">,</span> <span class="n">roi_filename</span><span class="p">);</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">roi_filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;my_roi.mat&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">my_roi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maroi</span><span class="p">(</span><span class="n">roi_filename</span><span class="p">);</span><span class="w"></span>
+<span class="n">my_roi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spm_hold</span><span class="p">(</span><span class="n">my_roi</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c">% set NN resampling</span><span class="w"></span>
+<span class="n">saveroi</span><span class="p">(</span><span class="n">my_roi</span><span class="p">,</span><span class="w"> </span><span class="n">roi_filename</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>and then rerun the data extraction…</p>
@@ -561,13 +561,13 @@ something like:</p>
         <li class="right" >
           <a href="tutorial/andmore.html" title="Using a structural ROI"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">MarsBaR FAQ</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2000-2015, Matthew Brett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

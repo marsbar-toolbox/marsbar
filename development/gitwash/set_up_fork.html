@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Set up your fork &#8212; MarsBaR 0.44 documentation</title>
+    <title>Set up your fork &#8212; MarsBaR 0.45 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/marsbar.css" type="text/css" />
     
@@ -24,7 +24,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Set up your fork</a></li> 
       </ul>
     </div>  
@@ -39,9 +39,9 @@
 <p>First you follow the instructions for <a class="reference internal" href="forking_hell.html#forking"><span class="std std-ref">Making your own copy (fork) of marsbar</span></a>.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">clone</span> <span class="s">git@github.com:your-user-name/marsbar.git</span>
-<span class="n">cd</span> <span class="s">marsbar</span>
-<span class="n">git</span> <span class="s">remote</span> <span class="s">add</span> <span class="s">upstream</span> <span class="s">git://github.com/matthew-brett/marsbar.git</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">clone</span><span class="w"> </span><span class="s">git@github.com:your-user-name/marsbar.git</span><span class="w"></span>
+<span class="nb">cd</span><span class="w"> </span><span class="n">marsbar</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">remote</span><span class="w"> </span><span class="s">add</span><span class="w"> </span><span class="s">upstream</span><span class="w"> </span><span class="s">git://github.com/matthew-brett/marsbar.git</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -55,8 +55,8 @@
 <li><p>Investigate.  Change directory to your new repo: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">marsbar</span></code>. Then
 <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-a</span></code> to show you all branches.  You’ll get something
 like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">master</span>
-<span class="n">remotes</span><span class="o">/</span><span class="n">origin</span><span class="o">/</span><span class="n">master</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
+<span class="n">remotes</span><span class="o">/</span><span class="n">origin</span><span class="o">/</span><span class="n">master</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This tells you that you are currently on the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, and
@@ -70,22 +70,22 @@ you can merge in changes from trunk.</p>
 </div>
 <div class="section" id="linking-your-repository-to-the-upstream-repo">
 <span id="linking-to-upstream"></span><h3>Linking your repository to the upstream repo<a class="headerlink" href="#linking-your-repository-to-the-upstream-repo" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="s">marsbar</span>
-<span class="n">git</span> <span class="s">remote</span> <span class="s">add</span> <span class="s">upstream</span> <span class="s">git://github.com/matthew-brett/marsbar.git</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="n">marsbar</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">remote</span><span class="w"> </span><span class="s">add</span><span class="w"> </span><span class="s">upstream</span><span class="w"> </span><span class="s">git://github.com/matthew-brett/marsbar.git</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">upstream</span></code> here is just the arbitrary name we’re using to refer to the
-main <a class="reference external" href="http://marsbar.sourceforge.net">marsbar</a> repository at <a class="reference external" href="http://github.com/matthew-brett/marsbar">marsbar github</a>.</p>
+main <a class="reference external" href="https://marsbar-toolbox.github.io">marsbar</a> repository at <a class="reference external" href="http://github.com/matthew-brett/marsbar">marsbar github</a>.</p>
 <p>Note that we’ve used <code class="docutils literal notranslate"><span class="pre">git://</span></code> for the URL rather than <code class="docutils literal notranslate"><span class="pre">git&#64;</span></code>.  The
 <code class="docutils literal notranslate"><span class="pre">git://</span></code> URL is read only.  This means we that we can’t accidentally
 (or deliberately) write to the upstream repo, and we are only going to
 use it to merge into our own code.</p>
 <p>Just for your own satisfaction, show yourself that you now have a new
 ‘remote’, with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">-v</span> <span class="pre">show</span></code>, giving you something like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">upstream</span>     <span class="s">git://github.com/matthew-brett/marsbar.git</span> <span class="s">(fetch)</span>
-<span class="n">upstream</span>     <span class="s">git://github.com/matthew-brett/marsbar.git</span> <span class="s">(push)</span>
-<span class="n">origin</span>       <span class="s">git@github.com:your-user-name/marsbar.git</span> <span class="s">(fetch)</span>
-<span class="n">origin</span>       <span class="s">git@github.com:your-user-name/marsbar.git</span> <span class="s">(push)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">upstream</span><span class="w">     </span><span class="s">git://github.com/matthew-brett/marsbar.git</span><span class="w"> </span><span class="s">(fetch)</span><span class="w"></span>
+<span class="n">upstream</span><span class="w">     </span><span class="s">git://github.com/matthew-brett/marsbar.git</span><span class="w"> </span><span class="s">(push)</span><span class="w"></span>
+<span class="n">origin</span><span class="w">       </span><span class="s">git@github.com:your-user-name/marsbar.git</span><span class="w"> </span><span class="s">(fetch)</span><span class="w"></span>
+<span class="n">origin</span><span class="w">       </span><span class="s">git@github.com:your-user-name/marsbar.git</span><span class="w"> </span><span class="s">(push)</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -139,13 +139,13 @@ use it to merge into our own code.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Set up your fork</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2000-2015, Matthew Brett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

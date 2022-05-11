@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Development workflow &#8212; MarsBaR 0.44 documentation</title>
+    <title>Development workflow &#8212; MarsBaR 0.45 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/marsbar.css" type="text/css" />
     
@@ -24,7 +24,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development workflow</a></li> 
       </ul>
     </div>  
@@ -36,15 +36,15 @@
             
   <div class="section" id="development-workflow">
 <span id="id1"></span><h1>Development workflow<a class="headerlink" href="#development-workflow" title="Permalink to this headline">¶</a></h1>
-<p>You already have your own forked copy of the <a class="reference external" href="http://marsbar.sourceforge.net">marsbar</a> repository, by
+<p>You already have your own forked copy of the <a class="reference external" href="https://marsbar-toolbox.github.io">marsbar</a> repository, by
 following <a class="reference internal" href="forking_hell.html#forking"><span class="std std-ref">Making your own copy (fork) of marsbar</span></a>, <a class="reference internal" href="set_up_fork.html#set-up-fork"><span class="std std-ref">Set up your fork</span></a>, and you have configured
 <a class="reference external" href="http://git-scm.com/">git</a> by following <a class="reference internal" href="configure_git.html#configure-git"><span class="std std-ref">Configure git</span></a>.</p>
 <div class="section" id="workflow-summary">
 <h2>Workflow summary<a class="headerlink" href="#workflow-summary" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Keep your <code class="docutils literal notranslate"><span class="pre">master</span></code> branch clean of edits that have not been merged
-to the main <a class="reference external" href="http://marsbar.sourceforge.net">marsbar</a> development repo.  Your <code class="docutils literal notranslate"><span class="pre">master</span></code> then will follow
-the main <a class="reference external" href="http://marsbar.sourceforge.net">marsbar</a> repository.</p></li>
+to the main <a class="reference external" href="https://marsbar-toolbox.github.io">marsbar</a> development repo.  Your <code class="docutils literal notranslate"><span class="pre">master</span></code> then will follow
+the main <a class="reference external" href="https://marsbar-toolbox.github.io">marsbar</a> repository.</p></li>
 <li><p>Start a new <em>feature branch</em> for each set of edits that you do.</p></li>
 <li><p>If you can avoid it, try not to merge other branches into your feature
 branch while you are working.</p></li>
@@ -56,21 +56,21 @@ keeping history as clear as possible.</p>
 </div>
 <div class="section" id="making-a-new-feature-branch">
 <h2>Making a new feature branch<a class="headerlink" href="#making-a-new-feature-branch" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">branch</span> <span class="s">my-new-feature</span>
-<span class="n">git</span> <span class="s">checkout</span> <span class="s">my-new-feature</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">branch</span><span class="w"> </span><span class="s">my-new-feature</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">checkout</span><span class="w"> </span><span class="s">my-new-feature</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Generally, you will want to keep this also on your public <a class="reference external" href="http://github.com">github</a> fork
-of <a class="reference external" href="http://marsbar.sourceforge.net">marsbar</a>.  To do this, you <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-push.html">git push</a> this new branch up to your <a class="reference external" href="http://github.com">github</a>
+of <a class="reference external" href="https://marsbar-toolbox.github.io">marsbar</a>.  To do this, you <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-push.html">git push</a> this new branch up to your <a class="reference external" href="http://github.com">github</a>
 repo.  Generally (if you followed the instructions in these pages, and
 by default), git will have a link to your <a class="reference external" href="http://github.com">github</a> repo, called
 <code class="docutils literal notranslate"><span class="pre">origin</span></code>.  You push up to your own repo on <a class="reference external" href="http://github.com">github</a> with:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">push</span> <span class="s">origin</span> <span class="s">my-new-feature</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">push</span><span class="w"> </span><span class="s">origin</span><span class="w"> </span><span class="s">my-new-feature</span><span class="w"></span>
 </pre></div>
 </div>
 <p>In git &gt;1.7 you can ensure that the link is correctly set by using the
 <code class="docutils literal notranslate"><span class="pre">--set-upstream</span></code> option:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">push</span> <span class="s">--set-upstream</span> <span class="s">origin</span> <span class="s">my-new-feature</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">push</span><span class="w"> </span><span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span><span class="w"> </span><span class="n">origin</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="w"></span>
 </pre></div>
 </div>
 <p>From now on <a class="reference external" href="http://git-scm.com/">git</a> will know that <code class="docutils literal notranslate"><span class="pre">my-new-feature</span></code> is related to the
@@ -80,10 +80,10 @@ by default), git will have a link to your <a class="reference external" href="ht
 <h2>The editing workflow<a class="headerlink" href="#the-editing-workflow" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="overview">
 <h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span># <span class="n">hack</span> <span class="n">hack</span>
-<span class="n">git</span> <span class="s">add</span> <span class="s">my_new_file</span>
-<span class="n">git</span> <span class="s">commit</span> <span class="s">-am</span> <span class="s">&#39;NF - some message&#39;</span>
-<span class="n">git</span> <span class="s">push</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span>#<span class="w"> </span><span class="n">hack</span><span class="w"> </span><span class="n">hack</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">add</span><span class="w"> </span><span class="s">my_new_file</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">commit</span><span class="w"> </span><span class="o">-</span><span class="n">am</span><span class="w"> </span><span class="s">&#39;NF - some message&#39;</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">push</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -93,18 +93,18 @@ by default), git will have a link to your <a class="reference external" href="ht
 <li><p>Make some changes</p></li>
 <li><p>See which files have changed with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> (see <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-status.html">git status</a>).
 You’ll see a listing like this one:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span># <span class="n">On</span> <span class="n">branch</span> <span class="n">ny</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">feature</span>
-# <span class="n">Changed</span> <span class="n">but</span> <span class="n">not</span> <span class="n">updated</span><span class="p">:</span>
-#   <span class="p">(</span><span class="n">use</span> <span class="s">&quot;git add &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">update</span> <span class="n">what</span> <span class="n">will</span> <span class="n">be</span> <span class="n">committed</span><span class="p">)</span>
-#   <span class="p">(</span><span class="n">use</span> <span class="s">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">discard</span> <span class="n">changes</span> <span class="n">in</span> <span class="n">working</span> <span class="n">directory</span><span class="p">)</span>
-#
-#  <span class="n">modified</span><span class="p">:</span>   <span class="n">README</span>
-#
-# <span class="n">Untracked</span> <span class="n">files</span><span class="p">:</span>
-#   <span class="p">(</span><span class="n">use</span> <span class="s">&quot;git add &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">include</span> <span class="n">in</span> <span class="n">what</span> <span class="n">will</span> <span class="n">be</span> <span class="n">committed</span><span class="p">)</span>
-#
-#  <span class="n">INSTALL</span>
-<span class="n">no</span> <span class="s">changes</span> <span class="s">added</span> <span class="s">to</span> <span class="s">commit</span> <span class="s">(use</span> <span class="s">&quot;git</span> <span class="s">add&quot;</span> <span class="s">and/or</span> <span class="s">&quot;git</span> <span class="s">commit</span> <span class="s">-a&quot;)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span>#<span class="w"> </span><span class="n">On</span><span class="w"> </span><span class="n">branch</span><span class="w"> </span><span class="n">ny</span><span class="o">-</span><span class="n">new</span><span class="o">-</span><span class="n">feature</span><span class="w"></span>
+#<span class="w"> </span><span class="n">Changed</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">updated</span><span class="p">:</span><span class="w"></span>
+#<span class="w">   </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="s">&quot;git add &lt;file&gt;...&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="nb">update</span><span class="w"> </span><span class="nb">what</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">committed</span><span class="p">)</span><span class="w"></span>
+#<span class="w">   </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="s">&quot;git checkout -- &lt;file&gt;...&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">discard</span><span class="w"> </span><span class="n">changes</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">working</span><span class="w"> </span><span class="n">directory</span><span class="p">)</span><span class="w"></span>
+#<span class="w"></span>
+#<span class="w">  </span><span class="n">modified</span><span class="p">:</span><span class="w">   </span><span class="n">README</span><span class="w"></span>
+#<span class="w"></span>
+#<span class="w"> </span><span class="n">Untracked</span><span class="w"> </span><span class="n">files</span><span class="p">:</span><span class="w"></span>
+#<span class="w">   </span><span class="p">(</span><span class="n">use</span><span class="w"> </span><span class="s">&quot;git add &lt;file&gt;...&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="nb">what</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">committed</span><span class="p">)</span><span class="w"></span>
+#<span class="w"></span>
+#<span class="w">  </span><span class="n">INSTALL</span><span class="w"></span>
+<span class="n">no</span><span class="w"> </span><span class="s">changes</span><span class="w"> </span><span class="s">added</span><span class="w"> </span><span class="s">to</span><span class="w"> </span><span class="s">commit</span><span class="w"> </span><span class="s">(use</span><span class="w"> </span><span class="s">&quot;git</span><span class="w"> </span><span class="s">add&quot;</span><span class="w"> </span><span class="s">and/or</span><span class="w"> </span><span class="s">&quot;git</span><span class="w"> </span><span class="s">commit</span><span class="w"> </span><span class="o">-</span><span class="n">a</span>&quot;<span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -137,7 +137,7 @@ page might also be useful.</p></li>
 compare.  Usually these will be <code class="docutils literal notranslate"><span class="pre">master</span></code> and <code class="docutils literal notranslate"><span class="pre">my-new-feature</span></code>
 (where that is your feature branch name).</p></li>
 <li><p>At this point you should get a nice summary of the changes.  Copy the
-URL for this, and post it to the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/marsbar-users">marsbar mailing list</a>, asking for
+URL for this, and post it to the <a class="reference external" href="https://marsbar.discourse.group">marsbar mailing list</a>, asking for
 review.  The URL will look something like:
 <code class="docutils literal notranslate"><span class="pre">http://github.com/your-user-name/marsbar/compare/master...my-new-feature</span></code>.
 There’s an example at
@@ -161,7 +161,7 @@ see <a class="reference internal" href="dot2_dot3.html#dot2-dot3"><span class="s
 <li><p>Click on the ‘Pull request’ button:</p>
 <img alt="../../_images/pull_button.png" src="../../_images/pull_button.png" />
 <p>Enter a message; we suggest you select only <code class="docutils literal notranslate"><span class="pre">marsbar</span></code> as the
-recipient.  The message will go to the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/marsbar-users">marsbar mailing list</a>.  Please
+recipient.  The message will go to the <a class="reference external" href="https://marsbar.discourse.group">marsbar mailing list</a>.  Please
 feel free to add others from the list as you like.</p>
 </li>
 </ol>
@@ -171,12 +171,12 @@ feel free to add others from the list as you like.</p>
 <p>This updates your code from the upstream <a class="reference external" href="http://github.com/matthew-brett/marsbar">marsbar github</a>  repo.</p>
 <div class="section" id="id2">
 <h3>Overview<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span># <span class="n">go</span> <span class="n">to</span> <span class="n">your</span> <span class="n">master</span> <span class="n">branch</span>
-<span class="n">git</span> <span class="s">checkout</span> <span class="s">master</span>
-# <span class="n">pull</span> <span class="n">changes</span> <span class="n">from</span> <span class="n">github</span>
-<span class="n">git</span> <span class="s">fetch</span> <span class="s">upstream</span>
-# <span class="n">merge</span> <span class="n">from</span> <span class="n">upstream</span>
-<span class="n">git</span> <span class="s">merge</span> <span class="s">upstream/master</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span>#<span class="w"> </span><span class="n">go</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">master</span><span class="w"> </span><span class="n">branch</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">checkout</span><span class="w"> </span><span class="s">master</span><span class="w"></span>
+#<span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="n">changes</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">github</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">fetch</span><span class="w"> </span><span class="s">upstream</span><span class="w"></span>
+#<span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">upstream</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">merge</span><span class="w"> </span><span class="s">upstream/master</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -185,28 +185,28 @@ feel free to add others from the list as you like.</p>
 <p>We suggest that you do this only for your <code class="docutils literal notranslate"><span class="pre">master</span></code> branch, and leave
 your ‘feature’ branches unmerged, to keep their history as clean as
 possible.  This makes code review easier:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">checkout</span> <span class="s">master</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">checkout</span><span class="w"> </span><span class="s">master</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Make sure you have done <a class="reference internal" href="set_up_fork.html#linking-to-upstream"><span class="std std-ref">Linking your repository to the upstream repo</span></a>.</p>
 <p>Merge the upstream code into your current development by first pulling
 the upstream repo to a copy on your local machine:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">fetch</span> <span class="s">upstream</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">fetch</span><span class="w"> </span><span class="s">upstream</span><span class="w"></span>
 </pre></div>
 </div>
 <p>then merging into your current branch:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">merge</span> <span class="s">upstream/master</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">merge</span><span class="w"> </span><span class="s">upstream/master</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="deleting-a-branch-on-github">
 <h2>Deleting a branch on <a class="reference external" href="http://github.com">github</a><a class="headerlink" href="#deleting-a-branch-on-github" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">checkout</span> <span class="s">master</span>
-# <span class="n">delete</span> <span class="n">branch</span> <span class="n">locally</span>
-<span class="n">git</span> <span class="s">branch</span> <span class="s">-D</span> <span class="s">my-unwanted-branch</span>
-# <span class="n">delete</span> <span class="n">branch</span> <span class="n">on</span> <span class="n">github</span>
-<span class="n">git</span> <span class="s">push</span> <span class="s">origin</span> <span class="s">:my-unwanted-branch</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">checkout</span><span class="w"> </span><span class="s">master</span><span class="w"></span>
+#<span class="w"> </span><span class="nb">delete</span><span class="w"> </span><span class="n">branch</span><span class="w"> </span><span class="n">locally</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">branch</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">unwanted</span><span class="o">-</span><span class="n">branch</span><span class="w"></span>
+#<span class="w"> </span><span class="nb">delete</span><span class="w"> </span><span class="n">branch</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">github</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">push</span><span class="w"> </span><span class="s">origin</span><span class="w"> </span><span class="s">:my-unwanted-branch</span><span class="w"></span>
 </pre></div>
 </div>
 <p>(Note the colon <code class="docutils literal notranslate"><span class="pre">:</span></code> before <code class="docutils literal notranslate"><span class="pre">test-branch</span></code>.  See also:
@@ -226,15 +226,15 @@ collaborator:</p>
 <div><img alt="../../_images/pull_button.png" src="../../_images/pull_button.png" />
 </div></blockquote>
 <p>Now all those people can do:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">clone</span> <span class="s">git@githhub.com:your-user-name/marsbar.git</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">clone</span><span class="w"> </span><span class="s">git@githhub.com:your-user-name/marsbar.git</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Remember that links starting with <code class="docutils literal notranslate"><span class="pre">git&#64;</span></code> use the ssh protocol and are
 read-write; links starting with <code class="docutils literal notranslate"><span class="pre">git://</span></code> are read-only.</p>
 <p>Your collaborators can then commit directly into that repo with the
 usual:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">commit</span> <span class="s">-am</span> <span class="s">&#39;ENH - much better code&#39;</span>
-<span class="n">git</span> <span class="s">push</span> <span class="s">origin</span> <span class="s">master</span> <span class="s">#</span> <span class="s">pushes</span> <span class="s">directly</span> <span class="s">into</span> <span class="s">your</span> <span class="s">repo</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">commit</span><span class="w"> </span><span class="o">-</span><span class="n">am</span><span class="w"> </span><span class="s">&#39;ENH - much better code&#39;</span><span class="w"></span>
+<span class="n">git</span><span class="w"> </span><span class="s">push</span><span class="w"> </span><span class="s">origin</span><span class="w"> </span><span class="s">master</span><span class="w"> </span><span class="s">#</span><span class="w"> </span><span class="s">pushes</span><span class="w"> </span><span class="s">directly</span><span class="w"> </span><span class="s">into</span><span class="w"> </span><span class="s">your</span><span class="w"> </span><span class="s">repo</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -242,11 +242,11 @@ usual:</p>
 <h2>Exploring your repository<a class="headerlink" href="#exploring-your-repository" title="Permalink to this headline">¶</a></h2>
 <p>To see a graphical representation of the repository branches and
 commits:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gitk</span> <span class="s">--all</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gitk</span><span class="w"> </span><span class="o">--</span><span class="nb">all</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To see a linear list of commits for this branch:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="s">log</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="s">log</span><span class="w"></span>
 </pre></div>
 </div>
 <p>You can also look at the <a class="reference external" href="http://github.com/blog/39-say-hello-to-the-network-graph-visualizer">network graph visualizer</a> for your <a class="reference external" href="http://github.com">github</a>
@@ -312,13 +312,13 @@ repo.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development workflow</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2000-2015, Matthew Brett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>

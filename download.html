@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Download and install &#8212; MarsBaR 0.44 documentation</title>
+    <title>Download and install &#8212; MarsBaR 0.45 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/marsbar.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="about.html" title="About MarsBaR"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Download and install</a></li> 
       </ul>
     </div>  
@@ -44,13 +44,12 @@
             
   <div class="section" id="download-and-install">
 <span id="download-install"></span><h1>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h1>
-<p>All MarsBaR file releases are available via the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project download
-page</a>.</p>
 <div class="section" id="installing-marsbar">
 <h2>Installing MarsBaR<a class="headerlink" href="#installing-marsbar" title="Permalink to this headline">¶</a></h2>
-<p>MarsBaR needs a version of <a class="reference external" href="http://www.fil.ion.ucl.ac.uk/spm">SPM</a>, so if you don’t have SPM, please
-download and install that first.  MarsBaR works with SPM versions 99, 2,
-5, and 8.</p>
+<p>The MarsBaR code releases are available via the <a class="reference external" href="https://github.com/marsbar-toolbox/marsbar/releases">MarsBaR project download
+page</a>.</p>
+<p>MarsBaR needs a version of <a class="reference external" href="http://www.fil.ion.ucl.ac.uk/spm">SPM</a>, so if you don’t have SPM, please download and
+install that first.  MarsBaR works with SPM versions 99 and 2 through 12.</p>
 <p>For the current stable release of MarsBaR, look for the marsbar package;
 marsbar-devel is the development release. Releases consist of an archive
 which will unpack in a directory named after the MarsBaR version - for
@@ -67,16 +66,16 @@ Unix. Imagine SPM8 was in <code class="docutils literal notranslate"><span class
 unpacked the MarsBaR distribution, giving you a directory
 <code class="docutils literal notranslate"><span class="pre">/home/myhome/marsbar-0.42</span></code>.  You could then create the marsbar SPM
 toolbox directory with:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">mkdir</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">spm</span><span class="o">/</span><span class="n">spm8</span><span class="o">/</span><span class="n">toolbox</span><span class="o">/</span><span class="n">marsbar</span><span class="w"></span>
 </pre></div>
 </div>
 <p>and copy the MarsBaR distribution into this directory with:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="s">-r</span> <span class="s">/home/myhome/marsbar-0.42/*</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="o">/</span><span class="nb">home</span><span class="o">/</span><span class="n">myhome</span><span class="o">/</span><span class="n">marsbar</span><span class="o">-</span><span class="mf">0.42</span><span class="o">/*</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">spm</span><span class="o">/</span><span class="n">spm8</span><span class="o">/</span><span class="n">toolbox</span><span class="o">/</span><span class="n">marsbar</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Alternatively, you could do the same job by making a symbolic link
 between the directories with something like:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="s">-s</span> <span class="s">/home/myhome/marsbar-0.42</span> <span class="s">/usr/local/spm/spm8/toolbox/marsbar</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ln</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">/</span><span class="nb">home</span><span class="o">/</span><span class="n">myhome</span><span class="o">/</span><span class="n">marsbar</span><span class="o">-</span><span class="mf">0.42</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">spm</span><span class="o">/</span><span class="n">spm8</span><span class="o">/</span><span class="n">toolbox</span><span class="o">/</span><span class="n">marsbar</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -90,7 +89,7 @@ interface.</p>
 <div class="section" id="example-dataset">
 <span id="example-data"></span><h3>Example dataset<a class="headerlink" href="#example-dataset" title="Permalink to this headline">¶</a></h3>
 <p>You may want the example dataset to try out MarsBaR, or to run the <a class="reference internal" href="tutorial/index.html#tutorial"><span class="std std-ref">MarsBaR tutorial</span></a>.</p>
-<p>Download the dataset from the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project download page</a>.</p>
+<p>Download the dataset from the <a class="reference external" href="https://github.com/marsbar-toolbox/marsbar-example-data/releases">MarsBaR example data download page</a>.</p>
 <p>To install, unpack the archive in a directory you can write to. This
 will give you a subdirectory like <code class="docutils literal notranslate"><span class="pre">marsbar_example_data-0.3</span></code>, where
 0.3 is the version number of the example data.</p>
@@ -117,7 +116,7 @@ MarsBaR distribution, see <a class="reference internal" href="tutorial/gettingst
 <div class="section" id="aal-structural-rois">
 <span id="aal-rois"></span><h3>AAL structural ROIs<a class="headerlink" href="#aal-structural-rois" title="Permalink to this headline">¶</a></h3>
 <p>These ROIs can be useful as a standard set of anatomical definitions.</p>
-<p>To install, download the AAL ROI archive file from the <a class="reference external" href="http://sourceforge.net/projects/marsbar/files">MarsBaR project
+<p>To install, download the AAL ROI archive file from the <a class="reference external" href="https://github.com/marsbar-toolbox/marsbar-aal-rois/releases">MarsBaR AAL
 download page</a>. Unpack the archive somewhere; it will create a new
 directory, called something like <code class="docutils literal notranslate"><span class="pre">marsbar-aal-0.2</span></code>.</p>
 <p>The AAL ROI library contains ROIs in MarsBaR format that were
@@ -192,13 +191,13 @@ NeuroImage 15: 273-289.</p>
         <li class="right" >
           <a href="about.html" title="About MarsBaR"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.44 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">MarsBaR 0.45 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Download and install</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2000-2015, Matthew Brett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
     </div>
   </body>
 </html>
