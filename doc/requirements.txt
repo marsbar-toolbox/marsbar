@@ -1,0 +1,2 @@
+# Requirements for build.[:w
+sphinx-book-theme

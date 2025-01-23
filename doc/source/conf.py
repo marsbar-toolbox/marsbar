@@ -40,7 +40,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'MarsBaR'
-copyright = u'2000-2015, Matthew Brett'
+copyright = u'2000-2025, Matthew Brett'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -94,28 +94,24 @@ highlight_language = 'matlab'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'sphinx_book_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "rightsidebar": "true",
-    'bgcolor': '#fffff5',
-    'footerbgcolor': '#fffff5',
-    'headtextcolor': '#C00',
-    'headbgcolor': '#fffff5',
-    'sidebarbgcolor': '#fbfbe0',
-    'sidebartextcolor': '#C00',
-    'sidebarlinkcolor': '#084B8A',
-    'relbarbgcolor': '#2E2E2E'}
-
-#html_theme_options = {}
+    "path_to_docs": "doc/",
+    "repository_url": "https://github.com/marsbar-toolbox/marsbar",
+    "repository_branch": "main",
+    "use_issues_button": True,
+    "use_repository_button": True,
+    "launch_buttons": {},
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
-html_style = 'marsbar.css'
+# html_style = 'marsbar.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
