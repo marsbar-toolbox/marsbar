@@ -86,7 +86,7 @@ The end
 That is the end of this short guided tour. We haven't described the options
 interface, but then again, it isn't very interesting. As always, we would be
 very grateful to hear about any mistakes in this document or bugs in MarsBaR.
-You can find us on the MarsBaR Discourse site - see :ref:`support`.
+You can find us on the MarsBaR mailing list - see :ref:`support`.
 
 May your regions always be as interesting as you hoped.
 

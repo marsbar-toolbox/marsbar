@@ -14,8 +14,9 @@
 .. _`MarsBaR example data download page`: https://github.com/marsbar-toolbox/marsbar-example-data/releases
 .. _`MarsBaR AAL download page`: https://github.com/marsbar-toolbox/marsbar-aal-rois/releases
 .. _`m2html`: http://www.artefact.tk/software/matlab/m2html/
-.. _`MarsBaR users mailing list`: https://marsbar.discourse.group
-.. _`MarsBaR users Discourse site`: https://marsbar.discourse.group
+.. _`MarsBaR users mailing list`: https://lists.sourceforge.net/lists/listinfo/marsbar-users
+.. _`MarsBaR mailing list archive`: http://sourceforge.net/mailarchive/forum.php?forum_name=marsbar-users
+.. _`Gmane`: http://gmane.org/
 .. _`SourceForge`: http://sourceforge.net
 .. _`mricro`: http://www.mricro.com/
 
